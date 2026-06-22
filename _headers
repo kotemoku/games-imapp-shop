@@ -7,9 +7,11 @@
 /burger/*
   Content-Security-Policy: frame-ancestors 'self' https://imapp.shop https://*.imapp.shop https://imapp.pages.dev https://*.imapp.pages.dev http://localhost:3000 http://127.0.0.1:3000
 
-# Flutter Web の即時不変アセットは 1 年キャッシュ
+# Flutter のエントリポイントは更新ごとに同名で差し替わるため再検証する
 /burger/main.dart.js
-  Cache-Control: public, max-age=31536000, immutable
+  Cache-Control: no-cache, must-revalidate
+
+# Flutter Web の即時不変アセットは 1 年キャッシュ
 /burger/main.dart.wasm
   Cache-Control: public, max-age=31536000, immutable
 /burger/main.dart.mjs
