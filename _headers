@@ -1,0 +1,37 @@
+# Cloudflare Pages: games.imapp.shop
+# imapp (https://imapp.shop) から iframe で埋め込まれるゲーム配信。
+
+# ---------- burger (Burger Stack Rush) ----------
+# imapp 配下からのみ iframe 許可。clickjacking 対策。
+# 追加で許可したいプレビュー環境があればここに足す。
+/burger/*
+  Content-Security-Policy: frame-ancestors 'self' https://imapp.shop https://*.imapp.shop https://imapp.pages.dev https://*.imapp.pages.dev http://localhost:3000 http://127.0.0.1:3000
+
+# Flutter Web の即時不変アセットは 1 年キャッシュ
+/burger/main.dart.js
+  Cache-Control: public, max-age=31536000, immutable
+/burger/main.dart.wasm
+  Cache-Control: public, max-age=31536000, immutable
+/burger/main.dart.mjs
+  Cache-Control: public, max-age=31536000, immutable
+/burger/canvaskit/*
+  Cache-Control: public, max-age=31536000, immutable
+/burger/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+/burger/icons/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# index.html / SW / manifest はバージョン差し替え時の事故防止のため常に最新を引く
+/burger/index.html
+  Cache-Control: no-cache, must-revalidate
+/burger/flutter_service_worker.js
+  Cache-Control: no-cache, must-revalidate
+/burger/flutter_bootstrap.js
+  Cache-Control: no-cache, must-revalidate
+/burger/manifest.json
+  Cache-Control: no-cache, must-revalidate
+
+# 共通: Pages 自体のルートはまだ未使用 (将来ゲーム一覧 LP を置くかもしれない)
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
