@@ -56,7 +56,7 @@
     await context.resume();
     if (!sfxMaster) {
       sfxMaster = context.createGain();
-      sfxMaster.gain.setValueAtTime(0.32, context.currentTime);
+      sfxMaster.gain.setValueAtTime(0.40, context.currentTime);
       sfxMaster.connect(context.destination);
     }
     return true;
@@ -118,34 +118,42 @@
   async function stack(ingredient, layer, complete) {
     if (!(await ensureAudio())) return;
     const now = context.currentTime + 0.006;
-    const group = ingredient % 5;
-    const lift = Math.min(layer, 10) * 8;
-    const body = [118, 92, 142, 178, 210][group] + lift;
-    playTone(body, now, 0.13, 'triangle', 0.34, sfxMaster, Math.max(58, body * 0.55));
-    playTone(420 + group * 62 + lift, now + 0.018, 0.075, 'square', 0.11, sfxMaster, 260 + lift);
-    playNoise(now, 0.055, 0.10, 1000 + group * 260);
+    const popScale = [523.25, 587.33, 659.25, 783.99, 880.00, 987.77];
+    const group = Math.abs(ingredient + layer) % popScale.length;
+    const lift = Math.min(layer, 10) * 13;
+    const root = popScale[group] + lift;
+    playTone(root / 2, now, 0.085, 'triangle', 0.22, sfxMaster, root * 0.82);
+    playTone(root, now + 0.010, 0.072, 'square', 0.15, sfxMaster, root * 1.42);
+    playTone(root * 1.5, now + 0.055, 0.070, 'sine', 0.13, sfxMaster, root * 2.0);
+    playTone(root * 2.0, now + 0.105, 0.052, 'square', 0.075, sfxMaster);
+    playNoise(now + 0.004, 0.045, 0.075, 3600 + group * 360);
 
     if (complete) {
-      const chord = [523.25, 659.25, 783.99, 1046.50];
+      const chord = [523.25, 659.25, 783.99, 1046.50, 1318.51];
       chord.forEach((note, index) => {
-        playTone(note, now + 0.055 + index * 0.055, 0.22, 'square', 0.10, sfxMaster);
+        playTone(note, now + 0.050 + index * 0.040, 0.20, index % 2 ? 'sine' : 'square', 0.105, sfxMaster);
       });
-      playTone(130.81, now + 0.04, 0.32, 'triangle', 0.24, sfxMaster, 65.41);
+      playTone(1046.50, now + 0.245, 0.18, 'sine', 0.14, sfxMaster, 1567.98);
+      playTone(196.00, now + 0.035, 0.30, 'triangle', 0.16, sfxMaster, 98.00);
+      playNoise(now + 0.020, 0.090, 0.11, 5200);
     }
   }
 
   async function cook() {
     if (!(await ensureAudio())) return;
     const now = context.currentTime + 0.005;
-    playNoise(now, 0.18, 0.12, 2600);
-    playTone(330, now, 0.09, 'square', 0.08, sfxMaster, 520);
+    playNoise(now, 0.16, 0.095, 3100);
+    playTone(392, now, 0.06, 'sine', 0.085, sfxMaster, 560);
+    playTone(659.25, now + 0.055, 0.065, 'square', 0.07, sfxMaster, 783.99);
   }
 
   async function mistake() {
     if (!(await ensureAudio())) return;
     const now = context.currentTime + 0.005;
-    playTone(180, now, 0.24, 'sawtooth', 0.19, sfxMaster, 72);
-    playTone(128, now + 0.045, 0.20, 'square', 0.10, sfxMaster, 64);
+    playTone(392, now, 0.12, 'square', 0.13, sfxMaster, 246.94);
+    playTone(293.66, now + 0.075, 0.16, 'triangle', 0.12, sfxMaster, 174.61);
+    playTone(146.83, now + 0.180, 0.12, 'sine', 0.10, sfxMaster, 130.81);
+    playNoise(now + 0.020, 0.050, 0.07, 1800);
   }
 
   function stop() {
