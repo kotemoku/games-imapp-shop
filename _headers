@@ -11,17 +11,19 @@
 /burger/main.dart.js
   Cache-Control: no-cache, must-revalidate
 
-# Flutter Web の即時不変アセットは 1 年キャッシュ
-/burger/main.dart.wasm
-  Cache-Control: public, max-age=31536000, immutable
-/burger/main.dart.mjs
-  Cache-Control: public, max-age=31536000, immutable
+# canvaskit はエンジン同梱で内容が安定 → 1 年キャッシュ可
 /burger/canvaskit/*
   Cache-Control: public, max-age=31536000, immutable
+# 以下は同名のままビルドごとに中身が変わる（Flutter は内容ハッシュ名にしない）。
+# immutable にすると更新が届かないので必ず再検証する。
+/burger/main.dart.wasm
+  Cache-Control: no-cache, must-revalidate
+/burger/main.dart.mjs
+  Cache-Control: no-cache, must-revalidate
 /burger/assets/*
-  Cache-Control: public, max-age=31536000, immutable
+  Cache-Control: no-cache, must-revalidate
 /burger/icons/*
-  Cache-Control: public, max-age=31536000, immutable
+  Cache-Control: no-cache, must-revalidate
 
 # index.html / SW / manifest はバージョン差し替え時の事故防止のため常に最新を引く
 /burger/index.html
