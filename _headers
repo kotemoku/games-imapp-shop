@@ -45,6 +45,20 @@
 /packer-panic/index.html
   Cache-Control: no-cache, must-revalidate
 
+# ---------- tsukurun (ツクルン / 家具組み立てタイムアタック) ----------
+# 素の HTML/CSS/JS ゲーム (つくチャレ) を iframe 埋め込み。
+# 同じく imapp 配下からのみフレーム許可。
+/tsukurun/*
+  Content-Security-Policy: frame-ancestors 'self' https://imapp.shop https://*.imapp.shop https://imapp.pages.dev https://*.imapp.pages.dev http://localhost:3000 http://127.0.0.1:3000
+
+# 3 ファイルとも内容ハッシュなしで同名差し替え → 常に最新化
+/tsukurun/index.html
+  Cache-Control: no-cache, must-revalidate
+/tsukurun/game.js
+  Cache-Control: no-cache, must-revalidate
+/tsukurun/styles.css
+  Cache-Control: no-cache, must-revalidate
+
 # 共通: Pages 自体のルートはまだ未使用 (将来ゲーム一覧 LP を置くかもしれない)
 /*
   X-Content-Type-Options: nosniff

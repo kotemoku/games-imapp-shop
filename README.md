@@ -8,6 +8,8 @@ Cloudflare Pages で `games.imapp.shop` カスタムドメインを当てる。
 | パス | ゲーム | リポジトリ |
 |------|--------|-----------|
 | `/burger/` | Burger Stack Rush | `burger_stack_rush` (Flutter) |
+| `/packer-panic/` | ふんべつ！パッカーパニック | `packer-panic` (Web) |
+| `/tsukurun/` | ツクルン (家具組み立てタイムアタック) | `つくチャレ` (素の HTML/CSS/JS) |
 
 ## デプロイ手順
 
