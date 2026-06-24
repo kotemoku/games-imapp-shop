@@ -58,6 +58,9 @@
   Cache-Control: no-cache, must-revalidate
 /tsukurun/styles.css
   Cache-Control: no-cache, must-revalidate
+# ピクセルアート画像は同名で差し替わる可能性があるため再検証する
+/tsukurun/assets/*
+  Cache-Control: no-cache, must-revalidate
 
 # 共通: Pages 自体のルートはまだ未使用 (将来ゲーム一覧 LP を置くかもしれない)
 /*

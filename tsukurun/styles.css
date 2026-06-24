@@ -337,19 +337,20 @@ kbd { border: 1px solid var(--line); box-shadow: 0 2px 0 rgba(24,32,31,.14); bac
 
 /* 作業面の上に乗る道具 */
 .scene-tool { display: none; position: absolute; z-index: 5; pointer-events: none; }
-.scene-tool svg { display: block; image-rendering: pixelated; filter: drop-shadow(2px 3px 0 rgba(24,32,31,.25)); }
+.scene-tool img { display: block; image-rendering: pixelated; filter: drop-shadow(2px 3px 0 rgba(24,32,31,.25)); }
+.scene-tool svg { display: none; }
 .action-card[data-action="cut"] .scene-tool-saw { display: block; }
 .action-card[data-action="hammer"] .scene-tool-hammer { display: block; }
 .action-card[data-action="screw"] .scene-tool-driver { display: block; }
-.scene-tool-saw { left: 50%; top: 70px; width: 132px; transform: translateX(-50%); transition: left .05s steps(2); }
-.scene-tool-saw svg { width: 132px; height: auto; }
-.scene-tool-hammer { left: 50%; top: -26px; width: 64px; }
-.scene-tool-hammer svg { width: 64px; height: auto; transform-origin: 50% 6%; transform: rotate(42deg); }
-.scene-tool-driver { left: 50%; top: -19px; width: 44px; }
-.scene-tool-driver svg { width: 44px; height: auto; transform-origin: 50% 94%; transform: rotate(24deg); }
-.action-card.is-tool-tapping[data-action="cut"] .scene-tool-saw svg { animation: sawStroke .12s steps(3); }
-.action-card.is-tool-tapping[data-action="hammer"] .scene-tool-hammer svg { animation: hammerStrike .16s ease; }
-.action-card.is-tool-tapping[data-action="screw"] .scene-tool-driver svg { animation: driverTurn .16s steps(4); }
+.scene-tool-saw { left: 50%; top: 66px; width: 178px; transform: translateX(-50%); transition: left .05s steps(2); }
+.scene-tool-saw img { width: 178px; height: auto; }
+.scene-tool-hammer { left: 50%; top: -36px; width: 74px; }
+.scene-tool-hammer img { width: 74px; height: auto; transform-origin: 50% 8%; transform: rotate(42deg); }
+.scene-tool-driver { left: 50%; top: -22px; width: 126px; }
+.scene-tool-driver img { width: 126px; height: auto; transform-origin: 9% 42%; transform: translateX(-18%) rotate(18deg); }
+.action-card.is-tool-tapping[data-action="cut"] .scene-tool-saw img { animation: sawStroke .12s steps(3); }
+.action-card.is-tool-tapping[data-action="hammer"] .scene-tool-hammer img { animation: hammerStrike .16s ease; }
+.action-card.is-tool-tapping[data-action="screw"] .scene-tool-driver img { animation: driverTurn .16s steps(4); }
 .action-workspace { display: grid; grid-template-columns: 1fr 90px; gap: 13px; padding: 16px; border: 3px solid var(--ink); background: #d7d0bf; }
 .action-feedback { min-height: 24px; margin: 13px 0 7px !important; color: var(--ink) !important; font-weight: 700; }
 .action-feedback.is-error { color: var(--orange-dark) !important; }
@@ -407,7 +408,7 @@ kbd { border: 1px solid var(--line); box-shadow: 0 2px 0 rgba(24,32,31,.14); bac
 /* 横から弧を描いて振り下ろす */
 @keyframes hammerStrike { 0% { transform: rotate(42deg); } 34% { transform: rotate(0deg); } 50% { transform: rotate(0deg); } 68% { transform: rotate(8deg); } 100% { transform: rotate(42deg); } }
 /* 横から差し込んでひねる */
-@keyframes driverTurn { 0% { transform: rotate(24deg); } 35% { transform: rotate(34deg); } 70% { transform: rotate(16deg); } 100% { transform: rotate(24deg); } }
+@keyframes driverTurn { 0% { transform: translateX(-18%) rotate(18deg); } 35% { transform: translateX(-18%) rotate(28deg); } 70% { transform: translateX(-18%) rotate(9deg); } 100% { transform: translateX(-18%) rotate(18deg); } }
 .blueprint.is-shaking { animation: wrong .35s; }
 
 .difficulty em { font-style: normal; }
