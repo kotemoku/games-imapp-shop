@@ -35,6 +35,16 @@
 /burger/manifest.json
   Cache-Control: no-cache, must-revalidate
 
+# ---------- packer-panic (ふんべつ！パッカーパニック) ----------
+# 別開発の Web ゲーム (天使カーソル制) を iframe 埋め込み。
+# 同じく imapp 配下からのみフレーム許可。
+/packer-panic/*
+  Content-Security-Policy: frame-ancestors 'self' https://imapp.shop https://*.imapp.shop https://imapp.pages.dev https://*.imapp.pages.dev http://localhost:3000 http://127.0.0.1:3000
+
+# index.html は内容ハッシュなしで差し替わる → 常に最新化
+/packer-panic/index.html
+  Cache-Control: no-cache, must-revalidate
+
 # 共通: Pages 自体のルートはまだ未使用 (将来ゲーム一覧 LP を置くかもしれない)
 /*
   X-Content-Type-Options: nosniff
