@@ -350,10 +350,10 @@ kbd { border: 1px solid var(--line); box-shadow: 0 2px 0 rgba(24,32,31,.14); bac
 .action-card[data-action="screw"] .scene-tool-driver { display: block; }
 .scene-tool-saw { left: 50%; top: 66px; width: 178px; transform: translateX(-50%); transition: left .05s steps(2); }
 .scene-tool-saw img { width: 178px; height: auto; }
-.scene-tool-hammer { left: 50%; top: -36px; width: 74px; }
-.scene-tool-hammer img { width: 74px; height: auto; transform-origin: 50% 8%; transform: rotate(42deg); }
-.scene-tool-driver { left: 50%; top: -22px; width: 126px; }
-.scene-tool-driver img { width: 126px; height: auto; transform-origin: 9% 42%; transform: translateX(-18%) rotate(18deg); }
+.scene-tool-hammer { left: 50%; top: 0; width: 72px; }
+.scene-tool-hammer img { width: 72px; height: auto; transform-origin: 18% 14%; transform: translate(6px, 30px) rotate(158deg); }
+.scene-tool-driver { left: 50%; top: 4px; width: 72px; }
+.scene-tool-driver img { width: 72px; height: auto; transform-origin: 14% 22%; transform: translate(24px, 18px) rotate(52deg); }
 .action-card.is-tool-tapping[data-action="cut"] .scene-tool-saw img { animation: sawStroke .12s steps(3); }
 .action-card.is-tool-tapping[data-action="hammer"] .scene-tool-hammer img { animation: hammerStrike .16s ease; }
 .action-card.is-tool-tapping[data-action="screw"] .scene-tool-driver img { animation: driverTurn .16s steps(4); }
@@ -412,9 +412,9 @@ kbd { border: 1px solid var(--line); box-shadow: 0 2px 0 rgba(24,32,31,.14); bac
 @keyframes pulse { 50% { opacity: .35; } }
 @keyframes sawStroke { 0% { transform: translateX(-7px) rotate(-1deg); } 100% { transform: translateX(7px) rotate(-1deg); } }
 /* 横から弧を描いて振り下ろす */
-@keyframes hammerStrike { 0% { transform: rotate(42deg); } 34% { transform: rotate(0deg); } 50% { transform: rotate(0deg); } 68% { transform: rotate(8deg); } 100% { transform: rotate(42deg); } }
+@keyframes hammerStrike { 0% { transform: translate(6px, 30px) rotate(140deg); } 38% { transform: translate(6px, 30px) rotate(166deg); } 58% { transform: translate(6px, 30px) rotate(166deg); } 78% { transform: translate(6px, 30px) rotate(150deg); } 100% { transform: translate(6px, 30px) rotate(158deg); } }
 /* 横から差し込んでひねる */
-@keyframes driverTurn { 0% { transform: translateX(-18%) rotate(18deg); } 35% { transform: translateX(-18%) rotate(28deg); } 70% { transform: translateX(-18%) rotate(9deg); } 100% { transform: translateX(-18%) rotate(18deg); } }
+@keyframes driverTurn { 0% { transform: translate(24px, 18px) rotate(52deg); } 35% { transform: translate(24px, 18px) rotate(62deg); } 70% { transform: translate(24px, 18px) rotate(44deg); } 100% { transform: translate(24px, 18px) rotate(52deg); } }
 .blueprint.is-shaking { animation: wrong .35s; }
 
 .difficulty em { font-style: normal; }
