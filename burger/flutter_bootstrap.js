@@ -35,8 +35,26 @@ if (!window._flutter) {
 }
 _flutter.buildConfig = {"engineRevision":"6c0baaebf70e0148f485f27d5616b3d3382da7bf","builds":[{"compileTarget":"dart2js","renderer":"canvaskit","mainJsPath":"main.dart.js"},{}]};
 
-_flutter.loader.load({
-  serviceWorkerSettings: {
-    serviceWorkerVersion: "3559650094" /* Flutter's service worker is deprecated and will be removed in a future Flutter release. */
+
+// imapp に iframe 埋め込みするゲームでは、Service Worker のキャッシュが
+// デプロイ更新の妨げ（古い版が居座る）になる。SW は登録せず、
+// 既存の SW / CacheStorage があれば毎回解除して常に最新ビルドを読み込む。
+(function () {
+  try {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(function (regs) {
+        for (var i = 0; i < regs.length; i++) regs[i].unregister();
+      });
+    }
+    if (self.caches && caches.keys) {
+      caches.keys().then(function (keys) {
+        for (var i = 0; i < keys.length; i++) caches.delete(keys[i]);
+      });
+    }
+  } catch (e) {
+    /* 失敗しても通常起動は続行 */
   }
-});
+})();
+
+// serviceWorkerSettings を渡さない → SW を登録しない。
+_flutter.loader.load();
