@@ -1,38 +1,17 @@
 # Cloudflare Pages: games.imapp.shop
 # imapp (https://imapp.shop) から iframe で埋め込まれるゲーム配信。
 
-# ---------- burger (Burger Stack Rush) ----------
+# ---------- burger (Burger Stack Rush / Phaser+Vite版) ----------
 # imapp 配下からのみ iframe 許可。clickjacking 対策。
 # 追加で許可したいプレビュー環境があればここに足す。
 /burger/*
   Content-Security-Policy: frame-ancestors 'self' https://imapp.shop https://*.imapp.shop https://imapp.pages.dev https://*.imapp.pages.dev http://localhost:3000 http://127.0.0.1:3000
 
-# Flutter のエントリポイントは更新ごとに同名で差し替わるため再検証する
-/burger/main.dart.js
-  Cache-Control: no-cache, must-revalidate
-
-# canvaskit はエンジン同梱で内容が安定 → 1 年キャッシュ可
-/burger/canvaskit/*
-  Cache-Control: public, max-age=31536000, immutable
-# 以下は同名のままビルドごとに中身が変わる（Flutter は内容ハッシュ名にしない）。
-# immutable にすると更新が届かないので必ず再検証する。
-/burger/main.dart.wasm
-  Cache-Control: no-cache, must-revalidate
-/burger/main.dart.mjs
-  Cache-Control: no-cache, must-revalidate
-/burger/assets/*
-  Cache-Control: no-cache, must-revalidate
-/burger/icons/*
-  Cache-Control: no-cache, must-revalidate
-
-# index.html / SW / manifest はバージョン差し替え時の事故防止のため常に最新を引く
+# Vite ビルド。差し替え事故防止を最優先し index.html と素材は常に再検証する。
+# （JS は内容ハッシュ名なので本来長期キャッシュ可だが、確実な更新反映を優先）
 /burger/index.html
   Cache-Control: no-cache, must-revalidate
-/burger/flutter_service_worker.js
-  Cache-Control: no-cache, must-revalidate
-/burger/flutter_bootstrap.js
-  Cache-Control: no-cache, must-revalidate
-/burger/manifest.json
+/burger/assets/*
   Cache-Control: no-cache, must-revalidate
 
 # ---------- packer-panic (ふんべつ！パッカーパニック) ----------
@@ -43,6 +22,10 @@
 
 # index.html は内容ハッシュなしで差し替わる → 常に最新化
 /packer-panic/index.html
+  Cache-Control: no-cache, must-revalidate
+# 画像など同名で差し替わり得る素材があるため、確実な反映を優先して常に再検証。
+# （JS は内容ハッシュ名なので 304 で済み、実害は小さい）
+/packer-panic/assets/*
   Cache-Control: no-cache, must-revalidate
 
 # ---------- tsukurun (ツクルン / 家具組み立てタイムアタック) ----------
