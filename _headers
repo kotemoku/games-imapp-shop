@@ -46,20 +46,19 @@
   Cache-Control: no-cache, must-revalidate
 
 # ---------- tsukurun (ツクルン / 家具組み立てタイムアタック) ----------
-# 素の HTML/CSS/JS ゲーム (つくチャレ) を iframe 埋め込み。
+# Phaser4 + Vite 製ゲーム (つくチャレ-phaser) を iframe 埋め込み。
 # 同じく imapp 配下からのみフレーム許可。
 /tsukurun/*
   Content-Security-Policy: frame-ancestors 'self' https://imapp.shop https://*.imapp.shop https://imapp.pages.dev https://*.imapp.pages.dev http://localhost:3000 http://127.0.0.1:3000
 
-# 3 ファイルとも内容ハッシュなしで同名差し替え → 常に最新化
+# index.html はビルドごとに JS ハッシュ参照が変わる → 常に最新化
 /tsukurun/index.html
   Cache-Control: no-cache, must-revalidate
-/tsukurun/game.js
-  Cache-Control: no-cache, must-revalidate
-/tsukurun/styles.css
-  Cache-Control: no-cache, must-revalidate
-# ピクセルアート画像は同名で差し替わる可能性があるため再検証する
+# Vite のハッシュ付きアセット (assets/index-XXXX.js) は内容不変 → 長期キャッシュ
 /tsukurun/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+# ドット絵画像は同名で差し替わり得るので再検証（後勝ちで上書き）
+/tsukurun/assets/pixel/*
   Cache-Control: no-cache, must-revalidate
 
 # 共通: Pages 自体のルートはまだ未使用 (将来ゲーム一覧 LP を置くかもしれない)
