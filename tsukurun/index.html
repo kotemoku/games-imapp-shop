@@ -13,6 +13,7 @@
       body {
         margin: 0;
         padding: 0;
+        width: 100%;
         height: 100%;
         background: #18201f;
         overflow: hidden;
@@ -20,10 +21,14 @@
         -webkit-tap-highlight-color: transparent;
         overscroll-behavior: none;
       }
+      /* 実機(特に iOS Safari)で height:100% が縮む問題を避け、
+         ビューポート全体を確実に占有する。dvh でツールバー増減にも追従。 */
       #game {
-        width: 100%;
-        height: 100%;
-        box-sizing: border-box;
+        position: fixed;
+        inset: 0;
+        width: 100vw;
+        height: 100vh;
+        height: 100dvh;
       }
     </style>
     <script type="module" crossorigin src="./assets/index-txBQa4la.js"></script>
