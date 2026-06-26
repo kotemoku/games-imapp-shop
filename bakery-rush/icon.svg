@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="96" fill="#3a2415"/>
+  <circle cx="256" cy="262" r="150" fill="#cfe08a" stroke="#5a3618" stroke-width="14"/>
+  <g stroke="rgba(120,140,50,.6)" stroke-width="12" fill="none">
+    <path d="M120 180 L392 344 M120 240 L392 404 M120 300 L360 444 M180 150 L412 290 M240 130 L420 240"/>
+    <path d="M392 180 L120 344 M392 240 L120 404 M392 300 L152 444 M332 150 L100 290 M272 130 L92 240"/>
+  </g>
+  <ellipse cx="200" cy="200" rx="46" ry="26" fill="rgba(255,255,255,.4)"/>
+  <text x="256" y="478" font-family="'Kosugi Maru',sans-serif" font-size="64" font-weight="900" fill="#ffd24a" text-anchor="middle">焼</text>
+</svg>

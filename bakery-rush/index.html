@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#3a2415">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon.svg">
+<title>やきたて！ベーカリーラッシュ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kosugi+Maru&family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html,body { height:100%; overflow:hidden; background:#1c1209; }
+  body {
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Kosugi Maru','Noto Sans JP',sans-serif;
+    background:radial-gradient(circle at 50% 30%, #3a2415 0%, #1c1209 80%);
+    touch-action:none; user-select:none;
+  }
+  #wrap { position:relative; height:100%; aspect-ratio:9/16; max-width:100%; }
+  canvas { display:block; width:100%; height:100%; border-radius:0; image-rendering:auto; }
+  #hint { position:absolute; bottom:6px; left:0; right:0; text-align:center; color:#ffe6b0; font-size:11px; opacity:.45; pointer-events:none; }
+</style>
+</head>
+<body>
+<div id="wrap">
+  <canvas id="game"></canvas>
+  <div id="hint">同じパンを3つ以上なぞって繋ごう</div>
+</div>
+<script>
+"use strict";
+/* =========================================================================
+   やきたて！ベーカリーラッシュ  —  teraia / single-file edition
+   マッチ→ショーケース演出→棚→客さばき。看板商品・釜出し・図鑑・不満ゲージ。
+   ========================================================================= */
+
+//==================== 基本セットアップ ====================
+const W = 540, H = 960;                 // 内部解像度（9:16）
+const canvas = document.getElementById('game');
+const ctx = canvas.getContext('2d');
+let DPR = Math.min(window.devicePixelRatio || 1, 2.5);
+function resize(){
+  const wrap = document.getElementById('wrap');
+  const r = wrap.getBoundingClientRect();
+  canvas.width = Math.round(r.width * DPR);
+  canvas.height = Math.round(r.height * DPR);
+  fit = canvas.width / W;
+  // 縦に合わせて中央寄せ用オフセット
+  fit = Math.min(canvas.width / W, canvas.height / H);
+  offX = (canvas.width  - W*fit)/2;
+  offY = (canvas.height - H*fit)/2;
+}
+let fit=1, offX=0, offY=0;
+window.addEventListener('resize', resize);
+
+//==================== 領域レイアウト ====================
+const FIELD = { x:24, y:150, w:W-48, bottom:624 };   // 落下・山積み
+const SHELF = { y:628, h:150 };                       // 店先の棚
+const LANE  = { y:786, h:H-786 };                     // 客レーン
+const BASELINE_Y = 214;                               // ゲームオーバー基準線
+const BR = 33;                                        // パン半径（統一円）
+
+//==================== メニュー（config/menu 相当） ====================
+// 物理は全種ほぼ同径の丸。見た目だけ手描き調で差別化。
+const MENU = [
+  { id:'shoku', name:'食パン',     price:240, color:'#f2c879', cap:'ふんわり耳まで甘い',     sig:false },
+  { id:'an',    name:'あんぱん',   price:170, color:'#9a5a2c', cap:'北海道産つぶあん',       sig:false },
+  { id:'melon', name:'メロンパン', price:200, color:'#cfe08a', cap:'外サクッ中ふわっ',       sig:true  }, // 看板商品
+  { id:'cro',   name:'クロワッサン', price:260, color:'#e8b25a', cap:'発酵バター24層',        sig:false },
+  { id:'baguette', name:'バゲット', price:300, color:'#d99c52', cap:'パリッと香ばしい',       sig:false },
+];
+const MENU_BY_ID = Object.fromEntries(MENU.map(m=>[m.id,m]));
+
+//==================== 難易度カーブ（config/difficultyCurve 相当） ====================
+function difficulty(t){           // t: 経過秒
+  const k = Math.min(t/150, 1);   // 2分半でフルランプ
+  return {
+    spawnEvery: 0.70 - 0.30*k,    // パン落下間隔(秒)：序盤からどんどん供給
+    custEvery:  4.6  - 2.0*k,     // 来店間隔(秒)
+    patience:   13.0 - 4.5*k,     // 客の我慢(秒)
+    types:      t<30 ? 3 : (t<80 ? 4 : 5), // 種類数 3→4→5
+    fallSpeed:  60 + 90*k,
+  };
+}
+
+//==================== サウンド（WebAudio・焼き音/効果音） ====================
+let actx=null;
+function audio(){ if(!actx){ try{actx=new (window.AudioContext||window.webkitAudioContext)();}catch(e){} } return actx; }
+function blip(freq, dur, type='sine', vol=0.18, slideTo){
+  const a=audio(); if(!a) return;
+  const o=a.createOscillator(), g=a.createGain();
+  o.type=type; o.frequency.setValueAtTime(freq, a.currentTime);
+  if(slideTo) o.frequency.exponentialRampToValueAtTime(slideTo, a.currentTime+dur);
+  g.gain.setValueAtTime(vol, a.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.0001, a.currentTime+dur);
+  o.connect(g); g.connect(a.destination); o.start(); o.stop(a.currentTime+dur);
+}
+function sfxConnect(n){ blip(330+n*55, 0.08, 'triangle', 0.12); }
+function sfxMatch(big){ blip(big?523:440,0.12,'triangle',0.2); setTimeout(()=>blip(big?784:660,0.14,'triangle',0.2),70); if(big) setTimeout(()=>blip(1046,0.18,'sine',0.18),150); }
+function sfxBake(){ // 釜出しの「パリッ」＝ノイズバースト
+  const a=audio(); if(!a) return;
+  const b=a.createBuffer(1, a.sampleRate*0.18, a.sampleRate); const d=b.getChannelData(0);
+  for(let i=0;i<d.length;i++){ d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,2); }
+  const s=a.createBufferSource(); s.buffer=b; const g=a.createGain(); g.gain.value=0.25;
+  const f=a.createBiquadFilter(); f.type='highpass'; f.frequency.value=1800;
+  s.connect(f); f.connect(g); g.connect(a.destination); s.start();
+}
+function sfxBuy(){ blip(660,0.09,'sine',0.16); setTimeout(()=>blip(990,0.12,'sine',0.16),80); }
+function sfxAngry(){ blip(200,0.18,'sawtooth',0.14,90); }
+function sfxFever(){ [523,659,784,1046,1318].forEach((f,i)=>setTimeout(()=>blip(f,0.18,'triangle',0.2),i*70)); }
+function sfxOver(){ [440,392,330,247].forEach((f,i)=>setTimeout(()=>blip(f,0.3,'sawtooth',0.16),i*160)); }
+
+//==================== パン描画（手描き調・procedural） ====================
+function withShadow(fn){ ctx.save(); ctx.shadowColor='rgba(60,30,10,.28)'; ctx.shadowBlur=8; ctx.shadowOffsetY=4; fn(); ctx.restore(); }
+function rr(x,y,w,h,r){ ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); }
+
+// 各種のローカル描画（中心0,0、半径1基準）。s=スケール（半径px）
+function drawBreadShape(id, s, hero){
+  ctx.lineJoin='round'; ctx.lineCap='round';
+  const ow='#5a3618'; // アウトライン
+  if(id==='shoku'){ // 食パン：山型の角食
+    ctx.fillStyle='#f6d493'; rr(-s*0.92,-s*0.55,s*1.84,s*1.25,s*0.32); ctx.fill();
+    ctx.strokeStyle=ow; ctx.lineWidth=s*0.09; ctx.stroke();
+    // 焼き色トップ
+    ctx.save(); ctx.clip();
+    ctx.fillStyle='#e8a64d';
+    ctx.beginPath(); ctx.moveTo(-s*0.95,-s*0.2);
+    ctx.bezierCurveTo(-s*0.4,-s*0.75,-s*0.1,-s*0.75,s*0.05,-s*0.45);
+    ctx.bezierCurveTo(s*0.2,-s*0.75,s*0.55,-s*0.75,s*0.95,-s*0.25);
+    ctx.lineTo(s*0.95,-s*0.7); ctx.lineTo(-s*0.95,-s*0.7); ctx.closePath(); ctx.fill();
+    ctx.restore();
+    ctx.fillStyle='#fff4dd'; rr(-s*0.7,s*0.05,s*1.4,s*0.55,s*0.18); ctx.fill(); // ふんわり断面感
+  } else if(id==='an'){ // あんぱん：丸＋ごま
+    const g=ctx.createRadialGradient(-s*0.3,-s*0.3,s*0.1,0,0,s);
+    g.addColorStop(0,'#b06a34'); g.addColorStop(1,'#8a4d22');
+    ctx.fillStyle=g; ctx.beginPath(); ctx.arc(0,0,s*0.92,0,7); ctx.fill();
+    ctx.strokeStyle=ow; ctx.lineWidth=s*0.09; ctx.stroke();
+    ctx.fillStyle='#5d3214'; ctx.beginPath(); ctx.arc(0,-s*0.05,s*0.14,0,7); ctx.fill(); // へそ
+    ctx.fillStyle='#fff'; // ごま
+    [[-.4,-.35],[.35,-.4],[-.45,.3],[.42,.25],[0,.45],[-.1,-.55]].forEach(p=>{
+      ctx.save(); ctx.translate(p[0]*s,p[1]*s); ctx.rotate(p[0]);
+      ctx.beginPath(); ctx.ellipse(0,0,s*0.075,s*0.045,0,0,7); ctx.fill(); ctx.restore();
+    });
+  } else if(id==='melon'){ // メロンパン：丸＋格子
+    const g=ctx.createRadialGradient(-s*0.3,-s*0.3,s*0.1,0,0,s);
+    g.addColorStop(0,'#e6f0b0'); g.addColorStop(1,'#c2d472');
+    ctx.fillStyle=g; ctx.beginPath(); ctx.arc(0,0,s*0.92,0,7); ctx.fill();
+    ctx.strokeStyle=ow; ctx.lineWidth=s*0.09; ctx.stroke();
+    ctx.save(); ctx.beginPath(); ctx.arc(0,0,s*0.9,0,7); ctx.clip();
+    ctx.strokeStyle='rgba(120,140,50,.55)'; ctx.lineWidth=s*0.07;
+    for(let i=-3;i<=3;i++){ ctx.beginPath(); ctx.moveTo(i*s*0.32-s,-s); ctx.lineTo(i*s*0.32+s,s); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(i*s*0.32-s,s); ctx.lineTo(i*s*0.32+s,-s); ctx.stroke(); }
+    ctx.restore();
+  } else if(id==='cro'){ // クロワッサン：三日月
+    ctx.save();
+    const g=ctx.createLinearGradient(-s,-s,s,s); g.addColorStop(0,'#f0c06a'); g.addColorStop(1,'#d18f3a');
+    ctx.fillStyle=g; ctx.strokeStyle=ow; ctx.lineWidth=s*0.09;
+    ctx.beginPath();
+    ctx.moveTo(-s*0.85,s*0.35);
+    ctx.bezierCurveTo(-s*0.5,-s*0.85, s*0.5,-s*0.85, s*0.85,s*0.35);
+    ctx.bezierCurveTo(s*0.55,-s*0.05, -s*0.55,-s*0.05, -s*0.85,s*0.35);
+    ctx.closePath(); ctx.fill(); ctx.stroke();
+    ctx.strokeStyle='rgba(150,90,30,.5)'; ctx.lineWidth=s*0.06;
+    for(let i=-2;i<=2;i++){ ctx.beginPath(); ctx.moveTo(i*s*0.28,-s*0.55+Math.abs(i)*s*0.12); ctx.lineTo(i*s*0.32, s*0.18); ctx.stroke(); }
+    ctx.restore();
+  } else { // バゲット：俵型＋クープ
+    ctx.save();
+    const g=ctx.createLinearGradient(0,-s,0,s); g.addColorStop(0,'#e7b56a'); g.addColorStop(1,'#c98a3e');
+    ctx.fillStyle=g; rr(-s*0.95,-s*0.62,s*1.9,s*1.24,s*0.6); ctx.fill();
+    ctx.strokeStyle=ow; ctx.lineWidth=s*0.09; ctx.stroke();
+    ctx.strokeStyle='rgba(90,54,24,.7)'; ctx.lineWidth=s*0.08;
+    for(let i=-2;i<=2;i++){ ctx.beginPath(); ctx.moveTo(i*s*0.34-s*0.08,-s*0.28); ctx.lineTo(i*s*0.34+s*0.08,s*0.28); ctx.stroke(); }
+    ctx.restore();
+  }
+}
+function drawBread(id, x, y, r, hero, rot){
+  ctx.save(); ctx.translate(x,y); if(rot) ctx.rotate(rot);
+  if(hero){ withShadow(()=>drawBreadShape(id,r,true));
+    // 照り
+    ctx.fillStyle='rgba(255,255,255,.35)'; ctx.beginPath(); ctx.ellipse(-r*0.32,-r*0.34,r*0.28,r*0.16,-0.5,0,7); ctx.fill();
+  } else { drawBreadShape(id,r,false); }
+  ctx.restore();
+}
+// 断面（食欲トリガー）
+function drawCross(id, x, y, r){
+  ctx.save(); ctx.translate(x,y);
+  ctx.fillStyle='#fff7e8'; ctx.beginPath(); ctx.arc(0,0,r,0,7); ctx.fill();
+  ctx.strokeStyle='#caa46a'; ctx.lineWidth=r*0.12; ctx.stroke();
+  if(id==='an'){ ctx.fillStyle='#5b2f12'; ctx.beginPath(); ctx.arc(0,r*0.05,r*0.6,0,7); ctx.fill(); }
+  else if(id==='cro'){ ctx.strokeStyle='#e3b063'; ctx.lineWidth=r*0.1;
+    for(let i=0;i<5;i++){ ctx.beginPath(); ctx.arc(0,0,r*(0.25+i*0.15),0.4,2.7); ctx.stroke(); } }
+  else if(id==='melon'){ ctx.fillStyle='#fce8a0'; ctx.beginPath(); ctx.arc(0,0,r*0.7,0,7); ctx.fill(); }
+  else { ctx.fillStyle='#f4e3c0'; ctx.beginPath(); ctx.arc(0,0,r*0.62,0,7); ctx.fill(); }
+  ctx.restore();
+}
+
+//==================== ゲーム状態 ====================
+let state='title';   // title | play | over
+let breads=[];       // 落下/山積みのパン
+let customers=[];    // 客レーン
+let effects=[];      // ショーケース等の上レイヤー演出
+let particles=[];
+let popups=[];
+let shelf={};        // 在庫 {id:count}
+let unlocked={};     // 図鑑解放
+let firstShown={};   // 初回強調管理
+let score=0, combo=0, comboTimer=0, frustration=0, elapsed=0;
+let spawnT=0, custT=0, baselineOver=0;
+let best=+(localStorage.getItem('br_best')||0);
+let daily=null;      // 本日のおすすめ
+let shakeT=0, feverFlash=0, hitstopT=0;
+
+function loadSave(){
+  try{ unlocked=JSON.parse(localStorage.getItem('br_zukan')||'{}'); }catch(e){ unlocked={}; }
+  // 本日のおすすめ＝日付ローテ
+  const day=Math.floor(Date.now()/86400000);
+  daily=MENU[day % MENU.length];
+}
+function save(){ localStorage.setItem('br_zukan', JSON.stringify(unlocked)); localStorage.setItem('br_best', best); }
+
+function activeTypes(){ return MENU.slice(0, difficulty(elapsed).types); }
+
+function resetGame(){
+  breads=[]; customers=[]; effects=[]; particles=[]; popups=[];
+  shelf={}; firstShown={}; score=0; combo=0; comboTimer=0; frustration=0;
+  elapsed=0; spawnT=0; custT=6.0; baselineOver=0; shakeT=0; feverFlash=0; hitstopT=0; // 最初の客は6秒後（準備時間）
+  MENU.forEach(m=>shelf[m.id]=0);
+  prefill(11); // 開始時にパンを敷き詰め、すぐ3連できる状態に
+}
+function prefill(n){
+  const types=activeTypes();
+  for(let i=0;i<n;i++){
+    const id=types[(Math.random()*types.length)|0].id;
+    breads.push({ id,
+      x:FIELD.x+BR+Math.random()*(FIELD.w-2*BR),
+      y:FIELD.bottom-BR-Math.random()*210, // 下半分にばらまく→物理で落ち着く
+      vx:0, vy:0, rot:(Math.random()-0.5)*0.3, vr:0, r:BR, sel:false, falling:true });
+  }
+}
+
+//==================== 落下・物理（軽量・統一円） ====================
+function spawnBread(){
+  const types=activeTypes();
+  // 看板商品はやや高頻度
+  let id;
+  if(daily && Math.random()<0.16 && types.includes(daily)) id=daily.id;
+  else if(Math.random()<0.18){ const sig=types.find(m=>m.sig); id=sig?sig.id:types[0].id; }
+  else id=types[(Math.random()*types.length)|0].id;
+  breads.push({ id, x:FIELD.x+BR+Math.random()*(FIELD.w-2*BR), y:FIELD.y-10,
+    vx:(Math.random()-0.5)*20, vy:0, rot:(Math.random()-0.5)*0.3, vr:(Math.random()-0.5)*0.4, r:BR, sel:false, falling:true });
+}
+function physics(dt){
+  const g=900, df=difficulty(elapsed);
+  for(const b of breads){
+    if(b.removing) continue;
+    b.vy+=g*dt; if(b.vy>df.fallSpeed*6) b.vy=df.fallSpeed*6;
+    b.x+=b.vx*dt; b.y+=b.vy*dt; b.rot+=b.vr*dt; b.vr*=0.96;
+    if(b.x<FIELD.x+BR){ b.x=FIELD.x+BR; b.vx=Math.abs(b.vx)*0.3; }
+    if(b.x>FIELD.x+FIELD.w-BR){ b.x=FIELD.x+FIELD.w-BR; b.vx=-Math.abs(b.vx)*0.3; }
+    if(b.y>FIELD.bottom-BR){ b.y=FIELD.bottom-BR; b.vy*=-0.18; b.vx*=0.8; b.falling=false; } // 床に着地
+    b.vx*=0.99;
+  }
+  // 衝突解決（数回反復）
+  for(let it=0; it<3; it++){
+    for(let i=0;i<breads.length;i++){ const a=breads[i]; if(a.removing) continue;
+      for(let j=i+1;j<breads.length;j++){ const c=breads[j]; if(c.removing) continue;
+        let dx=c.x-a.x, dy=c.y-a.y; let d=Math.hypot(dx,dy); const min=a.r+c.r;
+        if(d<min && d>0.001){ const ov=(min-d)/2; dx/=d; dy/=d;
+          a.x-=dx*ov; a.y-=dy*ov; c.x+=dx*ov; c.y+=dy*ov;
+          const rv=(c.vx-a.vx)*dx+(c.vy-a.vy)*dy;
+          if(rv<0){ a.vx+=dx*rv*0.5; a.vy+=dy*rv*0.5; c.vx-=dx*rv*0.5; c.vy-=dy*rv*0.5; }
+          // 着地済みのパンに支えられたら、その上のパンも山の一部として確定
+          if(!a.falling && c.falling) c.falling=false;
+          if(!c.falling && a.falling) a.falling=false;
+        } else if(d<=0.001){ a.x-=1; c.x+=1; }
+      }}
+  }
+  for(const b of breads){
+    if(b.x<FIELD.x+BR) b.x=FIELD.x+BR;
+    if(b.x>FIELD.x+FIELD.w-BR) b.x=FIELD.x+FIELD.w-BR;
+    if(b.y>FIELD.bottom-BR){ b.y=FIELD.bottom-BR; }
+  }
+}
+
+//==================== なぞりマッチ ====================
+let chain=[];     // 選択中のパン配列
+let dragging=false;
+const CONNECT=BR*2.55;
+
+function toLogic(e){
+  const r=canvas.getBoundingClientRect();
+  const cx=(e.clientX-r.left)*(canvas.width/r.width);
+  const cy=(e.clientY-r.top )*(canvas.height/r.height);
+  return { x:(cx-offX)/fit, y:(cy-offY)/fit };
+}
+function breadAt(p){
+  for(let i=breads.length-1;i>=0;i--){ const b=breads[i]; if(b.removing) continue;
+    if(Math.hypot(p.x-b.x,p.y-b.y)<b.r) return b; }
+  return null;
+}
+function onDown(e){
+  audio() && actx.resume && actx.resume();
+  const p=toLogic(e);
+  if(state==='title'){ startGame(); return; }
+  if(state==='over'){ if(p.y>H*0.6) { state='title'; } return; }
+  const b=breadAt(p);
+  if(b){ dragging=true; chain=[b]; b.sel=true; sfxConnect(0); }
+}
+function onMove(e){
+  if(!dragging) return;
+  const p=toLogic(e);
+  const b=breadAt(p);
+  if(!b) return;
+  if(!b.sel){
+    const last=chain[chain.length-1];
+    if(b.id===last.id && Math.hypot(b.x-last.x,b.y-last.y)<CONNECT){
+      chain.push(b); b.sel=true; sfxConnect(chain.length);
+    }
+  } else if(chain.length>=2 && b===chain[chain.length-2]){
+    const drop=chain.pop(); drop.sel=false; // 戻し
+  }
+}
+function onUp(){
+  if(!dragging) return; dragging=false;
+  if(chain.length>=3) resolveMatch(chain);
+  else chain.forEach(b=>b.sel=false);
+  chain=[];
+}
+
+function resolveMatch(arr){
+  const id=arr[0].id, n=arr.length;
+  let cx=0,cy=0; arr.forEach(b=>{cx+=b.x;cy+=b.y;}); cx/=n; cy/=n;
+  arr.forEach(b=>{ b.removing=true; spawnPuff(b.x,b.y,MENU_BY_ID[id].color); });
+  setTimeout(()=>{ breads=breads.filter(b=>!b.removing); }, 10);
+
+  const fever = n>=5;               // 釜出し（フィーバー）
+  const col = MENU_BY_ID[id].color;
+  // 焼き上がりの一撃：衝撃波リング＋同色のパンくず飛散＋ヒットストップ
+  spawnRing(cx, cy, col, fever?2:1);
+  spawnBurst(cx, cy, col, 10 + n*3);
+  hitstopT = fever?0.12:0.07; shakeT=Math.max(shakeT, fever?0.35:0.14);
+  // 在庫＝なぞった数だけ補充。釜出しは隣接同種をボーナス補充。
+  let add=n;
+  if(fever){ add += 2; feverFlash=0.5; sfxFever(); sfxBake(); }
+  shelf[id]=(shelf[id]||0)+add;
+
+  // コンボ
+  comboTimer=2.2; combo++;
+  const mult = 1 + Math.min(combo-1,9)*0.15;
+  const sig = MENU_BY_ID[id].sig;
+  const dailyBonus = (daily&&daily.id===id)?1.5:1;
+  let pts = Math.round((n*40 + (n-3)*30) * mult * (sig?1.6:1) * (fever?1.8:1) * dailyBonus);
+  score+=pts;
+  addPopup(cx,cy-20,'+'+pts, sig?'#ffd24a':'#fff', fever?34:26);
+  if(combo>=3) addPopup(cx,cy-52,'COMBO x'+combo, '#ff9a3c', 22);
+
+  // 図鑑解放
+  if(!unlocked[id]){ unlocked[id]=true; addPopup(W/2, BASELINE_Y+40,'★図鑑に追加：'+MENU_BY_ID[id].name,'#9fe', 22); save(); }
+
+  // ショーケース演出（非ブロッキング）
+  const firstTime=!firstShown[id]; firstShown[id]=true;
+  effects.push(makeShowcase(id, cx, cy, n, sig, fever, firstTime));
+  sfxMatch(sig||fever);
+}
+
+//==================== ショーケース演出 ====================
+function makeShowcase(id,x,y,n,sig,fever,first){
+  const big = sig||fever;
+  return { kind:'showcase', id, x, y, n, sig, fever, first, big,
+    t:0, dur: (first?2.1:1.5) + (big?0.5:0),
+    showCross: Math.random()<0.5, // 時々断面リビール
+    landed:false };
+}
+function shelfSlot(id){
+  const types=MENU; const idx=types.findIndex(m=>m.id===id);
+  const cols=MENU.length; const cw=FIELD.w/cols;
+  return { x:FIELD.x+cw*idx+cw/2, y:SHELF.y+SHELF.h*0.42 };
+}
+function updateShowcase(fx,dt){
+  fx.t+=dt; const p=fx.t/fx.dur;
+  if(p>=1){ if(!fx.landed){ fx.landed=true; const s=shelfSlot(fx.id); spawnSpark(s.x,s.y,MENU_BY_ID[fx.id].color); }
+    return p>=1.0; }
+  return false;
+}
+function easeBack(t){ const c1=2.2, c3=c1+1; return 1 + c3*Math.pow(t-1,3) + c1*Math.pow(t-1,2); } // オーバーシュート
+function drawRays(x,y,r,t,col){
+  ctx.save(); ctx.translate(x,y); ctx.rotate(t*0.7); ctx.fillStyle=col;
+  const N=12; for(let i=0;i<N;i++){ ctx.rotate(Math.PI*2/N);
+    ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(r,-r*0.09); ctx.lineTo(r,r*0.09); ctx.closePath(); ctx.fill(); }
+  ctx.restore();
+}
+function drawShowcase(fx){
+  const p=fx.t/fx.dur;
+  const s=shelfSlot(fx.id);
+  const m=MENU_BY_ID[fx.id];
+  // フェーズ: 0-.16 弾けて拡大, .16-.62 ホールド＆ネームカード, .66-1 弧で棚へ
+  if(p<0.66){
+    const e=Math.min(p/0.16,1);
+    const baseScale=(fx.big?1.55:1.2);
+    const scale=(e<1?easeBack(e):1)*baseScale;
+    const r=BR*scale;
+    const x=fx.x, y=fx.y-36-(fx.big?20:0);
+    // スポットライト＋後光
+    drawGlow(x,y,r*2.5, fx.sig?'rgba(255,210,90,.5)':'rgba(255,245,215,.42)');
+    drawRays(x,y,r*2.3, fx.t, fx.sig?'rgba(255,200,80,.28)':'rgba(255,255,255,.16)');
+    // 湯気
+    if(Math.random()<0.6) spawnSteam(x+(Math.random()-0.5)*r, y-r);
+    // ヒーロー（時々断面リビール）。弾性のスカッシュ＆ストレッチ
+    if(fx.showCross && p>0.32 && p<0.52){ drawCross(fx.id, x, y, r*0.92); }
+    else { ctx.save(); ctx.translate(x,y); const wob=1+0.05*Math.sin(fx.t*16); ctx.scale(wob,1/wob);
+      drawBread(fx.id, 0, 0, r, true, Math.sin(fx.t*7)*0.05); ctx.restore(); }
+    // ネームカード（弾性で下からせり出す）
+    if(p>0.15){
+      const ca=Math.min((p-0.15)/0.1,1)*(p>0.58?Math.max(0,1-(p-0.58)/0.08):1);
+      const ce=easeBack(Math.min((p-0.15)/0.14,1));
+      drawNameCard(x, y+r+(fx.big?42:32)-(1-ce)*16, m, fx.first, fx.fever, fx.n, ca);
+    }
+  } else {
+    const q=(p-0.66)/0.34, ee=q*q;
+    const sx=fx.x, sy=fx.y-36;
+    const x=sx+(s.x-sx)*q, y=sy+(s.y-sy)*ee - Math.sin(q*Math.PI)*100; // 弧
+    const r=BR*((fx.big?1.45:1.15)-0.72*q);
+    drawBread(fx.id, x, y, r, true, q*1.6);
+  }
+}
+function drawNameCard(x,y,m,first,fever,n,alpha){
+  ctx.save(); ctx.globalAlpha=alpha; ctx.translate(x,y);
+  const big=first||fever||m.sig;
+  ctx.font=`900 ${big?23:20}px 'Kosugi Maru'`;
+  const nameW=ctx.measureText(m.name).width;
+  const w=Math.max(nameW+108, 168), h=big?64:56;
+  // カード本体
+  withShadow(()=>{ ctx.fillStyle=m.sig?'#fff6e0':'#fffdf6'; rr(-w/2,-h/2,w,h,16); ctx.fill();
+    ctx.strokeStyle=m.sig?'#ffba2e':'#e9c98e'; ctx.lineWidth=3.5; ctx.stroke(); });
+  // 上部リボン
+  const ribbon = fever?'やきたて 釜出し！' : (m.sig?'★ 看板商品 ★' : 'やきたて！');
+  const rcol = fever?'#e8552e' : (m.sig?'#ff9e1f' : '#ffb347');
+  ctx.font=`900 12px 'Kosugi Maru'`; ctx.textAlign='center'; ctx.textBaseline='middle';
+  const rw=ctx.measureText(ribbon).width+26; ctx.fillStyle=rcol;
+  rr(-rw/2,-h/2-13,rw,21,10); ctx.fill();
+  ctx.fillStyle='#fff'; ctx.fillText(ribbon,0,-h/2-2);
+  // 左：パンのサムネイル
+  drawBread(m.id, -w/2+32, 2, 21, true);
+  // 中：商品名＋価格・一言
+  ctx.textAlign='left';
+  ctx.fillStyle='#7a4a1e'; ctx.font=`900 ${big?23:20}px 'Kosugi Maru'`;
+  ctx.fillText(m.name, -w/2+62, -7);
+  ctx.fillStyle='#b07a3a'; ctx.font=`13px 'Kosugi Maru'`;
+  ctx.fillText('¥'+m.price+'  '+(m.cap||''), -w/2+62, 15);
+  // 右上：個数チップ
+  ctx.fillStyle='#e8552e'; ctx.beginPath(); ctx.arc(w/2-19,-h/2+10,15,0,7); ctx.fill();
+  ctx.strokeStyle='#fff'; ctx.lineWidth=2; ctx.stroke();
+  ctx.fillStyle='#fff'; ctx.textAlign='center'; ctx.font=`900 15px 'Kosugi Maru'`;
+  ctx.fillText('×'+n, w/2-19,-h/2+11);
+  ctx.restore();
+}
+
+//==================== 客（CustomerSystem） ====================
+function spawnCustomer(){
+  if(customers.length>=4) return;
+  const types=activeTypes();
+  let want;
+  if(daily && Math.random()<0.22 && types.includes(daily)) want=daily.id;
+  else if(Math.random()<0.25){ const sig=types.find(m=>m.sig); want= sig?sig.id:types[0].id; }
+  else want=types[(Math.random()*types.length)|0].id;
+  const df=difficulty(elapsed);
+  customers.push({ want, patience:df.patience, maxP:df.patience, t:0,
+    face:'normal', buyT:0, leaving:0, tx:0, mood:0, hue:(Math.random()*60-30)|0 });
+}
+function updateCustomers(dt){
+  const slotW=FIELD.w/4;
+  customers.forEach((c,i)=>{ c.tx = FIELD.x+slotW*i+slotW/2; });
+  for(let i=customers.length-1;i>=0;i--){
+    const c=customers[i]; c.t+=dt;
+    if(c.leaving>0){ c.leaving-=dt; if(c.leaving<=0) customers.splice(i,1); continue; }
+    const front = i===0;
+    if(front){
+      if(c.buyT>0){ c.buyT-=dt; if(c.buyT<=0){ buy(c); } continue; }
+      if((shelf[c.want]||0)>0){ c.buyT=0.45; c.face='happy'; }
+      else { c.patience-=dt; c.face = c.patience<c.maxP*0.3?'angry':'wait';
+        // 来店直後 約2.5秒は猶予（その間は不満が溜まらない）
+        if(c.patience < c.maxP-2.5) frustration += dt*(2.0 + elapsed*0.012);
+        if(c.patience<=0){ c.face='angry'; c.leaving=0.6; c.mood=-1; frustration+=4; sfxAngry();
+          addPopup(c.tx, LANE.y+30,'(>_<)','#ff6b6b',24); }
+      }
+    } else {
+      // 後方は軽く待つ
+      if((shelf[c.want]||0)>0) c.face='hope'; else c.face='normal';
+    }
+  }
+  if(frustration>100) frustration=100;
+}
+function buy(c){
+  shelf[c.want]=Math.max(0,(shelf[c.want]||0)-1);
+  const m=MENU_BY_ID[c.want];
+  const pts=Math.round(m.price*0.5*(m.sig?1.4:1)*(daily&&daily.id===c.want?1.5:1));
+  score+=pts; c.face='happy'; c.leaving=0.5; c.mood=1; c.buyT=-1;
+  addPopup(c.tx, LANE.y+10, '¥'+pts, '#7ed957', 22);
+  spawnSpark(c.tx, LANE.y+30, '#ffd24a');
+  frustration=Math.max(0, frustration-7); // 満足退店でしっかり回復
+  sfxBuy();
+}
+
+//==================== パーティクル / ポップアップ ====================
+function spawnPuff(x,y,col){ for(let i=0;i<6;i++) particles.push({x,y,vx:(Math.random()-0.5)*120,vy:-Math.random()*120,life:0.5,max:0.5,col,r:6+Math.random()*5,g:400}); }
+function spawnSpark(x,y,col){ for(let i=0;i<10;i++){ const a=Math.random()*7; particles.push({x,y,vx:Math.cos(a)*140,vy:Math.sin(a)*140-40,life:0.6,max:0.6,col,r:3,g:200,star:true}); } }
+function spawnSteam(x,y){ particles.push({x,y,vx:(Math.random()-0.5)*16,vy:-40-Math.random()*30,life:0.9,max:0.9,col:'rgba(255,255,255,.5)',r:7,g:-30,steam:true}); }
+// 焼き上がりの衝撃波リング
+function spawnRing(x,y,col,big){ particles.push({x,y,vx:0,vy:0,g:0,life:0.45,max:0.45,col,ring:true,r:BR*0.6,rmax:BR*(big?5.5:3.6),lw:big?9:6}); }
+// 同色のパンくず飛散
+function spawnBurst(x,y,col,n){ for(let i=0;i<n;i++){ const a=Math.random()*7, sp=120+Math.random()*220;
+  particles.push({x,y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-120,life:0.55+Math.random()*0.35,max:0.9,col,r:3+Math.random()*4,g:520,crumb:true}); } }
+function updateParticles(dt){
+  for(let i=particles.length-1;i>=0;i--){ const p=particles[i]; p.life-=dt;
+    if(p.ring){ p.r += (p.rmax-p.r)*Math.min(1,dt*10); }
+    else { p.vy+=(p.g||300)*dt; p.x+=p.vx*dt; p.y+=p.vy*dt; if(p.steam) p.r+=12*dt; if(p.crumb) p.vx*=0.96; }
+    if(p.life<=0) particles.splice(i,1); }
+  for(let i=popups.length-1;i>=0;i--){ const u=popups[i]; u.t+=dt; u.y-=24*dt; if(u.t>u.dur) popups.splice(i,1); }
+}
+function addPopup(x,y,text,col,size){ popups.push({x,y,text,col,size:size||22,t:0,dur:1.0}); }
+
+//==================== ゲームオーバー判定 ====================
+function checkGameOver(dt){
+  // A: 山が基準線を一定時間超過（落下中のパンは数えず、着地した山だけで判定）
+  let top=FIELD.bottom;
+  for(const b of breads){
+    if(b.removing || b.falling) continue;  // 着地済みのパンだけが"山"
+    top=Math.min(top, b.y-b.r);
+  }
+  if(top<BASELINE_Y){ baselineOver+=dt; } else baselineOver=Math.max(0,baselineOver-dt*2.0);
+  if(baselineOver>2.5) return gameOver('棚が山積みに…！');
+  // B: 不満MAX
+  if(frustration>=100) return gameOver('お客さんの不満が爆発！');
+}
+function gameOver(reason){
+  if(state!=='play') return;
+  state='over'; overReason=reason; sfxOver();
+  if(score>best){ best=score; }
+  // 図鑑＆ベスト保存。コンプでクーポン解放（演出のみ）
+  save();
+  couponEarned = (score>=8000) || MENU.every(m=>unlocked[m.id]);
+}
+let overReason='', couponEarned=false;
+
+//==================== 描画 ====================
+function clearBG(){
+  ctx.fillStyle='#fff3df';
+  ctx.fillRect(0,0,W,H);
+  // 木目の床（棚エリア）
+}
+function drawHUD(){
+  // 上部パネル
+  ctx.fillStyle='#3a2415'; ctx.fillRect(0,0,W,138);
+  ctx.fillStyle='#52341c'; ctx.fillRect(0,128,W,10);
+  // スコア
+  ctx.fillStyle='#ffe9c2'; ctx.textAlign='left'; ctx.textBaseline='alphabetic';
+  ctx.font=`bold 16px 'Kosugi Maru'`; ctx.fillText('SCORE',20,34);
+  ctx.font=`900 38px 'Kosugi Maru'`; ctx.fillStyle='#fff'; ctx.fillText(score.toLocaleString(),18,74);
+  ctx.font=`13px 'Kosugi Maru'`; ctx.fillStyle='#d8b98a'; ctx.fillText('BEST '+best.toLocaleString(),20,96);
+  // コンボ
+  if(combo>=2){ ctx.textAlign='left'; ctx.fillStyle='#ff9a3c'; ctx.font=`900 22px 'Kosugi Maru'`;
+    ctx.fillText('COMBO x'+combo, 20, 120); }
+  // 不満ゲージ
+  const gx=W-180, gy=24, gw=160, gh=16;
+  ctx.fillStyle='#2a1b0f'; rr(gx,gy,gw,gh,8); ctx.fill();
+  const fc = frustration>70?'#ff4d4d':(frustration>40?'#ffae34':'#7ed957');
+  ctx.fillStyle=fc; rr(gx,gy,gw*frustration/100,gh,8); ctx.fill();
+  ctx.fillStyle='#ffe9c2'; ctx.font=`bold 12px 'Kosugi Maru'`; ctx.textAlign='right';
+  ctx.fillText('お客さんの不満', W-20, gy-4);
+  // 本日のおすすめ
+  if(daily){ ctx.textAlign='right'; ctx.fillStyle='#ffd24a'; ctx.font=`bold 13px 'Kosugi Maru'`;
+    ctx.fillText('★本日のおすすめ：'+daily.name+'（高得点）', W-20, 72);
+    drawBread(daily.id, W-30, 96, 16, true); }
+}
+function drawField(){
+  // 基準線
+  ctx.save();
+  ctx.setLineDash([10,8]); ctx.strokeStyle = baselineOver>0?'#ff5b5b':'rgba(200,120,60,.5)';
+  ctx.lineWidth= baselineOver>0?3:2; ctx.beginPath(); ctx.moveTo(FIELD.x,BASELINE_Y); ctx.lineTo(FIELD.x+FIELD.w,BASELINE_Y); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle = baselineOver>0?'#ff5b5b':'rgba(180,100,50,.6)'; ctx.font=`bold 11px 'Kosugi Maru'`; ctx.textAlign='left';
+  ctx.fillText('▲ ここを越えると満杯', FIELD.x+4, BASELINE_Y-5);
+  ctx.restore();
+  // パン
+  for(const b of breads){
+    if(b.sel){ drawGlow(b.x,b.y,b.r*1.5,'rgba(255,220,120,.6)'); }
+    if(MENU_BY_ID[b.id].sig){ ctx.save(); ctx.strokeStyle='#ffba2e'; ctx.lineWidth=3.5;
+      ctx.beginPath(); ctx.arc(b.x,b.y,b.r+2,0,7); ctx.stroke(); ctx.restore(); }
+    drawBread(b.id, b.x, b.y, b.r, false, b.rot);
+  }
+  // なぞり線
+  if(chain.length){ ctx.save(); ctx.strokeStyle='rgba(255,180,70,.85)'; ctx.lineWidth=10; ctx.lineCap='round'; ctx.lineJoin='round';
+    ctx.beginPath(); chain.forEach((b,i)=> i?ctx.lineTo(b.x,b.y):ctx.moveTo(b.x,b.y)); ctx.stroke();
+    ctx.fillStyle='#fff'; ctx.font=`900 22px 'Kosugi Maru'`; ctx.textAlign='center';
+    const last=chain[chain.length-1];
+    ctx.fillStyle = chain.length>=3?'#fff':'#ffd';
+    ctx.fillText(chain.length>=5?'釜出し!':chain.length, last.x, last.y-b_r(last));
+    ctx.restore(); }
+}
+function b_r(b){ return b.r+14; }
+function drawShelf(){
+  // 棚の板
+  ctx.fillStyle='#caa06a'; ctx.fillRect(0,SHELF.y-6,W,SHELF.h+6);
+  ctx.fillStyle='#a87d49'; ctx.fillRect(0,SHELF.y-6,W,8);
+  ctx.fillStyle='#8a6336'; ctx.fillRect(0,SHELF.y+SHELF.h-10,W,10);
+  ctx.fillStyle='#7a4a1e'; ctx.textAlign='center'; ctx.font=`bold 12px 'Kosugi Maru'`;
+  const cols=MENU.length, cw=FIELD.w/cols;
+  MENU.forEach((m,i)=>{
+    const x=FIELD.x+cw*i+cw/2, y=SHELF.y+SHELF.h*0.42;
+    // トレイ
+    ctx.fillStyle='rgba(120,80,40,.18)'; rr(x-cw*0.42, y+18, cw*0.84, 10, 5); ctx.fill();
+    const cnt=shelf[m.id]||0;
+    ctx.globalAlpha = cnt>0?1:0.32;
+    drawBread(m.id, x, y, 22, true);
+    ctx.globalAlpha=1;
+    ctx.fillStyle= cnt>0?'#5a3618':'#b59a78'; ctx.font=`bold 11px 'Kosugi Maru'`;
+    ctx.fillText(m.name, x, y+38);
+    // 在庫数
+    if(cnt>0){ ctx.fillStyle='#e8552e'; ctx.beginPath(); ctx.arc(x+cw*0.32, y-16, 12,0,7); ctx.fill();
+      ctx.fillStyle='#fff'; ctx.font=`900 13px 'Kosugi Maru'`; ctx.fillText(cnt, x+cw*0.32, y-12); }
+  });
+  ctx.fillStyle='#5a3618'; ctx.textAlign='left'; ctx.font=`bold 11px 'Kosugi Maru'`;
+  ctx.fillText('店先の棚（在庫）', 16, SHELF.y+14);
+}
+function drawCustomerFace(x,y,r,face,hue){
+  ctx.save(); ctx.translate(x,y);
+  // 体
+  ctx.fillStyle=`hsl(${30+hue},45%,55%)`; rr(-r*0.9,r*0.5,r*1.8,r*1.4,r*0.4); ctx.fill();
+  // 顔
+  ctx.fillStyle='#ffe0bd'; ctx.beginPath(); ctx.arc(0,0,r,0,7); ctx.fill();
+  ctx.strokeStyle='#c99a6a'; ctx.lineWidth=2; ctx.stroke();
+  ctx.fillStyle='#5a3a22';
+  if(face==='happy'){ ctx.beginPath(); ctx.arc(-r*0.35,-r*0.1,r*0.1,0,7); ctx.arc(r*0.35,-r*0.1,r*0.1,0,7); ctx.fill();
+    ctx.strokeStyle='#5a3a22'; ctx.lineWidth=r*0.12; ctx.beginPath(); ctx.arc(0,r*0.1,r*0.45,0.2,Math.PI-0.2); ctx.stroke();
+    // ほっぺ
+    ctx.fillStyle='rgba(255,140,120,.5)'; ctx.beginPath(); ctx.arc(-r*0.55,r*0.2,r*0.18,0,7); ctx.arc(r*0.55,r*0.2,r*0.18,0,7); ctx.fill();
+  } else if(face==='angry'){ ctx.strokeStyle='#5a3a22'; ctx.lineWidth=r*0.1;
+    ctx.beginPath(); ctx.moveTo(-r*0.5,-r*0.35); ctx.lineTo(-r*0.2,-r*0.2); ctx.moveTo(r*0.5,-r*0.35); ctx.lineTo(r*0.2,-r*0.2); ctx.stroke();
+    ctx.fillStyle='#5a3a22'; ctx.beginPath(); ctx.arc(-r*0.32,-r*0.05,r*0.1,0,7); ctx.arc(r*0.32,-r*0.05,r*0.1,0,7); ctx.fill();
+    ctx.beginPath(); ctx.arc(0,r*0.4,r*0.28,Math.PI+0.3,2*Math.PI-0.3); ctx.lineWidth=r*0.1; ctx.stroke();
+  } else if(face==='wait'){ ctx.fillStyle='#5a3a22'; ctx.beginPath(); ctx.arc(-r*0.3,-r*0.05,r*0.1,0,7); ctx.arc(r*0.3,-r*0.05,r*0.1,0,7); ctx.fill();
+    ctx.strokeStyle='#5a3a22'; ctx.lineWidth=r*0.09; ctx.beginPath(); ctx.moveTo(-r*0.2,r*0.3); ctx.lineTo(r*0.2,r*0.3); ctx.stroke();
+  } else { ctx.fillStyle='#5a3a22'; ctx.beginPath(); ctx.arc(-r*0.3,-r*0.05,r*0.1,0,7); ctx.arc(r*0.3,-r*0.05,r*0.1,0,7); ctx.fill();
+    ctx.strokeStyle='#5a3a22'; ctx.lineWidth=r*0.09; ctx.beginPath(); ctx.arc(0,r*0.25,r*0.25,0.3,Math.PI-0.3); ctx.stroke(); }
+  ctx.restore();
+}
+function drawCustomers(){
+  ctx.fillStyle='#f6e3c4'; ctx.fillRect(0,LANE.y,W,LANE.h);
+  ctx.fillStyle='#5a3618'; ctx.textAlign='left'; ctx.font=`bold 11px 'Kosugi Maru'`;
+  ctx.fillText('お客さんの行列', 16, LANE.y+16);
+  customers.forEach((c,i)=>{
+    const bob = c.face==='happy'? Math.sin(c.t*16)*4 : Math.sin(c.t*3)*2;
+    const y=LANE.y+LANE.h*0.55+bob;
+    const sc = c.leaving>0 ? 1+ (c.mood>0?0.1:-0.1)*(1-c.leaving/0.6) : 1;
+    drawCustomerFace(c.tx, y, 26*sc, c.face, c.hue);
+    // 吹き出し（要望）
+    const m=MENU_BY_ID[c.want];
+    ctx.save();
+    const bx=c.tx, by=y-58;
+    withShadow(()=>{ ctx.fillStyle= (i===0)?'#fffdf6':'#f3ead8'; rr(bx-30,by-26,60,42,12); ctx.fill();
+      ctx.beginPath(); ctx.moveTo(bx-6,by+14); ctx.lineTo(bx+6,by+14); ctx.lineTo(bx,by+24); ctx.closePath(); ctx.fill(); });
+    drawBread(m.id, bx, by-4, 16, true);
+    if(m.sig){ ctx.fillStyle='#ff9e1f'; ctx.font=`bold 9px 'Kosugi Maru'`; ctx.textAlign='center'; ctx.fillText('看板!',bx,by-20); }
+    ctx.restore();
+    // 我慢ゲージ（先頭・在庫なし時）
+    if(i===0 && c.buyT<=0 && (shelf[c.want]||0)===0 && c.leaving<=0){
+      const gw=44, gx=c.tx-gw/2, gy=y-82;
+      ctx.fillStyle='#caa'; rr(gx,gy,gw,5,3); ctx.fill();
+      ctx.fillStyle= c.patience<c.maxP*0.4?'#ff4d4d':'#ffae34'; rr(gx,gy,gw*Math.max(0,c.patience/c.maxP),5,3); ctx.fill();
+    }
+  });
+}
+function drawGlow(x,y,r,col){ ctx.save(); const g=ctx.createRadialGradient(x,y,0,x,y,r); g.addColorStop(0,col); g.addColorStop(1,'rgba(255,255,255,0)'); ctx.fillStyle=g; ctx.beginPath(); ctx.arc(x,y,r,0,7); ctx.fill(); ctx.restore(); }
+function drawParticles(){
+  particles.forEach(p=>{ ctx.save(); ctx.globalAlpha=Math.max(0,p.life/p.max);
+    if(p.ring){ ctx.strokeStyle=p.col; ctx.lineWidth=p.lw*Math.max(0.2,p.life/p.max);
+      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,7); ctx.stroke();
+      ctx.globalAlpha*=0.4; ctx.lineWidth=p.lw*0.4; ctx.strokeStyle='#fff'; ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,7); ctx.stroke(); }
+    else if(p.steam){ ctx.fillStyle=p.col; ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,7); ctx.fill(); }
+    else if(p.star){ ctx.fillStyle=p.col; star(p.x,p.y,p.r*1.8,5); }
+    else { ctx.fillStyle=p.col; ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,7); ctx.fill(); }
+    ctx.restore(); });
+  popups.forEach(u=>{ ctx.save(); ctx.globalAlpha=Math.max(0,1-u.t/u.dur);
+    ctx.fillStyle=u.col; ctx.font=`900 ${u.size}px 'Kosugi Maru'`; ctx.textAlign='center';
+    ctx.strokeStyle='rgba(90,50,20,.6)'; ctx.lineWidth=4; ctx.strokeText(u.text,u.x,u.y); ctx.fillText(u.text,u.x,u.y); ctx.restore(); });
+}
+function star(x,y,r,n){ ctx.beginPath(); for(let i=0;i<n*2;i++){ const a=Math.PI*i/n - Math.PI/2; const rr2=i%2?r*0.45:r; ctx.lineTo(x+Math.cos(a)*rr2,y+Math.sin(a)*rr2);} ctx.closePath(); ctx.fill(); }
+
+//==================== タイトル / 結果 ====================
+let titleT=0;
+function drawTitle(){
+  clearBG();
+  ctx.fillStyle='#3a2415'; ctx.fillRect(0,0,W,H);
+  // 飾り
+  for(let i=0;i<5;i++){ const m=MENU[i]; const a=titleT*0.6+i*1.3;
+    drawBread(m.id, W/2+Math.cos(a)*150, 250+Math.sin(a)*40, 26, true, Math.sin(a)); }
+  ctx.textAlign='center';
+  ctx.fillStyle='#ffd24a'; ctx.font=`900 30px 'Kosugi Maru'`; ctx.fillText('やきたて！', W/2, 410);
+  ctx.fillStyle='#fff'; ctx.font=`900 52px 'Kosugi Maru'`;
+  ctx.strokeStyle='#a8631e'; ctx.lineWidth=8; ctx.strokeText('ベーカリーラッシュ', W/2, 470);
+  ctx.fillText('ベーカリーラッシュ', W/2, 470);
+  ctx.fillStyle='#ffe9c2'; ctx.font=`16px 'Kosugi Maru'`;
+  ctx.fillText('同じパンを なぞって繋いで 焼き上げろ！', W/2, 520);
+  // 図鑑進捗
+  const cnt=MENU.filter(m=>unlocked[m.id]).length;
+  ctx.fillStyle='#9fe'; ctx.font=`14px 'Kosugi Maru'`;
+  ctx.fillText('メニュー図鑑：'+cnt+' / '+MENU.length+' 種', W/2, 560);
+  // 図鑑表示
+  const cw=W/MENU.length;
+  MENU.forEach((m,i)=>{ const x=cw*i+cw/2;
+    ctx.globalAlpha=unlocked[m.id]?1:0.25;
+    drawBread(m.id, x, 620, 22, true); ctx.globalAlpha=1;
+    if(unlocked[m.id]){ ctx.fillStyle='#ffe9c2'; ctx.font=`10px 'Kosugi Maru'`; ctx.fillText(m.name,x,652); }
+    else { ctx.fillStyle='#7a5a3a'; ctx.font=`16px 'Kosugi Maru'`; ctx.fillText('?',x,626); }
+  });
+  // スタートボタン
+  const by=740, pulse=1+Math.sin(titleT*4)*0.03;
+  ctx.save(); ctx.translate(W/2,by); ctx.scale(pulse,pulse);
+  ctx.fillStyle='#ff8c2e'; rr(-130,-34,260,68,34); ctx.fill();
+  ctx.fillStyle='#fff'; ctx.font=`900 28px 'Kosugi Maru'`; ctx.fillText('タップで開店！', 0, 10); ctx.restore();
+  ctx.fillStyle='#b08a5a'; ctx.font=`12px 'Kosugi Maru'`;
+  ctx.fillText('BEST  '+best.toLocaleString(), W/2, 830);
+  ctx.fillStyle='#8a6a4a'; ctx.font=`11px 'Kosugi Maru'`;
+  ctx.fillText('teraia ベーカリーラッシュ  —  ¥は宣伝用イメージ', W/2, H-30);
+}
+function drawOver(){
+  // 背景に薄く店
+  ctx.fillStyle='rgba(40,24,12,.86)'; ctx.fillRect(0,0,W,H);
+  ctx.textAlign='center';
+  ctx.fillStyle='#ffd24a'; ctx.font=`900 40px 'Kosugi Maru'`; ctx.fillText('本日の営業終了', W/2, 200);
+  ctx.fillStyle='#ffb3a0'; ctx.font=`16px 'Kosugi Maru'`; ctx.fillText(overReason, W/2, 240);
+  ctx.fillStyle='#fff'; ctx.font=`bold 18px 'Kosugi Maru'`; ctx.fillText('SCORE', W/2, 320);
+  ctx.font=`900 64px 'Kosugi Maru'`; ctx.fillText(score.toLocaleString(), W/2, 390);
+  const newBest = score>=best && score>0;
+  ctx.fillStyle= newBest?'#7ed957':'#d8b98a'; ctx.font=`bold 18px 'Kosugi Maru'`;
+  ctx.fillText(newBest?'★ ハイスコア更新！':'BEST '+best.toLocaleString(), W/2, 426);
+  // 図鑑
+  const cnt=MENU.filter(m=>unlocked[m.id]).length;
+  ctx.fillStyle='#9fe'; ctx.font=`15px 'Kosugi Maru'`;
+  ctx.fillText('メニュー図鑑  '+cnt+' / '+MENU.length+' 種 解放', W/2, 470);
+  const cw=W/MENU.length;
+  MENU.forEach((m,i)=>{ const x=cw*i+cw/2;
+    ctx.globalAlpha=unlocked[m.id]?1:0.22; drawBread(m.id,x,520,22,true); ctx.globalAlpha=1; });
+  // クーポン（コンバージョン装置の演出）
+  if(couponEarned){
+    ctx.save(); ctx.translate(W/2,610); ctx.rotate(-0.04);
+    ctx.fillStyle='#fff6e0'; rr(-180,-46,360,92,14); ctx.fill();
+    ctx.strokeStyle='#ff9e1f'; ctx.lineWidth=3; ctx.setLineDash([8,6]); ctx.stroke(); ctx.setLineDash([]);
+    ctx.fillStyle='#e8552e'; ctx.font=`900 22px 'Kosugi Maru'`; ctx.fillText('🎟 クーポン獲得！', 0, -8);
+    ctx.fillStyle='#7a4a1e'; ctx.font=`14px 'Kosugi Maru'`; ctx.fillText('看板「メロンパン」¥50引き（店頭提示）', 0, 20);
+    ctx.restore();
+  } else {
+    ctx.fillStyle='#b08a5a'; ctx.font=`13px 'Kosugi Maru'`;
+    ctx.fillText('8000点 or 図鑑コンプでクーポン獲得！', W/2, 610);
+  }
+  // ボタン
+  ctx.fillStyle='#ff8c2e'; rr(W/2-130,690,260,64,32); ctx.fill();
+  ctx.fillStyle='#fff'; ctx.font=`900 24px 'Kosugi Maru'`; ctx.fillText('もう一度 焼く', W/2, 730);
+  ctx.fillStyle='#d8b98a'; ctx.font=`14px 'Kosugi Maru'`; ctx.fillText('タップでタイトルへ', W/2, 800);
+}
+
+//==================== メインループ ====================
+function startGame(){ resetGame(); state='play'; }
+let last=0;
+function loop(ts){
+  const dt=Math.min((ts-last)/1000||0, 0.05); last=ts;
+  // 更新
+  if(state==='play'){
+    const frozen = hitstopT>0;   // 焼き上がり打感：ごく短く本体を止める（演出は動かす）
+    if(hitstopT>0) hitstopT-=dt;
+    if(!frozen){
+      elapsed+=dt;
+      const df=difficulty(elapsed);
+      spawnT-=dt; if(spawnT<=0){ spawnBread(); spawnT=df.spawnEvery; }
+      custT-=dt; if(custT<=0){ spawnCustomer(); custT=df.custEvery; }
+      physics(dt);
+      updateCustomers(dt);
+      comboTimer-=dt; if(comboTimer<=0) combo=0;
+      checkGameOver(dt);
+    }
+    // 演出・パーティクルはヒットストップ中も動かす（テンポを殺さない）
+    for(let i=effects.length-1;i>=0;i--){ if(updateShowcase(effects[i],dt)) effects.splice(i,1); }
+    updateParticles(dt);
+    if(feverFlash>0) feverFlash-=dt;
+    if(shakeT>0) shakeT-=dt;
+  } else { titleT+=dt; updateParticles(dt); }
+
+  // 描画
+  ctx.setTransform(1,0,0,1,0,0);
+  ctx.fillStyle='#1c1209'; ctx.fillRect(0,0,canvas.width,canvas.height);
+  ctx.setTransform(fit,0,0,fit,offX,offY);
+  // シェイク
+  if(shakeT>0){ ctx.translate((Math.random()-0.5)*8, (Math.random()-0.5)*8); }
+
+  if(state==='title'){ drawTitle(); }
+  else {
+    clearBG();
+    drawField();
+    drawShelf();
+    drawCustomers();
+    // ショーケースは最上レイヤー（非ブロッキング）
+    effects.forEach(drawShowcase);
+    drawParticles();
+    drawHUD();
+    if(feverFlash>0){ ctx.fillStyle=`rgba(255,210,90,${feverFlash*0.5})`; ctx.fillRect(0,138,W,H-138);
+      ctx.fillStyle='#fff'; ctx.font=`900 48px 'Kosugi Maru'`; ctx.textAlign='center'; ctx.fillText('釜出し！', W/2, H/2); }
+    if(state==='over') drawOver();
+  }
+  requestAnimationFrame(loop);
+}
+
+//==================== 入力結線 ====================
+canvas.addEventListener('pointerdown', e=>{ e.preventDefault(); onDown(e); });
+canvas.addEventListener('pointermove', e=>{ e.preventDefault(); onMove(e); });
+window.addEventListener('pointerup', e=>{ onUp(e); });
+canvas.addEventListener('pointercancel', onUp);
+canvas.addEventListener('contextmenu', e=>e.preventDefault());
+
+//==================== 起動 ====================
+loadSave(); resize();
+// フォント読み込み後に再描画
+if(document.fonts && document.fonts.ready) document.fonts.ready.then(()=>{});
+requestAnimationFrame(loop);
+
+// PWA: http(s)配信時のみ Service Worker 登録（file:// 直開きでは何もしない）
+if(typeof navigator!=='undefined' && 'serviceWorker' in navigator && location.protocol.startsWith('http')){
+  window.addEventListener('load', ()=>{ navigator.serviceWorker.register('sw.js').catch(()=>{}); });
+}
+</script>
+</body>
+</html>

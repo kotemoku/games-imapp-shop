@@ -12,6 +12,7 @@ Cloudflare Pages で `games.imapp.shop` カスタムドメインを当てる。
 | `/tsukurun/` | ツクルン (家具組み立てタイムアタック) | `つくチャレ-phaser` (Phaser4 + Vite) |
 | `/pizza-oven-rush/` | ピザ・オーブン・ラッシュ | `pizza-oven-rush` (Phaser4 + Vite) |
 | `/apple-guard/` | アップルガード 〜りんごの木をまもれ〜 | `apple-guard` (Phaser4 + Vite) |
+| `/bakery-rush/` | やきたて！ベーカリーラッシュ | `ベーカリーラッシュ` (単一HTML / Canvas) ※imapp 未公開（配信のみ） |
 
 ## デプロイ手順
 

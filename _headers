@@ -72,6 +72,21 @@
 /apple-guard/assets/*
   Cache-Control: no-cache, must-revalidate
 
+# ---------- bakery-rush (やきたて！ベーカリーラッシュ) ----------
+# 単一 HTML (Canvas 自前描画 / 素材インライン) の Web ゲームを iframe 埋め込み。
+# 同じく imapp 配下からのみフレーム許可。
+/bakery-rush/*
+  Content-Security-Policy: frame-ancestors 'self' https://imapp.shop https://*.imapp.shop https://imapp.pages.dev https://*.imapp.pages.dev http://localhost:3000 http://127.0.0.1:3000
+
+# index.html は内容ハッシュなしで差し替わる → 常に最新化（差し替え事故防止）
+/bakery-rush/index.html
+  Cache-Control: no-cache, must-revalidate
+# manifest / アイコンも同名で差し替わり得るため確実な反映を優先して常に再検証。
+/bakery-rush/manifest.webmanifest
+  Cache-Control: no-cache, must-revalidate
+/bakery-rush/icon.svg
+  Cache-Control: no-cache, must-revalidate
+
 # 共通: Pages 自体のルートはまだ未使用 (将来ゲーム一覧 LP を置くかもしれない)
 /*
   X-Content-Type-Options: nosniff
