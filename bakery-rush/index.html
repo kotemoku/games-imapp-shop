@@ -58,8 +58,6 @@ function resize(){
 let fit=1, offX=0, offY=0;
 window.addEventListener('resize', resize);
 
-//==================== 販促フラグ ====================
-const SHOW_COUPON = false;  // クーポン等の販促演出を出すか。imapp公開までは false（出さない）
 
 //==================== 領域レイアウト ====================
 // 上部バンド: 0-58 スコアバー / 58-200 クリーム帯（オーダー＋固定ショーケース窓）
@@ -120,6 +118,40 @@ function sfxBuy(){ blip(660,0.09,'sine',0.16); setTimeout(()=>blip(990,0.12,'sin
 function sfxAngry(){ blip(200,0.18,'sawtooth',0.14,90); }
 function sfxFever(){ [523,659,784,1046,1318].forEach((f,i)=>setTimeout(()=>blip(f,0.18,'triangle',0.2),i*70)); }
 function sfxOver(){ [440,392,330,247].forEach((f,i)=>setTimeout(()=>blip(f,0.3,'sawtooth',0.16),i*160)); }
+
+//==================== BGM（内蔵・WebAudioループ） ====================
+// 温かいパン屋っぽいマリンバ＋やさしいベース。外部ファイル不要・オフライン可。
+const PENT=[261.63,293.66,329.63,392.00,440.00,523.25,587.33,659.25]; // C D E G A C5 D5 E5
+const MEL =[5,null,4,3, 4,null,5,7, 4,null,3,1, 3,4,2,null];          // 16ステップの旋律
+const BASS=[130.81,98.00,110.00,87.31];                               // C3 G2 A2 F2 (I-V-vi-IV)
+const STEP=0.26;                                                      // 1ステップ秒
+let bgm={ on:true, started:false, gain:null, next:0, step:0 };
+function applyBgmVol(){ const a=audio(); if(bgm.gain&&a) bgm.gain.gain.setValueAtTime(bgm.on?0.5:0.0, a.currentTime); }
+function startBGM(){ const a=audio(); if(!a||bgm.started) return;
+  bgm.gain=a.createGain(); bgm.gain.connect(a.destination); applyBgmVol();
+  bgm.started=true; bgm.next=a.currentTime+0.15; bgm.step=0; }
+function bgmNote(freq,t,dur,type,vol){ const a=audio(); if(!a||!bgm.gain) return;
+  const o=a.createOscillator(), g=a.createGain(); o.type=type; o.frequency.value=freq;
+  g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(vol,t+0.012);
+  g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+  o.connect(g); g.connect(bgm.gain); o.start(t); o.stop(t+dur+0.03); }
+function scheduleStep(step,t){ const s=step%16, m=MEL[s];
+  if(m!=null) bgmNote(PENT[m], t, 0.34, 'triangle', 0.16);
+  if(s%4===0) bgmNote(BASS[(s/4)|0], t, 0.70, 'sine', 0.13);
+  if(m!=null && s%8===2) bgmNote(PENT[m]*2, t, 0.18, 'sine', 0.05); } // 軽い装飾
+function updateBGM(){ const a=audio(); if(!a||!bgm.started) return;
+  while(bgm.next < a.currentTime+0.25){ scheduleStep(bgm.step, bgm.next); bgm.next+=STEP; bgm.step++; } }
+const MUTE={ x:W-28, y:40, r:15 };
+function drawMuteButton(){ const {x,y}=MUTE; ctx.save(); ctx.translate(x,y);
+  ctx.fillStyle='rgba(0,0,0,.28)'; ctx.beginPath(); ctx.arc(0,0,15,0,7); ctx.fill();
+  ctx.fillStyle='#ffe9c2';
+  ctx.beginPath(); ctx.moveTo(-8,-3.5); ctx.lineTo(-3,-3.5); ctx.lineTo(2,-8); ctx.lineTo(2,8); ctx.lineTo(-3,3.5); ctx.lineTo(-8,3.5); ctx.closePath(); ctx.fill();
+  if(bgm.on){ ctx.strokeStyle='#ffe9c2'; ctx.lineWidth=1.6;
+    ctx.beginPath(); ctx.arc(3,0,4.5,-0.7,0.7); ctx.stroke();
+    ctx.beginPath(); ctx.arc(3,0,8,-0.7,0.7); ctx.stroke();
+  } else { ctx.strokeStyle='#ff8a78'; ctx.lineWidth=2;
+    ctx.beginPath(); ctx.moveTo(5,-5); ctx.lineTo(12,5); ctx.moveTo(12,-5); ctx.lineTo(5,5); ctx.stroke(); }
+  ctx.restore(); }
 
 //==================== パン描画（手描き調・procedural） ====================
 function withShadow(fn){ ctx.save(); ctx.shadowColor='rgba(60,30,10,.28)'; ctx.shadowBlur=8; ctx.shadowOffsetY=4; fn(); ctx.restore(); }
@@ -224,6 +256,7 @@ let shakeT=0, feverFlash=0, hitstopT=0;
 
 function loadSave(){
   try{ unlocked=JSON.parse(localStorage.getItem('br_zukan')||'{}'); }catch(e){ unlocked={}; }
+  bgm.on = (localStorage.getItem('br_bgm')||'1')!=='0'; // BGM ON/OFF を復元
   // 本日のおすすめ＝日付ローテ
   const day=Math.floor(Date.now()/86400000);
   daily=MENU[day % MENU.length];
@@ -312,7 +345,12 @@ function breadAt(p){
 }
 function onDown(e){
   audio() && actx.resume && actx.resume();
+  startBGM();
   const p=toLogic(e);
+  // ミュートボタン（全画面共通・最優先）
+  if(Math.hypot(p.x-MUTE.x, p.y-MUTE.y) < MUTE.r+8){
+    bgm.on=!bgm.on; applyBgmVol(); localStorage.setItem('br_bgm', bgm.on?'1':'0'); return;
+  }
   if(state==='title'){ startGame(); return; }
   if(state==='over'){ if(p.y>H*0.6) { state='title'; } return; }
   const b=breadAt(p);
@@ -513,11 +551,10 @@ function gameOver(reason){
   if(state!=='play') return;
   state='over'; overReason=reason; sfxOver();
   if(score>best){ best=score; }
-  // 図鑑＆ベスト保存。コンプでクーポン解放（演出のみ）
+  // 図鑑＆ベスト保存
   save();
-  couponEarned = SHOW_COUPON && ((score>=8000) || MENU.every(m=>unlocked[m.id]));
 }
-let overReason='', couponEarned=false;
+let overReason='';
 
 //==================== 描画 ====================
 function clearBG(){
@@ -707,20 +744,7 @@ function drawOver(){
   const cw=W/MENU.length;
   MENU.forEach((m,i)=>{ const x=cw*i+cw/2;
     ctx.globalAlpha=unlocked[m.id]?1:0.22; drawBread(m.id,x,520,22,true); ctx.globalAlpha=1; });
-  // クーポン（コンバージョン装置の演出）※ SHOW_COUPON が false の間は非表示
-  if(SHOW_COUPON){
-    if(couponEarned){
-      ctx.save(); ctx.translate(W/2,610); ctx.rotate(-0.04);
-      ctx.fillStyle='#fff6e0'; rr(-180,-46,360,92,14); ctx.fill();
-      ctx.strokeStyle='#ff9e1f'; ctx.lineWidth=3; ctx.setLineDash([8,6]); ctx.stroke(); ctx.setLineDash([]);
-      ctx.fillStyle='#e8552e'; ctx.font=`900 22px 'Kosugi Maru'`; ctx.fillText('🎟 クーポン獲得！', 0, -8);
-      ctx.fillStyle='#7a4a1e'; ctx.font=`14px 'Kosugi Maru'`; ctx.fillText('看板「メロンパン」¥50引き（店頭提示）', 0, 20);
-      ctx.restore();
-    } else {
-      ctx.fillStyle='#b08a5a'; ctx.font=`13px 'Kosugi Maru'`;
-      ctx.fillText('8000点 or 図鑑コンプでクーポン獲得！', W/2, 610);
-    }
-  }
+  // ※ クーポン発行は imapp 側（有料プラン）の機能。ゲーム単体では扱わない。
   // ボタン
   ctx.fillStyle='#ff8c2e'; rr(W/2-130,690,260,64,32); ctx.fill();
   ctx.fillStyle='#fff'; ctx.font=`900 24px 'Kosugi Maru'`; ctx.fillText('もう一度 焼く', W/2, 730);
@@ -753,6 +777,7 @@ function loop(ts){
     if(feverFlash>0) feverFlash-=dt;
     if(shakeT>0) shakeT-=dt;
   } else { titleT+=dt; updateParticles(dt); }
+  updateBGM(); // BGMスケジューラ（全状態で進める）
 
   // 描画
   ctx.setTransform(1,0,0,1,0,0);
@@ -775,6 +800,7 @@ function loop(ts){
       ctx.fillStyle='#fff'; ctx.font=`900 48px 'Kosugi Maru'`; ctx.textAlign='center'; ctx.fillText('釜出し！', W/2, H/2); }
     if(state==='over') drawOver();
   }
+  drawMuteButton(); // ミュート切替（全画面共通・最前面）
   requestAnimationFrame(loop);
 }
 
