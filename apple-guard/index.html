@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="theme-color" content="#1a1410" />
+    <title>アップルガード 〜りんごの木をまもれ〜</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        background: #0d0a08;
+        overflow: hidden;
+        /* セーフエリア（ノッチ）対応 */
+        padding: env(safe-area-inset-top) env(safe-area-inset-right)
+          env(safe-area-inset-bottom) env(safe-area-inset-left);
+        box-sizing: border-box;
+      }
+      #game {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        touch-action: none;
+      }
+      canvas {
+        image-rendering: pixelated;
+        image-rendering: crisp-edges;
+        touch-action: none;
+      }
+
+      /* 横画面ゲーム：縦持ちのときは回転を促すオーバーレイを表示 */
+      #rotate {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 1000;
+        background: #0d0a08;
+        color: #f4e4c1;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        font-family: sans-serif;
+        gap: 16px;
+        padding: 24px;
+      }
+      #rotate .icon {
+        font-size: 64px;
+        animation: tip 1.6s ease-in-out infinite;
+      }
+      #rotate .msg {
+        font-size: 18px;
+        line-height: 1.6;
+      }
+      #rotate .sub {
+        font-size: 12px;
+        color: #c9a23a;
+      }
+      @keyframes tip {
+        0%, 100% { transform: rotate(0deg); }
+        50% { transform: rotate(-90deg); }
+      }
+      /* 縦向き（高さ＞幅）のときだけ回転案内を出し、ゲームを隠す */
+      @media (orientation: portrait) {
+        #rotate { display: flex; }
+        #game { visibility: hidden; }
+      }
+    </style>
+    <script type="module" crossorigin src="./assets/index-DexlEq4d.js"></script>
+  </head>
+  <body>
+    <div id="game"></div>
+    <div id="rotate">
+      <div class="icon">📱</div>
+      <div class="msg">よこ向きにしてください</div>
+      <div class="sub">アップルガードは横画面でプレイします</div>
+    </div>
+  </body>
+</html>
