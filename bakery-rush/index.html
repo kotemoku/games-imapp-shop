@@ -294,36 +294,49 @@ function spawnBread(){
   breads.push({ id, x:FIELD.x+BR+Math.random()*(FIELD.w-2*BR), y:FIELD.y-2,
     vx:(Math.random()-0.5)*20, vy:0, rot:(Math.random()-0.5)*0.3, vr:(Math.random()-0.5)*0.4, r:BR, sel:false, falling:true });
 }
+// 山が崩れたら（マッチ消去など）近辺を起こして再安定させる
+function wakeAll(){ for(const b of breads) if(!b.removing){ b.asleep=false; b.rest=0; } }
 function physics(dt){
   const g=900, df=difficulty(elapsed);
   for(const b of breads){
-    if(b.removing) continue;
+    if(b.removing || b.asleep) continue;   // 眠っているパンは動かさない＝山が静止
     b.vy+=g*dt; if(b.vy>df.fallSpeed*6) b.vy=df.fallSpeed*6;
-    b.x+=b.vx*dt; b.y+=b.vy*dt; b.rot+=b.vr*dt; b.vr*=0.96;
-    if(b.x<FIELD.x+BR){ b.x=FIELD.x+BR; b.vx=Math.abs(b.vx)*0.3; }
-    if(b.x>FIELD.x+FIELD.w-BR){ b.x=FIELD.x+FIELD.w-BR; b.vx=-Math.abs(b.vx)*0.3; }
-    if(b.y>FIELD.bottom-BR){ b.y=FIELD.bottom-BR; b.vy*=-0.18; b.vx*=0.8; b.falling=false; } // 床に着地
-    b.vx*=0.99;
+    b.x+=b.vx*dt; b.y+=b.vy*dt; b.rot+=b.vr*dt; b.vr*=0.90;
+    if(b.x<FIELD.x+BR){ b.x=FIELD.x+BR; b.vx=Math.abs(b.vx)*0.2; }
+    if(b.x>FIELD.x+FIELD.w-BR){ b.x=FIELD.x+FIELD.w-BR; b.vx=-Math.abs(b.vx)*0.2; }
+    if(b.y>FIELD.bottom-BR){ b.y=FIELD.bottom-BR; b.vy=0; b.vx*=0.7; b.falling=false; } // 床に着地（跳ねない）
+    b.vx*=0.90;                            // 横滑りを抑える摩擦
   }
   // 衝突解決（数回反復）
-  for(let it=0; it<3; it++){
+  for(let it=0; it<4; it++){
     for(let i=0;i<breads.length;i++){ const a=breads[i]; if(a.removing) continue;
       for(let j=i+1;j<breads.length;j++){ const c=breads[j]; if(c.removing) continue;
         let dx=c.x-a.x, dy=c.y-a.y; let d=Math.hypot(dx,dy); const min=a.r+c.r;
         if(d<min && d>0.001){ const ov=(min-d)/2; dx/=d; dy/=d;
           a.x-=dx*ov; a.y-=dy*ov; c.x+=dx*ov; c.y+=dy*ov;
-          const rv=(c.vx-a.vx)*dx+(c.vy-a.vy)*dy;
+          const rv=(c.vx-a.vx)*dx+(c.vy-a.vy)*dy;          // 非弾性（跳ね返さない）
           if(rv<0){ a.vx+=dx*rv*0.5; a.vy+=dy*rv*0.5; c.vx-=dx*rv*0.5; c.vy-=dy*rv*0.5; }
           // 着地済みのパンに支えられたら、その上のパンも山の一部として確定
           if(!a.falling && c.falling) c.falling=false;
           if(!c.falling && a.falling) a.falling=false;
+          // 動いている相手に触れた眠りパンだけ起こす（眠り同士は起こさない＝ジッター防止）
+          if(a.asleep && !c.asleep){ a.asleep=false; a.rest=0; }
+          if(c.asleep && !a.asleep){ c.asleep=false; c.rest=0; }
         } else if(d<=0.001){ a.x-=1; c.x+=1; }
       }}
   }
+  // 端の押し戻し＋スリープ判定
   for(const b of breads){
+    if(b.removing) continue;
     if(b.x<FIELD.x+BR) b.x=FIELD.x+BR;
     if(b.x>FIELD.x+FIELD.w-BR) b.x=FIELD.x+FIELD.w-BR;
-    if(b.y>FIELD.bottom-BR){ b.y=FIELD.bottom-BR; }
+    if(b.y>FIELD.bottom-BR) b.y=FIELD.bottom-BR;
+    if(b.asleep) continue;
+    if(Math.abs(b.vx)<3) b.vx=0;                           // 微小速度はゼロに
+    // 着地済みでほぼ静止が続いたら眠らせる（モゾモゾ動きを停止）
+    if(!b.falling && (b.vx*b.vx+b.vy*b.vy)<9){
+      b.rest=(b.rest||0)+dt; if(b.rest>0.18){ b.asleep=true; b.vx=0; b.vy=0; b.vr=0; }
+    } else b.rest=0;
   }
 }
 
@@ -381,7 +394,7 @@ function resolveMatch(arr){
   const id=arr[0].id, n=arr.length;
   let cx=0,cy=0; arr.forEach(b=>{cx+=b.x;cy+=b.y;}); cx/=n; cy/=n;
   arr.forEach(b=>{ b.removing=true; spawnPuff(b.x,b.y,MENU_BY_ID[id].color); });
-  setTimeout(()=>{ breads=breads.filter(b=>!b.removing); }, 10);
+  setTimeout(()=>{ breads=breads.filter(b=>!b.removing); wakeAll(); }, 10); // 消去後に山を起こして崩れ・再安定
 
   const fever = n>=5;               // 釜出し（フィーバー）
   const col = MENU_BY_ID[id].color;
