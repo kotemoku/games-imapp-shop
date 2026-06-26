@@ -343,7 +343,8 @@ function physics(dt){
 //==================== なぞりマッチ ====================
 let chain=[];     // 選択中のパン配列
 let dragging=false;
-const CONNECT=BR*2.55;
+const CONNECT=BR*2.75;   // 隣接とみなす中心間距離
+const GRAB=BR*1.35;      // 指の許容（中心から少し外れても拾う）
 
 function toLogic(e){
   const r=canvas.getBoundingClientRect();
@@ -351,10 +352,12 @@ function toLogic(e){
   const cy=(e.clientY-r.top )*(canvas.height/r.height);
   return { x:(cx-offX)/fit, y:(cy-offY)/fit };
 }
-function breadAt(p){
-  for(let i=breads.length-1;i>=0;i--){ const b=breads[i]; if(b.removing) continue;
-    if(Math.hypot(p.x-b.x,p.y-b.y)<b.r) return b; }
-  return null;
+// ポインタに最も近いパン（rad以内）。filterで種類等を絞れる。
+function nearestBread(p, rad, filter){
+  let best=null, bd=rad;
+  for(const b of breads){ if(b.removing) continue; if(filter && !filter(b)) continue;
+    const d=Math.hypot(p.x-b.x,p.y-b.y); if(d<bd){ bd=d; best=b; } }
+  return best;
 }
 function onDown(e){
   audio() && actx.resume && actx.resume();
@@ -366,22 +369,21 @@ function onDown(e){
   }
   if(state==='title'){ startGame(); return; }
   if(state==='over'){ if(p.y>H*0.6) { state='title'; } return; }
-  const b=breadAt(p);
+  const b=nearestBread(p, GRAB);
   if(b){ dragging=true; chain=[b]; b.sel=true; sfxConnect(0); }
 }
 function onMove(e){
   if(!dragging) return;
   const p=toLogic(e);
-  const b=breadAt(p);
-  if(!b) return;
-  if(!b.sel){
-    const last=chain[chain.length-1];
-    if(b.id===last.id && Math.hypot(b.x-last.x,b.y-last.y)<CONNECT){
-      chain.push(b); b.sel=true; sfxConnect(chain.length);
-    }
-  } else if(chain.length>=2 && b===chain[chain.length-2]){
-    const drop=chain.pop(); drop.sel=false; // 戻し
+  const last=chain[chain.length-1];
+  // バックトラック：直前のパン付近に戻ったら1つ取り消し
+  if(chain.length>=2){
+    const prev=chain[chain.length-2];
+    if(Math.hypot(p.x-prev.x,p.y-prev.y) < prev.r){ const drop=chain.pop(); drop.sel=false; return; }
   }
+  // 次の連結先：指に近く・同種・未選択・直前と隣接 のうち最も近いパン
+  const cand=nearestBread(p, GRAB, b=>!b.sel && b.id===last.id && Math.hypot(b.x-last.x,b.y-last.y)<CONNECT);
+  if(cand){ chain.push(cand); cand.sel=true; sfxConnect(chain.length); }
 }
 function onUp(){
   if(!dragging) return; dragging=false;
