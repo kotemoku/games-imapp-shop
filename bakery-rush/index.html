@@ -58,12 +58,18 @@ function resize(){
 let fit=1, offX=0, offY=0;
 window.addEventListener('resize', resize);
 
+//==================== 販促フラグ ====================
+const SHOW_COUPON = false;  // クーポン等の販促演出を出すか。imapp公開までは false（出さない）
+
 //==================== 領域レイアウト ====================
-const FIELD = { x:24, y:150, w:W-48, bottom:624 };   // 落下・山積み
-const SHELF = { y:628, h:150 };                       // 店先の棚
-const LANE  = { y:786, h:H-786 };                     // 客レーン
-const BASELINE_Y = 214;                               // ゲームオーバー基準線
-const BR = 33;                                        // パン半径（統一円）
+// 上部バンド: 0-58 スコアバー / 58-200 クリーム帯（オーダー＋固定ショーケース窓）
+const HUDH = 58;
+const ORDERS   = { y:80,  h:40 };                      // オーダー票の行（上部集約）
+const SHOWCASE = { x:20, y:122, w:W-40, h:74 };        // 固定「ショーケース窓」(122-196)
+const FIELD = { x:24, y:200, w:W-48, bottom:752 };     // 落下・山積み（下に拡張）
+const SHELF = { y:760, h:168 };                        // 店先の棚（760-928）
+const BASELINE_Y = 262;                                // ゲームオーバー基準線
+const BR = 33;                                         // パン半径（統一円）
 
 //==================== メニュー（config/menu 相当） ====================
 // 物理は全種ほぼ同径の丸。見た目だけ手描き調で差別化。
@@ -203,7 +209,8 @@ function drawCross(id, x, y, r){
 let state='title';   // title | play | over
 let breads=[];       // 落下/山積みのパン
 let customers=[];    // 客レーン
-let effects=[];      // ショーケース等の上レイヤー演出
+let effects=[];      // 棚へ飛ぶパンなどの上レイヤー演出
+let showDisp=null;   // 固定ショーケース窓に表示中の焼き上がり（コンボ中は最新に切替）
 let particles=[];
 let popups=[];
 let shelf={};        // 在庫 {id:count}
@@ -226,7 +233,7 @@ function save(){ localStorage.setItem('br_zukan', JSON.stringify(unlocked)); loc
 function activeTypes(){ return MENU.slice(0, difficulty(elapsed).types); }
 
 function resetGame(){
-  breads=[]; customers=[]; effects=[]; particles=[]; popups=[];
+  breads=[]; customers=[]; effects=[]; showDisp=null; particles=[]; popups=[];
   shelf={}; firstShown={}; score=0; combo=0; comboTimer=0; frustration=0;
   elapsed=0; spawnT=0; custT=6.0; baselineOver=0; shakeT=0; feverFlash=0; hitstopT=0; // 最初の客は6秒後（準備時間）
   MENU.forEach(m=>shelf[m.id]=0);
@@ -251,7 +258,7 @@ function spawnBread(){
   if(daily && Math.random()<0.16 && types.includes(daily)) id=daily.id;
   else if(Math.random()<0.18){ const sig=types.find(m=>m.sig); id=sig?sig.id:types[0].id; }
   else id=types[(Math.random()*types.length)|0].id;
-  breads.push({ id, x:FIELD.x+BR+Math.random()*(FIELD.w-2*BR), y:FIELD.y-10,
+  breads.push({ id, x:FIELD.x+BR+Math.random()*(FIELD.w-2*BR), y:FIELD.y-2,
     vx:(Math.random()-0.5)*20, vy:0, rot:(Math.random()-0.5)*0.3, vr:(Math.random()-0.5)*0.4, r:BR, sel:false, falling:true });
 }
 function physics(dt){
@@ -362,102 +369,67 @@ function resolveMatch(arr){
   // 図鑑解放
   if(!unlocked[id]){ unlocked[id]=true; addPopup(W/2, BASELINE_Y+40,'★図鑑に追加：'+MENU_BY_ID[id].name,'#9fe', 22); save(); }
 
-  // ショーケース演出（非ブロッキング）
+  // 固定ショーケース窓に表示（コンボ中は最新の焼き上がりに上書き）＋棚へ飛ばす
   const firstTime=!firstShown[id]; firstShown[id]=true;
-  effects.push(makeShowcase(id, cx, cy, n, sig, fever, firstTime));
+  const big=sig||fever;
+  showDisp = { id, n, sig, fever, first:firstTime, big, t:0,
+    dur:(firstTime?1.7:1.1)+(big?0.4:0), showCross:Math.random()<0.5 };
+  effects.push(makeFly(id, big));
   sfxMatch(sig||fever);
 }
 
-//==================== ショーケース演出 ====================
-function makeShowcase(id,x,y,n,sig,fever,first){
-  const big = sig||fever;
-  return { kind:'showcase', id, x, y, n, sig, fever, first, big,
-    t:0, dur: (first?2.1:1.5) + (big?0.5:0),
-    showCross: Math.random()<0.5, // 時々断面リビール
-    landed:false };
-}
+//==================== ショーケース（固定窓表示＋棚へ飛ぶ） ====================
+function easeBack(t){ const c1=2.2, c3=c1+1; return 1 + c3*Math.pow(t-1,3) + c1*Math.pow(t-1,2); } // オーバーシュート
 function shelfSlot(id){
-  const types=MENU; const idx=types.findIndex(m=>m.id===id);
-  const cols=MENU.length; const cw=FIELD.w/cols;
+  const idx=MENU.findIndex(m=>m.id===id);
+  const cw=FIELD.w/MENU.length;
   return { x:FIELD.x+cw*idx+cw/2, y:SHELF.y+SHELF.h*0.42 };
 }
-function updateShowcase(fx,dt){
-  fx.t+=dt; const p=fx.t/fx.dur;
-  if(p>=1){ if(!fx.landed){ fx.landed=true; const s=shelfSlot(fx.id); spawnSpark(s.x,s.y,MENU_BY_ID[fx.id].color); }
-    return p>=1.0; }
-  return false;
+function winHero(){ return { x:SHOWCASE.x+58, y:SHOWCASE.y+SHOWCASE.h*0.56 }; }
+// 焼けたパンが窓から棚へ弧を描いて飛ぶ（在庫はマッチ時に加算済み・これは演出）
+function makeFly(id,big){ return { id, big, t:0, dur:0.6, landed:false }; }
+function updateFly(fx,dt){ fx.t+=dt; if(fx.t>=fx.dur){
+  if(!fx.landed){ fx.landed=true; const s=shelfSlot(fx.id); spawnSpark(s.x,s.y,MENU_BY_ID[fx.id].color); }
+  return true; } return false; }
+function drawFly(fx){
+  const w=winHero(), s=shelfSlot(fx.id), q=fx.t/fx.dur, ee=q*q;
+  const x=w.x+(s.x-w.x)*q, y=w.y+(s.y-w.y)*ee - Math.sin(q*Math.PI)*70;
+  const r=(fx.big?26:22)*(1-0.42*q);
+  ctx.save(); ctx.globalAlpha=0.95; drawBread(fx.id,x,y,r,true,q*1.6); ctx.restore();
 }
-function easeBack(t){ const c1=2.2, c3=c1+1; return 1 + c3*Math.pow(t-1,3) + c1*Math.pow(t-1,2); } // オーバーシュート
-function drawRays(x,y,r,t,col){
-  ctx.save(); ctx.translate(x,y); ctx.rotate(t*0.7); ctx.fillStyle=col;
-  const N=12; for(let i=0;i<N;i++){ ctx.rotate(Math.PI*2/N);
-    ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(r,-r*0.09); ctx.lineTo(r,r*0.09); ctx.closePath(); ctx.fill(); }
-  ctx.restore();
-}
-function drawShowcase(fx){
-  const p=fx.t/fx.dur;
-  const s=shelfSlot(fx.id);
-  const m=MENU_BY_ID[fx.id];
-  // フェーズ: 0-.16 弾けて拡大, .16-.62 ホールド＆ネームカード, .66-1 弧で棚へ
-  if(p<0.66){
-    const e=Math.min(p/0.16,1);
-    const baseScale=(fx.big?1.55:1.2);
-    const scale=(e<1?easeBack(e):1)*baseScale;
-    const r=BR*scale;
-    const x=fx.x, y=fx.y-36-(fx.big?20:0);
-    // スポットライト＋後光
-    drawGlow(x,y,r*2.5, fx.sig?'rgba(255,210,90,.5)':'rgba(255,245,215,.42)');
-    drawRays(x,y,r*2.3, fx.t, fx.sig?'rgba(255,200,80,.28)':'rgba(255,255,255,.16)');
-    // 湯気
-    if(Math.random()<0.6) spawnSteam(x+(Math.random()-0.5)*r, y-r);
-    // ヒーロー（時々断面リビール）。弾性のスカッシュ＆ストレッチ
-    if(fx.showCross && p>0.32 && p<0.52){ drawCross(fx.id, x, y, r*0.92); }
-    else { ctx.save(); ctx.translate(x,y); const wob=1+0.05*Math.sin(fx.t*16); ctx.scale(wob,1/wob);
-      drawBread(fx.id, 0, 0, r, true, Math.sin(fx.t*7)*0.05); ctx.restore(); }
-    // ネームカード（弾性で下からせり出す）
-    if(p>0.15){
-      const ca=Math.min((p-0.15)/0.1,1)*(p>0.58?Math.max(0,1-(p-0.58)/0.08):1);
-      const ce=easeBack(Math.min((p-0.15)/0.14,1));
-      drawNameCard(x, y+r+(fx.big?42:32)-(1-ce)*16, m, fx.first, fx.fever, fx.n, ca);
-    }
+// 固定ショーケース窓（フィールド上には出さない＝山に重ならない）
+function drawShowcaseWindow(){
+  const {x,y,w,h}=SHOWCASE;
+  withShadow(()=>{ ctx.fillStyle='#fffaf0'; rr(x,y,w,h,16); ctx.fill();
+    ctx.strokeStyle='#e3b870'; ctx.lineWidth=3; ctx.stroke(); });
+  // ガラスの照り
+  ctx.fillStyle='rgba(255,255,255,.4)'; rr(x+6,y+6,w-12,h*0.3,10); ctx.fill();
+  ctx.fillStyle='#c98a3e'; ctx.textAlign='left'; ctx.textBaseline='alphabetic'; ctx.font=`bold 11px 'Kosugi Maru'`;
+  ctx.fillText('やきたてショーケース', x+12, y+16);
+  const hero=winHero();
+  if(showDisp){
+    const d=showDisp, m=MENU_BY_ID[d.id], p=d.t/d.dur;
+    const e=Math.min(p/0.18,1), sc=(e<1?easeBack(e):1)*(d.big?1.12:1), r=24*sc;
+    if(Math.random()<0.35) spawnSteam(hero.x+(Math.random()-0.5)*r, hero.y-r);
+    drawGlow(hero.x,hero.y,r*2.0, d.sig?'rgba(255,210,90,.5)':'rgba(255,245,215,.42)');
+    if(d.showCross && p>0.4 && p<0.6){ drawCross(d.id,hero.x,hero.y,r*0.9); }
+    else { ctx.save(); ctx.translate(hero.x,hero.y); const wob=1+0.05*Math.sin(d.t*16); ctx.scale(wob,1/wob);
+      drawBread(d.id,0,0,r,true,Math.sin(d.t*7)*0.05); ctx.restore(); }
+    // 右側：リボン＋商品名＋価格＋個数
+    const tx=x+92;
+    const ribbon=d.fever?'釜出し！':(m.sig?'★看板商品':'やきたて！'), rcol=d.fever?'#e8552e':(m.sig?'#ff9e1f':'#ffb347');
+    ctx.textAlign='left'; ctx.textBaseline='middle';
+    ctx.fillStyle=rcol; ctx.font=`900 11px 'Kosugi Maru'`; ctx.fillText(ribbon, tx, y+22);
+    ctx.fillStyle='#7a4a1e'; ctx.font=`900 ${d.first?22:19}px 'Kosugi Maru'`; ctx.fillText(m.name, tx, y+h*0.55);
+    ctx.fillStyle='#b07a3a'; ctx.font=`12px 'Kosugi Maru'`; ctx.fillText('¥'+m.price+'  '+(m.cap||''), tx, y+h*0.82);
+    // 個数チップ
+    ctx.fillStyle='#e8552e'; ctx.beginPath(); ctx.arc(x+w-26, hero.y, 16,0,7); ctx.fill();
+    ctx.strokeStyle='#fff'; ctx.lineWidth=2; ctx.stroke();
+    ctx.fillStyle='#fff'; ctx.textAlign='center'; ctx.font=`900 15px 'Kosugi Maru'`; ctx.fillText('×'+d.n, x+w-26, hero.y);
   } else {
-    const q=(p-0.66)/0.34, ee=q*q;
-    const sx=fx.x, sy=fx.y-36;
-    const x=sx+(s.x-sx)*q, y=sy+(s.y-sy)*ee - Math.sin(q*Math.PI)*100; // 弧
-    const r=BR*((fx.big?1.45:1.15)-0.72*q);
-    drawBread(fx.id, x, y, r, true, q*1.6);
+    ctx.fillStyle='#cdb38c'; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.font=`13px 'Kosugi Maru'`;
+    ctx.fillText('3つ揃えると ここに焼き上がり！', x+w/2, y+h*0.62);
   }
-}
-function drawNameCard(x,y,m,first,fever,n,alpha){
-  ctx.save(); ctx.globalAlpha=alpha; ctx.translate(x,y);
-  const big=first||fever||m.sig;
-  ctx.font=`900 ${big?23:20}px 'Kosugi Maru'`;
-  const nameW=ctx.measureText(m.name).width;
-  const w=Math.max(nameW+108, 168), h=big?64:56;
-  // カード本体
-  withShadow(()=>{ ctx.fillStyle=m.sig?'#fff6e0':'#fffdf6'; rr(-w/2,-h/2,w,h,16); ctx.fill();
-    ctx.strokeStyle=m.sig?'#ffba2e':'#e9c98e'; ctx.lineWidth=3.5; ctx.stroke(); });
-  // 上部リボン
-  const ribbon = fever?'やきたて 釜出し！' : (m.sig?'★ 看板商品 ★' : 'やきたて！');
-  const rcol = fever?'#e8552e' : (m.sig?'#ff9e1f' : '#ffb347');
-  ctx.font=`900 12px 'Kosugi Maru'`; ctx.textAlign='center'; ctx.textBaseline='middle';
-  const rw=ctx.measureText(ribbon).width+26; ctx.fillStyle=rcol;
-  rr(-rw/2,-h/2-13,rw,21,10); ctx.fill();
-  ctx.fillStyle='#fff'; ctx.fillText(ribbon,0,-h/2-2);
-  // 左：パンのサムネイル
-  drawBread(m.id, -w/2+32, 2, 21, true);
-  // 中：商品名＋価格・一言
-  ctx.textAlign='left';
-  ctx.fillStyle='#7a4a1e'; ctx.font=`900 ${big?23:20}px 'Kosugi Maru'`;
-  ctx.fillText(m.name, -w/2+62, -7);
-  ctx.fillStyle='#b07a3a'; ctx.font=`13px 'Kosugi Maru'`;
-  ctx.fillText('¥'+m.price+'  '+(m.cap||''), -w/2+62, 15);
-  // 右上：個数チップ
-  ctx.fillStyle='#e8552e'; ctx.beginPath(); ctx.arc(w/2-19,-h/2+10,15,0,7); ctx.fill();
-  ctx.strokeStyle='#fff'; ctx.lineWidth=2; ctx.stroke();
-  ctx.fillStyle='#fff'; ctx.textAlign='center'; ctx.font=`900 15px 'Kosugi Maru'`;
-  ctx.fillText('×'+n, w/2-19,-h/2+11);
-  ctx.restore();
 }
 
 //==================== 客（CustomerSystem） ====================
@@ -486,7 +458,7 @@ function updateCustomers(dt){
         // 来店直後 約2.5秒は猶予（その間は不満が溜まらない）
         if(c.patience < c.maxP-2.5) frustration += dt*(2.0 + elapsed*0.012);
         if(c.patience<=0){ c.face='angry'; c.leaving=0.6; c.mood=-1; frustration+=4; sfxAngry();
-          addPopup(c.tx, LANE.y+30,'(>_<)','#ff6b6b',24); }
+          addPopup(c.tx, ORDERS.y+ORDERS.h+8,'(>_<)','#ff6b6b',22); }
       }
     } else {
       // 後方は軽く待つ
@@ -500,8 +472,8 @@ function buy(c){
   const m=MENU_BY_ID[c.want];
   const pts=Math.round(m.price*0.5*(m.sig?1.4:1)*(daily&&daily.id===c.want?1.5:1));
   score+=pts; c.face='happy'; c.leaving=0.5; c.mood=1; c.buyT=-1;
-  addPopup(c.tx, LANE.y+10, '¥'+pts, '#7ed957', 22);
-  spawnSpark(c.tx, LANE.y+30, '#ffd24a');
+  addPopup(c.tx, ORDERS.y+ORDERS.h+8, '¥'+pts, '#7ed957', 22);
+  spawnSpark(c.tx, ORDERS.y+ORDERS.h*0.5, '#ffd24a');
   frustration=Math.max(0, frustration-7); // 満足退店でしっかり回復
   sfxBuy();
 }
@@ -543,7 +515,7 @@ function gameOver(reason){
   if(score>best){ best=score; }
   // 図鑑＆ベスト保存。コンプでクーポン解放（演出のみ）
   save();
-  couponEarned = (score>=8000) || MENU.every(m=>unlocked[m.id]);
+  couponEarned = SHOW_COUPON && ((score>=8000) || MENU.every(m=>unlocked[m.id]));
 }
 let overReason='', couponEarned=false;
 
@@ -554,28 +526,28 @@ function clearBG(){
   // 木目の床（棚エリア）
 }
 function drawHUD(){
-  // 上部パネル
-  ctx.fillStyle='#3a2415'; ctx.fillRect(0,0,W,138);
-  ctx.fillStyle='#52341c'; ctx.fillRect(0,128,W,10);
+  // フィールド上端を隠すクリーム帯（オーダー＆ショーケース窓の背景）
+  ctx.fillStyle='#fff3df'; ctx.fillRect(0,HUDH,W,FIELD.y-HUDH);
+  // 上部スコアバー
+  ctx.fillStyle='#3a2415'; ctx.fillRect(0,0,W,HUDH);
+  ctx.fillStyle='#52341c'; ctx.fillRect(0,HUDH-5,W,5);
   // スコア
   ctx.fillStyle='#ffe9c2'; ctx.textAlign='left'; ctx.textBaseline='alphabetic';
-  ctx.font=`bold 16px 'Kosugi Maru'`; ctx.fillText('SCORE',20,34);
-  ctx.font=`900 38px 'Kosugi Maru'`; ctx.fillStyle='#fff'; ctx.fillText(score.toLocaleString(),18,74);
-  ctx.font=`13px 'Kosugi Maru'`; ctx.fillStyle='#d8b98a'; ctx.fillText('BEST '+best.toLocaleString(),20,96);
+  ctx.font=`bold 11px 'Kosugi Maru'`; ctx.fillText('SCORE',16,18);
+  ctx.font=`900 30px 'Kosugi Maru'`; ctx.fillStyle='#fff'; ctx.fillText(score.toLocaleString(),14,48);
+  ctx.font=`11px 'Kosugi Maru'`; ctx.fillStyle='#d8b98a'; ctx.fillText('BEST '+best.toLocaleString(),150,24);
   // コンボ
-  if(combo>=2){ ctx.textAlign='left'; ctx.fillStyle='#ff9a3c'; ctx.font=`900 22px 'Kosugi Maru'`;
-    ctx.fillText('COMBO x'+combo, 20, 120); }
+  if(combo>=2){ ctx.fillStyle='#ff9a3c'; ctx.font=`900 18px 'Kosugi Maru'`; ctx.fillText('COMBO x'+combo, 150, 48); }
   // 不満ゲージ
-  const gx=W-180, gy=24, gw=160, gh=16;
-  ctx.fillStyle='#2a1b0f'; rr(gx,gy,gw,gh,8); ctx.fill();
+  const gx=W-176, gy=12, gw=160, gh=15;
+  ctx.fillStyle='#ffe9c2'; ctx.font=`bold 11px 'Kosugi Maru'`; ctx.textAlign='right'; ctx.fillText('お客さんの不満', W-16, gy-2);
+  ctx.fillStyle='#2a1b0f'; rr(gx,gy,gw,gh,7); ctx.fill();
   const fc = frustration>70?'#ff4d4d':(frustration>40?'#ffae34':'#7ed957');
-  ctx.fillStyle=fc; rr(gx,gy,gw*frustration/100,gh,8); ctx.fill();
-  ctx.fillStyle='#ffe9c2'; ctx.font=`bold 12px 'Kosugi Maru'`; ctx.textAlign='right';
-  ctx.fillText('お客さんの不満', W-20, gy-4);
-  // 本日のおすすめ
-  if(daily){ ctx.textAlign='right'; ctx.fillStyle='#ffd24a'; ctx.font=`bold 13px 'Kosugi Maru'`;
-    ctx.fillText('★本日のおすすめ：'+daily.name+'（高得点）', W-20, 72);
-    drawBread(daily.id, W-30, 96, 16, true); }
+  ctx.fillStyle=fc; rr(gx,gy,gw*frustration/100,gh,7); ctx.fill();
+  // 本日のおすすめ（クリーム帯の右）
+  if(daily){ ctx.textAlign='right'; ctx.fillStyle='#c98a3e'; ctx.font=`bold 11px 'Kosugi Maru'`;
+    ctx.fillText('本日のおすすめ：'+daily.name, W-34, ORDERS.y-4);
+    drawBread(daily.id, W-20, ORDERS.y-9, 11, true); }
 }
 function drawField(){
   // 基準線
@@ -627,52 +599,41 @@ function drawShelf(){
   ctx.fillStyle='#5a3618'; ctx.textAlign='left'; ctx.font=`bold 11px 'Kosugi Maru'`;
   ctx.fillText('店先の棚（在庫）', 16, SHELF.y+14);
 }
-function drawCustomerFace(x,y,r,face,hue){
-  ctx.save(); ctx.translate(x,y);
-  // 体
-  ctx.fillStyle=`hsl(${30+hue},45%,55%)`; rr(-r*0.9,r*0.5,r*1.8,r*1.4,r*0.4); ctx.fill();
-  // 顔
-  ctx.fillStyle='#ffe0bd'; ctx.beginPath(); ctx.arc(0,0,r,0,7); ctx.fill();
-  ctx.strokeStyle='#c99a6a'; ctx.lineWidth=2; ctx.stroke();
-  ctx.fillStyle='#5a3a22';
-  if(face==='happy'){ ctx.beginPath(); ctx.arc(-r*0.35,-r*0.1,r*0.1,0,7); ctx.arc(r*0.35,-r*0.1,r*0.1,0,7); ctx.fill();
-    ctx.strokeStyle='#5a3a22'; ctx.lineWidth=r*0.12; ctx.beginPath(); ctx.arc(0,r*0.1,r*0.45,0.2,Math.PI-0.2); ctx.stroke();
-    // ほっぺ
-    ctx.fillStyle='rgba(255,140,120,.5)'; ctx.beginPath(); ctx.arc(-r*0.55,r*0.2,r*0.18,0,7); ctx.arc(r*0.55,r*0.2,r*0.18,0,7); ctx.fill();
-  } else if(face==='angry'){ ctx.strokeStyle='#5a3a22'; ctx.lineWidth=r*0.1;
-    ctx.beginPath(); ctx.moveTo(-r*0.5,-r*0.35); ctx.lineTo(-r*0.2,-r*0.2); ctx.moveTo(r*0.5,-r*0.35); ctx.lineTo(r*0.2,-r*0.2); ctx.stroke();
-    ctx.fillStyle='#5a3a22'; ctx.beginPath(); ctx.arc(-r*0.32,-r*0.05,r*0.1,0,7); ctx.arc(r*0.32,-r*0.05,r*0.1,0,7); ctx.fill();
-    ctx.beginPath(); ctx.arc(0,r*0.4,r*0.28,Math.PI+0.3,2*Math.PI-0.3); ctx.lineWidth=r*0.1; ctx.stroke();
-  } else if(face==='wait'){ ctx.fillStyle='#5a3a22'; ctx.beginPath(); ctx.arc(-r*0.3,-r*0.05,r*0.1,0,7); ctx.arc(r*0.3,-r*0.05,r*0.1,0,7); ctx.fill();
-    ctx.strokeStyle='#5a3a22'; ctx.lineWidth=r*0.09; ctx.beginPath(); ctx.moveTo(-r*0.2,r*0.3); ctx.lineTo(r*0.2,r*0.3); ctx.stroke();
-  } else { ctx.fillStyle='#5a3a22'; ctx.beginPath(); ctx.arc(-r*0.3,-r*0.05,r*0.1,0,7); ctx.arc(r*0.3,-r*0.05,r*0.1,0,7); ctx.fill();
-    ctx.strokeStyle='#5a3a22'; ctx.lineWidth=r*0.09; ctx.beginPath(); ctx.arc(0,r*0.25,r*0.25,0.3,Math.PI-0.3); ctx.stroke(); }
-  ctx.restore();
-}
-function drawCustomers(){
-  ctx.fillStyle='#f6e3c4'; ctx.fillRect(0,LANE.y,W,LANE.h);
-  ctx.fillStyle='#5a3618'; ctx.textAlign='left'; ctx.font=`bold 11px 'Kosugi Maru'`;
-  ctx.fillText('お客さんの行列', 16, LANE.y+16);
+// 上部に集約したオーダー票（旧・客レーンの代替）
+function drawOrders(){
+  ctx.fillStyle='#7a4a1e'; ctx.textAlign='left'; ctx.textBaseline='alphabetic'; ctx.font=`bold 12px 'Kosugi Maru'`;
+  ctx.fillText('ご注文', 16, ORDERS.y-3);
+  const slotW=FIELD.w/4, cy=ORDERS.y+ORDERS.h*0.5;
+  if(customers.length===0){
+    ctx.fillStyle='#cdb38c'; ctx.font=`12px 'Kosugi Maru'`; ctx.fillText('お客さんを待っています…', FIELD.x+6, cy+4);
+    return;
+  }
   customers.forEach((c,i)=>{
-    const bob = c.face==='happy'? Math.sin(c.t*16)*4 : Math.sin(c.t*3)*2;
-    const y=LANE.y+LANE.h*0.55+bob;
-    const sc = c.leaving>0 ? 1+ (c.mood>0?0.1:-0.1)*(1-c.leaving/0.6) : 1;
-    drawCustomerFace(c.tx, y, 26*sc, c.face, c.hue);
-    // 吹き出し（要望）
-    const m=MENU_BY_ID[c.want];
+    const x=FIELD.x+slotW*i+slotW/2;
+    const front=i===0, has=(shelf[c.want]||0)>0, m=MENU_BY_ID[c.want];
+    const pop=(c.leaving>0 && c.mood>0)?1+0.18*(1-c.leaving/0.6):1;
+    const tw=slotW*0.9;
+    // 票
     ctx.save();
-    const bx=c.tx, by=y-58;
-    withShadow(()=>{ ctx.fillStyle= (i===0)?'#fffdf6':'#f3ead8'; rr(bx-30,by-26,60,42,12); ctx.fill();
-      ctx.beginPath(); ctx.moveTo(bx-6,by+14); ctx.lineTo(bx+6,by+14); ctx.lineTo(bx,by+24); ctx.closePath(); ctx.fill(); });
-    drawBread(m.id, bx, by-4, 16, true);
-    if(m.sig){ ctx.fillStyle='#ff9e1f'; ctx.font=`bold 9px 'Kosugi Maru'`; ctx.textAlign='center'; ctx.fillText('看板!',bx,by-20); }
+    withShadow(()=>{ ctx.fillStyle= c.leaving>0?(c.mood>0?'#e9ffe4':'#ffe2dc'):(front?(has?'#eaffe6':'#fffdf6'):'#f1e6d2');
+      rr(x-tw/2, ORDERS.y, tw, ORDERS.h, 9); ctx.fill();
+      ctx.strokeStyle= front?(has?'#7ed957':'#e3b870'):'#dcc6a2'; ctx.lineWidth= front?2.5:1.5; ctx.stroke(); });
     ctx.restore();
-    // 我慢ゲージ（先頭・在庫なし時）
-    if(i===0 && c.buyT<=0 && (shelf[c.want]||0)===0 && c.leaving<=0){
-      const gw=44, gx=c.tx-gw/2, gy=y-82;
-      ctx.fillStyle='#caa'; rr(gx,gy,gw,5,3); ctx.fill();
-      ctx.fillStyle= c.patience<c.maxP*0.4?'#ff4d4d':'#ffae34'; rr(gx,gy,gw*Math.max(0,c.patience/c.maxP),5,3); ctx.fill();
+    // パンアイコン
+    drawBread(c.want, x-tw*0.30, cy, 13*pop, true);
+    if(m.sig){ ctx.fillStyle='#ff9e1f'; ctx.textAlign='center'; ctx.font=`bold 8px 'Kosugi Maru'`; ctx.fillText('看板', x-tw*0.30, ORDERS.y+ORDERS.h-3); }
+    // 商品名
+    ctx.fillStyle='#7a4a1e'; ctx.textAlign='left'; ctx.textBaseline='middle'; ctx.font=`bold 10px 'Kosugi Maru'`;
+    ctx.fillText(m.name, x-tw*0.12, cy-4);
+    // 状態：先頭・在庫なしは我慢ゲージ、在庫ありは「販売中♪」
+    if(front && !has && c.leaving<=0 && c.buyT<=0){
+      const gw=tw*0.58, gx=x-tw*0.12, gy=cy+7;
+      ctx.fillStyle='#d8c4a4'; rr(gx,gy,gw,4,2); ctx.fill();
+      ctx.fillStyle= c.patience<c.maxP*0.3?'#ff4d4d':'#ffae34'; rr(gx,gy,gw*Math.max(0,c.patience/c.maxP),4,2); ctx.fill();
+    } else if(front && has && c.leaving<=0){
+      ctx.fillStyle='#3a9d3a'; ctx.textAlign='left'; ctx.font=`bold 9px 'Kosugi Maru'`; ctx.fillText('販売中♪', x-tw*0.12, cy+10);
     }
+    ctx.textBaseline='alphabetic';
   });
 }
 function drawGlow(x,y,r,col){ ctx.save(); const g=ctx.createRadialGradient(x,y,0,x,y,r); g.addColorStop(0,col); g.addColorStop(1,'rgba(255,255,255,0)'); ctx.fillStyle=g; ctx.beginPath(); ctx.arc(x,y,r,0,7); ctx.fill(); ctx.restore(); }
@@ -746,17 +707,19 @@ function drawOver(){
   const cw=W/MENU.length;
   MENU.forEach((m,i)=>{ const x=cw*i+cw/2;
     ctx.globalAlpha=unlocked[m.id]?1:0.22; drawBread(m.id,x,520,22,true); ctx.globalAlpha=1; });
-  // クーポン（コンバージョン装置の演出）
-  if(couponEarned){
-    ctx.save(); ctx.translate(W/2,610); ctx.rotate(-0.04);
-    ctx.fillStyle='#fff6e0'; rr(-180,-46,360,92,14); ctx.fill();
-    ctx.strokeStyle='#ff9e1f'; ctx.lineWidth=3; ctx.setLineDash([8,6]); ctx.stroke(); ctx.setLineDash([]);
-    ctx.fillStyle='#e8552e'; ctx.font=`900 22px 'Kosugi Maru'`; ctx.fillText('🎟 クーポン獲得！', 0, -8);
-    ctx.fillStyle='#7a4a1e'; ctx.font=`14px 'Kosugi Maru'`; ctx.fillText('看板「メロンパン」¥50引き（店頭提示）', 0, 20);
-    ctx.restore();
-  } else {
-    ctx.fillStyle='#b08a5a'; ctx.font=`13px 'Kosugi Maru'`;
-    ctx.fillText('8000点 or 図鑑コンプでクーポン獲得！', W/2, 610);
+  // クーポン（コンバージョン装置の演出）※ SHOW_COUPON が false の間は非表示
+  if(SHOW_COUPON){
+    if(couponEarned){
+      ctx.save(); ctx.translate(W/2,610); ctx.rotate(-0.04);
+      ctx.fillStyle='#fff6e0'; rr(-180,-46,360,92,14); ctx.fill();
+      ctx.strokeStyle='#ff9e1f'; ctx.lineWidth=3; ctx.setLineDash([8,6]); ctx.stroke(); ctx.setLineDash([]);
+      ctx.fillStyle='#e8552e'; ctx.font=`900 22px 'Kosugi Maru'`; ctx.fillText('🎟 クーポン獲得！', 0, -8);
+      ctx.fillStyle='#7a4a1e'; ctx.font=`14px 'Kosugi Maru'`; ctx.fillText('看板「メロンパン」¥50引き（店頭提示）', 0, 20);
+      ctx.restore();
+    } else {
+      ctx.fillStyle='#b08a5a'; ctx.font=`13px 'Kosugi Maru'`;
+      ctx.fillText('8000点 or 図鑑コンプでクーポン獲得！', W/2, 610);
+    }
   }
   // ボタン
   ctx.fillStyle='#ff8c2e'; rr(W/2-130,690,260,64,32); ctx.fill();
@@ -784,7 +747,8 @@ function loop(ts){
       checkGameOver(dt);
     }
     // 演出・パーティクルはヒットストップ中も動かす（テンポを殺さない）
-    for(let i=effects.length-1;i>=0;i--){ if(updateShowcase(effects[i],dt)) effects.splice(i,1); }
+    for(let i=effects.length-1;i>=0;i--){ if(updateFly(effects[i],dt)) effects.splice(i,1); }
+    if(showDisp){ showDisp.t+=dt; if(showDisp.t>showDisp.dur) showDisp=null; }
     updateParticles(dt);
     if(feverFlash>0) feverFlash-=dt;
     if(shakeT>0) shakeT-=dt;
@@ -802,12 +766,12 @@ function loop(ts){
     clearBG();
     drawField();
     drawShelf();
-    drawCustomers();
-    // ショーケースは最上レイヤー（非ブロッキング）
-    effects.forEach(drawShowcase);
-    drawParticles();
-    drawHUD();
-    if(feverFlash>0){ ctx.fillStyle=`rgba(255,210,90,${feverFlash*0.5})`; ctx.fillRect(0,138,W,H-138);
+    drawHUD();              // 上部バー＋クリーム帯（フィールド上端を隠す）
+    drawOrders();           // オーダー票（バンド内）
+    drawShowcaseWindow();   // 固定ショーケース窓（山に重ならない）
+    effects.forEach(drawFly); // 窓→棚へ飛ぶパン（フィールド上に表示）
+    drawParticles();        // マッチ点の衝撃波・パンくず・ポップアップ
+    if(feverFlash>0){ ctx.fillStyle=`rgba(255,210,90,${feverFlash*0.5})`; ctx.fillRect(0,FIELD.y,W,H-FIELD.y);
       ctx.fillStyle='#fff'; ctx.font=`900 48px 'Kosugi Maru'`; ctx.textAlign='center'; ctx.fillText('釜出し！', W/2, H/2); }
     if(state==='over') drawOver();
   }
