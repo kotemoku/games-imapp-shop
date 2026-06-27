@@ -121,6 +121,27 @@
 /donut-donaru/icon-512.png
   Cache-Control: no-cache, must-revalidate
 
+# ---------- konpeito (こんぺい堂) ----------
+# Phaser4 + Vite 製ゲーム (こんぺい堂 / 円形の釜で金平糖を育てる時間管理アーケード) を
+# iframe 埋め込み。同じく imapp 配下からのみフレーム許可。
+/konpeito/*
+  Content-Security-Policy: frame-ancestors 'self' https://imapp.shop https://*.imapp.shop https://imapp.pages.dev https://*.imapp.pages.dev http://localhost:3000 http://127.0.0.1:3000
+
+# index.html はビルドごとに JS ハッシュ参照が変わる → 常に最新化
+/konpeito/index.html
+  Cache-Control: no-cache, must-revalidate
+# 粒/釜/アイコンなど同名で差し替わり得る素材があるため、確実な反映を優先して常に再検証。
+# （JS は内容ハッシュ名なので 304 で済み、実害は小さい）
+/konpeito/assets/*
+  Cache-Control: no-cache, must-revalidate
+# ルート直下のアイコン/マニフェスト/SW も同名で差し替わるため常に再検証。
+/konpeito/manifest.webmanifest
+  Cache-Control: no-cache, must-revalidate
+/konpeito/sw.js
+  Cache-Control: no-cache, must-revalidate
+/konpeito/icons/*
+  Cache-Control: no-cache, must-revalidate
+
 # 共通: Pages 自体のルートはまだ未使用 (将来ゲーム一覧 LP を置くかもしれない)
 /*
   X-Content-Type-Options: nosniff
