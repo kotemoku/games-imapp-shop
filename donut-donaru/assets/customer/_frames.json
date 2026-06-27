@@ -1,0 +1,22 @@
+{
+  "E1_female": {
+    "frameWidth": 27,
+    "frameHeight": 40,
+    "frames": 6
+  },
+  "E1_man": {
+    "frameWidth": 24,
+    "frameHeight": 40,
+    "frames": 6
+  },
+  "E1_coatman": {
+    "frameWidth": 24,
+    "frameHeight": 40,
+    "frames": 6
+  },
+  "E3_oldwoman": {
+    "frameWidth": 20,
+    "frameHeight": 40,
+    "frames": 5
+  }
+}

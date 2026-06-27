@@ -98,6 +98,29 @@
 /bakery-rush/icon.svg
   Cache-Control: no-cache, must-revalidate
 
+# ---------- donut-donaru (ドーナツどーなる) ----------
+# Phaser4 + Vite 製ゲーム (teraia-donut-rush) を iframe 埋め込み。
+# 同じく imapp 配下からのみフレーム許可。※imapp 未公開（配信のみ・実機テスト用）
+/donut-donaru/*
+  Content-Security-Policy: frame-ancestors 'self' https://imapp.shop https://*.imapp.shop https://imapp.pages.dev https://*.imapp.pages.dev http://localhost:3000 http://127.0.0.1:3000
+
+# index.html はビルドごとに JS ハッシュ参照が変わる → 常に最新化
+/donut-donaru/index.html
+  Cache-Control: no-cache, must-revalidate
+# ドーナツ/客/設備など同名で差し替わり得る素材があるため、確実な反映を優先して常に再検証。
+# （JS は内容ハッシュ名なので 304 で済み、実害は小さい）
+/donut-donaru/assets/*
+  Cache-Control: no-cache, must-revalidate
+# ルート直下のアイコン/マニフェストも同名で差し替わるため常に再検証。
+/donut-donaru/manifest.webmanifest
+  Cache-Control: no-cache, must-revalidate
+/donut-donaru/apple-touch-icon.png
+  Cache-Control: no-cache, must-revalidate
+/donut-donaru/icon-192.png
+  Cache-Control: no-cache, must-revalidate
+/donut-donaru/icon-512.png
+  Cache-Control: no-cache, must-revalidate
+
 # 共通: Pages 自体のルートはまだ未使用 (将来ゲーム一覧 LP を置くかもしれない)
 /*
   X-Content-Type-Options: nosniff

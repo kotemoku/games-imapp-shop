@@ -13,6 +13,7 @@ Cloudflare Pages で `games.imapp.shop` カスタムドメインを当てる。
 | `/pizza-oven-rush/` | ピザ・オーブン・ラッシュ | `pizza-oven-rush` (Phaser4 + Vite) |
 | `/apple-guard/` | アップルガード 〜りんごの木をまもれ〜 | `apple-guard` (Phaser4 + Vite) |
 | `/bakery-rush/` | やきたて！ベーカリーラッシュ | `ベーカリーラッシュ` (単一HTML / Canvas) ※imapp 未公開（配信のみ） |
+| `/donut-donaru/` | ドーナツどーなる | `teraia-donut-rush` (Phaser4 + Vite) ※imapp 未公開（配信のみ・実機テスト用） |
 
 ## デプロイ手順
 
