@@ -9,7 +9,7 @@
  * バンドル名はビルド毎にハッシュが変わるため、固定リストを precache せず実行時に貯める。
  * CACHE_VERSION を上げると旧キャッシュを破棄する。
  */
-const CACHE_VERSION = 'pp-v2';
+const CACHE_VERSION = 'pp-v3';
 const CACHE_NAME = `packer-panic-${CACHE_VERSION}`;
 
 // 最低限の app shell（sw.js の場所＝アプリのルート基準で解決される相対パス）。
@@ -61,9 +61,11 @@ self.addEventListener('fetch', (event) => {
   if (url.origin !== self.location.origin) return; // 別オリジンは素通し
 
   // HTML ナビゲーション：network-first → オフライン時はキャッシュの app shell。
+  // cache:'reload' でブラウザHTTPキャッシュを必ず迂回し、常に最新の index を取得する
+  // （= 最新のハッシュ付きJSを参照させ、更新が確実に反映されるようにする）。
   if (request.mode === 'navigate') {
     event.respondWith(
-      fetch(request)
+      fetch(request, { cache: 'reload' })
         .then((res) => {
           const copy = res.clone();
           caches.open(CACHE_NAME).then((c) => c.put('./index.html', copy));
