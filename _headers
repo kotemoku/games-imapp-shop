@@ -57,6 +57,17 @@
 # （JS は内容ハッシュ名なので 304 で済み、実害は小さい）
 /pizza-oven-rush/assets/*
   Cache-Control: no-cache, must-revalidate
+# ルート直下のアイコン/マニフェストも同名で差し替わるため常に再検証（古いアイコンが残らないように）。
+/pizza-oven-rush/manifest.webmanifest
+  Cache-Control: no-cache, must-revalidate
+/pizza-oven-rush/favicon.png
+  Cache-Control: no-cache, must-revalidate
+/pizza-oven-rush/apple-touch-icon.png
+  Cache-Control: no-cache, must-revalidate
+/pizza-oven-rush/icon-192.png
+  Cache-Control: no-cache, must-revalidate
+/pizza-oven-rush/icon-512.png
+  Cache-Control: no-cache, must-revalidate
 
 # ---------- apple-guard (アップルガード 〜りんごの木をまもれ〜) ----------
 # Phaser4 + Vite 製ゲーム (apple-guard) を iframe 埋め込み。
