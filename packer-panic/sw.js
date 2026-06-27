@@ -9,7 +9,7 @@
  * バンドル名はビルド毎にハッシュが変わるため、固定リストを precache せず実行時に貯める。
  * CACHE_VERSION を上げると旧キャッシュを破棄する。
  */
-const CACHE_VERSION = 'pp-v3';
+const CACHE_VERSION = 'pp-v4';
 const CACHE_NAME = `packer-panic-${CACHE_VERSION}`;
 
 // 最低限の app shell（sw.js の場所＝アプリのルート基準で解決される相対パス）。
