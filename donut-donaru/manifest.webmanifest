@@ -4,8 +4,8 @@
   "description": "3レーン流下のドーナツ屋ゲーム（teraia）",
   "start_url": "./",
   "scope": "./",
-  "display": "fullscreen",
-  "orientation": "landscape",
+  "display": "standalone",
+  "orientation": "any",
   "background_color": "#1a1a22",
   "theme_color": "#2b2530",
   "icons": [
