@@ -29,27 +29,22 @@
         user-select: none;
         -webkit-tap-highlight-color: transparent;
       }
-      /* モバイルの 100vh 問題を回避: 実ビューポートに固定して見切れを防ぐ */
+      /* モバイルの 100vh 問題を回避し実ビューポートに固定。
+         中央寄せは Phaser の autoCenter に任せる（flex と二重化させない）。 */
       #app {
         position: fixed;
         inset: 0;
         width: 100vw;
         height: 100vh;
         height: 100dvh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: env(safe-area-inset-top) env(safe-area-inset-right)
-          env(safe-area-inset-bottom) env(safe-area-inset-left);
-        box-sizing: border-box;
+        overflow: hidden;
       }
       canvas {
+        display: block;
         image-rendering: pixelated;
-        max-width: 100%;
-        max-height: 100%;
       }
     </style>
-    <script type="module" crossorigin src="./assets/index-3Ek1YC7b.js"></script>
+    <script type="module" crossorigin src="./assets/index-2wYkwC83.js"></script>
   </head>
   <body>
     <div id="app"></div>
