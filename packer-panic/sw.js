@@ -9,7 +9,7 @@
  * バンドル名はビルド毎にハッシュが変わるため、固定リストを precache せず実行時に貯める。
  * CACHE_VERSION を上げると旧キャッシュを破棄する。
  */
-const CACHE_VERSION = 'pp-v6';
+const CACHE_VERSION = 'pp-v7';
 const CACHE_NAME = `packer-panic-${CACHE_VERSION}`;
 
 // 最低限の app shell（sw.js の場所＝アプリのルート基準で解決される相対パス）。
@@ -22,7 +22,11 @@ const PRECACHE_URLS = [
   './icons/apple-touch-icon.png',
 ];
 
+// 既存の active SW があるか＝「更新」かどうか（初回インストールと区別）。
+let isUpdate = false;
+
 self.addEventListener('install', (event) => {
+  isUpdate = !!self.registration.active;
   event.waitUntil(
     caches
       .open(CACHE_NAME)
@@ -40,16 +44,27 @@ self.addEventListener('install', (event) => {
 
 self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches
-      .keys()
-      .then((keys) =>
-        Promise.all(
-          keys
-            .filter((k) => k.startsWith('packer-panic-') && k !== CACHE_NAME)
-            .map((k) => caches.delete(k)),
-        ),
-      )
-      .then(() => self.clients.claim()),
+    (async () => {
+      // 旧キャッシュを破棄。
+      const keys = await caches.keys();
+      await Promise.all(
+        keys
+          .filter((k) => k.startsWith('packer-panic-') && k !== CACHE_NAME)
+          .map((k) => caches.delete(k)),
+      );
+      await self.clients.claim();
+      // 更新時のみ：制御下の各ページを SW 側から強制リロードする。
+      // これで「古いJS×新しいアセット」の不整合（巨大化・低解像度）を、
+      // ページ側のコードが古くても確実に解消できる。
+      if (isUpdate) {
+        const wins = await self.clients.matchAll({ type: 'window' });
+        for (const c of wins) {
+          if (typeof c.navigate === 'function') {
+            c.navigate(c.url).catch(() => undefined);
+          }
+        }
+      }
+    })(),
   );
 });
 
