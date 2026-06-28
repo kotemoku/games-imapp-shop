@@ -60,13 +60,12 @@ window.addEventListener('resize', resize);
 
 
 //==================== 領域レイアウト ====================
-// 上部バンド: 0-58 スコアバー / 58-200 クリーム帯（オーダー＋固定ショーケース窓）
+// 上部バンド: 0-58 スコアバー / 58-130 クリーム帯（オーダー）。ショーケース窓は廃止。
 const HUDH = 58;
-const ORDERS   = { y:80,  h:40 };                      // オーダー票の行（上部集約）
-const SHOWCASE = { x:20, y:122, w:W-40, h:74 };        // 固定「ショーケース窓」(122-196)
-const FIELD = { x:24, y:200, w:W-48, bottom:752 };     // 落下・山積み（下に拡張）
+const ORDERS   = { y:78,  h:40 };                      // オーダー票の行（上部集約）
+const FIELD = { x:24, y:132, w:W-48, bottom:752 };     // 落下・山積み（窓削除分 上へ拡張）
 const SHELF = { y:760, h:168 };                        // 店先の棚（760-928）
-const BASELINE_Y = 262;                                // ゲームオーバー基準線
+const BASELINE_Y = 210;                                // ゲームオーバー基準線
 const BR = 33;                                         // パン半径（統一円）
 
 //==================== メニュー（config/menu 相当） ====================
@@ -85,7 +84,9 @@ const POOL = [
   { id:'b9', name:'ベーコンエピ',       price:280, cap:'ベーコンの塩気',     color:'#c47632', img:9 },
 ];
 const POOL_BY_ID = Object.fromEntries(POOL.map(m=>[m.id,m]));
-let MENU = [];   // 今回のゲームで使う5種（resetGame/起動時に抽選）
+let roster = []; // 今回のゲームのパン順（10種シャッフル）
+let MENU = [];   // 現在出現中のパン（5種開始→スコアで最大10まで増える）
+const START_TYPES = 5, MAX_TYPES = 10, TYPES_PER = 4000; // TYPES_PER 点ごとに+1種（ゆっくり）
 // 画像プリロード（IMG=丸バッジ / HERO=パンのみ切り抜き）
 const IMG = [], HERO = [];
 for(let i=0;i<POOL.length;i++){
@@ -96,10 +97,23 @@ const LOGO = new Image(); LOGO.src='logo.png';   // 店ロゴ（背景透過）
 const STORE_NAME = 'this is ormary store';
 function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=(Math.random()*(i+1))|0; const t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
 function pickRoster(){
-  MENU = shuffle(POOL.slice()).slice(0,5);
+  roster = shuffle(POOL.slice());           // 10種をシャッフル（出現順）
+  MENU = roster.slice(0, START_TYPES);      // まず5種から
   POOL.forEach(m=>m.sig=false);
-  MENU[(Math.random()*MENU.length)|0].sig = true;   // 5種のうち1つを看板商品に
+  MENU[(Math.random()*MENU.length)|0].sig = true;   // 開始5種のうち1つを看板商品に
   daily = MENU[(Math.random()*MENU.length)|0];       // おすすめも5種から
+}
+// スコアに応じた目標種類数（5→最大10）
+function targetTypeCount(){ return Math.min(MAX_TYPES, START_TYPES + Math.floor(score/TYPES_PER)); }
+// スコアが伸びたら出現パンを1種ずつ追加（難化）
+function growTypes(){
+  const tc=targetTypeCount();
+  while(MENU.length < tc && MENU.length < roster.length){
+    const nm=roster[MENU.length]; MENU.push(nm);
+    if(shelf[nm.id]==null) shelf[nm.id]=0;
+    addPopup(W/2, BASELINE_Y+62, '新登場！ '+nm.name, nm.color, 24);
+    sfxFever();
+  }
 }
 
 //==================== 難易度カーブ（config/difficultyCurve 相当） ====================
@@ -109,7 +123,6 @@ function difficulty(t){           // t: 経過秒
     spawnEvery: 0.70 - 0.30*k,    // パン落下間隔(秒)：序盤からどんどん供給
     custEvery:  4.6  - 2.0*k,     // 来店間隔(秒)
     patience:   13.0 - 4.5*k,     // 客の我慢(秒)
-    types:      t<30 ? 3 : (t<80 ? 4 : 5), // 種類数 3→4→5
     fallSpeed:  60 + 90*k,
   };
 }
@@ -287,6 +300,7 @@ let ranking=[];      // スコア降順の配列（上位10件）
 let myRank=0;        // 今回ゲームの順位
 const IMAPP_SIGNUP_URL='https://imapp.shop';   // ← 登録ページ確定後に差し替え可
 let ctaRect=null;    // 結果画面「imappに登録」CTAのクリック領域
+let homeCtaRect=null;// ホーム画面「imappに登録」CTAのクリック領域
 
 function loadSave(){
   try{ unlocked=JSON.parse(localStorage.getItem('br_zukan')||'{}'); }catch(e){ unlocked={}; }
@@ -296,7 +310,7 @@ function loadSave(){
 }
 function save(){ localStorage.setItem('br_zukan', JSON.stringify(unlocked)); localStorage.setItem('br_best', best); }
 
-function activeTypes(){ return MENU.slice(0, difficulty(elapsed).types); }
+function activeTypes(){ return MENU; }   // 現在出現中の全種（スコアで増える）
 
 function resetGame(){
   pickRoster(); // 毎ゲーム、5種をランダムに入れ替え
@@ -403,9 +417,13 @@ function onDown(e){
     bgm.on=!bgm.on; applyBgmVol(); localStorage.setItem('br_bgm', bgm.on?'1':'0'); return;
   }
   if(state==='title'){
-    // ロゴをタップ → Instagram へ
+    // ロゴを押す → 一回震える（離した時にInstagramへ）
     if(logoRect && p.x>=logoRect.x && p.x<=logoRect.x+logoRect.w && p.y>=logoRect.y && p.y<=logoRect.y+logoRect.h){
-      try{ if(window.open) window.open(IG_URL,'_blank','noopener'); }catch(e){}
+      logoPressing=true; logoShakeT=LOGO_SHAKE; return;
+    }
+    // imapp 登録 CTA（ホーム）
+    if(homeCtaRect && p.x>=homeCtaRect.x && p.x<=homeCtaRect.x+homeCtaRect.w && p.y>=homeCtaRect.y && p.y<=homeCtaRect.y+homeCtaRect.h){
+      try{ if(window.open) window.open(IMAPP_SIGNUP_URL,'_blank','noopener'); }catch(e){}
       return;
     }
     startGame(); return;
@@ -437,6 +455,8 @@ function onMove(e){
   if(cand){ chain.push(cand); cand.sel=true; sfxConnect(chain.length); }
 }
 function onUp(){
+  // ロゴを離した → Instagram へ（押下中に震えた後）
+  if(logoPressing){ logoPressing=false; if(overLogo()){ try{ if(window.open) window.open(IG_URL,'_blank','noopener'); }catch(e){} } return; }
   if(!dragging) return; dragging=false;
   if(chain.length>=3) resolveMatch(chain);
   else chain.forEach(b=>b.sel=false);
@@ -461,10 +481,9 @@ function bakeGroup(arr, auto){
   addPopup(cx,cy-20,'+'+pts, sig?'#ffd24a':'#fff', kama?34:26);
   if(combo>=3) addPopup(cx,cy-52,'COMBO x'+combo,'#ff9a3c',22);
   if(!unlocked[id]){ unlocked[id]=true; addPopup(W/2,BASELINE_Y+40,'★図鑑に追加：'+m.name,'#9fe',22); save(); }
-  // 名前入りで大きく表示（中央ビッグ）＋固定窓＋棚へ
-  const first=!firstShown[id]; firstShown[id]=true; const big=sig||kama;
-  bigShow={ id, n, name:m.name, sig, kama, t:0, dur:1.0 };
-  showDisp={ id, n, sig, fever:kama, first, big, t:0, dur:(first?1.6:1.0), showCross:false };
+  // 名前入りでパンを大きく表示（やきたて！）＋棚へ飛ばす
+  firstShown[id]=true; const big=sig||kama;
+  bigShow={ id, n, name:m.name, sig, kama, t:0, dur:1.1 };
   effects.push(makeFly(id, big));
   sfxMatch(sig||kama);
 }
@@ -518,7 +537,7 @@ function shelfSlot(id){
   const cw=FIELD.w/MENU.length;
   return { x:FIELD.x+cw*idx+cw/2, y:SHELF.y+SHELF.h*0.42 };
 }
-function winHero(){ return { x:SHOWCASE.x+58, y:SHOWCASE.y+SHOWCASE.h*0.56 }; }
+function winHero(){ return { x:W/2, y:FIELD.y+150 }; }   // 「やきたて！」表示の中心＝棚へ飛ぶ起点
 // 焼けたパンが窓から棚へ弧を描いて飛ぶ（在庫はマッチ時に加算済み・これは演出）
 function makeFly(id,big){ return { id, big, t:0, dur:0.6, landed:false }; }
 function updateFly(fx,dt){ fx.t+=dt; if(fx.t>=fx.dur){
@@ -544,15 +563,15 @@ function drawBigShow(){
   if(!bigShow) return;
   const d=bigShow, p=d.t/d.dur, m=POOL_BY_ID[d.id];
   const e=Math.min(p/0.2,1), sc=(e<1?easeBack(e):1), fade=p>0.78?Math.max(0,1-(p-0.78)/0.22):1;
-  const cx=W/2, cy=FIELD.y+175, half=92*sc;
+  const cx=W/2, cy=FIELD.y+185, half=150*sc;   // 上へ・もっと大きく
   ctx.save(); ctx.globalAlpha=fade; ctx.textAlign='center';
-  drawGlow(cx,cy, half*1.85, d.sig?'rgba(255,210,90,.42)':'rgba(255,245,220,.36)');
-  ctx.fillStyle=d.kama?'#e8552e':(d.sig?'#ff9e1f':'#ff8c2e'); ctx.font=`900 ${24*sc}px 'Kosugi Maru'`;
-  ctx.fillText(d.kama?'やきたて 釜出し‼':'やきたて‼', cx, cy-half-16);
+  drawGlow(cx,cy, half*1.75, d.sig?'rgba(255,210,90,.48)':'rgba(255,245,220,.42)');
+  ctx.fillStyle=d.kama?'#e8552e':(d.sig?'#ff9e1f':'#ff8c2e'); ctx.font=`900 ${30*sc}px 'Kosugi Maru'`;
+  ctx.fillText(d.kama?'やきたて 釜出し‼':'やきたて‼', cx, cy-half-20);
   drawHeroBread(d.id, cx, cy, half, 0);
-  ctx.font=`900 28px 'Kosugi Maru'`; ctx.lineWidth=6; ctx.strokeStyle='rgba(90,50,20,.65)'; ctx.fillStyle='#fff';
+  ctx.font=`900 34px 'Kosugi Maru'`; ctx.lineWidth=7; ctx.strokeStyle='rgba(90,50,20,.65)'; ctx.fillStyle='#fff';
   const label=m.name+'  ×'+d.n;
-  ctx.strokeText(label, cx, cy+half+32); ctx.fillText(label, cx, cy+half+32);
+  ctx.strokeText(label, cx, cy+half+40); ctx.fillText(label, cx, cy+half+40);
   ctx.restore();
 }
 // 全種フィーバー演出
@@ -569,41 +588,6 @@ function drawFeverShow(){
   ctx.fillStyle='#ffe9c2'; ctx.font=`bold 18px 'Kosugi Maru'`; ctx.fillText('全種 焼き上がり！', W/2, cy+86);
   ctx.restore();
 }
-// 固定ショーケース窓（フィールド上には出さない＝山に重ならない）
-function drawShowcaseWindow(){
-  const {x,y,w,h}=SHOWCASE;
-  withShadow(()=>{ ctx.fillStyle='#fffaf0'; rr(x,y,w,h,16); ctx.fill();
-    ctx.strokeStyle='#e3b870'; ctx.lineWidth=3; ctx.stroke(); });
-  // ガラスの照り
-  ctx.fillStyle='rgba(255,255,255,.4)'; rr(x+6,y+6,w-12,h*0.3,10); ctx.fill();
-  ctx.fillStyle='#c98a3e'; ctx.textAlign='left'; ctx.textBaseline='alphabetic'; ctx.font=`bold 11px 'Kosugi Maru'`;
-  ctx.fillText('やきたてショーケース', x+12, y+16);
-  const hero=winHero();
-  if(showDisp){
-    const d=showDisp, m=POOL_BY_ID[d.id], p=d.t/d.dur;
-    const e=Math.min(p/0.18,1), sc=(e<1?easeBack(e):1)*(d.big?1.12:1), r=24*sc;
-    if(Math.random()<0.35) spawnSteam(hero.x+(Math.random()-0.5)*r, hero.y-r);
-    drawGlow(hero.x,hero.y,r*2.0, d.sig?'rgba(255,210,90,.5)':'rgba(255,245,215,.42)');
-    if(d.showCross && p>0.4 && p<0.6){ drawCross(d.id,hero.x,hero.y,r*0.9); }
-    else { ctx.save(); ctx.translate(hero.x,hero.y); const wob=1+0.05*Math.sin(d.t*16); ctx.scale(wob,1/wob);
-      drawBread(d.id,0,0,r,true,Math.sin(d.t*7)*0.05); ctx.restore(); }
-    // 右側：リボン＋商品名＋価格＋個数
-    const tx=x+92;
-    const ribbon=d.fever?'釜出し！':(m.sig?'★看板商品':'やきたて！'), rcol=d.fever?'#e8552e':(m.sig?'#ff9e1f':'#ffb347');
-    ctx.textAlign='left'; ctx.textBaseline='middle';
-    ctx.fillStyle=rcol; ctx.font=`900 11px 'Kosugi Maru'`; ctx.fillText(ribbon, tx, y+22);
-    ctx.fillStyle='#7a4a1e'; ctx.font=`900 ${d.first?22:19}px 'Kosugi Maru'`; ctx.fillText(m.name, tx, y+h*0.55);
-    ctx.fillStyle='#b07a3a'; ctx.font=`12px 'Kosugi Maru'`; ctx.fillText('¥'+m.price+'  '+(m.cap||''), tx, y+h*0.82);
-    // 個数チップ
-    ctx.fillStyle='#e8552e'; ctx.beginPath(); ctx.arc(x+w-26, hero.y, 16,0,7); ctx.fill();
-    ctx.strokeStyle='#fff'; ctx.lineWidth=2; ctx.stroke();
-    ctx.fillStyle='#fff'; ctx.textAlign='center'; ctx.font=`900 15px 'Kosugi Maru'`; ctx.fillText('×'+d.n, x+w-26, hero.y);
-  } else {
-    ctx.fillStyle='#cdb38c'; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.font=`13px 'Kosugi Maru'`;
-    ctx.fillText('3つ揃えると ここに焼き上がり！', x+w/2, y+h*0.62);
-  }
-}
-
 //==================== 客（CustomerSystem） ====================
 function spawnCustomer(){
   if(customers.length>=4) return;
@@ -756,19 +740,20 @@ function drawShelf(){
   ctx.fillStyle='#8a6336'; ctx.fillRect(0,SHELF.y+SHELF.h-10,W,10);
   ctx.fillStyle='#7a4a1e'; ctx.textAlign='center'; ctx.font=`bold 12px 'Kosugi Maru'`;
   const cols=MENU.length, cw=FIELD.w/cols;
+  const r=Math.min(22, cw*0.40);                 // 列数で自動縮小
+  const nf=cols>=9?8:(cols>=7?9:11);             // 商品名フォント
+  const rc=Math.min(12, cw*0.24);                // 在庫数バッジ
   MENU.forEach((m,i)=>{
-    const x=FIELD.x+cw*i+cw/2, y=SHELF.y+SHELF.h*0.42;
-    // トレイ
-    ctx.fillStyle='rgba(120,80,40,.18)'; rr(x-cw*0.42, y+18, cw*0.84, 10, 5); ctx.fill();
+    const x=FIELD.x+cw*i+cw/2, y=SHELF.y+SHELF.h*0.40;
+    ctx.fillStyle='rgba(120,80,40,.18)'; rr(x-cw*0.42, y+r-2, cw*0.84, 9, 4); ctx.fill();
     const cnt=shelf[m.id]||0;
     ctx.globalAlpha = cnt>0?1:0.32;
-    drawBread(m.id, x, y, 22, true);
+    drawBread(m.id, x, y, r, true);
     ctx.globalAlpha=1;
-    ctx.fillStyle= cnt>0?'#5a3618':'#b59a78'; ctx.font=`bold 11px 'Kosugi Maru'`;
-    ctx.fillText(m.name, x, y+38);
-    // 在庫数
-    if(cnt>0){ ctx.fillStyle='#e8552e'; ctx.beginPath(); ctx.arc(x+cw*0.32, y-16, 12,0,7); ctx.fill();
-      ctx.fillStyle='#fff'; ctx.font=`900 13px 'Kosugi Maru'`; ctx.fillText(cnt, x+cw*0.32, y-12); }
+    ctx.fillStyle= cnt>0?'#5a3618':'#b59a78'; ctx.textAlign='center'; ctx.font=`bold ${nf}px 'Kosugi Maru'`;
+    ctx.fillText(m.name, x, y+r+15);
+    if(cnt>0){ ctx.fillStyle='#e8552e'; ctx.beginPath(); ctx.arc(x+cw*0.30, y-r*0.7, rc,0,7); ctx.fill();
+      ctx.fillStyle='#fff'; ctx.font=`900 ${rc}px 'Kosugi Maru'`; ctx.fillText(cnt, x+cw*0.30, y-r*0.7+rc*0.35); }
   });
   ctx.fillStyle='#5a3618'; ctx.textAlign='left'; ctx.font=`bold 11px 'Kosugi Maru'`;
   ctx.fillText('店先の棚（在庫）', 16, SHELF.y+14);
@@ -830,6 +815,12 @@ function star(x,y,r,n){ ctx.beginPath(); for(let i=0;i<n*2;i++){ const a=Math.PI
 let titleT=0;
 const IG_URL='https://www.instagram.com/this_is_ormary_store/';
 let logoRect=null;            // ロゴのクリック領域（Instagramへリンク）
+let pointer={x:-999,y:-999,type:'mouse'}; // 現在のポインタ（ホバー検出用）
+let logoPressing=false;       // ロゴ押下中（タッチ）
+let logoShakeT=0;             // ロゴのワンショット震え残り時間
+let wasOverLogo=false;        // 前フレームのホバー状態（入った瞬間検出用）
+const LOGO_SHAKE=0.5;         // 震えの長さ(秒)
+function overLogo(){ return !!logoRect && pointer.x>=logoRect.x && pointer.x<=logoRect.x+logoRect.w && pointer.y>=logoRect.y && pointer.y<=logoRect.y+logoRect.h; }
 // Instagram バッジ（ロゴがタップできる印）
 function drawIGBadge(x,y,r){
   ctx.save(); ctx.translate(x,y);
@@ -859,18 +850,14 @@ function drawTitle(){
     lw=LOGO.naturalWidth*s; lh=LOGO.naturalHeight*s;
   }
   const lcy=ly+lh/2;
-  // 波紋（タップ誘導）
-  const rip=(titleT*0.5)%1;
-  ctx.save(); ctx.globalAlpha=(1-rip)*0.30; ctx.strokeStyle='#141414'; ctx.lineWidth=2.5;
-  ctx.beginPath(); ctx.arc(W/2, lcy, lw*0.42*(0.9+rip*0.35), 0, 7); ctx.stroke(); ctx.restore();
-  // ロゴ本体（呼吸する微パルス）
+  // ロゴ本体（普段は静止。合わせた瞬間に一回だけブルッと震えて止まる）
   if(LOGO.complete && LOGO.naturalWidth){
-    const pls=1+Math.sin(titleT*2.2)*0.025;
-    ctx.save(); ctx.translate(W/2,lcy); ctx.scale(pls,pls); ctx.drawImage(LOGO, -lw/2, -lh/2, lw, lh); ctx.restore();
+    let sx=0, sy=0, rot=0;
+    if(logoShakeT>0){ const k=logoShakeT/LOGO_SHAKE, t=titleT*46; // k:1→0 で減衰
+      sx=Math.sin(t)*3.4*k; sy=Math.sin(t*1.7+1)*3.4*k; rot=Math.sin(t*1.3)*0.04*k; }
+    ctx.save(); ctx.translate(W/2+sx, lcy+sy); ctx.rotate(rot); ctx.drawImage(LOGO, -lw/2, -lh/2, lw, lh); ctx.restore();
   }
   logoRect={ x:W/2-lw/2, y:ly, w:lw, h:lh };
-  // Instagram バッジ（バウンド＝タップできる印）
-  drawIGBadge(W/2+lw*0.33, ly+lh*0.82+Math.sin(titleT*4)*4, 19);
   let y=ly+lh+4;
 
   // 店名＋ハンドル（タップ説明の文言は省く）
@@ -905,9 +892,19 @@ function drawTitle(){
   ctx.save(); ctx.translate(W/2,by); ctx.scale(pulse,pulse);
   ctx.fillStyle='#141414'; rr(-145,-33,290,66,33); ctx.fill();
   ctx.fillStyle='#fff'; ctx.font=`900 26px 'Kosugi Maru'`; ctx.fillText('▶ タップで開店', 0, 9); ctx.restore();
-  ctx.fillStyle='#555'; ctx.font=`12px 'Kosugi Maru'`; ctx.fillText('BEST  '+best.toLocaleString(), W/2, by+58);
+  // ランキング案内＋imapp連携 CTA（ホーム）
+  ctx.fillStyle='#141414'; ctx.font=`bold 13px 'Kosugi Maru'`;
+  ctx.fillText('🏆 ローカルBEST  '+best.toLocaleString(), W/2, by+50);
+  const cw3=332, hx=W/2-cw3/2, hy=by+66, hh=48;
+  homeCtaRect={x:hx,y:hy,w:cw3,h:hh};
+  ctx.save();
+  ctx.fillStyle='#2575e6'; rr(hx,hy,cw3,hh,12); ctx.fill();
+  ctx.strokeStyle='#bcd6ff'; ctx.lineWidth=1.5; rr(hx+4,hy+4,cw3-8,hh-8,9); ctx.stroke();
+  ctx.fillStyle='#fff'; ctx.font=`900 15px 'Kosugi Maru'`; ctx.fillText('全国ランキング・常連順位は imappで ▶', W/2, hy+22);
+  ctx.fillStyle='#d6e6ff'; ctx.font=`10px 'Kosugi Maru'`; ctx.fillText('タップして imapp に登録', W/2, hy+39);
+  ctx.restore();
   ctx.fillStyle='#9a9a9a'; ctx.font=`10px 'Kosugi Maru'`;
-  ctx.fillText('this is ormary store  ×  teraia', W/2, H-24);
+  ctx.fillText('this is ormary store  ×  teraia', W/2, H-18);
 }
 function drawOver(){
   // 背景に薄く店
@@ -963,19 +960,25 @@ function loop(ts){
       custT-=dt; if(custT<=0){ spawnCustomer(); custT=df.custEvery; }
       physics(dt);
       updateCustomers(dt);
+      growTypes();   // スコアに応じて出現パンを増やす（5→最大10）
       comboTimer-=dt; if(comboTimer<=0) combo=0;
       if(cascading){ cascadeT-=dt; if(cascadeT<=0) cascadeStep(); } // 自動連鎖チェック
       checkGameOver(dt);
     }
     // 演出・パーティクルはヒットストップ中も動かす（テンポを殺さない）
     for(let i=effects.length-1;i>=0;i--){ if(updateFly(effects[i],dt)) effects.splice(i,1); }
-    if(showDisp){ showDisp.t+=dt; if(showDisp.t>showDisp.dur) showDisp=null; }
     if(bigShow){ bigShow.t+=dt; if(bigShow.t>bigShow.dur) bigShow=null; }
     if(feverShow){ feverShow.t+=dt; if(feverShow.t>feverShow.dur) feverShow=null; }
     updateParticles(dt);
     if(feverFlash>0) feverFlash-=dt;
     if(shakeT>0) shakeT-=dt;
-  } else { titleT+=dt; updateParticles(dt); }
+  } else { titleT+=dt; updateParticles(dt);
+    // ロゴ：マウスで「合わせた瞬間」に一回だけ震える
+    const over = pointer.type!=='touch' && overLogo();
+    if(over && !wasOverLogo) logoShakeT=LOGO_SHAKE;
+    wasOverLogo=over;
+    if(logoShakeT>0) logoShakeT-=dt;
+  }
   updateBGM(); // BGMスケジューラ（全状態で進める）
 
   // 描画
@@ -992,7 +995,6 @@ function loop(ts){
     drawShelf();
     drawHUD();              // 上部バー＋クリーム帯（フィールド上端を隠す）
     drawOrders();           // オーダー票（バンド内）
-    drawShowcaseWindow();   // 固定ショーケース窓（山に重ならない）
     effects.forEach(drawFly); // 窓→棚へ飛ぶパン（フィールド上に表示）
     if(feverFlash>0){ ctx.fillStyle=`rgba(255,210,90,${feverFlash*0.45})`; ctx.fillRect(0,FIELD.y,W,H-FIELD.y); }
     drawParticles();        // マッチ点の衝撃波・パンくず・ポップアップ
@@ -1005,10 +1007,12 @@ function loop(ts){
 }
 
 //==================== 入力結線 ====================
-canvas.addEventListener('pointerdown', e=>{ e.preventDefault(); onDown(e); });
-canvas.addEventListener('pointermove', e=>{ e.preventDefault(); onMove(e); });
-window.addEventListener('pointerup', e=>{ onUp(e); });
-canvas.addEventListener('pointercancel', onUp);
+function trackPointer(e){ const p=toLogic(e); pointer.x=p.x; pointer.y=p.y; pointer.type=e.pointerType||'mouse'; }
+canvas.addEventListener('pointerdown', e=>{ e.preventDefault(); trackPointer(e); onDown(e); });
+canvas.addEventListener('pointermove', e=>{ e.preventDefault(); trackPointer(e); onMove(e); });
+window.addEventListener('pointerup', e=>{ if(pointer.type==='touch'){ pointer.x=-999; pointer.y=-999; } onUp(e); });
+canvas.addEventListener('pointercancel', e=>{ logoPressing=false; pointer.x=-999; pointer.y=-999; onUp(e); });
+canvas.addEventListener('pointerleave', ()=>{ pointer.x=-999; pointer.y=-999; }); // マウスがロゴから外れたらホバー解除
 canvas.addEventListener('contextmenu', e=>e.preventDefault());
 
 //==================== 起動 ====================
