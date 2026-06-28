@@ -68,13 +68,27 @@ const SHELF = { y:760, h:168 };                        // 店先の棚（760-928
 const BASELINE_Y = 210;                                // ゲームオーバー基準線
 const BR = 33;                                         // パン半径（統一円）
 
+//==================== 店舗パック（★ここと下の POOL を差し替えると別店仕様になる） ====================
+// ゲーム本体(エンジン)は固定。STORE と POOL(メニュー)だけ差し替えれば他店版を量産できる。
+// 店舗IDは imapp から store_id で上書きされる（特定の登録店舗のみ配信する制御は imapp 側で行う）。
+const STORE = {
+  id:     'ormary',                                          // 既定の店舗ID
+  name:   'this is ormary store',
+  logo:   'logo.png',
+  ig:     'https://www.instagram.com/this_is_ormary_store/',
+  signup: 'https://imapp.shop',
+  gameKey:'bakery-rush',                                     // ゲーム識別子（エンジン側・固定）
+};
+
 //==================== imapp 連携（iframe親へ postMessage / packer-panic と同契約） ====================
 const IMAPP = (()=>{
-  const SOURCE='bakery-rush', HOST_SOURCE='imappt';          // 自分/親(imapp) の識別子
+  const SOURCE=STORE.gameKey, HOST_SOURCE='imappt';          // 自分(ゲーム)/親(imapp) の識別子
   const params = new URLSearchParams((typeof location!=='undefined' && location.search) || '');
   const hostOrigin = params.get('hostOrigin') || '*';
   const st = { player: params.get('player')||null,
+               store: params.get('store_id')||params.get('storeId')||STORE.id, // 店舗ID（imappが上書き）
                embedded: (typeof window!=='undefined' && window.parent && window.parent!==window) };
+  const base = ()=>({ player: st.player, store_id: st.store, game: SOURCE });
   function send(type, payload){
     if(!st.embedded) return;
     try{ window.parent.postMessage({ source:SOURCE, type, payload:payload||{} }, hostOrigin); }catch(e){}
@@ -84,19 +98,20 @@ const IMAPP = (()=>{
       const d=e&&e.data; if(!d || d.source!==HOST_SOURCE || typeof d.type!=='string') return;
       const p=d.payload||{};
       if(p.player!=null) st.player=p.player;
-      if(d.type==='config'||d.type==='host_init'||d.type==='init'){ send('config_ack', { player: st.player }); }
+      if(p.store_id!=null) st.store=p.store_id; else if(p.storeId!=null) st.store=p.storeId;
+      if(d.type==='config'||d.type==='host_init'||d.type==='init'){ send('config_ack', base()); }
     });
   }
   return {
-    ready(){ send('ready', { player: st.player }); },
-    gameStart(){ send('game_start', { player: st.player }); },
-    gameOver(score, extra){ send('game_over', Object.assign({ score, player: st.player }, extra||{})); },
-    get player(){ return st.player; }, get embedded(){ return st.embedded; },
+    ready(){ send('ready', base()); },
+    gameStart(){ send('game_start', base()); },
+    gameOver(score, extra){ send('game_over', Object.assign(base(), { score }, extra||{})); },
+    get player(){ return st.player; }, get storeId(){ return st.store; }, get embedded(){ return st.embedded; },
   };
 })();
 
-//==================== メニュー（config/menu 相当） ====================
-// 10種のプール。毎ゲーム、この中から5種をランダムに選んで出す。
+//==================== メニュー（config/menu 相当 ＝ 店舗パックの一部・差し替え対象） ====================
+// 10種のプール。毎ゲーム、この中から5種をランダムに選んで出す。他店版はここを差し替える。
 // 物理は全種ほぼ同径の丸。見た目は丸く切り抜いた写真アイコン（assets/breadN.png）。
 const POOL = [
   { id:'b0', name:'トマトフォカッチャ', price:280, cap:'完熟トマトの旨み',   color:'#ce6d22', img:0 },
@@ -118,8 +133,8 @@ for(let i=0;i<POOL.length;i++){
   const im=new Image(); im.src='assets/bread'+i+'.png'; IMG[i]=im;
   const hg=new Image(); hg.src='assets/hero'+i+'.png'; HERO[i]=hg;
 }
-const LOGO = new Image(); LOGO.src='logo.png';   // 店ロゴ（背景透過）
-const STORE_NAME = 'this is ormary store';
+const LOGO = new Image(); LOGO.src=STORE.logo;   // 店ロゴ（背景透過）
+const STORE_NAME = STORE.name;
 function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=(Math.random()*(i+1))|0; const t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
 function pickRoster(){
   MENU = shuffle(POOL.slice()).slice(0,5);           // 毎ゲーム 10種から5種をランダム抽選（固定）
@@ -311,7 +326,7 @@ let shakeT=0, feverFlash=0, hitstopT=0;
 // ランキング（この端末のローカルTOP）。全国/常連ランキングは imapp 登録が必要。
 let ranking=[];      // スコア降順の配列（上位10件）
 let myRank=0;        // 今回ゲームの順位
-const IMAPP_SIGNUP_URL='https://imapp.shop';   // ← 登録ページ確定後に差し替え可
+const IMAPP_SIGNUP_URL=STORE.signup;   // 店舗パックから（登録ページ）
 let ctaRect=null;    // 結果画面「imappに登録」CTAのクリック領域
 let homeCtaRect=null;// ホーム画面「imappに登録」CTAのクリック領域
 
@@ -828,7 +843,7 @@ function star(x,y,r,n){ ctx.beginPath(); for(let i=0;i<n*2;i++){ const a=Math.PI
 
 //==================== タイトル / 結果 ====================
 let titleT=0;
-const IG_URL='https://www.instagram.com/this_is_ormary_store/';
+const IG_URL=STORE.ig;   // 店舗パックから（Instagram）
 let logoRect=null;            // ロゴのクリック領域（Instagramへリンク）
 let pointer={x:-999,y:-999,type:'mouse'}; // 現在のポインタ（ホバー検出用）
 let logoPressing=false;       // ロゴ押下中（タッチ）
