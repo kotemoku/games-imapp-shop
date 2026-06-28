@@ -97,6 +97,11 @@
   Cache-Control: no-cache, must-revalidate
 /bakery-rush/icon.svg
   Cache-Control: no-cache, must-revalidate
+# パン/ヒーロー/ロゴ画像も差し替え得るため、確実な反映を優先して常に再検証。
+/bakery-rush/assets/*
+  Cache-Control: no-cache, must-revalidate
+/bakery-rush/logo.png
+  Cache-Control: no-cache, must-revalidate
 
 # ---------- donut-donaru (ドーナツどーなる) ----------
 # Phaser4 + Vite 製ゲーム (teraia-donut-rush) を iframe 埋め込み。
