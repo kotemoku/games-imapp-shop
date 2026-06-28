@@ -68,6 +68,33 @@ const SHELF = { y:760, h:168 };                        // 店先の棚（760-928
 const BASELINE_Y = 210;                                // ゲームオーバー基準線
 const BR = 33;                                         // パン半径（統一円）
 
+//==================== imapp 連携（iframe親へ postMessage / packer-panic と同契約） ====================
+const IMAPP = (()=>{
+  const SOURCE='bakery-rush', HOST_SOURCE='imappt';          // 自分/親(imapp) の識別子
+  const params = new URLSearchParams((typeof location!=='undefined' && location.search) || '');
+  const hostOrigin = params.get('hostOrigin') || '*';
+  const st = { player: params.get('player')||null,
+               embedded: (typeof window!=='undefined' && window.parent && window.parent!==window) };
+  function send(type, payload){
+    if(!st.embedded) return;
+    try{ window.parent.postMessage({ source:SOURCE, type, payload:payload||{} }, hostOrigin); }catch(e){}
+  }
+  if(typeof window!=='undefined' && window.addEventListener){
+    window.addEventListener('message', (e)=>{                 // 親(imapp)からの受信
+      const d=e&&e.data; if(!d || d.source!==HOST_SOURCE || typeof d.type!=='string') return;
+      const p=d.payload||{};
+      if(p.player!=null) st.player=p.player;
+      if(d.type==='config'||d.type==='host_init'||d.type==='init'){ send('config_ack', { player: st.player }); }
+    });
+  }
+  return {
+    ready(){ send('ready', { player: st.player }); },
+    gameStart(){ send('game_start', { player: st.player }); },
+    gameOver(score, extra){ send('game_over', Object.assign({ score, player: st.player }, extra||{})); },
+    get player(){ return st.player; }, get embedded(){ return st.embedded; },
+  };
+})();
+
 //==================== メニュー（config/menu 相当） ====================
 // 10種のプール。毎ゲーム、この中から5種をランダムに選んで出す。
 // 物理は全種ほぼ同径の丸。見た目は丸く切り抜いた写真アイコン（assets/breadN.png）。
@@ -84,9 +111,7 @@ const POOL = [
   { id:'b9', name:'ベーコンエピ',       price:280, cap:'ベーコンの塩気',     color:'#c47632', img:9 },
 ];
 const POOL_BY_ID = Object.fromEntries(POOL.map(m=>[m.id,m]));
-let roster = []; // 今回のゲームのパン順（10種シャッフル）
-let MENU = [];   // 現在出現中のパン（5種開始→スコアで最大10まで増える）
-const START_TYPES = 5, MAX_TYPES = 10, TYPES_PER = 4000; // TYPES_PER 点ごとに+1種（ゆっくり）
+let MENU = [];   // 今回のゲームで使う5種（毎ゲーム ランダム抽選・固定）
 // 画像プリロード（IMG=丸バッジ / HERO=パンのみ切り抜き）
 const IMG = [], HERO = [];
 for(let i=0;i<POOL.length;i++){
@@ -97,33 +122,21 @@ const LOGO = new Image(); LOGO.src='logo.png';   // 店ロゴ（背景透過）
 const STORE_NAME = 'this is ormary store';
 function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=(Math.random()*(i+1))|0; const t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
 function pickRoster(){
-  roster = shuffle(POOL.slice());           // 10種をシャッフル（出現順）
-  MENU = roster.slice(0, START_TYPES);      // まず5種から
+  MENU = shuffle(POOL.slice()).slice(0,5);           // 毎ゲーム 10種から5種をランダム抽選（固定）
   POOL.forEach(m=>m.sig=false);
-  MENU[(Math.random()*MENU.length)|0].sig = true;   // 開始5種のうち1つを看板商品に
-  daily = MENU[(Math.random()*MENU.length)|0];       // おすすめも5種から
-}
-// スコアに応じた目標種類数（5→最大10）
-function targetTypeCount(){ return Math.min(MAX_TYPES, START_TYPES + Math.floor(score/TYPES_PER)); }
-// スコアが伸びたら出現パンを1種ずつ追加（難化）
-function growTypes(){
-  const tc=targetTypeCount();
-  while(MENU.length < tc && MENU.length < roster.length){
-    const nm=roster[MENU.length]; MENU.push(nm);
-    if(shelf[nm.id]==null) shelf[nm.id]=0;
-    addPopup(W/2, BASELINE_Y+62, '新登場！ '+nm.name, nm.color, 24);
-    sfxFever();
-  }
+  MENU[(Math.random()*MENU.length)|0].sig = true;    // 5種のうち1つを看板商品に
+  daily = MENU[(Math.random()*MENU.length)|0];        // おすすめも5種から
 }
 
 //==================== 難易度カーブ（config/difficultyCurve 相当） ====================
+// 種類は5固定。難易度は「落下スピードを徐々に上げる」方式。
 function difficulty(t){           // t: 経過秒
-  const k = Math.min(t/150, 1);   // 2分半でフルランプ
+  const k = Math.min(t/180, 1);   // 来店/我慢などは3分でフルランプ
   return {
-    spawnEvery: 0.70 - 0.30*k,    // パン落下間隔(秒)：序盤からどんどん供給
-    custEvery:  4.6  - 2.0*k,     // 来店間隔(秒)
-    patience:   13.0 - 4.5*k,     // 客の我慢(秒)
-    fallSpeed:  60 + 90*k,
+    spawnEvery: 0.80 - 0.34*k,    // パン落下間隔(秒) 0.80→0.46（ゆるめ）
+    custEvery:  4.6  - 1.8*k,     // 来店間隔(秒)
+    patience:   13.0 - 4.0*k,     // 客の我慢(秒)
+    fallSpeed:  55 + 26*Math.min(t/30, 9), // 落下速度を主役に：30秒ごとに上昇（最大~4.5分で頭打ち）
   };
 }
 
@@ -566,8 +579,7 @@ function drawBigShow(){
   const cx=W/2, cy=FIELD.y+185, half=150*sc;   // 上へ・もっと大きく
   ctx.save(); ctx.globalAlpha=fade; ctx.textAlign='center';
   drawGlow(cx,cy, half*1.75, d.sig?'rgba(255,210,90,.48)':'rgba(255,245,220,.42)');
-  ctx.fillStyle=d.kama?'#e8552e':(d.sig?'#ff9e1f':'#ff8c2e'); ctx.font=`900 ${30*sc}px 'Kosugi Maru'`;
-  ctx.fillText(d.kama?'やきたて 釜出し‼':'やきたて‼', cx, cy-half-20);
+  if(d.kama){ ctx.fillStyle='#e8552e'; ctx.font=`900 ${30*sc}px 'Kosugi Maru'`; ctx.fillText('釜出し‼', cx, cy-half-20); }
   drawHeroBread(d.id, cx, cy, half, 0);
   ctx.font=`900 34px 'Kosugi Maru'`; ctx.lineWidth=7; ctx.strokeStyle='rgba(90,50,20,.65)'; ctx.fillStyle='#fff';
   const label=m.name+'  ×'+d.n;
@@ -674,6 +686,9 @@ function gameOver(reason){
   myRank = ranking.indexOf(score)+1; // 同点は上位側
   localStorage.setItem('br_ranking', JSON.stringify(ranking));
   save();
+  // imapp へスコア送信（packer-panic と同契約）。埋め込み時のみ届く
+  IMAPP.gameOver(score, { survivalSec: Math.round(elapsed), types: MENU.length,
+    zukan: POOL.filter(m=>unlocked[m.id]).length, reason });
 }
 let overReason='';
 
@@ -945,7 +960,7 @@ function drawOver(){
 }
 
 //==================== メインループ ====================
-function startGame(){ resetGame(); state='play'; }
+function startGame(){ resetGame(); state='play'; IMAPP.gameStart(); }
 let last=0;
 function loop(ts){
   const dt=Math.min((ts-last)/1000||0, 0.05); last=ts;
@@ -960,7 +975,6 @@ function loop(ts){
       custT-=dt; if(custT<=0){ spawnCustomer(); custT=df.custEvery; }
       physics(dt);
       updateCustomers(dt);
-      growTypes();   // スコアに応じて出現パンを増やす（5→最大10）
       comboTimer-=dt; if(comboTimer<=0) combo=0;
       if(cascading){ cascadeT-=dt; if(cascadeT<=0) cascadeStep(); } // 自動連鎖チェック
       checkGameOver(dt);
@@ -1020,6 +1034,7 @@ loadSave(); resize();
 // フォント読み込み後に再描画
 if(document.fonts && document.fonts.ready) document.fonts.ready.then(()=>{});
 requestAnimationFrame(loop);
+IMAPP.ready(); // imapp(親)へ「読込完了」を通知（埋め込み時のみ）
 
 // PWA: http(s)配信時のみ Service Worker 登録（file:// 直開きでは何もしない）
 if(typeof navigator!=='undefined' && 'serviceWorker' in navigator && location.protocol.startsWith('http')){
