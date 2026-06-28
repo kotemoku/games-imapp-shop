@@ -9,7 +9,7 @@
  * バンドル名はビルド毎にハッシュが変わるため、固定リストを precache せず実行時に貯める。
  * CACHE_VERSION を上げると旧キャッシュを破棄する。
  */
-const CACHE_VERSION = 'konpeito-v1';
+const CACHE_VERSION = 'konpeito-v2';
 const CACHE_NAME = `konpeito-${CACHE_VERSION}`;
 
 const PRECACHE_URLS = [
