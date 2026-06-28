@@ -3,6 +3,11 @@
 imapp に iframe で埋め込む Flutter Web ゲームの静的配信プロジェクト。
 Cloudflare Pages で `games.imapp.shop` カスタムドメインを当てる。
 
+> ⚠️ **連携を実装・変更する前に必読**: imapp 埋め込みの postMessage 契約は
+> [`docs/EMBED-CONTRACT.md`](docs/EMBED-CONTRACT.md) が唯一の正本。新規ゲームも
+> 既存の修正も必ずこの標準（packer-panic / tsukurun が基準）に従う。ゲームごとの
+> 方言を作らない。各ゲーム宛ての個別通達は `docs/embed-notice-<game>.md`。
+
 ## 配信中のゲーム
 
 | パス | ゲーム | リポジトリ |
