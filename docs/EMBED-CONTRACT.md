@@ -97,8 +97,16 @@ konpeito / burger は下記手順でゲーム側を標準へ寄せる。
 
 ---
 
-## 6. 新規ゲードを足すとき（pizza-oven-rush / apple-guard ほか）
+## 6. 新規ゲームを足すとき（pizza-oven-rush / apple-guard ほか）
 
 §1〜§3 をそのまま実装すれば完了。方言を作らないこと。
-詳細な依頼テンプレは `docs/<game>-embed-spec-request.md` を参照。
-imapp 側の追加手順は imapp リポジトリ `docs/game-embed.md`。
+
+**通達は共通テンプレを使う**:
+
+1. `docs/embed-onboarding-TEMPLATE.md` を `docs/embed-notice-<game-key>.md` にコピー。
+2. `<game-key>` と `<ゲーム名>` を全置換、日付を整える。
+3. コミット＆push し、対象ゲームのセッション/開発者に「読んで」と伝える。
+
+→ 仕様はこの EMBED-CONTRACT.md にしか書かない。通達テンプレに仕様を写経しないこと
+（写経するとコピーが増えて正本が崩れる）。imapp 側の追加手順は imapp リポジトリ
+`docs/game-embed.md`。

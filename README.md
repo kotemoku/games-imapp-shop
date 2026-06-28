@@ -7,6 +7,10 @@ Cloudflare Pages で `games.imapp.shop` カスタムドメインを当てる。
 > [`docs/EMBED-CONTRACT.md`](docs/EMBED-CONTRACT.md) が唯一の正本。新規ゲームも
 > 既存の修正も必ずこの標準（packer-panic / tsukurun が基準）に従う。ゲームごとの
 > 方言を作らない。各ゲーム宛ての個別通達は `docs/embed-notice-<game>.md`。
+>
+> 🆕 **新ゲームを連動させるとき**: [`docs/embed-onboarding-TEMPLATE.md`](docs/embed-onboarding-TEMPLATE.md)
+> をコピーして `docs/embed-notice-<game-key>.md` を作り、`<game-key>`/`<ゲーム名>` を
+> 埋めるだけ。通達は毎回これ一手順で共通化する。
 
 ## 配信中のゲーム
 
