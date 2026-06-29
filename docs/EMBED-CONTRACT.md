@@ -47,6 +47,9 @@ https://games.imapp.shop/<game-key>/?embed=1&imapp=1&player=<uid>&hostOrigin=htt
 - 受信時: `data.source === 'imappt'` を確認（他 iframe の誤配を弾く）。
 - 送信時: `parent.postMessage(msg, hostOrigin)`。ワイルドカード `'*'` は使わない。
 - imapp は iframe を `sandbox="allow-scripts allow-same-origin"` で読み込む。
+- imapp は iframe に `allow="autoplay; gyroscope; accelerometer"` を付与する。
+  → ゲームは **端末傾き（DeviceOrientation / DeviceMotion）と音声自動再生を使える**。
+  これ以外の Permissions-Policy 機能（camera 等）が必要なら imapp チームに申請すること。
 
 ## 4. 連携の現状（2026-06-28 時点）
 
