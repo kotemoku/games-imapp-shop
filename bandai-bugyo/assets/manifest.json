@@ -1,0 +1,478 @@
+[
+  {
+    "key": "boiler",
+    "path": "assets/ui/boiler.png",
+    "w": 209,
+    "h": 256,
+    "cutout": true
+  },
+  {
+    "key": "boiler_clean",
+    "path": "assets/ui/boiler_clean.png",
+    "w": 256,
+    "h": 256,
+    "cutout": true
+  },
+  {
+    "key": "boiler_explosion",
+    "path": "assets/fx/boiler_explosion.png",
+    "w": 360,
+    "h": 359,
+    "cutout": true
+  },
+  {
+    "key": "char_sheet",
+    "path": "assets/ui/char_sheet.png",
+    "w": 640,
+    "h": 427,
+    "cutout": false
+  },
+  {
+    "key": "elder_happy",
+    "path": "assets/customers/elder_happy.png",
+    "w": 240,
+    "h": 306,
+    "cutout": true
+  },
+  {
+    "key": "elder_idle",
+    "path": "assets/customers/elder_idle.png",
+    "w": 194,
+    "h": 320,
+    "cutout": true
+  },
+  {
+    "key": "elder_scold",
+    "path": "assets/customers/elder_scold.png",
+    "w": 187,
+    "h": 320,
+    "cutout": true
+  },
+  {
+    "key": "elder_viol",
+    "path": "assets/customers/elder_viol.png",
+    "w": 210,
+    "h": 320,
+    "cutout": true
+  },
+  {
+    "key": "face_elder",
+    "path": "assets/customers/face_elder.png",
+    "w": 160,
+    "h": 131,
+    "cutout": true
+  },
+  {
+    "key": "face_kodomo",
+    "path": "assets/customers/face_kodomo.png",
+    "w": 160,
+    "h": 131,
+    "cutout": true
+  },
+  {
+    "key": "face_tourist",
+    "path": "assets/customers/face_tourist.png",
+    "w": 160,
+    "h": 127,
+    "cutout": true
+  },
+  {
+    "key": "face_waka",
+    "path": "assets/customers/face_waka.png",
+    "w": 160,
+    "h": 126,
+    "cutout": true
+  },
+  {
+    "key": "heatwave_a",
+    "path": "assets/fx/heatwave_a.png",
+    "w": 320,
+    "h": 311,
+    "cutout": true
+  },
+  {
+    "key": "heatwave_b",
+    "path": "assets/fx/heatwave_b.png",
+    "w": 320,
+    "h": 280,
+    "cutout": true
+  },
+  {
+    "key": "heatwave_c",
+    "path": "assets/fx/heatwave_c.png",
+    "w": 320,
+    "h": 181,
+    "cutout": true
+  },
+  {
+    "key": "kodomo_idle",
+    "path": "assets/customers/kodomo_idle.png",
+    "w": 197,
+    "h": 320,
+    "cutout": true
+  },
+  {
+    "key": "kodomo_viol",
+    "path": "assets/customers/kodomo_viol.png",
+    "w": 170,
+    "h": 320,
+    "cutout": true
+  },
+  {
+    "key": "loyu_bg",
+    "path": "assets/bg/loyu_bg.png",
+    "w": 1024,
+    "h": 576,
+    "cutout": false
+  },
+  {
+    "key": "motionlines",
+    "path": "assets/fx/motionlines.png",
+    "w": 320,
+    "h": 242,
+    "cutout": true
+  },
+  {
+    "key": "otona_happy",
+    "path": "assets/customers/otona_happy.png",
+    "w": 226,
+    "h": 320,
+    "cutout": true
+  },
+  {
+    "key": "otona_idle",
+    "path": "assets/customers/otona_idle.png",
+    "w": 152,
+    "h": 320,
+    "cutout": true
+  },
+  {
+    "key": "otona_scold",
+    "path": "assets/customers/otona_scold.png",
+    "w": 201,
+    "h": 320,
+    "cutout": true
+  },
+  {
+    "key": "otona_viol",
+    "path": "assets/customers/otona_viol.png",
+    "w": 166,
+    "h": 320,
+    "cutout": true
+  },
+  {
+    "key": "panorama",
+    "path": "assets/bg/panorama.png",
+    "w": 1024,
+    "h": 576,
+    "cutout": false
+  },
+  {
+    "key": "panorama_b",
+    "path": "assets/bg/panorama_b.png",
+    "w": 1024,
+    "h": 576,
+    "cutout": false
+  },
+  {
+    "key": "rank_a",
+    "path": "assets/ui/rank_a.png",
+    "w": 182,
+    "h": 320,
+    "cutout": true
+  },
+  {
+    "key": "rank_b",
+    "path": "assets/ui/rank_b.png",
+    "w": 180,
+    "h": 320,
+    "cutout": true
+  },
+  {
+    "key": "rank_c",
+    "path": "assets/ui/rank_c.png",
+    "w": 187,
+    "h": 320,
+    "cutout": true
+  },
+  {
+    "key": "rank_d",
+    "path": "assets/ui/rank_d.png",
+    "w": 196,
+    "h": 320,
+    "cutout": true
+  },
+  {
+    "key": "rank_e",
+    "path": "assets/ui/rank_e.png",
+    "w": 180,
+    "h": 320,
+    "cutout": true
+  },
+  {
+    "key": "seal_bucket",
+    "path": "assets/ui/seal_bucket.png",
+    "w": 213,
+    "h": 220,
+    "cutout": true
+  },
+  {
+    "key": "seal_dots",
+    "path": "assets/ui/seal_dots.png",
+    "w": 212,
+    "h": 220,
+    "cutout": true
+  },
+  {
+    "key": "seal_fuji",
+    "path": "assets/ui/seal_fuji.png",
+    "w": 213,
+    "h": 220,
+    "cutout": true
+  },
+  {
+    "key": "seal_onsen",
+    "path": "assets/ui/seal_onsen.png",
+    "w": 211,
+    "h": 220,
+    "cutout": true
+  },
+  {
+    "key": "steam_column",
+    "path": "assets/fx/steam_column.png",
+    "w": 228,
+    "h": 320,
+    "cutout": true
+  },
+  {
+    "key": "steam_puff_a",
+    "path": "assets/fx/steam_puff_a.png",
+    "w": 253,
+    "h": 256,
+    "cutout": true
+  },
+  {
+    "key": "steam_puff_b",
+    "path": "assets/fx/steam_puff_b.png",
+    "w": 241,
+    "h": 256,
+    "cutout": true
+  },
+  {
+    "key": "steam_wisp_1",
+    "path": "assets/fx/steam_wisp_1.png",
+    "w": 200,
+    "h": 242,
+    "cutout": true
+  },
+  {
+    "key": "steam_wisp_3",
+    "path": "assets/fx/steam_wisp_3.png",
+    "w": 84,
+    "h": 320,
+    "cutout": true
+  },
+  {
+    "key": "steam_wisp_4",
+    "path": "assets/fx/steam_wisp_4.png",
+    "w": 107,
+    "h": 320,
+    "cutout": true
+  },
+  {
+    "key": "steam_wisp_5",
+    "path": "assets/fx/steam_wisp_5.png",
+    "w": 106,
+    "h": 320,
+    "cutout": true
+  },
+  {
+    "key": "steam_wisp_6",
+    "path": "assets/fx/steam_wisp_6.png",
+    "w": 200,
+    "h": 205,
+    "cutout": true
+  },
+  {
+    "key": "steam_wisp_7",
+    "path": "assets/fx/steam_wisp_7.png",
+    "w": 191,
+    "h": 320,
+    "cutout": true
+  },
+  {
+    "key": "steam_wisp_8",
+    "path": "assets/fx/steam_wisp_8.png",
+    "w": 200,
+    "h": 149,
+    "cutout": true
+  },
+  {
+    "key": "title_kid",
+    "path": "assets/ui/title_kid.png",
+    "w": 510,
+    "h": 520,
+    "cutout": true
+  },
+  {
+    "key": "totonotta_a",
+    "path": "assets/loyu/totonotta_a.png",
+    "w": 204,
+    "h": 240,
+    "cutout": true
+  },
+  {
+    "key": "totonotta_b",
+    "path": "assets/loyu/totonotta_b.png",
+    "w": 206,
+    "h": 240,
+    "cutout": true
+  },
+  {
+    "key": "tourist_happy",
+    "path": "assets/customers/tourist_happy.png",
+    "w": 240,
+    "h": 272,
+    "cutout": true
+  },
+  {
+    "key": "tourist_idle",
+    "path": "assets/customers/tourist_idle.png",
+    "w": 185,
+    "h": 320,
+    "cutout": true
+  },
+  {
+    "key": "tourist_scold",
+    "path": "assets/customers/tourist_scold.png",
+    "w": 240,
+    "h": 309,
+    "cutout": true
+  },
+  {
+    "key": "tourist_viol",
+    "path": "assets/customers/tourist_viol.png",
+    "w": 213,
+    "h": 320,
+    "cutout": true
+  },
+  {
+    "key": "uchiwa",
+    "path": "assets/loyu/uchiwa.png",
+    "w": 287,
+    "h": 300,
+    "cutout": true
+  },
+  {
+    "key": "waka_happy",
+    "path": "assets/customers/waka_happy.png",
+    "w": 238,
+    "h": 320,
+    "cutout": true
+  },
+  {
+    "key": "waka_idle",
+    "path": "assets/customers/waka_idle.png",
+    "w": 173,
+    "h": 320,
+    "cutout": true
+  },
+  {
+    "key": "waka_scold",
+    "path": "assets/customers/waka_scold.png",
+    "w": 230,
+    "h": 320,
+    "cutout": true
+  },
+  {
+    "key": "waka_viol",
+    "path": "assets/customers/waka_viol.png",
+    "w": 204,
+    "h": 320,
+    "cutout": true
+  },
+  {
+    "key": "zone_arai",
+    "path": "assets/zones/zone_arai.png",
+    "w": 420,
+    "h": 219,
+    "cutout": true
+  },
+  {
+    "key": "zone_arai_b",
+    "path": "assets/zones/zone_arai_b.png",
+    "w": 420,
+    "h": 288,
+    "cutout": true
+  },
+  {
+    "key": "zone_bandai",
+    "path": "assets/zones/zone_bandai.png",
+    "w": 320,
+    "h": 276,
+    "cutout": true
+  },
+  {
+    "key": "zone_bandai_b",
+    "path": "assets/zones/zone_bandai_b.png",
+    "w": 320,
+    "h": 320,
+    "cutout": true
+  },
+  {
+    "key": "zone_datsui",
+    "path": "assets/zones/zone_datsui.png",
+    "w": 360,
+    "h": 235,
+    "cutout": true
+  },
+  {
+    "key": "zone_datsui_b",
+    "path": "assets/zones/zone_datsui_b.png",
+    "w": 320,
+    "h": 320,
+    "cutout": true
+  },
+  {
+    "key": "zone_mizu",
+    "path": "assets/zones/zone_mizu.png",
+    "w": 360,
+    "h": 280,
+    "cutout": true
+  },
+  {
+    "key": "zone_mizu_b",
+    "path": "assets/zones/zone_mizu_b.png",
+    "w": 360,
+    "h": 255,
+    "cutout": true
+  },
+  {
+    "key": "zone_sauna",
+    "path": "assets/zones/zone_sauna.png",
+    "w": 360,
+    "h": 290,
+    "cutout": true
+  },
+  {
+    "key": "zone_sauna_b",
+    "path": "assets/zones/zone_sauna_b.png",
+    "w": 303,
+    "h": 320,
+    "cutout": true
+  },
+  {
+    "key": "zone_yu",
+    "path": "assets/zones/zone_yu.png",
+    "w": 420,
+    "h": 300,
+    "cutout": true
+  },
+  {
+    "key": "zone_yu_b",
+    "path": "assets/zones/zone_yu_b.png",
+    "w": 420,
+    "h": 280,
+    "cutout": true
+  }
+]

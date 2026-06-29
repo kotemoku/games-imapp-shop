@@ -26,6 +26,7 @@ Cloudflare Pages で `games.imapp.shop` カスタムドメインを当てる。
 | `/konpeito/` | こんぺい堂 | `こんぺい堂` (Phaser4 + Vite) — 円形の釜で金平糖を育てて出荷する時間管理アーケード |
 | `/donut-rush/` | できたて！ドーナツラッシュ | `ドーナツラッシュ-phaser` (Phaser4 + Vite) ※imapp 未公開（配信のみ）— ベーカリーラッシュと同エンジンの落ちものマッチ |
 | `/takoyaki-rush/` | アツアツ！たこ焼きラッシュ | `たこ焼きラッシュ-phaser` (Phaser4 + Vite) ※imapp 未公開（配信のみ）— ベーカリーラッシュと同エンジンの落ちものマッチ |
+| `/bandai-bugyo/` | 番台奉行（仮） 〜ふろマナー奮闘記〜 | `ばんだいさん` (Phaser4 + Vite) — 銭湯マナー周知の監視＆さばき型アーケード。標準 game_over 連携実装済み |
 
 ## デプロイ手順
 
