@@ -21,7 +21,7 @@ Cloudflare Pages で `games.imapp.shop` カスタムドメインを当てる。
 | `/tsukurun/` | ツクルン (家具組み立てタイムアタック) | `つくチャレ-phaser` (Phaser4 + Vite) |
 | `/pizza-oven-rush/` | ピザ・オーブン・ラッシュ | `pizza-oven-rush` (Phaser4 + Vite) |
 | `/apple-guard/` | アップルガード 〜りんごの木をまもれ〜 | `apple-guard` (Phaser4 + Vite) |
-| `/bakery-rush/` | やきたて！ベーカリーラッシュ | `ベーカリーラッシュ` (単一HTML / Canvas) ※imapp 未公開（配信のみ） |
+| `/bakery-rush/` | やきたて！ベーカリーラッシュ | `ベーカリーラッシュ-phaser` (Phaser4 + Vite) ※imapp 未公開（配信のみ） |
 | `/donut-donaru/` | ドーナツどーなる | `teraia-donut-rush` (Phaser4 + Vite) ※imapp 未公開（配信のみ・実機テスト用） |
 | `/konpeito/` | こんぺい堂 | `こんぺい堂` (Phaser4 + Vite) — 円形の釜で金平糖を育てて出荷する時間管理アーケード |
 | `/donut-rush/` | できたて！ドーナツラッシュ | `ドーナツラッシュ-phaser` (Phaser4 + Vite) ※imapp 未公開（配信のみ）— ベーカリーラッシュと同エンジンの落ちものマッチ |

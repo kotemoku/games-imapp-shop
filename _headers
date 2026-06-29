@@ -84,21 +84,22 @@
   Cache-Control: no-cache, must-revalidate
 
 # ---------- bakery-rush (やきたて！ベーカリーラッシュ) ----------
-# 単一 HTML (Canvas 自前描画 / 素材インライン) の Web ゲームを iframe 埋め込み。
-# 同じく imapp 配下からのみフレーム許可。
+# Phaser4 + Vite 製ゲーム (bakery-rush) を iframe 埋め込み。imapp 配下からのみフレーム許可。
 /bakery-rush/*
   Content-Security-Policy: frame-ancestors 'self' https://imapp.shop https://*.imapp.shop https://imapp.pages.dev https://*.imapp.pages.dev http://localhost:3000 http://127.0.0.1:3000
 
-# index.html は内容ハッシュなしで差し替わる → 常に最新化（差し替え事故防止）
+# index.html はビルドごとに JS ハッシュ参照が変わる → 常に最新化（差し替え事故防止）
 /bakery-rush/index.html
   Cache-Control: no-cache, must-revalidate
-# manifest / アイコンも同名で差し替わり得るため確実な反映を優先して常に再検証。
+# パン/ヒーロー画像など同名で差し替わり得る素材があるため常に再検証（JS は内容ハッシュ名で 304 済み）。
+/bakery-rush/assets/*
+  Cache-Control: no-cache, must-revalidate
+# ルート直下のアイコン/マニフェスト/SW も同名で差し替わるため常に再検証。
 /bakery-rush/manifest.webmanifest
   Cache-Control: no-cache, must-revalidate
-/bakery-rush/icon.svg
+/bakery-rush/sw.js
   Cache-Control: no-cache, must-revalidate
-# パン/ヒーロー/ロゴ画像も差し替え得るため、確実な反映を優先して常に再検証。
-/bakery-rush/assets/*
+/bakery-rush/icon.svg
   Cache-Control: no-cache, must-revalidate
 /bakery-rush/logo.png
   Cache-Control: no-cache, must-revalidate
