@@ -1,0 +1,15 @@
+{
+  "name": "アツアツ！たこ焼きラッシュ",
+  "short_name": "たこ焼きラッシュ",
+  "description": "同じたこ焼きをなぞって繋いで焼き上げる、店番マッチゲーム。",
+  "lang": "ja",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "fullscreen",
+  "orientation": "portrait",
+  "background_color": "#1c1209",
+  "theme_color": "#3a2415",
+  "icons": [
+    { "src": "./icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

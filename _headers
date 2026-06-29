@@ -147,6 +147,48 @@
 /konpeito/icons/*
   Cache-Control: no-cache, must-revalidate
 
+# ---------- donut-rush (できたて！ドーナツラッシュ) ----------
+# Phaser4 + Vite 製ゲーム (donut-rush) を iframe 埋め込み。imapp 配下からのみフレーム許可。
+/donut-rush/*
+  Content-Security-Policy: frame-ancestors 'self' https://imapp.shop https://*.imapp.shop https://imapp.pages.dev https://*.imapp.pages.dev http://localhost:3000 http://127.0.0.1:3000
+
+# index.html はビルドごとに JS ハッシュ参照が変わる → 常に最新化
+/donut-rush/index.html
+  Cache-Control: no-cache, must-revalidate
+# ドーナツ/ヒーロー画像など同名で差し替わり得る素材があるため常に再検証（JS は内容ハッシュ名で 304 済み）。
+/donut-rush/assets/*
+  Cache-Control: no-cache, must-revalidate
+# ルート直下のアイコン/マニフェスト/SW も同名で差し替わるため常に再検証。
+/donut-rush/manifest.webmanifest
+  Cache-Control: no-cache, must-revalidate
+/donut-rush/sw.js
+  Cache-Control: no-cache, must-revalidate
+/donut-rush/icon.svg
+  Cache-Control: no-cache, must-revalidate
+/donut-rush/logo.png
+  Cache-Control: no-cache, must-revalidate
+
+# ---------- takoyaki-rush (アツアツ！たこ焼きラッシュ) ----------
+# Phaser4 + Vite 製ゲーム (takoyaki-rush) を iframe 埋め込み。imapp 配下からのみフレーム許可。
+/takoyaki-rush/*
+  Content-Security-Policy: frame-ancestors 'self' https://imapp.shop https://*.imapp.shop https://imapp.pages.dev https://*.imapp.pages.dev http://localhost:3000 http://127.0.0.1:3000
+
+# index.html はビルドごとに JS ハッシュ参照が変わる → 常に最新化
+/takoyaki-rush/index.html
+  Cache-Control: no-cache, must-revalidate
+# たこ焼き/ヒーロー画像など同名で差し替わり得る素材があるため常に再検証（JS は内容ハッシュ名で 304 済み）。
+/takoyaki-rush/assets/*
+  Cache-Control: no-cache, must-revalidate
+# ルート直下のアイコン/マニフェスト/SW も同名で差し替わるため常に再検証。
+/takoyaki-rush/manifest.webmanifest
+  Cache-Control: no-cache, must-revalidate
+/takoyaki-rush/sw.js
+  Cache-Control: no-cache, must-revalidate
+/takoyaki-rush/icon.svg
+  Cache-Control: no-cache, must-revalidate
+/takoyaki-rush/logo.png
+  Cache-Control: no-cache, must-revalidate
+
 # 共通: Pages 自体のルートはまだ未使用 (将来ゲーム一覧 LP を置くかもしれない)
 /*
   X-Content-Type-Options: nosniff
