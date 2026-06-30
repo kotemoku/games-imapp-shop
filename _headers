@@ -223,6 +223,19 @@
 # 食材/バーガー/筐体など同名で差し替わり得る素材があるため常に再検証（JS は内容ハッシュ名で 304 済み）。
 /burger-eleven/assets/*
   Cache-Control: no-cache, must-revalidate
+# ルート直下のアイコン/マニフェスト（ホーム追加用）も同名で差し替わるため常に再検証。
+/burger-eleven/manifest.webmanifest
+  Cache-Control: no-cache, must-revalidate
+/burger-eleven/favicon.png
+  Cache-Control: no-cache, must-revalidate
+/burger-eleven/apple-touch-icon.png
+  Cache-Control: no-cache, must-revalidate
+/burger-eleven/icon-192.png
+  Cache-Control: no-cache, must-revalidate
+/burger-eleven/icon-512.png
+  Cache-Control: no-cache, must-revalidate
+/burger-eleven/icon-maskable-512.png
+  Cache-Control: no-cache, must-revalidate
 
 # 共通: Pages 自体のルートはまだ未使用 (将来ゲーム一覧 LP を置くかもしれない)
 /*
