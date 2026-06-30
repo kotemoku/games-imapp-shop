@@ -27,6 +27,7 @@ Cloudflare Pages で `games.imapp.shop` カスタムドメインを当てる。
 | `/donut-rush/` | できたて！ドーナツラッシュ | `ドーナツラッシュ-phaser` (Phaser4 + Vite) ※imapp 未公開（配信のみ）— ベーカリーラッシュと同エンジンの落ちものマッチ |
 | `/takoyaki-rush/` | アツアツ！たこ焼きラッシュ | `たこ焼きラッシュ-phaser` (Phaser4 + Vite) ※imapp 未公開（配信のみ）— ベーカリーラッシュと同エンジンの落ちものマッチ |
 | `/bandai-bugyo/` | 番台奉行（仮） 〜ふろマナー奮闘記〜 | `ばんだいさん` (Phaser4 + Vite) — 銭湯マナー周知の監視＆さばき型アーケード。標準 game_over 連携実装済み |
+| `/burger-eleven/` | バーガーイレブン | `burger-eleven` (Phaser4 + Vite) ※imapp 未公開（配信のみ）— 食材3つ揃いで看板バーガーを引き当てる連動プロモ・スロット。`/burger/`(Flutter)とは別ゲーム |
 
 ## デプロイ手順
 

@@ -211,6 +211,19 @@
 /bandai-bugyo/assets/*
   Cache-Control: no-cache, must-revalidate
 
+# ---------- burger-eleven (バーガーイレブン / imapp連動プロモ・スロット) ----------
+# Phaser4 + Vite 製ゲーム (burger-eleven) を iframe 埋め込み。imapp 配下からのみフレーム許可。
+# ※ 既存 /burger/ (Burger Stack Rush / Flutter) とは別ゲーム。imapp 未公開（配信のみ）。
+/burger-eleven/*
+  Content-Security-Policy: frame-ancestors 'self' https://imapp.shop https://*.imapp.shop https://imapp.pages.dev https://*.imapp.pages.dev http://localhost:3000 http://127.0.0.1:3000
+
+# index.html はビルドごとに JS ハッシュ参照が変わる → 常に最新化（差し替え事故防止）
+/burger-eleven/index.html
+  Cache-Control: no-cache, must-revalidate
+# 食材/バーガー/筐体など同名で差し替わり得る素材があるため常に再検証（JS は内容ハッシュ名で 304 済み）。
+/burger-eleven/assets/*
+  Cache-Control: no-cache, must-revalidate
+
 # 共通: Pages 自体のルートはまだ未使用 (将来ゲーム一覧 LP を置くかもしれない)
 /*
   X-Content-Type-Options: nosniff
