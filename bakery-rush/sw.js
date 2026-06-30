@@ -2,7 +2,7 @@
  * Vite ビルドはアセット名にハッシュが付くため、事前リストではなく
  * 「取得したものを都度キャッシュする」cache-first 戦略にする。
  * index.html / sw.js / manifest はネットワーク優先で更新事故を防ぐ。 */
-const CACHE = 'bakery-rush-v1';
+const CACHE = 'bakery-rush-v2';
 
 self.addEventListener('install', (e) => {
   self.skipWaiting();

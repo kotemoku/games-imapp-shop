@@ -166,6 +166,17 @@
   Cache-Control: no-cache, must-revalidate
 /donut-rush/logo.jpg
   Cache-Control: no-cache, must-revalidate
+# ホーム画面インストール用アイコン（同名で差し替わり得る）
+/donut-rush/icon-192.png
+  Cache-Control: no-cache, must-revalidate
+/donut-rush/icon-512.png
+  Cache-Control: no-cache, must-revalidate
+/donut-rush/icon-192-maskable.png
+  Cache-Control: no-cache, must-revalidate
+/donut-rush/icon-512-maskable.png
+  Cache-Control: no-cache, must-revalidate
+/donut-rush/apple-touch-icon.png
+  Cache-Control: no-cache, must-revalidate
 
 # ---------- takoyaki-rush (アツアツ！たこ焼きラッシュ) ----------
 # Phaser4 + Vite 製ゲーム (takoyaki-rush) を iframe 埋め込み。imapp 配下からのみフレーム許可。
