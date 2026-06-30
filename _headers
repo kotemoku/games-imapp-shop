@@ -164,9 +164,7 @@
   Cache-Control: no-cache, must-revalidate
 /donut-rush/sw.js
   Cache-Control: no-cache, must-revalidate
-/donut-rush/icon.svg
-  Cache-Control: no-cache, must-revalidate
-/donut-rush/logo.png
+/donut-rush/logo.jpg
   Cache-Control: no-cache, must-revalidate
 
 # ---------- takoyaki-rush (アツアツ！たこ焼きラッシュ) ----------
