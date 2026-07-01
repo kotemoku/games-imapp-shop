@@ -237,6 +237,26 @@
 /burger-eleven/icon-maskable-512.png
   Cache-Control: no-cache, must-revalidate
 
+# ---------- mocairn (モッケルン / 積み木マッチ) ----------
+# Phaser4 + Vite 製ゲーム (ツミキクズシ→モッケルン) を iframe 埋め込み。imapp 配下からのみフレーム許可。
+# ※ imapp 未公開（配信のみ）。source=mocairn。
+/mocairn/*
+  Content-Security-Policy: frame-ancestors 'self' https://imapp.shop https://*.imapp.shop https://imapp.pages.dev https://*.imapp.pages.dev http://localhost:3000 http://127.0.0.1:3000
+
+# index.html はビルドごとに JS ハッシュ参照が変わる → 常に最新化（差し替え事故防止）
+/mocairn/index.html
+  Cache-Control: no-cache, must-revalidate
+# 積み木画像など同名で差し替わり得る素材があるため常に再検証（JS は内容ハッシュ名で 304 済み）。
+/mocairn/assets/*
+  Cache-Control: no-cache, must-revalidate
+# ルート直下のマニフェスト/SW/ロゴも同名で差し替わるため常に再検証。
+/mocairn/manifest.webmanifest
+  Cache-Control: no-cache, must-revalidate
+/mocairn/sw.js
+  Cache-Control: no-cache, must-revalidate
+/mocairn/logo.png
+  Cache-Control: no-cache, must-revalidate
+
 # 共通: Pages 自体のルートはまだ未使用 (将来ゲーム一覧 LP を置くかもしれない)
 /*
   X-Content-Type-Options: nosniff
