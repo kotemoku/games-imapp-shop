@@ -28,6 +28,7 @@ Cloudflare Pages で `games.imapp.shop` カスタムドメインを当てる。
 | `/takoyaki-rush/` | アツアツ！たこ焼きラッシュ | `たこ焼きラッシュ-phaser` (Phaser4 + Vite) ※imapp 未公開（配信のみ）— ベーカリーラッシュと同エンジンの落ちものマッチ |
 | `/bandai-bugyo/` | 番台奉行（仮） 〜ふろマナー奮闘記〜 | `ばんだいさん` (Phaser4 + Vite) — 銭湯マナー周知の監視＆さばき型アーケード。標準 game_over 連携実装済み |
 | `/burger-eleven/` | バーガーイレブン | `burger-eleven` (Phaser4 + Vite) ※imapp 未公開（配信のみ）— 食材3つ揃いで看板バーガーを引き当てる連動プロモ・スロット。`/burger/`(Flutter)とは別ゲーム |
+| `/tarcoon-cartoon/` | TarCoon☆CarToon | `タークゥーンカートゥーン` (Phaser4 + Vite) ※imapp 未公開（配信のみ）— burger-eleven 派生の別ゲーム。キャラ表情3つ揃いの手動ストップ式プロモ・スロット |
 | `/mocairn/` | モッケルン | `ツミキクズシ` (Phaser4 + Vite) ※imapp 未公開（配信のみ）— 同色の積み木を3つ繋いで上の色・大きい積み木に進化させるマッチ。source=mocairn |
 
 ## デプロイ手順
