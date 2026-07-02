@@ -16,7 +16,7 @@ Cloudflare Pages で `games.imapp.shop` カスタムドメインを当てる。
 
 | パス | ゲーム | リポジトリ |
 |------|--------|-----------|
-| `/burger/` | Burger Stack Rush | `burger_stack_rush` (Flutter) |
+| `/burger/` | Burger Stack Rush | `burger_stack_rush` (Phaser4 + Vite。旧 Flutter から移行済) |
 | `/packer-panic/` | ふんべつ！パッカーパニック | `packer-panic` (Web) |
 | `/tsukurun/` | ツクルン (家具組み立てタイムアタック) | `つくチャレ-phaser` (Phaser4 + Vite) |
 | `/pizza-oven-rush/` | ピザ・オーブン・ラッシュ | `pizza-oven-rush` (Phaser4 + Vite) |

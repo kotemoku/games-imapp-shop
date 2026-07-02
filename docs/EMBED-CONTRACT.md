@@ -51,18 +51,23 @@ https://games.imapp.shop/<game-key>/?embed=1&imapp=1&player=<uid>&hostOrigin=htt
   → ゲームは **端末傾き（DeviceOrientation / DeviceMotion）と音声自動再生を使える**。
   これ以外の Permissions-Policy 機能（camera 等）が必要なら imapp チームに申請すること。
 
-## 4. 連携の現状（2026-06-28 時点）
+## 4. 連携の現状（2026-07-02 時点。配信バンドルの実測に基づく）
 
 | ゲーム | 連携 | game source | host→game source | config type | 終了 type | 標準準拠 |
 |---|---|---|---|---|---|---|
 | **packer-panic** | ✅ | `packer-panic` | `imappt` | `config` | `game_over` | ✅ 基準 |
 | tsukurun | ✅ | `tsukurun` | `imappt` | `config` | `game_over` | ✅ |
-| konpeito | ✅ | `konpeito` | ⚠️ `imapp` | `config` | `game_over`/`save_score` | ❌ 要正規化 |
-| burger-stack-rush | ✅ | `burger-stack-rush` | ⚠️ `imapp` | ⚠️ `init` | ⚠️ `result` | ❌ 要正規化 |
+| konpeito | ✅ | `konpeito` | ⚠️ `imapp` (両対応未着手) | `config` | `game_over`/`save_score` | ❌ 要正規化 |
+| burger-stack-rush | ✅ | `burger-stack-rush` | ⚠️ `imapp` | ⚠️ `init` | ⚠️ `result` | ❌ 要正規化 ※`postMessage(…,'*')` 使用=§3違反 |
 | bakery-rush | 配信のみ | `bakery-rush` | `imappt` | `config` | `game_over` | ✅ |
 | donut-donaru | 配信のみ | `donut-donaru` | `imappt` | `config` | `game_over` | ✅ |
+| donut-rush | 配信のみ | `donut-rush` | `imappt` | `config` | `game_over` | ✅ |
+| takoyaki-rush | 配信のみ | `takoyaki-rush` | `imappt` | `config` | `game_over` | ✅ |
+| bandai-bugyo | 配信(実装済) | `bandai-bugyo` | `imappt` | `config` | `game_over` | ✅ |
+| mocairn | 配信のみ | `mocairn` | `imappt` | `config` | `game_over` | ✅ |
 | pizza-oven-rush | 未連携 | — | — | — | — | （新規実装＝標準で） |
 | apple-guard | 未連携 | — | — | — | — | （新規実装＝標準で） |
+| burger-eleven | 未連携 | — | — | — | — | （新規実装＝標準で） |
 
 imapp 側は単一コンポーネント `app/games/_embed/GameEmbed.tsx` ＋アダプタで、上記方言を
 吸収済み（imapp のコードは統一済み）。ただしワイヤー上の方言は残っているので、

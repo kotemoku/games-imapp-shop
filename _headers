@@ -27,6 +27,11 @@
 # （JS は内容ハッシュ名なので 304 で済み、実害は小さい）
 /packer-panic/assets/*
   Cache-Control: no-cache, must-revalidate
+# Service Worker は古いものが残ると更新事故になるため必ず no-cache（他ゲームと統一）。
+/packer-panic/sw.js
+  Cache-Control: no-cache, must-revalidate
+/packer-panic/manifest.webmanifest
+  Cache-Control: no-cache, must-revalidate
 
 # ---------- tsukurun (ツクルン / 家具組み立てタイムアタック) ----------
 # Phaser4 + Vite 製ゲーム (つくチャレ-phaser) を iframe 埋め込み。
