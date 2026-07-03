@@ -288,6 +288,18 @@
 /tarcoon-cartoon/icon-maskable-512.png
   Cache-Control: no-cache, must-revalidate
 
+# ---------- kamajan (釜雀 / 回転銅釜×麻雀刻子合体パズル) ----------
+# Phaser4 + Vite 製ゲーム (kamajan) を iframe 埋め込み。imapp 配下からのみフレーム許可。
+# EMBED-CONTRACT §1〜§3 標準準拠（source='kamajan' / config / game_over）。
+/kamajan/*
+  Content-Security-Policy: frame-ancestors 'self' https://imapp.shop https://*.imapp.shop https://imapp.pages.dev https://*.imapp.pages.dev http://localhost:3000 http://127.0.0.1:3000
+
+# index.html はビルドごとに JS ハッシュ参照が変わる → 常に最新化（差し替え事故防止）
+/kamajan/index.html
+  Cache-Control: no-cache, must-revalidate
+/kamajan/assets/*
+  Cache-Control: no-cache, must-revalidate
+
 # 共通: Pages 自体のルートはまだ未使用 (将来ゲーム一覧 LP を置くかもしれない)
 /*
   X-Content-Type-Options: nosniff
