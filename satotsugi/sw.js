@@ -1,7 +1,7 @@
 // 里継 PWA Service Worker。
 // 方針: ナビゲーション(index.html)=ネット優先（更新事故防止）、その他同一オリジンGET=キャッシュ優先。
 // デプロイのたびに VER を上げると旧キャッシュを掃除する。
-const VER = 'satotsugi-2026-07-04';
+const VER = 'satotsugi-2026-07-04-2';
 
 self.addEventListener('install', () => { self.skipWaiting(); });
 
