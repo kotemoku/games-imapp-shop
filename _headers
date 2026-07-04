@@ -338,6 +338,25 @@
 /satotsugi/icons/*
   Cache-Control: no-cache, must-revalidate
 
+# ---------- kemonomichi (あしあと探索隊 — 足あとスライドパズル×自然教育) ----------
+# imapp 未公開（配信のみ）。直アクセスでのPWAインストール前提。iframe許可は他と同一基準。
+/kemonomichi/*
+  Content-Security-Policy: frame-ancestors 'self' https://imapp.shop https://*.imapp.shop https://imapp.pages.dev https://*.imapp.pages.dev http://localhost:3000 http://127.0.0.1:3000
+
+# index.html はビルドごとに JS ハッシュ参照が変わる → 常に最新化（差し替え事故防止）
+/kemonomichi/index.html
+  Cache-Control: no-cache, must-revalidate
+# Vite のハッシュ付きアセットは内容不変 → 長期キャッシュ
+/kemonomichi/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+# PWA: manifest / service worker / アイコンは常に再検証（SWが古いと更新事故）
+/kemonomichi/manifest.webmanifest
+  Cache-Control: no-cache, must-revalidate
+/kemonomichi/sw.js
+  Cache-Control: no-cache, must-revalidate
+/kemonomichi/icons/*
+  Cache-Control: no-cache, must-revalidate
+
 # 共通: Pages 自体のルートはまだ未使用 (将来ゲーム一覧 LP を置くかもしれない)
 /*
   X-Content-Type-Options: nosniff
