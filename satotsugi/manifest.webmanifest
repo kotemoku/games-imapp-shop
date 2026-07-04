@@ -1,0 +1,16 @@
+{
+  "name": "里継 — 里山再生シミュレーション",
+  "short_name": "里継",
+  "description": "京都・南丹市天引の実データでつくる里山再生シム。荒れた里を手入れし、生きものと行事を呼び戻す。",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "landscape",
+  "background_color": "#0c1119",
+  "theme_color": "#0c1119",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

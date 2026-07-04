@@ -313,6 +313,31 @@
 /kamajan/apple-touch-icon.png
   Cache-Control: no-cache, must-revalidate
 
+# ---------- satotsugi (里継 — 里山再生シム) ----------
+# imapp 未公開（配信のみ）。直アクセスでのPWAインストール前提。iframe許可は他と同一基準。
+/satotsugi/*
+  Content-Security-Policy: frame-ancestors 'self' https://imapp.shop https://*.imapp.shop https://imapp.pages.dev https://*.imapp.pages.dev http://localhost:3000 http://127.0.0.1:3000
+
+# index.html はビルドごとに JS ハッシュ参照が変わる → 常に最新化（差し替え事故防止）
+/satotsugi/index.html
+  Cache-Control: no-cache, must-revalidate
+/satotsugi/assets/*
+  Cache-Control: no-cache, must-revalidate
+# 同名で差し替わる非ハッシュ素材（キャラ・行事絵・ランドマーク）も常に再検証
+/satotsugi/chars/*
+  Cache-Control: no-cache, must-revalidate
+/satotsugi/events/*
+  Cache-Control: no-cache, must-revalidate
+/satotsugi/landmarks/*
+  Cache-Control: no-cache, must-revalidate
+# PWA: manifest / service worker / アイコンは常に再検証（SWが古いと更新事故）
+/satotsugi/manifest.webmanifest
+  Cache-Control: no-cache, must-revalidate
+/satotsugi/sw.js
+  Cache-Control: no-cache, must-revalidate
+/satotsugi/icons/*
+  Cache-Control: no-cache, must-revalidate
+
 # 共通: Pages 自体のルートはまだ未使用 (将来ゲーム一覧 LP を置くかもしれない)
 /*
   X-Content-Type-Options: nosniff

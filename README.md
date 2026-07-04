@@ -31,6 +31,7 @@ Cloudflare Pages で `games.imapp.shop` カスタムドメインを当てる。
 | `/tarcoon-cartoon/` | TarCoon☆CarToon | `タークゥーンカートゥーン` (Phaser4 + Vite) ※imapp 未公開（配信のみ）— burger-eleven 派生の別ゲーム。キャラ表情3つ揃いの手動ストップ式プロモ・スロット |
 | `/mocairn/` | モッケルン | `ツミキクズシ` (Phaser4 + Vite) ※imapp 未公開（配信のみ）— 同色の積み木を3つ繋いで上の色・大きい積み木に進化させるマッチ。source=mocairn |
 | `/kamajan/` | 釜雀（かまじゃん） | `kamajan` (Phaser4 + Vite) — 回転銅釜に牌を落とし同種3枚連結→四面子＋雀頭で和了を狙う物理パズル。EMBED-CONTRACT §1〜§3 標準準拠（source=kamajan / config / game_over）。imapp 側 §4 実施待ち |
+| `/satotsugi/` | 里継（さとつぎ） | `里山ツクール` (Phaser4 + Vite) ※imapp 未公開（配信のみ・PWA対応）— 京都・南丹市天引の実データ地形で里山を再生する箱庭シム。横画面・スマホ対応 |
 
 ## デプロイ手順
 
