@@ -4,8 +4,6 @@
 # ---------- burger (Burger Stack Rush / Phaser+Vite版) ----------
 # imapp 配下からのみ iframe 許可。clickjacking 対策。
 # 追加で許可したいプレビュー環境があればここに足す。
-/burger/*
-  Content-Security-Policy: frame-ancestors 'self' https://imapp.shop https://*.imapp.shop https://imapp.pages.dev https://*.imapp.pages.dev http://localhost:3000 http://127.0.0.1:3000
 
 # Vite ビルド。差し替え事故防止を最優先し index.html と素材は常に再検証する。
 # （JS は内容ハッシュ名なので本来長期キャッシュ可だが、確実な更新反映を優先）
@@ -17,8 +15,6 @@
 # ---------- packer-panic (ふんべつ！パッカーパニック) ----------
 # 別開発の Web ゲーム (天使カーソル制) を iframe 埋め込み。
 # 同じく imapp 配下からのみフレーム許可。
-/packer-panic/*
-  Content-Security-Policy: frame-ancestors 'self' https://imapp.shop https://*.imapp.shop https://imapp.pages.dev https://*.imapp.pages.dev http://localhost:3000 http://127.0.0.1:3000
 
 # index.html は内容ハッシュなしで差し替わる → 常に最新化
 /packer-panic/index.html
@@ -36,8 +32,6 @@
 # ---------- tsukurun (ツクルン / 家具組み立てタイムアタック) ----------
 # Phaser4 + Vite 製ゲーム (つくチャレ-phaser) を iframe 埋め込み。
 # 同じく imapp 配下からのみフレーム許可。
-/tsukurun/*
-  Content-Security-Policy: frame-ancestors 'self' https://imapp.shop https://*.imapp.shop https://imapp.pages.dev https://*.imapp.pages.dev http://localhost:3000 http://127.0.0.1:3000
 
 # index.html はビルドごとに JS ハッシュ参照が変わる → 常に最新化
 /tsukurun/index.html
@@ -52,8 +46,6 @@
 # ---------- pizza-oven-rush (ピザ・オーブン・ラッシュ) ----------
 # Phaser4 + Vite 製ゲーム (pizza-oven-rush) を iframe 埋め込み。
 # 同じく imapp 配下からのみフレーム許可。
-/pizza-oven-rush/*
-  Content-Security-Policy: frame-ancestors 'self' https://imapp.shop https://*.imapp.shop https://imapp.pages.dev https://*.imapp.pages.dev http://localhost:3000 http://127.0.0.1:3000
 
 # index.html はビルドごとに JS ハッシュ参照が変わる → 常に最新化
 /pizza-oven-rush/index.html
@@ -77,8 +69,6 @@
 # ---------- apple-guard (アップルガード 〜りんごの木をまもれ〜) ----------
 # Phaser4 + Vite 製ゲーム (apple-guard) を iframe 埋め込み。
 # 同じく imapp 配下からのみフレーム許可。
-/apple-guard/*
-  Content-Security-Policy: frame-ancestors 'self' https://imapp.shop https://*.imapp.shop https://imapp.pages.dev https://*.imapp.pages.dev http://localhost:3000 http://127.0.0.1:3000
 
 # index.html はビルドごとに JS ハッシュ参照が変わる → 常に最新化
 /apple-guard/index.html
@@ -90,8 +80,6 @@
 
 # ---------- bakery-rush (やきたて！ベーカリーラッシュ) ----------
 # Phaser4 + Vite 製ゲーム (bakery-rush) を iframe 埋め込み。imapp 配下からのみフレーム許可。
-/bakery-rush/*
-  Content-Security-Policy: frame-ancestors 'self' https://imapp.shop https://*.imapp.shop https://imapp.pages.dev https://*.imapp.pages.dev http://localhost:3000 http://127.0.0.1:3000
 
 # index.html はビルドごとに JS ハッシュ参照が変わる → 常に最新化（差し替え事故防止）
 /bakery-rush/index.html
@@ -112,8 +100,6 @@
 # ---------- donut-donaru (ドーナツどーなる) ----------
 # Phaser4 + Vite 製ゲーム (teraia-donut-rush) を iframe 埋め込み。
 # 同じく imapp 配下からのみフレーム許可。※imapp 未公開（配信のみ・実機テスト用）
-/donut-donaru/*
-  Content-Security-Policy: frame-ancestors 'self' https://imapp.shop https://*.imapp.shop https://imapp.pages.dev https://*.imapp.pages.dev http://localhost:3000 http://127.0.0.1:3000
 
 # index.html はビルドごとに JS ハッシュ参照が変わる → 常に最新化
 /donut-donaru/index.html
@@ -135,8 +121,6 @@
 # ---------- konpeito (こんぺい堂) ----------
 # Phaser4 + Vite 製ゲーム (こんぺい堂 / 円形の釜で金平糖を育てる時間管理アーケード) を
 # iframe 埋め込み。同じく imapp 配下からのみフレーム許可。
-/konpeito/*
-  Content-Security-Policy: frame-ancestors 'self' https://imapp.shop https://*.imapp.shop https://imapp.pages.dev https://*.imapp.pages.dev http://localhost:3000 http://127.0.0.1:3000
 
 # index.html はビルドごとに JS ハッシュ参照が変わる → 常に最新化
 /konpeito/index.html
@@ -155,8 +139,6 @@
 
 # ---------- donut-rush (できたて！ドーナツラッシュ) ----------
 # Phaser4 + Vite 製ゲーム (donut-rush) を iframe 埋め込み。imapp 配下からのみフレーム許可。
-/donut-rush/*
-  Content-Security-Policy: frame-ancestors 'self' https://imapp.shop https://*.imapp.shop https://imapp.pages.dev https://*.imapp.pages.dev http://localhost:3000 http://127.0.0.1:3000
 
 # index.html はビルドごとに JS ハッシュ参照が変わる → 常に最新化
 /donut-rush/index.html
@@ -185,8 +167,6 @@
 
 # ---------- takoyaki-rush (アツアツ！たこ焼きラッシュ) ----------
 # Phaser4 + Vite 製ゲーム (takoyaki-rush) を iframe 埋め込み。imapp 配下からのみフレーム許可。
-/takoyaki-rush/*
-  Content-Security-Policy: frame-ancestors 'self' https://imapp.shop https://*.imapp.shop https://imapp.pages.dev https://*.imapp.pages.dev http://localhost:3000 http://127.0.0.1:3000
 
 # index.html はビルドごとに JS ハッシュ参照が変わる → 常に最新化
 /takoyaki-rush/index.html
@@ -206,8 +186,6 @@
 
 # ---------- bandai-bugyo (番台奉行（仮）/ 銭湯マナー周知アーケード) ----------
 # Phaser4 + Vite 製ゲーム (ばんだいさん) を iframe 埋め込み。imapp 配下からのみフレーム許可。
-/bandai-bugyo/*
-  Content-Security-Policy: frame-ancestors 'self' https://imapp.shop https://*.imapp.shop https://imapp.pages.dev https://*.imapp.pages.dev http://localhost:3000 http://127.0.0.1:3000
 
 # index.html はビルドごとに JS ハッシュ参照が変わる → 常に最新化（差し替え事故防止）
 /bandai-bugyo/index.html
@@ -219,8 +197,6 @@
 # ---------- burger-eleven (バーガーイレブン / imapp連動プロモ・スロット) ----------
 # Phaser4 + Vite 製ゲーム (burger-eleven) を iframe 埋め込み。imapp 配下からのみフレーム許可。
 # ※ 既存 /burger/ (Burger Stack Rush / Flutter) とは別ゲーム。imapp 未公開（配信のみ）。
-/burger-eleven/*
-  Content-Security-Policy: frame-ancestors 'self' https://imapp.shop https://*.imapp.shop https://imapp.pages.dev https://*.imapp.pages.dev http://localhost:3000 http://127.0.0.1:3000
 
 # index.html はビルドごとに JS ハッシュ参照が変わる → 常に最新化（差し替え事故防止）
 /burger-eleven/index.html
@@ -245,8 +221,6 @@
 # ---------- mocairn (モッケルン / 積み木マッチ) ----------
 # Phaser4 + Vite 製ゲーム (ツミキクズシ→モッケルン) を iframe 埋め込み。imapp 配下からのみフレーム許可。
 # ※ imapp 未公開（配信のみ）。source=mocairn。
-/mocairn/*
-  Content-Security-Policy: frame-ancestors 'self' https://imapp.shop https://*.imapp.shop https://imapp.pages.dev https://*.imapp.pages.dev http://localhost:3000 http://127.0.0.1:3000
 
 # index.html はビルドごとに JS ハッシュ参照が変わる → 常に最新化（差し替え事故防止）
 /mocairn/index.html
@@ -265,8 +239,6 @@
 # ---------- tarcoon-cartoon (TarCoon☆CarToon / imapp連動プロモ・スロット) ----------
 # Phaser4 + Vite 製ゲーム (tarcoon-cartoon) を iframe 埋め込み。imapp 配下からのみフレーム許可。
 # ※ burger-eleven から派生した別ゲーム。imapp 未公開（配信のみ）。
-/tarcoon-cartoon/*
-  Content-Security-Policy: frame-ancestors 'self' https://imapp.shop https://*.imapp.shop https://imapp.pages.dev https://*.imapp.pages.dev http://localhost:3000 http://127.0.0.1:3000
 
 # index.html はビルドごとに JS ハッシュ参照が変わる → 常に最新化（差し替え事故防止）
 /tarcoon-cartoon/index.html
@@ -291,8 +263,6 @@
 # ---------- kamajan (釜雀 / 回転銅釜×麻雀刻子合体パズル) ----------
 # Phaser4 + Vite 製ゲーム (kamajan) を iframe 埋め込み。imapp 配下からのみフレーム許可。
 # EMBED-CONTRACT §1〜§3 標準準拠（source='kamajan' / config / game_over）。
-/kamajan/*
-  Content-Security-Policy: frame-ancestors 'self' https://imapp.shop https://*.imapp.shop https://imapp.pages.dev https://*.imapp.pages.dev http://localhost:3000 http://127.0.0.1:3000
 
 # index.html はビルドごとに JS ハッシュ参照が変わる → 常に最新化（差し替え事故防止）
 /kamajan/index.html
@@ -315,8 +285,6 @@
 
 # ---------- satotsugi (里継 — 里山再生シム) ----------
 # imapp 未公開（配信のみ）。直アクセスでのPWAインストール前提。iframe許可は他と同一基準。
-/satotsugi/*
-  Content-Security-Policy: frame-ancestors 'self' https://imapp.shop https://*.imapp.shop https://imapp.pages.dev https://*.imapp.pages.dev http://localhost:3000 http://127.0.0.1:3000
 
 # index.html はビルドごとに JS ハッシュ参照が変わる → 常に最新化（差し替え事故防止）
 /satotsugi/index.html
@@ -340,8 +308,6 @@
 
 # ---------- kemonomichi (あしあと探索隊 — 足あとスライドパズル×自然教育) ----------
 # imapp 未公開（配信のみ）。直アクセスでのPWAインストール前提。iframe許可は他と同一基準。
-/kemonomichi/*
-  Content-Security-Policy: frame-ancestors 'self' https://imapp.shop https://*.imapp.shop https://imapp.pages.dev https://*.imapp.pages.dev http://localhost:3000 http://127.0.0.1:3000
 
 # index.html はビルドごとに JS ハッシュ参照が変わる → 常に最新化（差し替え事故防止）
 /kemonomichi/index.html
@@ -361,3 +327,6 @@
 /*
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
+  # 全パス共通: imapp 配下からのみ iframe 許可（clickjacking 対策）。
+  # 従来はゲームごとに同一のCSPを重複定義していたが、Pages の100ルール上限を超えたため一本化。
+  Content-Security-Policy: frame-ancestors 'self' https://imapp.shop https://*.imapp.shop https://imapp.pages.dev https://*.imapp.pages.dev http://localhost:3000 http://127.0.0.1:3000
