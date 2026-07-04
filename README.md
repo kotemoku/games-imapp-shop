@@ -56,20 +56,39 @@ Cloudflare Pages で `games.imapp.shop` カスタムドメインを当てる。
 
 ### ゲームを追加 / 更新
 
-1. Flutter 側で `flutter build web --release --base-href /<game-key>/` でビルド
-2. `build/web/` の中身を `c:/Users/komok/Desktop/games-imapp-shop/<game-key>/` に丸ごとコピー
-3. `_headers` に `/<game-key>/*` ブロックを追加 (burger と同じパターン)
-4. `git add . && git commit -m "deploy: <game-key> vYYYY-MM-DD" && git push`
+1. ゲーム側でビルド（Vite: `base: "./"` / Flutter: `--base-href /<game-key>/`）
+2. 成果物を `games-imapp-shop/<game-key>/` に丸ごとコピー
+3. **`_headers` の編集は原則不要**（下記「配信規約」の標準構成なら共通ルールが自動適用される）
+4. `node scripts/check-headers.mjs` が通ることを確認（deploy スクリプト経由なら自動実行）
+5. `git add . && git commit -m "deploy: <game-key> vYYYY-MM-DD" && git push`
    → Pages が自動デプロイ
 
-## `_headers` の中身
+## 配信規約（`_headers` 共通ルール）— 新ゲーム必読
 
-- `Content-Security-Policy: frame-ancestors ...` で **imapp.shop からのみ iframe 可** に制限
-  (clickjacking 防止)
-- 不変アセット (main.dart.js / canvaskit / assets) は 1 年キャッシュ
-- index.html / SW / manifest は no-cache (バージョン差し替え事故防止)
+Cloudflare Pages の `_headers` は **100ルール上限**（超過分は黙って無視される。
+実際に113ルールで後方ゲームのルールが消える事故が起きた）。このため
+ゲームごとにルールを書くのを廃止し、`/:game/...` プレースホルダの共通ルールに一本化した。
 
-許可したいプレビュー環境を増やす場合は `_headers` の `frame-ancestors` 行に追記。
+**標準構成（これに従えば `_headers` への追記ゼロ）:**
+
+| パス | 自動適用されるキャッシュ |
+|---|---|
+| `/<game>/index.html` | no-cache（差し替え事故防止） |
+| `/<game>/assets/*` | no-cache（同名差し替え素材を持つゲームが多数派のため安全側） |
+| `/<game>/sw.js` `manifest.webmanifest` `icons/*` | no-cache（SW更新事故防止） |
+| ルート直下の `favicon.png` `apple-touch-icon.png` `icon-192/512*.png` `icon.svg` `logo.png/jpg` | no-cache |
+
+**新ゲームの約束事:**
+
+- アイコン類は極力 `/<game>/icons/` 配下に置く（ルート直下の名前一覧を増やさない）
+- 差し替わる画像素材は Vite の src から import して**内容ハッシュ名**にする
+  （`public/` に同名で置かない）。全アセットがハッシュ名なら【例外】で
+  `assets/*` を immutable 長期キャッシュに上書きできる（tsukurun / kemonomichi 参照）
+- 例外を書くときは必ず `! Cache-Control` で共通ルールを解除してから設定する
+  （Pages は複数マッチ時にヘッダを**カンマ結合**するため、解除しないと壊れる）
+- 追記したら `node scripts/check-headers.mjs` を実行（ルール数90超で fail）
+- 全パス共通の CSP（`frame-ancestors` = imapp 配下のみ iframe 可）は `/*` で適用済み。
+  プレビュー環境を増やす場合は `/*` の `frame-ancestors` 行に追記
 
 ## imapp 側の対応
 
