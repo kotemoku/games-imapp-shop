@@ -1,6 +1,6 @@
 {
-  "name": "バーガー射的 — BURGERELEVEN",
-  "short_name": "バーガー射的",
+  "name": "バーガーシュート — BURGERELEVEN",
+  "short_name": "バーガーシュート",
   "description": "狙いのバーガーだけを撃ち抜く全20射の反射神経射的。",
   "start_url": "./",
   "scope": "./",
