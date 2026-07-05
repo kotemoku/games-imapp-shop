@@ -94,7 +94,13 @@ Cloudflare Pages の `_headers` は **100ルール上限**（超過分は黙っ�
   必ずゲームごとの完全一致パス（`/<game>/assets/*`）で書くこと
 - Pages は複数ルールがマッチするとヘッダを**カンマ結合**する。深いパスで上書きする
   場合は `! Cache-Control` で一度解除してから設定（tsukurun の assets/pixel/ 参照）
-- sw.js への Cache-Control 上書きはどの書き方でも効かない（ルールを書かない）
+- **imapp.shop ゾーンの Browser Cache TTL（4時間）が、png/js 等のキャッシュ対象拡張子で
+  origin の `no-cache` を `max-age=14400` に底上げする**（Cf-Cache-Status付き応答で確認済み。
+  immutable の1年は 4h より長いのでそのまま通る）。つまり `no-cache` 指定のゲームでも
+  ブラウザには最大4時間キャッシュされる。sw.js のルールが「効かない」ように見えたのも同因。
+  完全に no-cache にしたい場合は Cloudflare ダッシュボードで
+  **Cache Rule（hostname = games.imapp.shop → Browser TTL: Respect origin）** を追加する
+  （ゾーン全体の Browser Cache TTL 変更は imapp.shop 本体に影響するため非推奨）。
 - 追記したら必ず `node scripts/check-headers.mjs`（ルール数90超・追加漏れで fail）
 
 ## imapp 側の対応
