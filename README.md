@@ -33,6 +33,7 @@ Cloudflare Pages で `games.imapp.shop` カスタムドメインを当てる。
 | `/kamajan/` | 釜雀（かまじゃん） | `kamajan` (Phaser4 + Vite) — 回転銅釜に牌を落とし同種3枚連結→四面子＋雀頭で和了を狙う物理パズル。EMBED-CONTRACT §1〜§3 標準準拠（source=kamajan / config / game_over）。imapp 側 §4 実施待ち |
 | `/satotsugi/` | 里継（さとつぎ） | `里山ツクール` (Phaser4 + Vite) ※imapp 未公開（配信のみ・PWA対応）— 京都・南丹市天引の実データ地形で里山を再生する箱庭シム。横画面・スマホ対応 |
 | `/kemonomichi/` | あしあと探索隊 | `あしあと探索隊` (Phaser4 + Vite モノレポ・PWA対応) ※imapp 未公開（配信のみ）— 山の動物の足あとスライドパズル×3択クイズ×図鑑。縦画面。`?store=<id>` で店舗モード（未公開のため imapp 連携は未接続・クーポンはスタブ） |
+| `/burger-shateki/` | バーガー射的 | `バーガーショット/burger-shateki` (Phaser4 + Vite) ※imapp 未公開（配信のみ）— 狙いのバーガーだけを撃ち抜く全20射の反射神経射的。BURGERELEVEN 向け第2弾。横画面。ゲーム側は EMBED-CONTRACT 標準（source=burger-shateki / config / game_over）実装済み・imapp 側は未接続 |
 
 ## デプロイ手順
 

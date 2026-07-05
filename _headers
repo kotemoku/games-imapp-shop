@@ -77,6 +77,8 @@
   Cache-Control: public, max-age=31536000, immutable
 /kemonomichi/assets/*
   Cache-Control: public, max-age=31536000, immutable
+/burger-shateki/assets/*
+  Cache-Control: public, max-age=31536000, immutable
 
 # ---------- ゲーム固有の例外 ----------
 # tsukurun: ドット絵 (assets/pixel/) は同名差し替えあり → 再検証に戻す。
