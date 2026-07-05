@@ -30,7 +30,8 @@
         width: 100%;
         height: 100%;
       }
-      /* 縦持ち時の回転案内。本番は Capacitor / ネイティブ設定で landscape 固定（WORKORDER §0-5） */
+      /* 横持ち時の回転案内（2026-07-05 発注元承認: 縦持ちへ変更）。
+         スマホ横持ちのみ対象（max-height でデスクトップを除外） */
       #rotate-hint {
         position: fixed;
         inset: 0;
@@ -54,26 +55,26 @@
       @keyframes rot {
         0%,
         25% {
-          transform: rotate(0);
+          transform: rotate(90deg);
         }
         60%,
         100% {
-          transform: rotate(90deg);
+          transform: rotate(0);
         }
       }
-      @media (orientation: portrait) {
+      @media (orientation: landscape) and (max-height: 500px) {
         #rotate-hint {
           display: flex;
         }
       }
     </style>
-    <script type="module" crossorigin src="./assets/index-h5JEA6Pm.js"></script>
+    <script type="module" crossorigin src="./assets/index-BV_rrHAk.js"></script>
   </head>
   <body>
     <div id="game"></div>
     <div id="rotate-hint">
       <div class="ph">📱</div>
-      <p>スマホを<b>横向き</b>にしてください<br /><small>バーガー射的は横持ち専用です</small></p>
+      <p>スマホを<b>縦向き</b>にしてください<br /><small>バーガー射的は縦持ち専用です</small></p>
     </div>
   </body>
 </html>
