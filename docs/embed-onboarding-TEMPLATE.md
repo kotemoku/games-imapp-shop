@@ -44,8 +44,9 @@ imapp (https://imapp.shop) に <ゲーム名> を **iframe で埋め込んで配
 - [ ] 送信は常に `parent.postMessage(msg, hostOrigin)`。`'*'` は使わない。
 - [ ] `game_over.payload` の数値は整数・常識的な値域（imapp スコア API が弾く）。
 - [ ] **配信規約（games-imapp-shop README「配信規約」参照）に従う**:
-      アイコンは `/icons/` 配下・差し替わる素材は内容ハッシュ名（`public/` に同名で置かない）。
-      標準構成なら `_headers` への追記は不要（`/:game/...` 共通ルールが自動適用）。
+      差し替わる素材は内容ハッシュ名（`public/` に同名で置かない）。
+      `_headers` には `/<game-key>/assets/*` の1ルールだけ追加し、
+      `node scripts/check-headers.mjs` を通す。
 
 ## 4. imapp 側でやること（imapp チーム担当・FYI）
 
@@ -57,8 +58,8 @@ imapp (https://imapp.shop) に <ゲーム名> を **iframe で埋め込んで配
 - [ ] migration: `<game-key>_scores` テーブル / `<game-key>_leaderboard` / `_my_stats` RPC / `shop_public_by_qr` に `<game-key>_enabled` 列
 - [ ] env `NEXT_PUBLIC_<X>_GAME_URL` / `_ORIGIN`、`lib/games/maintenance.ts` フラグ
 - [ ] `/games`・`/admin/games`・`/subscribe` の一覧に追加
-- [ ] 配信側 README 配信テーブルに追記（`_headers` は共通ルール自動適用のため原則追記不要。
-      例外が必要な場合のみ README「配信規約」の手順で追加し `scripts/check-headers.mjs` を通す）
+- [ ] 配信側 README 配信テーブルに追記、`_headers` に `/<game-key>/assets/*` の1ルールを追加
+      （README「配信規約」参照。`scripts/check-headers.mjs` が追加漏れを検出する）
 
 ## 5. 完了の定義 / 連絡
 

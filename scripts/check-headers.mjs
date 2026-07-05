@@ -9,25 +9,22 @@
  * チェック内容:
  *  1. ルール数（パス行）が上限に対して安全域（90以下）か
  *  2. 行長 2000 文字以内（Pages の行上限）
- *  3. 規約の中核ルール（/:game/index.html 等）が存在するか
- *  4. ヘッダ行がパス行の外に迷子になっていないか（インデント構文の破れ）
+ *  3. 中核ルール（共通CSP・manifest共通ルール）が存在するか
+ *  4. リポジトリ直下の全ゲームディレクトリに /<game>/assets/* ルールがあるか
+ *     （新ゲームのルール追加漏れ検出。no-cache か immutable かはゲーム側の判断）
+ *  5. ヘッダ行がパス行の外に迷子になっていないか（インデント構文の破れ）
  */
-import { readFileSync } from "node:fs";
+import { readFileSync, readdirSync, statSync, existsSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
-const HEADERS_PATH = join(dirname(fileURLToPath(import.meta.url)), "..", "_headers");
+const REPO = join(dirname(fileURLToPath(import.meta.url)), "..");
+const HEADERS_PATH = join(REPO, "_headers");
 const RULE_SOFT_LIMIT = 90; // Pages 上限は100。余裕を持って90で止める
 const LINE_LIMIT = 2000;
 
-const REQUIRED_RULES = [
-  "/*",
-  "/:game/index.html",
-  "/:game/assets/*",
-  "/:game/sw.js",
-  "/:game/manifest.webmanifest",
-  "/:game/icons/*",
-];
+const REQUIRED_RULES = ["/*", "/:game/manifest.webmanifest"];
+const NON_GAME_DIRS = new Set(["docs", "scripts", "node_modules"]);
 
 const lines = readFileSync(HEADERS_PATH, "utf8").split(/\r?\n/);
 const errors = [];
@@ -45,12 +42,10 @@ lines.forEach((line, i) => {
   if (trimmed === "" || trimmed.startsWith("#")) return;
 
   if (/^\S/.test(line) && trimmed.startsWith("/")) {
-    // パス行（ルール）
     ruleCount++;
     currentRule = trimmed;
     seenRules.add(trimmed);
   } else if (/^\s+\S/.test(line)) {
-    // ヘッダ行
     if (!currentRule) {
       errors.push(`L${no}: パス行に属さないヘッダ行: ${trimmed}`);
     }
@@ -64,14 +59,28 @@ lines.forEach((line, i) => {
 
 for (const rule of REQUIRED_RULES) {
   if (!seenRules.has(rule)) {
-    errors.push(`規約の中核ルールが見つからない: ${rule}`);
+    errors.push(`中核ルールが見つからない: ${rule}`);
+  }
+}
+
+// 全ゲームディレクトリに assets ルールがあるか（追加漏れ検出）
+for (const name of readdirSync(REPO)) {
+  if (name.startsWith(".") || NON_GAME_DIRS.has(name)) continue;
+  const full = join(REPO, name);
+  if (!statSync(full).isDirectory()) continue;
+  if (!existsSync(join(full, "index.html"))) continue; // ゲームでないディレクトリは除外
+  if (!seenRules.has(`/${name}/assets/*`)) {
+    errors.push(
+      `ゲーム /${name}/ の assets ルールが _headers にない。` +
+        " README「配信規約」に従い no-cache か immutable の1ルールを追加すること。",
+    );
   }
 }
 
 if (ruleCount > RULE_SOFT_LIMIT) {
   errors.push(
     `ルール数 ${ruleCount} が安全域 ${RULE_SOFT_LIMIT} を超過（Pages 上限100、超過分は黙って無視される）。` +
-      " 例外ルールを規約ルールへ統合するか、_middleware への移行を検討すること。",
+      " ルールの整理か _middleware への移行を検討すること。",
   );
 }
 

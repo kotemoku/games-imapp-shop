@@ -58,37 +58,44 @@ Cloudflare Pages で `games.imapp.shop` カスタムドメインを当てる。
 
 1. ゲーム側でビルド（Vite: `base: "./"` / Flutter: `--base-href /<game-key>/`）
 2. 成果物を `games-imapp-shop/<game-key>/` に丸ごとコピー
-3. **`_headers` の編集は原則不要**（下記「配信規約」の標準構成なら共通ルールが自動適用される）
-4. `node scripts/check-headers.mjs` が通ることを確認（deploy スクリプト経由なら自動実行）
+3. `_headers` の【各ゲーム assets】に **1ルールだけ**追加（下記「配信規約」）
+4. `node scripts/check-headers.mjs` が通ることを確認（deploy スクリプト経由なら自動実行。
+   assets ルールの追加漏れも検出される）
 5. `git add . && git commit -m "deploy: <game-key> vYYYY-MM-DD" && git push`
    → Pages が自動デプロイ
 
-## 配信規約（`_headers` 共通ルール）— 新ゲーム必読
+## 配信規約（`_headers`）— 新ゲーム必読
 
 Cloudflare Pages の `_headers` は **100ルール上限**（超過分は黙って無視される。
 実際に113ルールで後方ゲームのルールが消える事故が起きた）。このため
-ゲームごとにルールを書くのを廃止し、`/:game/...` プレースホルダの共通ルールに一本化した。
+ゲームごとの反復ルールを廃止し、**「共通ルール + ゲームあたり assets 1ルール」**に統一した。
 
-**標準構成（これに従えば `_headers` への追記ゼロ）:**
+**自動で適用されるもの（追記不要）:**
 
-| パス | 自動適用されるキャッシュ |
-|---|---|
-| `/<game>/index.html` | no-cache（差し替え事故防止） |
-| `/<game>/assets/*` | no-cache（同名差し替え素材を持つゲームが多数派のため安全側） |
-| `/<game>/sw.js` `manifest.webmanifest` `icons/*` | no-cache（SW更新事故防止） |
-| ルート直下の `favicon.png` `apple-touch-icon.png` `icon-192/512*.png` `icon.svg` `logo.png/jpg` | no-cache |
+| 対象 | 挙動 | 由来 |
+|---|---|---|
+| 全パスの CSP（`frame-ancestors` = imapp 配下のみ iframe 可） | 自動 | `/*` 共通ルール |
+| `/<game>/manifest.webmanifest` | no-cache | `/:game/` 共通ルール |
+| `/<game>/index.html` ほか HTML | 毎回再検証（`max-age=0`） | Pages の既定 |
+| `/<game>/sw.js` | 4hキャッシュだが**実害なし**（ブラウザのSW更新チェックはHTTPキャッシュを既定でバイパス） | Pages の既定 |
+| アイコン・その他静的ファイル | 4hキャッシュ（`max-age=14400`）で妥協 | Pages の既定 |
 
-**新ゲームの約束事:**
+**ゲームごとに書くもの（assets の1ルールのみ）:**
 
-- アイコン類は極力 `/<game>/icons/` 配下に置く（ルート直下の名前一覧を増やさない）
-- 差し替わる画像素材は Vite の src から import して**内容ハッシュ名**にする
-  （`public/` に同名で置かない）。全アセットがハッシュ名なら【例外】で
-  `assets/*` を immutable 長期キャッシュに上書きできる（tsukurun / kemonomichi 参照）
-- 例外を書くときは必ず `! Cache-Control` で共通ルールを解除してから設定する
-  （Pages は複数マッチ時にヘッダを**カンマ結合**するため、解除しないと壊れる）
-- 追記したら `node scripts/check-headers.mjs` を実行（ルール数90超で fail）
-- 全パス共通の CSP（`frame-ancestors` = imapp 配下のみ iframe 可）は `/*` で適用済み。
-  プレビュー環境を増やす場合は `/*` の `frame-ancestors` 行に追記
+- assets/ に「同名で差し替わる素材」がある → `no-cache, must-revalidate`（多数派・安全側）
+- assets/ が**内容ハッシュ名のみ**（Vite の src import 徹底）→ `public, max-age=31536000, immutable`
+  （tsukurun / kemonomichi 参照。新規ゲームはこちらを推奨 — 差し替わる素材は
+  `public/` に同名で置かず src から import してハッシュ名にすること）
+
+**⚠️ 実測で確認済みの落とし穴（2026-07-04 検証）:**
+
+- `:placeholder` を含む動的ルールは **js/png 等の静的アセットには効かない**
+  （manifest.webmanifest のような非アセット系パスのみ有効）。assets のルールは
+  必ずゲームごとの完全一致パス（`/<game>/assets/*`）で書くこと
+- Pages は複数ルールがマッチするとヘッダを**カンマ結合**する。深いパスで上書きする
+  場合は `! Cache-Control` で一度解除してから設定（tsukurun の assets/pixel/ 参照）
+- sw.js への Cache-Control 上書きはどの書き方でも効かない（ルールを書かない）
+- 追記したら必ず `node scripts/check-headers.mjs`（ルール数90超・追加漏れで fail）
 
 ## imapp 側の対応
 
