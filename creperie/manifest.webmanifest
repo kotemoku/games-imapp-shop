@@ -1,0 +1,14 @@
+{
+  "name": "La Crêperie du Coin — 花街のクレープリー",
+  "short_name": "Crêperie",
+  "description": "京都・花街のフレンチビストロで修行するクレープ職人アーケード（imapp連動）",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "landscape",
+  "theme_color": "#171310",
+  "background_color": "#171310",
+  "icons": [
+    { "src": "./icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}
