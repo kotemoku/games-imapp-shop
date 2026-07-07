@@ -1,0 +1,17 @@
+{
+  "name": "MOCME モクメ — 木目合わせジグソー",
+  "short_name": "MOCME",
+  "description": "形は一切ヒントにならない。京ヒノキの木目の連続だけを頼りに、正しい面・向き・位置を見抜く観察パズル。",
+  "lang": "ja",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#efe7d6",
+  "theme_color": "#efe7d6",
+  "categories": ["games", "puzzle"],
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "icon-maskable.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable" }
+  ]
+}
