@@ -35,6 +35,7 @@ Cloudflare Pages で `games.imapp.shop` カスタムドメインを当てる。
 | `/kemonomichi/` | あしあと探索隊 | `あしあと探索隊` (Phaser4 + Vite モノレポ・PWA対応) ※imapp 未公開（配信のみ）— 山の動物の足あとスライドパズル×3択クイズ×図鑑。縦画面。`?store=<id>` で店舗モード（未公開のため imapp 連携は未接続・クーポンはスタブ） |
 | `/burger-shateki/` | バーガー射的 | `バーガーショット/burger-shateki` (Phaser4 + Vite) ※imapp 未公開（配信のみ）— 狙いのバーガーだけを撃ち抜く全20射の反射神経射的。BURGERELEVEN 向け第2弾。横画面。ゲーム側は EMBED-CONTRACT 標準（source=burger-shateki / config / game_over）実装済み・imapp 側は未接続 |
 | `/creperie/` | La Crêperie du Coin（花街のクレープリー） | `D'or/creperie` (TypeScript + Vite ＋ Phaser4 エンジン層・PWA対応) ※imapp 未公開（配信のみ）— 京都・花街のビストロでクレープ職人修行（生地広げ/焼き/盛り付け/三角・四方折り/ワイン注ぎ/マリアージュ→卒業で営業3モード連結）。横画面。ゲーム側は EMBED-CONTRACT 標準（source=creperie / config / game_over）実装済み・imapp 側 §4 未実施。assets は内容ハッシュ名のみ（immutable） |
+| `/mocme/` | MOCME（モクメ） | `mocme` (Vite + TypeScript + Capacitor・PWA対応) ※imapp 未公開（配信のみ）— 京ヒノキの木目合わせジグソー。C4対称ピースで形は無ヒント、面/向き/位置を木目の連続だけで解く観察パズル。実物志向のマルチタッチ（2本指ひねり回転/ダブルタップ反転）。ゲーム側は EMBED-CONTRACT 標準（source=mocme / config / game_over）実装済み・imapp 側 §4 未実施。assets は内容ハッシュ名のみ（immutable）。`?store=<id>` で店舗モード（tint/裏面刻印/クリア特典・PII非保持） |
 
 ## デプロイ手順
 
