@@ -120,3 +120,36 @@ konpeito / burger は下記手順でゲーム側を標準へ寄せる。
 → 仕様はこの EMBED-CONTRACT.md にしか書かない。通達テンプレに仕様を写経しないこと
 （写経するとコピーが増えて正本が崩れる）。imapp 側の追加手順は imapp リポジトリ
 `docs/game-embed.md`。
+
+---
+
+## 7. 予約・通知の拡張（非スコア型／来店予約が目的のアプリ）
+
+スコアではなく **来店予約が目的**のアプリ（例: `kyou-no-bres` ＝今日のブレス）向けの拡張。
+§1〜§3 の標準はそのまま守り、下記メッセージだけを足す。方言ではなく **この §7 が正**。
+
+**役割分担（不変条件）**
+
+- **予約の書き込みは imapp が唯一の経路。** ゲームは「予約したい」を送るだけで、実入力
+  （日時・氏名・連絡先など）は **imapp 画面が描画・受付・確定する**。ゲームは予約フォームを
+  持たない／DB に書かない／外部フォーム・LINE・電話へ橋渡ししない。
+- 未購読プレイヤーは **購読 → 購読者として予約**。`notify_pref` が購読開始のトリガ。
+- ゲームは `reservation_confirmed` を受けたら **演出するだけ**（礼状・きらめき等）。
+
+| 方向 | type | いつ | payload |
+|---|---|---|---|
+| game→host | `reserve_intent` | ユーザーが「予約に進む」を押した | `{ item?: string, menu?: string, quantity?: number, note?: string, prepCard?: {...} }`（`item`/`quantity`/`note` は予約フォームの**編集可能な初期値**。host は untrusted 扱いで、予約の確定は host が著作。prepCard は PII 最小） |
+| game→host | `notify_pref` | 通知/購読の許諾トグル | `{ enabled: boolean }` |
+| host→game | `reservation_confirmed` | imapp 側で予約が確定した | `{ ... }`（任意・ゲームは演出のみ） |
+
+- host は `reserve_intent` を受けたら **imapp の予約 UI（未購読なら購読ゲート → 予約フォーム）** を開く。
+- host は `notify_pref{enabled:true}` を受けたら **購読開始フロー**へ入れてよい。
+- `game_over` は「1日のブレスを組み終えた区切り」として送ってよい（`payload.score` ＝ 置いた石数の
+  象徴整数）。スコアAPIの値域に収まる整数で。
+- 対象店は **`reservation_enabled` フラグ**で有効化。OFF 店では host は `reserve_intent` を無視/非表示に。
+- ゲームは §3 のセキュリティ不変条件（origin/source 検証・`hostOrigin` 送信・`'*'` 禁止）を予約系
+  メッセージにも適用する。
+- これらに未対応でもゲームは破綻しない（埋め込み外・非対応時はローカルにフォールバック表示）。
+
+> 現状の実装状況: `kyou-no-bres` はゲーム側が §7 を送出・受信する実装済み。imapp 側の
+> 受け口（予約 UI・購読ゲート・`reservation_confirmed` 返送・`reservation_enabled` 列）は本 §7 を正として実装する。

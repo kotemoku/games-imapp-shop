@@ -81,7 +81,11 @@
   Cache-Control: public, max-age=31536000, immutable
 /creperie/assets/*
   Cache-Control: public, max-age=31536000, immutable
+/creperie-test/assets/*
+  Cache-Control: public, max-age=31536000, immutable
 /mocme/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+/kyou-no-bres/assets/*
   Cache-Control: public, max-age=31536000, immutable
 
 # ---------- ゲーム固有の例外 ----------
