@@ -35,6 +35,8 @@ imapp (https://imapp.shop) に <ゲーム名> を **iframe で埋め込んで配
 
 ## 3. ゲーム側チェックリスト（EMBED-CONTRACT §1〜§3 準拠）
 
+- [ ] **単独リポジトリで開発している**（1 タイトル = 1 git リポジトリ・GitHub private・
+      リポジトリ名は `<game-key>` と同名。他ゲームとの相乗り禁止 → EMBED-CONTRACT §0）。
 - [ ] 起動 URL の `?embed=1&imapp=1&player=&hostOrigin=` を読む。`hostOrigin` を保持。
 - [ ] 初期化完了で `parent.postMessage({source:'<game-key>', type:'ready'}, hostOrigin)`。
 - [ ] host からの `{source:'imappt', type:'config', payload:{player, difficulty?}}` を受信。

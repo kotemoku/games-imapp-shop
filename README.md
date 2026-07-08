@@ -38,6 +38,38 @@ Cloudflare Pages で `games.imapp.shop` カスタムドメインを当てる。
 | `/mocme/` | MOCME（モクメ） | `mocme` (Vite + TypeScript + Capacitor・PWA対応) ※imapp 未公開（配信のみ）— 京ヒノキの木目合わせジグソー。C4対称ピースで形は無ヒント、面/向き/位置を木目の連続だけで解く観察パズル。実物志向のマルチタッチ（2本指ひねり回転/ダブルタップ反転）。ゲーム側は EMBED-CONTRACT 標準（source=mocme / config / game_over）実装済み・imapp 側 §4 未実施。assets は内容ハッシュ名のみ（immutable）。`?store=<id>` で店舗モード（tint/裏面刻印/クリア特典・PII非保持） |
 | `/kyou-no-bres/` | 今日のブレス（仮） | `smilebird‐stone` (Vite + TypeScript + Capacitor・PWA対応・DOM/CSS描画) ※imapp 未公開（配信のみ）— パワーストーン店向け日替わりバーチャルブレスレット。毎朝の主石＋月相を軸に色順の棚からD&Dで組む観察習慣。ゲームではなく**対面セッション予約が唯一のゴール**（Withhold設計）。ゲーム側は EMBED-CONTRACT 標準（source=kyou-no-bres / config / game_over=1日の区切り）実装済み・imapp 側 §4 未実施。**予約/プッシュの拡張型（reserve_intent / notify_pref / reservation_confirmed）は imapp 側確認待ち**。assets は内容ハッシュ名のみ（immutable）。`?store=<id>` で店舗モード（PII非保持）。石ビジュアルはランタイム描画（自前生成） |
 
+## ソースリポジトリ対応表（1タイトル=1リポジトリ・2026-07-08 整備）
+
+全タイトルのソースを GitHub private の単独リポジトリに分離済み。
+リポジトリ名は game-key と同名（github.com/kotemoku/<game-key>）。
+
+| game-key | GitHub (private) | ローカル開発フォルダ (Desktop/app/) |
+|---|---|---|
+| burger-stack-rush | kotemoku/burger-stack-rush | `バーガーイレブン/burger-phaser` |
+| packer-panic | kotemoku/packer-panic | `分別パッカーパニック`（仕様書ごと。ソースは `packer-panic/`） |
+| tsukurun | kotemoku/tsukurun | `つくチャレ-phaser` |
+| pizza-oven-rush | kotemoku/pizza-oven-rush | `pizza-phaser` |
+| apple-guard | kotemoku/apple-guard | `アップルガード` |
+| bakery-rush | kotemoku/bakery-rush | `ベーカリーラッシュ-phaser` |
+| donut-donaru | kotemoku/donut-donaru | `ドーナツどーなる` |
+| konpeito | kotemoku/konpeito | `こんぺい堂` |
+| donut-rush | kotemoku/donut-rush | `ドーナツラッシュ-phaser` |
+| takoyaki-rush | kotemoku/takoyaki-rush | `たこ焼きラッシュ-phaser` |
+| bandai-bugyo | kotemoku/bandai-bugyo | `ばんだいさん` |
+| burger-eleven | kotemoku/burger-eleven | `burger-eleven` |
+| tarcoon-cartoon | kotemoku/tarcoon-cartoon | `タークゥーンカートゥーン` |
+| mocairn | kotemoku/mocairn | `モッケルン`（steam-dist/ は除外） |
+| kamajan | kotemoku/kamajan | `kamajan` |
+| satotsugi | kotemoku/satotsugi | `里山ツクール` |
+| kemonomichi | kotemoku/kemonomichi | `あしあと探索隊` |
+| burger-shateki | kotemoku/burger-shateki | `バーガーショット`（docs ごと） |
+| creperie | kotemoku/creperie | `D'or`（アート参照ごと） |
+| mocme | kotemoku/mocme | `mocme` |
+| kyou-no-bres | kotemoku/kyou-no-bres | `smilebird‐stone` |
+| cocktail-fight | kotemoku/cocktail-fight | `カクテルファイト`（imapp 非公開中） |
+
+※ `バーガーイレブン/burger_stack_rush` は移行前の旧 Flutter 版（レガシー・リポジトリ化対象外）。
+
 ## デプロイ手順
 
 ### 初回セットアップ
@@ -59,6 +91,12 @@ Cloudflare Pages で `games.imapp.shop` カスタムドメインを当てる。
    (DNS は Cloudflare 管理ドメインなので 1 クリックで設定される)
 
 ### ゲームを追加 / 更新
+
+> **リポジトリ規約（全タイトル共通）**: ゲームのソースは **1 タイトル = 1 の単独
+> git リポジトリ**（GitHub private・リポジトリ名は `<game-key>` と同名）で開発する。
+> 相乗り開発は禁止（コミット/ロールバックが他タイトルを巻き込むため）。本リポジトリは
+> **成果物置き場**であり、ソースはコミットしない。詳細は
+> [`docs/EMBED-CONTRACT.md` §0](docs/EMBED-CONTRACT.md)。
 
 1. ゲーム側でビルド（Vite: `base: "./"` / Flutter: `--base-href /<game-key>/`）
 2. 成果物を `games-imapp-shop/<game-key>/` に丸ごとコピー
