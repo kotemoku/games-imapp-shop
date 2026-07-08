@@ -98,13 +98,39 @@ Cloudflare Pages で `games.imapp.shop` カスタムドメインを当てる。
 > **成果物置き場**であり、ソースはコミットしない。詳細は
 > [`docs/EMBED-CONTRACT.md` §0](docs/EMBED-CONTRACT.md)。
 
+**推奨: ワンコマンドデプロイ（2〜5 を自動化・事故防止）**
+
+```bash
+# ゲーム側でビルド（Vite: base:"./" / Flutter: --base-href /<game-key>/）したら:
+node scripts/deploy-game.mjs <game-key> <ビルド成果物dir>
+# 例: node scripts/deploy-game.mjs kamajan ../kamajan/dist
+# オプション: --immutable / --no-cache（_headers 新規ルールの方式指定。省略時は自動判定）
+#             --no-push（commit まで・push しない）
+```
+
+成果物の置き換え → `_headers` ルール確保 → check-headers → commit → push まで一括実行する。
+
+<details><summary>手動手順（スクリプトが使えない場合）</summary>
+
 1. ゲーム側でビルド（Vite: `base: "./"` / Flutter: `--base-href /<game-key>/`）
 2. 成果物を `games-imapp-shop/<game-key>/` に丸ごとコピー
 3. `_headers` の【各ゲーム assets】に **1ルールだけ**追加（下記「配信規約」）
-4. `node scripts/check-headers.mjs` が通ることを確認（deploy スクリプト経由なら自動実行。
-   assets ルールの追加漏れも検出される）
+4. `node scripts/check-headers.mjs` が通ることを確認
 5. `git add . && git commit -m "deploy: <game-key> vYYYY-MM-DD" && git push`
    → Pages が自動デプロイ
+
+</details>
+
+### 履歴肥大の運用ルール（成果物リポジトリの宿命）
+
+本リポジトリはビルド成果物（バイナリ）を毎デプロイ積むため、`.git` が単調増加する
+（2026-07-08 時点で `.git` 335MB / 作業ツリー 220MB）。以下を運用ルールとする:
+
+- **`.git` が 2GB を超えたら履歴を整理する**（目安年1回確認）。手順:
+  現 HEAD を新 initial commit として作り直し → force push
+  （`git checkout --orphan fresh && git add -A && git commit && git branch -M main && git push -f`）。
+  ソースの履歴は各ゲームの単独リポジトリにあるので、ここで失うものはデプロイ日付のみ。
+- 巨大アセット（動画・原画 PSD 等）はここに置かない。ソースリポジトリか R2 へ。
 
 ## 配信規約（`_headers`）— 新ゲーム必読
 
