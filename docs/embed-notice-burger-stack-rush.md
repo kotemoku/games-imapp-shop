@@ -45,3 +45,11 @@ burger は一番最初に作られたため、**3点が標準から外れてい�
 
 - 正式契約: `docs/EMBED-CONTRACT.md`
 - imapp 側実装: imapp リポジトリ `docs/game-embed.md` / `app/games/burger-stack-rush/BurgerStackRush.tsx`
+
+## ⚠️ セキュリティ通達 (2026-07-09 監査)
+
+現行の配信ビルドは `window.parent.postMessage(msg, "*")` で親に送信している。
+`"*"` は任意のサイトが本ゲームを iframe に入れた場合にゲーム状態 (スコア等) を
+読める情報漏れとなる (EMBED-CONTRACT §3 違反。秘密情報は含まれないため低リスク)。
+**次回ビルド時に、起動 URL の `hostOrigin` を宛先に使う実装へ修正すること:**
+`window.parent.postMessage(msg, hostOrigin)`
