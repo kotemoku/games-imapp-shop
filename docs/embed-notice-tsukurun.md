@@ -24,3 +24,10 @@ game → host : { source:'tsukurun', type:'ready'|'config_ack'|'game_start'|'gam
 ## 背景
 
 imapp 側は連携処理を単一コンポーネントに統一しました。標準は packer-panic / tsukurun です。
+
+## ⚠️ セキュリティ通達 (2026-07-09 監査)
+
+現行の配信ビルドは親からの `message` 受信時に **`event.origin` を検証していない**。
+悪意あるサイトが本ゲームを iframe に入れた場合、偽の config (プレイヤー名等の表示) を
+注入できる (実害は表示のみ・スコアの正本は imapp 側で認証保存されるため低リスク)。
+**次回ビルド時に EMBED-CONTRACT §2 どおり `event.origin === hostOrigin` 検証を入れること。**
