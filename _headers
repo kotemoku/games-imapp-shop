@@ -71,6 +71,8 @@
   Cache-Control: no-cache, must-revalidate
 /satotsugi/assets/*
   Cache-Control: no-cache, must-revalidate
+/koharubiyori/assets/*
+  Cache-Control: no-cache, must-revalidate
 
 # 内容ハッシュ名のみのゲーム: 長期キャッシュ（差し替え時はファイル名が変わるため安全）
 /tsukurun/assets/*
