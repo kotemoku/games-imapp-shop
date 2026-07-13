@@ -103,3 +103,5 @@
   Cache-Control: no-cache, must-revalidate
 /satotsugi/landmarks/*
   Cache-Control: no-cache, must-revalidate
+/packer-panic-eco/assets/*
+  Cache-Control: no-cache, must-revalidate
