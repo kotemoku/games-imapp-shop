@@ -68,6 +68,7 @@ Cloudflare Pages で `games.imapp.shop` カスタムドメインを当てる。
 | mocme | kotemoku/mocme | `mocme` |
 | kyou-no-bres | kotemoku/kyou-no-bres | `smilebird‐stone` |
 | cocktail-fight | kotemoku/cocktail-fight | `カクテルファイト`（imapp 非公開中） |
+| packer-panic-eco | kotemoku/packer-panic-eco | `packer-panic-eco` |
 
 ※ `バーガーイレブン/burger_stack_rush` は移行前の旧 Flutter 版（レガシー・リポジトリ化対象外）。
 
