@@ -37,6 +37,7 @@ Cloudflare Pages で `games.imapp.shop` カスタムドメインを当てる。
 | `/creperie/` | La Crêperie du Coin（花街のクレープリー） | `D'or/creperie` (TypeScript + Vite ＋ Phaser4 エンジン層・PWA対応) ※imapp 未公開（配信のみ）— 京都・花街のビストロでクレープ職人修行（生地広げ/焼き/盛り付け/三角・四方折り/ワイン注ぎ/マリアージュ→卒業で営業3モード連結）。横画面。ゲーム側は EMBED-CONTRACT 標準（source=creperie / config / game_over）実装済み・imapp 側 §4 未実施。assets は内容ハッシュ名のみ（immutable） |
 | `/mocme/` | MOCME（モクメ） | `mocme` (Vite + TypeScript + Capacitor・PWA対応) ※imapp 未公開（配信のみ）— 京ヒノキの木目合わせジグソー。C4対称ピースで形は無ヒント、面/向き/位置を木目の連続だけで解く観察パズル。実物志向のマルチタッチ（2本指ひねり回転/ダブルタップ反転）。ゲーム側は EMBED-CONTRACT 標準（source=mocme / config / game_over）実装済み・imapp 側 §4 未実施。assets は内容ハッシュ名のみ（immutable）。`?store=<id>` で店舗モード（tint/裏面刻印/クリア特典・PII非保持） |
 | `/kyou-no-bres/` | 今日のブレス（仮） | `smilebird‐stone` (Vite + TypeScript + Capacitor・PWA対応・DOM/CSS描画) ※imapp 未公開（配信のみ）— パワーストーン店向け日替わりバーチャルブレスレット。毎朝の主石＋月相を軸に色順の棚からD&Dで組む観察習慣。ゲームではなく**対面セッション予約が唯一のゴール**（Withhold設計）。ゲーム側は EMBED-CONTRACT 標準（source=kyou-no-bres / config / game_over=1日の区切り）実装済み・imapp 側 §4 未実施。**予約/プッシュの拡張型（reserve_intent / notify_pref / reservation_confirmed）は imapp 側確認待ち**。assets は内容ハッシュ名のみ（immutable）。`?store=<id>` で店舗モード（PII非保持）。石ビジュアルはランタイム描画（自前生成） |
+| `/packer-panic-eco/` | パッカーパニック・エコ | `packer-panic-eco` (Vite + TS) ※imapp 未公開（配信のみ）— 里継と同一オリジンで localStorage `amabiki_world` を共有する天引エコ連動タイトル。EMBED-CONTRACT 標準（source=packer-panic-eco / config / game_over）実装済み |
 
 ## ソースリポジトリ対応表（1タイトル=1リポジトリ・2026-07-08 整備）
 
