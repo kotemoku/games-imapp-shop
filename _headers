@@ -107,3 +107,5 @@
   Cache-Control: no-cache, must-revalidate
 /packer-panic-eco/assets/*
   Cache-Control: no-cache, must-revalidate
+/kokage/assets/*
+  Cache-Control: no-cache, must-revalidate
