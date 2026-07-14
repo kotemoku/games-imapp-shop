@@ -39,6 +39,7 @@ Cloudflare Pages で `games.imapp.shop` カスタムドメインを当てる。
 | `/kyou-no-bres/` | 今日のブレス（仮） | `smilebird‐stone` (Vite + TypeScript + Capacitor・PWA対応・DOM/CSS描画) ※imapp 未公開（配信のみ）— パワーストーン店向け日替わりバーチャルブレスレット。毎朝の主石＋月相を軸に色順の棚からD&Dで組む観察習慣。ゲームではなく**対面セッション予約が唯一のゴール**（Withhold設計）。ゲーム側は EMBED-CONTRACT 標準（source=kyou-no-bres / config / game_over=1日の区切り）実装済み・imapp 側 §4 未実施。**予約/プッシュの拡張型（reserve_intent / notify_pref / reservation_confirmed）は imapp 側確認待ち**。assets は内容ハッシュ名のみ（immutable）。`?store=<id>` で店舗モード（PII非保持）。石ビジュアルはランタイム描画（自前生成） |
 | `/packer-panic-eco/` | パッカーパニック・エコ | `packer-panic-eco` (Vite + TS) ※imapp 未公開（配信のみ）— 里継と同一オリジンで localStorage `amabiki_world` を共有する天引エコ連動タイトル。EMBED-CONTRACT 標準（source=packer-panic-eco / config / game_over）実装済み |
 | `/kokage/` | 木陰 -Kokage- | `kokage`（Desktop 直下） (Vite + React + TS・PWA対応) ※imapp 未公開（配信のみ・実機テスト用）— 木を撫でて光を集め、種から世界樹まで育てる里山クリッカー。縦画面。オフライン進行・種火プレステージあり。EMBED-CONTRACT 未実装（公開時に対応） |
+| `/takibi/` | 焚き火 -takibi- | `takibi`（Desktop 直下） (素の単一HTML・ビルド不要) ※imapp 未公開（配信のみ）— 火花→息→薪の手順で火を熾し、熾火になったらただ眺める癒し系焚き火体験。二層構成（炎本体は実写/Blender素材に差し替え可能）。音・映像とも全てランタイム生成で外部アセットなし。EMBED-CONTRACT 標準（source=takibi / config / game_over=熾火到達、score=到達秒数・小さいほど上位）実装済み・imapp 側 §4 未実施 |
 | `/koharubiyori/` | 小春日和 | `小春日和` (Phaser4 + Vite) ※imapp 未公開（配信のみ）— 京都のバー「ワインとウヰスキー 小春日和」の販促ミニアーケード（棚の記憶＝位置記憶／ラベル神経衰弱／お品書き）。縦画面。伏せ札=店ロゴ・店主アバター演出。EMBED-CONTRACT 標準（source=koharubiyori / config / game_over）実装済み・imapp 側 §4 未実施。assets は同名差し替えあり（no-cache）。`?store=<id>` で店舗差し替え（棚背景/ロゴ/MAKERS・PII非保持） |
 
 ## ソースリポジトリ対応表（1タイトル=1リポジトリ・2026-07-08 整備）
@@ -72,6 +73,7 @@ Cloudflare Pages で `games.imapp.shop` カスタムドメインを当てる。
 | cocktail-fight | kotemoku/cocktail-fight | `カクテルファイト`（imapp 非公開中） |
 | packer-panic-eco | kotemoku/packer-panic-eco | `packer-panic-eco` |
 | koharubiyori | kotemoku/koharubiyori | `../小春日和`（Desktop 直下） |
+| takibi | kotemoku/takibi | `../takibi`（Desktop 直下） |
 
 ※ `バーガーイレブン/burger_stack_rush` は移行前の旧 Flutter 版（レガシー・リポジトリ化対象外）。
 
