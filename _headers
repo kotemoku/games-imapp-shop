@@ -109,3 +109,5 @@
   Cache-Control: no-cache, must-revalidate
 /kokage/assets/*
   Cache-Control: no-cache, must-revalidate
+/takibi/assets/*
+  Cache-Control: no-cache, must-revalidate
