@@ -41,6 +41,8 @@ Cloudflare Pages で `games.imapp.shop` カスタムドメインを当てる。
 | `/kokage/` | 木陰 -Kokage- | `kokage`（Desktop 直下） (Vite + React + TS・PWA対応) ※imapp 未公開（配信のみ・実機テスト用）— 木を撫でて光を集め、種から世界樹まで育てる里山クリッカー。縦画面。オフライン進行・種火プレステージあり。EMBED-CONTRACT 未実装（公開時に対応） |
 | `/takibi/` | 焚き火 -takibi- | `takibi`（Desktop 直下） (素の単一HTML・ビルド不要) ※imapp 未公開（配信のみ）— 火花→息→薪の手順で火を熾し、熾火になったらただ眺める癒し系焚き火体験。二層構成（炎本体は実写/Blender素材に差し替え可能）。音・映像とも全てランタイム生成で外部アセットなし。EMBED-CONTRACT 標準（source=takibi / config / game_over=熾火到達、score=到達秒数・小さいほど上位）実装済み・imapp 側 §4 未実施 |
 | `/koharubiyori/` | 小春日和 | `小春日和` (Phaser4 + Vite) ※imapp 未公開（配信のみ）— 京都のバー「ワインとウヰスキー 小春日和」の販促ミニアーケード（棚の記憶＝位置記憶／ラベル神経衰弱／お品書き）。縦画面。伏せ札=店ロゴ・店主アバター演出。EMBED-CONTRACT 標準（source=koharubiyori / config / game_over）実装済み・imapp 側 §4 未実施。assets は同名差し替えあり（no-cache）。`?store=<id>` で店舗差し替え（棚背景/ロゴ/MAKERS・PII非保持） |
+| `/makido/` | 薪道 -MAKIDO- | `makibi`（Desktop 直下） (Vite + React + TS) ※imapp 未公開（配信のみ）— 石斧からヒヒイロカネ斧まで薪を割り続けるインクリメンタル／クリッカー。木目タイミング・節・乾燥小屋・コンボ→薪火フィーバー・火入れ（転生）。Canvas 割れ演出＋Web Audio ランタイム合成SFX（外部音源なし）。EMBED-CONTRACT 標準（source=makido / config / game_over=火入れ、score=周回獲得薪・大きいほど上位）実装済み・imapp 側 §4 未実施。`?store=<id>` で店舗モード（店名バッジ/差し色・PII非保持） |
+| `/aozora-hanten/` | あおぞら飯店メニューバトル | `chuka-tactics-kit`（Desktop 直下） (Phaser4 + Vite + vitest) ※imapp 未公開（配信のみ）— 町中華の完全情報タクティクス。品書きから2〜3品を編成し3ウェーブを捌く。乱数ゼロ・敵行動（追跡/回転/溜め）は全て決定的で予告される。縦画面。EMBED-CONTRACT 標準（source=aozora-hanten / config / game_over、score=クリアウェーブ×100＋残HP×10）実装済み・imapp 側 §4 未実施。assets は内容ハッシュ名のみ（immutable）。カード/アイコン素材は `/cards/` `/icon/`（/assets/ 外・同名差し替え可） |
 
 ## ソースリポジトリ対応表（1タイトル=1リポジトリ・2026-07-08 整備）
 
@@ -74,6 +76,8 @@ Cloudflare Pages で `games.imapp.shop` カスタムドメインを当てる。
 | packer-panic-eco | kotemoku/packer-panic-eco | `packer-panic-eco` |
 | koharubiyori | kotemoku/koharubiyori | `../小春日和`（Desktop 直下） |
 | takibi | kotemoku/takibi | `../takibi`（Desktop 直下） |
+| aozora-hanten | kotemoku/aozora-hanten | `../chuka-tactics-kit`（Desktop 直下） |
+| makido | kotemoku/makido | `../makibi`（Desktop 直下） |
 
 ※ `バーガーイレブン/burger_stack_rush` は移行前の旧 Flutter 版（レガシー・リポジトリ化対象外）。
 
