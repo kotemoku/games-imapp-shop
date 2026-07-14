@@ -90,11 +90,19 @@
     position:fixed; left:50%; transform:translateX(-50%);
     bottom:calc(max(18px, env(safe-area-inset-bottom)) + 118px);
     width:min(380px, 84vw); z-index:5; pointer-events:none;
-    display:flex; align-items:center; gap:12px;
+    display:flex; flex-direction:column; gap:24px;
     transition:opacity 1.6s ease;
   }
   #firebar.faded{ opacity:.1; }
+  #firebar .frow{ display:flex; align-items:center; gap:12px; width:100%; }
   #firebar .fl{ font-size:10px; letter-spacing:.35em; color:var(--ink-dim); white-space:nowrap; }
+  #egauge{ position:relative; flex:1; height:4px; border-radius:2px; background:rgba(232,220,200,.1); }
+  #egauge b{
+    display:block; height:100%; width:0%;
+    background:linear-gradient(90deg,#4a1204,#b83c0c,#ff6a1a);
+    border-radius:2px; transition:width .4s linear;
+    box-shadow:0 0 8px rgba(230,80,20,.5);
+  }
   #fgauge{ position:relative; flex:1; height:7px; border-radius:4px; background:rgba(232,220,200,.13); }
   #fgauge b{
     display:block; height:100%; width:0%;
@@ -164,7 +172,7 @@
 
   /* ---- step guide (tutorial) ---- */
   #guide{
-    position:fixed; left:50%; bottom:calc(max(18px, env(safe-area-inset-bottom)) + 158px);
+    position:fixed; left:50%; bottom:calc(max(18px, env(safe-area-inset-bottom)) + 182px);
     transform:translateX(-50%); text-align:center; z-index:4; pointer-events:none;
     max-width:92vw; opacity:0; transition:opacity .9s ease;
   }
@@ -214,12 +222,18 @@
 </div>
 
 <div id="firebar">
-  <span class="fl">火力</span>
-  <div id="fgauge">
-    <b id="ffill"></b>
-    <span class="tick" id="tick0"><i></i><em>小枝</em></span>
-    <span class="tick" id="tick1"><i></i><em>細薪</em></span>
-    <span class="tick" id="tick2"><i></i><em>太薪</em></span>
+  <div class="frow">
+    <span class="fl">火力</span>
+    <div id="fgauge">
+      <b id="ffill"></b>
+      <span class="tick" id="tick0"><i></i><em>小枝</em></span>
+      <span class="tick" id="tick1"><i></i><em>細薪</em></span>
+      <span class="tick" id="tick2"><i></i><em>太薪</em></span>
+    </div>
+  </div>
+  <div class="frow">
+    <span class="fl">熾火</span>
+    <div id="egauge"><b id="efill"></b></div>
   </div>
 </div>
 
@@ -241,7 +255,7 @@
     <div class="row"><span class="k">「扇ぐ」（Space・F）</span><span class="v">団扇でひと扇ぎ。連打するほど風が起きて火力が上がる</span></div>
     <div class="row"><span class="k">薪ボタン（1・2・3）</span><span class="v">薪をくべる。火力ゲージの目盛りを超えていれば燃える</span></div>
     <div class="row"><span class="k">火力が足りないと</span><span class="v">薪は燃えずに火が沈む。でも大丈夫、扇げば立て直せる</span></div>
-    <div class="row"><span class="k">熾火が育ったら</span><span class="v">もう火は消えない。あとは、ただ眺めるだけ</span></div>
+    <div class="row"><span class="k">熾火ゲージ</span><span class="v">火力が高いあいだだけ育つ。育ちきれば火は消えなくなり、あとは、ただ眺めるだけ</span></div>
   </div>
   <div class="close">— 画面にふれて とじる —</div>
 </div>
@@ -274,13 +288,15 @@ const CONFIG = {
   flameSource : 'particle',      // 'particle' | 'sprite'
   igniteWork  : 9000,            // 着火に必要なこすり量（px相当・ブレあり。体感10秒前後）
   igniteDecay : 0.045,           // 手を止めたときの着火ゲージ減衰（割合/秒）
-  tinderBurnSec  : 45,           // 火口が燃え尽きるまでの秒
+  tinderBurnSec  : 32,           // 火口が燃え尽きるまでの秒（扇ぐと早く減る）
+  // need は前段の settle より高い＝扇いで押し上げないと次に進めない
   adds : [
-    { id:'twig',  label:'小枝', need:0.05, settle:0.34, ember:0.10, burnSec:22 },
-    { id:'thin',  label:'細薪', need:0.26, settle:0.62, ember:0.24, burnSec:38 },
-    { id:'thick', label:'太薪', need:0.52, settle:1.00, ember:0.45, burnSec:75 },
+    { id:'twig',  label:'小枝', need:0.10, settle:0.30, ember:0.06, burnSec:16 },
+    { id:'thin',  label:'細薪', need:0.46, settle:0.58, ember:0.16, burnSec:28 },
+    { id:'thick', label:'太薪', need:0.82, settle:1.00, ember:0.34, burnSec:55 },
   ],
-  rewardEmber : 0.55,            // このemberで「ご褒美モード」へ
+  emberHotFloor : 0.45,          // この火力未満では熾火が育たない
+  rewardEmber : 0.50,            // このemberで「ご褒美モード」へ
   rewardSettle: 0.85,            // ご褒美モードの火力フロア
   fireScale   : 1.4,             // 焚き火全体の大きさ（炎・薪・石組み・地明かり）
   emitRate    : 115,             // 炎パーティクル生成率
@@ -977,6 +993,7 @@ const elTitle = document.getElementById('title');
 const elMsg = document.getElementById('msg');
 const elBanner = document.getElementById('banner');
 const elFfill = document.getElementById('ffill');
+const elEfill = document.getElementById('efill');
 const elClock = document.getElementById('clock');
 const elSnd = document.getElementById('sndbtn');
 const elWoodbar = document.getElementById('woodbar');
@@ -1003,8 +1020,8 @@ const GUIDE = {
   strike: { n: '手順 一', t: '薪の上を こすり続けて、着火ゲージを溜めよう' },
   blow:   { n: '手順 二', t: '「扇ぐ」ボタンを連打して、風を送ろう' },
   twig:   { n: '手順 三', t: '下の「小枝」をくべよう' },
-  grow:   { n: '手順 四', t: '扇いで火を育てながら、細薪 → 太薪 とくべていく' },
-  tend:   { n: '手順 五', t: 'あとは熾火が育つのを待つ。火が弱ったら、扇ごう' },
+  grow:   { n: '手順 四', t: '扇いで目盛りまで押し上げてから、細薪 → 太薪 とくべる' },
+  tend:   { n: '手順 五', t: '火を強く保つほど熾火が育つ。扇ぎ、くべ、また扇ごう' },
 };
 const guide = { step: null, fans: 0 };
 const elGuide = document.getElementById('guide');
@@ -1213,19 +1230,24 @@ function update(dt, t){
   // ---- 火力モデル ----
   let target = game.ember * 0.5;
   if (game.tinder) {
-    game.tinder.remain -= dt * (1 + blowStr * 0.3);
+    // 扇ぐと火口の減りが早い＝火口のうちに扇ぎすぎない、という駆け引き
+    game.tinder.remain -= dt * (1 + blowStr * 0.8);
     if (game.tinder.remain <= 0) game.tinder = null;
     else target = Math.max(target, 0.18 * clamp(game.tinder.remain / 6, 0, 1));
   }
+  // 熾火は高火力のときだけ育つ（火を強く保つ理由になる）
+  const hot = clamp((game.heat - CONFIG.emberHotFloor) / 0.4, 0, 1);
   for (let i = game.burning.length - 1; i >= 0; i--) {
     const b = game.burning[i];
     b.ramp = Math.min(b.ramp + dt / 2.5, 1);
     b.remain -= dt * (1 + blowStr * 0.25);
     const fade = clamp(b.remain / (b.spec.burnSec * 0.25), 0, 1);
     target = Math.max(target, b.spec.settle * b.ramp * fade);
-    game.ember = Math.min(1, game.ember + b.spec.ember * (dt / b.spec.burnSec));
+    game.ember = Math.min(1, game.ember + b.spec.ember * hot * (dt / b.spec.burnSec));
     if (b.remain <= 0) game.burning.splice(i, 1);
   }
+  // 薪を重ねる恩恵：同時に燃えている本数分、少しだけ火力が上がる
+  if (game.burning.length > 1) target += Math.min(0.04 * (game.burning.length - 1), 0.12);
   // 沈んだ薪：火力が閾値を超え続ければ乾いて着火する（可逆）
   for (let i = game.pending.length - 1; i >= 0; i--) {
     const p = game.pending[i];
@@ -1246,7 +1268,7 @@ function update(dt, t){
   if (game.reward) target = Math.max(target, CONFIG.rewardSettle * 0.72);
   if (blowStr > 0.05 && game.heat > 0.02) target = Math.min(target + 0.32 * blowStr, 1.15);
 
-  const rate = target > game.heat ? (blowStr > 0.4 ? 0.85 : 0.45) : 0.06;
+  const rate = target > game.heat ? (blowStr > 0.4 ? 0.85 : 0.45) : 0.09;
   game.heat += (target - game.heat) * rate * dt;
   game.heat = clamp(game.heat, 0, 1.15);
   game.ember = Math.max(0, game.ember - 0.0025 * dt);
@@ -1266,11 +1288,18 @@ function update(dt, t){
   // ---- ご褒美モード到達 ----
   if (!game.reward && game.ember >= CONFIG.rewardEmber) {
     game.reward = true;
+    const sec = Math.max(1, Math.round(elapsed - game.litAt));
+    // 到達の祝福：炎が一度大きく膨らみ、火の粉が柱になる
+    game.flare = 1;
+    sparkBurst(cx, baseY - 30 * S, 70, 300);
+    AudioSys.flare();
+    const mm = Math.floor(sec / 60), ss = sec % 60;
+    document.querySelector('#banner .b2').textContent =
+      `あなたが ${mm > 0 ? mm + '分' : ''}${ss}秒 かけて育てた火。もう消えない。あとは、ただ眺めるだけ。`;
     elBanner.classList.add('show');
     elClock.style.display = 'inline';
-    setTimeout(() => elBanner.classList.remove('show'), 6500);
+    setTimeout(() => elBanner.classList.remove('show'), 8000);
     // imapp: 1ラウンド終了（点火→熾火到達）。scoreは到達までの秒数（整数）
-    const sec = Math.max(1, Math.round(elapsed - game.litAt));
     IMAPP.send('game_over', { score: sec, timeToEmberSec: sec, logs: game.logsFed, damped: game.damped });
   }
 
@@ -1293,6 +1322,15 @@ function update(dt, t){
           break;
         case 'grow':
           if (burnt('thick')) setGuideStep('tend');
+          else {
+            // 核心メカニクスに気づけない人への一度きりの助け舟
+            const nextNeed = burnt('thin') ? CONFIG.adds[2].need : CONFIG.adds[1].need;
+            if (game.heat < nextNeed - 0.02 && blowStr < 0.3) guide.stuck = (guide.stuck || 0) + dt;
+            if ((guide.stuck || 0) > 8 && !guide.stuckSaid) {
+              guide.stuckSaid = true;
+              say('薪だけでは目盛りに届かない。「扇ぐ」を連打して、火力を押し上げてからくべよう', 7);
+            }
+          }
           break;
       }
     }
@@ -1324,6 +1362,7 @@ function update(dt, t){
   elFan.classList.toggle('cool', game.phase === 'dark');
   elFan.classList.toggle('guide', guide.step === 'blow');
   elFfill.style.width = (clamp(game.heat / 1.15, 0, 1) * 100).toFixed(1) + '%';
+  elEfill.style.width = (clamp(game.ember / CONFIG.rewardEmber, 0, 1) * 100).toFixed(1) + '%';
   if (game.reward) {
     const s = Math.floor(elapsed - game.litAt);
     const mm = String(Math.floor(s / 60) % 60).padStart(2, '0');
