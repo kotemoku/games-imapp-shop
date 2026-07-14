@@ -1,0 +1,15 @@
+{
+  "name": "小春日和 — ワインとウヰスキー",
+  "short_name": "小春日和",
+  "description": "京都のバー「小春日和」の販促ミニアーケード（棚の記憶・ラベル神経衰弱・お品書き）",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "landscape",
+  "background_color": "#140d07",
+  "theme_color": "#140d07",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
