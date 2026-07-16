@@ -1,7 +1,7 @@
 {
   "name": "ormary life",
   "short_name": "ormary life",
-  "description": "同じパンをなぞって繋いで焼き上げる、店番マッチゲーム。",
+  "description": "ormary store の日替わりメニューをなぞって繋いでお客様へ届ける、店番マッチゲーム。",
   "lang": "ja",
   "start_url": "./index.html",
   "scope": "./",
