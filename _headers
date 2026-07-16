@@ -49,7 +49,7 @@
   Cache-Control: no-cache, must-revalidate
 /apple-guard/assets/*
   Cache-Control: no-cache, must-revalidate
-/bakery-rush/assets/*
+/ormary-life/assets/*
   Cache-Control: no-cache, must-revalidate
 /donut-donaru/assets/*
   Cache-Control: no-cache, must-revalidate

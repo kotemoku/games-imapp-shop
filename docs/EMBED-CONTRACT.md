@@ -71,7 +71,7 @@ https://games.imapp.shop/<game-key>/?embed=1&imapp=1&player=<uid>&hostOrigin=htt
 | tsukurun | ✅ | `tsukurun` | `imappt` | `config` | `game_over` | ✅ |
 | konpeito | ✅ | `konpeito` | ⚠️ `imapp` (両対応未着手) | `config` | `game_over`/`save_score` | ❌ 要正規化 |
 | burger-stack-rush | ✅ | `burger-stack-rush` | ⚠️ `imapp` | ⚠️ `init` | ⚠️ `result` | ❌ 要正規化 ※`postMessage(…,'*')` 使用=§3違反 |
-| bakery-rush | 配信のみ | `bakery-rush` | `imappt` | `config` | `game_over` | ✅ |
+| ormary-life | 配信のみ | `ormary-life` | `imappt` | `config` | `game_over` | ✅ |
 | donut-donaru | 配信のみ | `donut-donaru` | `imappt` | `config` | `game_over` | ✅ |
 | donut-rush | 配信のみ | `donut-rush` | `imappt` | `config` | `game_over` | ✅ |
 | takoyaki-rush | 配信のみ | `takoyaki-rush` | `imappt` | `config` | `game_over` | ✅ |
