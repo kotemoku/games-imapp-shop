@@ -165,3 +165,23 @@ konpeito / burger は下記手順でゲーム側を標準へ寄せる。
 
 > 現状の実装状況: `kyou-no-bres` はゲーム側が §7 を送出・受信する実装済み。imapp 側の
 > 受け口（予約 UI・購読ゲート・`reservation_confirmed` 返送・`reservation_enabled` 列）は本 §7 を正として実装する。
+
+---
+
+## 8. シェア・外部リンク・分析の拡張（任意・2026-07-16 確定）
+
+- **Web Share API**: imapp の iframe は全ゲーム共通で `allow="web-share"` 済み。
+  ゲーム内シェアボタンはそのまま動く（ユーザー操作起点必須）。
+- **外部リンク**: どちらでも可。
+  - game→host `{ source:'<game-key>', type:'open_url', payload:{ url } }`
+    → host が新規タブで開く。**https 以外は無視される**。
+  - ゲーム側アダプタ申請で `target="_blank"` 直接遷移も可（imapp チームに依頼:
+    extraSandbox 設定。kyou-no-bres は設定済み）。
+- **匿名分析**: game→host `{ source:'<game-key>', type:'analytics', payload:{ event, ...fields } }`
+  - `event` は `^[a-z0-9_]{1,40}$`、fields 合計 4KB まで。**PII を入れないこと**。
+  - 店舗コンテキスト（`?shop=` 起動）のときだけ記録される。
+- **notify_pref**: `{ enable | enabled: boolean }` どちらの表記でも可。
+  true=購読フロー起動、false=無操作（ack のみ）。応答は
+  host→game `{ type:'notify_pref_ack', payload:{ subscribed } }`。
+- **reserve_intent の準備カード**: `payload.prepCard = { topStones?, mood?, wrist?,
+  interest?, birthday? }` を送ると imapp の予約シートの伝言欄に整形表示される。
