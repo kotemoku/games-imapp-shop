@@ -1,0 +1,16 @@
+{
+  "name": "焼き師",
+  "short_name": "焼き師",
+  "description": "炭火焼肉シミュレーター — 音と表面で焼き加減を読む",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0a0706",
+  "theme_color": "#120d0b",
+  "icons": [
+    { "src": "./icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "./icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "./icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

@@ -115,3 +115,5 @@
   Cache-Control: no-cache, must-revalidate
 /aozora-hanten/assets/*
   Cache-Control: no-cache, must-revalidate
+/yakishi/assets/*
+  Cache-Control: no-cache, must-revalidate

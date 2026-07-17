@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#120d0b">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" type="image/png" href="./icon-192.png">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png">
+<title>焼き師</title>
+<style>
+  :root{
+    --ash:#d9cbb8; --char:#120d0b; --ember:#ff6a1a; --gold:#ffcf6b;
+    --panel:rgba(20,14,11,.72); --line:rgba(255,180,110,.16);
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent}
+  html,body{margin:0;height:100%;background:#0a0706;overflow:hidden;
+    font-family:"Noto Sans JP",system-ui,-apple-system,"Hiragino Kaku Gothic ProN",sans-serif;
+    color:#f3e7d6; user-select:none; touch-action:none}
+  /* The canvas is absolutely positioned so its CSS size is fixed by the container and can
+     never be driven by its backing-store size. That feedback loop made everything draw 2x
+     in the prototype (docs/LESSONS.md §3). Never make this a flex item. */
+  #game{position:fixed;inset:0;overflow:hidden}
+  #game canvas{position:absolute;inset:0;display:block;width:100%;height:100%;touch-action:none}
+
+  #hud{position:absolute;top:0;left:0;right:0;display:flex;gap:8px;align-items:center;
+    padding:10px 12px;padding-top:calc(10px + env(safe-area-inset-top,0));z-index:5;pointer-events:none}
+  .tag{font-size:12px;letter-spacing:.14em;color:#e8b878;opacity:.85}
+  .spacer{flex:1}
+  .pill{pointer-events:auto;background:var(--panel);border:1px solid var(--line);border-radius:999px;
+    padding:8px 13px;font-size:13px;color:#f3e7d6;display:flex;gap:7px;align-items:center;backdrop-filter:blur(6px)}
+  .pill b{color:var(--gold);font-weight:700}
+
+  #tray{position:absolute;left:0;right:0;bottom:0;z-index:5;
+    padding:8px 10px calc(10px + env(safe-area-inset-bottom,0)) 10px;
+    display:flex;flex-direction:column;gap:6px;pointer-events:none}
+  .hint2{pointer-events:none;font-size:11px;color:#b89a7c;text-align:center;text-shadow:0 1px 3px #000;opacity:.9}
+  .parts{pointer-events:auto;display:flex;gap:6px;overflow-x:auto;-webkit-overflow-scrolling:touch;
+    background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:8px;
+    backdrop-filter:blur(6px);scrollbar-width:none}
+  .parts::-webkit-scrollbar{display:none}
+  .cat{flex:0 0 auto;align-self:center;font-size:10px;letter-spacing:.1em;color:#e8b878;opacity:.7;
+    padding:0 3px 0 7px;border-left:1px solid rgba(255,180,110,.16);white-space:nowrap}
+  .cat.first{border-left:none;padding-left:2px}
+  .part{flex:0 0 auto;border:1px solid transparent;border-radius:11px;padding:7px 10px;font-size:13px;
+    color:#e9d8c2;background:rgba(255,255,255,.03);line-height:1.15;text-align:center;min-width:50px;white-space:nowrap}
+  .part small{display:block;font-size:10px;opacity:.6;margin-top:2px}
+  .part.sel{border-color:var(--gold);color:#fff;background:rgba(255,160,80,.12)}
+  /* imapp: 店で注文すると解禁される部位。鍵の理由ごと見せる（SPEC §10） */
+  .part.lock{opacity:.38;filter:grayscale(.5)}
+  .part.lock small{opacity:.9;color:#e8b878}
+
+  /* 飲み物。こってり度は数値で出さない。want で光ることだけが手がかり（原則1）。 */
+  #drinks{position:absolute;right:8px;top:50%;transform:translateY(-58%);z-index:6;
+    display:flex;flex-direction:column;gap:7px;pointer-events:auto}
+  .drink{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:7px 8px;
+    text-align:center;font-size:17px;line-height:1;backdrop-filter:blur(6px);
+    transition:border-color .3s, box-shadow .3s, transform .15s}
+  .drink small{display:block;font-size:9px;margin-top:3px;color:#c8ad90}
+  .drink:active{transform:scale(.93)}
+  .drink.want{border-color:var(--gold);box-shadow:0 0 14px rgba(255,190,90,.4);animation:pulse 1.6s ease-in-out infinite}
+  @keyframes pulse{0%,100%{box-shadow:0 0 8px rgba(255,190,90,.25)}50%{box-shadow:0 0 18px rgba(255,190,90,.55)}}
+
+  #seasonPanel{position:absolute;inset:0;z-index:12;display:none;align-items:center;justify-content:center;
+    background:rgba(8,5,4,.55);backdrop-filter:blur(2px)}
+  #seasonPanel.on{display:flex}
+  .sp-card{background:rgba(26,18,14,.96);border:1px solid var(--line);border-radius:16px;
+    padding:15px 14px 13px;max-width:330px;width:86%;box-shadow:0 12px 40px rgba(0,0,0,.6)}
+  .sp-title{font-size:12px;color:#c8ad90;margin-bottom:11px;text-align:center}
+  .sp-title b{color:var(--gold);font-size:14px}
+  .sp-row{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+  .sea{border:1px solid rgba(255,180,110,.22);border-radius:11px;padding:9px 11px;font-size:13px;
+    background:rgba(255,255,255,.04);color:#f0e2ce;min-width:56px;text-align:center;line-height:1.2}
+  .sea small{display:block;font-size:9px;opacity:.55;margin-top:2px}
+  .sea.usual{border-color:var(--gold);background:rgba(255,170,80,.14)}
+  .sea:active{transform:scale(.95)}
+
+  #toast{position:absolute;left:50%;top:32%;transform:translate(-50%,-50%) scale(.9);z-index:8;
+    pointer-events:none;text-align:center;opacity:0;transition:opacity .25s,transform .25s}
+  #toast.on{opacity:1;transform:translate(-50%,-50%) scale(1)}
+  #toast .verdict{font-size:30px;font-weight:800;text-shadow:0 2px 12px rgba(0,0,0,.7)}
+  #toast .sub{font-size:13px;margin-top:4px;opacity:.85;letter-spacing:.1em}
+
+  /* 接待モード。絵は未実装なので文字だけ。差し替え前提。 */
+  #orders{position:absolute;left:8px;top:56px;z-index:6;display:none;flex-direction:column;gap:6px;
+    max-width:210px;pointer-events:none}
+  #orders.on{display:flex}
+  .order{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--gold);
+    border-radius:10px;padding:7px 9px;font-size:12px;line-height:1.35;backdrop-filter:blur(6px)}
+  .order .who{color:#e8b878;font-size:10px;letter-spacing:.06em}
+  .order .what{color:#f3e7d6}
+  /* 待ち時間はタイマーで出さない。客の様子だけで伝える（原則1）。 */
+  .order .mood{font-size:10px;color:#b89a7c;margin-top:2px}
+  .order.restless{border-left-color:#e0a46a}
+  .order.restless .mood{color:#e0a46a}
+  .order.late{border-left-color:#e07b7b}
+  .order.late .mood{color:#e07b7b}
+
+  /* 客のリアクション = 接待モードの報酬（SPEC §9.2） */
+  #reaction{position:absolute;left:50%;top:44%;transform:translate(-50%,-50%) translateY(10px);
+    z-index:9;pointer-events:none;opacity:0;transition:opacity .22s, transform .22s;
+    background:rgba(24,16,12,.95);border:1px solid var(--line);border-radius:14px;
+    padding:13px 16px;max-width:300px;text-align:center;box-shadow:0 12px 40px rgba(0,0,0,.6)}
+  #reaction.on{opacity:1;transform:translate(-50%,-50%) translateY(0)}
+  #reaction .who{font-size:10px;color:#c8ad90;letter-spacing:.06em}
+  #reaction .line{font-size:16px;font-weight:700;margin-top:5px;line-height:1.4}
+  #reaction .dish{font-size:10px;color:#9a8578;margin-top:6px}
+
+  /* ビール一杯サービス */
+  #service{position:absolute;left:50%;top:26%;transform:translate(-50%,-50%) scale(.85);z-index:11;
+    pointer-events:none;opacity:0;transition:opacity .3s, transform .3s;text-align:center}
+  #service.on{opacity:1;transform:translate(-50%,-50%) scale(1)}
+  #service .cheer{font-size:22px;font-weight:800;color:var(--gold);text-shadow:0 2px 14px rgba(0,0,0,.8)}
+  #service .why{font-size:11px;color:#e9d8c2;margin-top:4px;text-shadow:0 1px 4px #000}
+</style>
+  <script type="module" crossorigin src="./assets/index-BJXVf7FI.js"></script>
+</head>
+<body>
+  <div id="game"></div>
+  <div id="hud">
+    <div class="pill" id="modeBtn"><b id="modeLbl">一人焼肉</b></div>
+    <div class="spacer"></div>
+    <div class="pill" id="speedBtn">速度 <b id="speedLbl">リアル</b></div>
+    <div class="pill" id="soundBtn">🔊 <span style="opacity:.7">音</span></div>
+    <div class="pill">皿 <b id="plated">0</b></div>
+  </div>
+  <div id="orders"></div>
+  <div id="reaction"><div class="who"></div><div class="line"></div><div class="dish"></div></div>
+  <div id="service"><div class="cheer"></div><div class="why"></div></div>
+  <div id="tray">
+    <div class="hint2">網タップ＝置く ・ 具材タップ＝返す ・ 皿へドラッグ＝上げる</div>
+    <div class="parts" id="parts"></div>
+  </div>
+  <div id="drinks"></div>
+  <div id="seasonPanel">
+    <div class="sp-card">
+      <div class="sp-title">焼き上がり — <b id="sp-name"></b></div>
+      <div class="sp-row" id="sp-row"></div>
+    </div>
+  </div>
+  <div id="toast"><div class="verdict"></div><div class="sub"></div></div>
+</body>
+</html>
