@@ -56,7 +56,7 @@ Cloudflare Pages で `games.imapp.shop` カスタムドメインを当てる。
 | tsukurun | kotemoku/tsukurun | `つくチャレ-phaser` |
 | pizza-oven-rush | kotemoku/pizza-oven-rush | `pizza-phaser` |
 | apple-guard | kotemoku/apple-guard | `アップルガード` |
-| ormary-life | kotemoku/bakery-rush | `ormary-life-phaser` |
+| ormary-life | kotemoku/ormary-life | `ormary-life-phaser` |
 | donut-donaru | kotemoku/donut-donaru | `ドーナツどーなる` |
 | konpeito | kotemoku/konpeito | `こんぺい堂` |
 | donut-rush | kotemoku/donut-rush | `ドーナツラッシュ-phaser` |
