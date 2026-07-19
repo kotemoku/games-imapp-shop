@@ -11,6 +11,10 @@ Cloudflare Pages で `games.imapp.shop` カスタムドメインを当てる。
 > 🆕 **新ゲームを連動させるとき**: [`docs/embed-onboarding-TEMPLATE.md`](docs/embed-onboarding-TEMPLATE.md)
 > をコピーして `docs/embed-notice-<game-key>.md` を作り、`<game-key>`/`<ゲーム名>` を
 > 埋めるだけ。通達は毎回これ一手順で共通化する。
+>
+> 🎨 **見た目品質の共通基準（全タイトル必読・恒久）**: [`docs/QUALITY-NOTICE-visual.md`](docs/QUALITY-NOTICE-visual.md)
+> — 「ダサいは一番ダメ」。ホーム画面アイコン（manifest/apple-touch-icon）・日本語組版・
+> 画像透過/キャッシュの最低基準。出荷前チェック必須。
 
 ## 配信中のゲーム
 
