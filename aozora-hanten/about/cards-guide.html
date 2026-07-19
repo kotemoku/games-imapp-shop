@@ -4,718 +4,801 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex">
-<title>あおぞら飯店メニューバトル — キャラクター資料（店主様向け）</title>
+<title>あおぞら飯店メニューバトル — カード一覧資料（店主様向け）</title>
 <style>
-  :root{--ink:#1c1713;--red:#b73122;--muted:#756b61;--line:rgba(74,50,30,.16)}
-  *{box-sizing:border-box}body{margin:0;background:#f7efdf;color:var(--ink);font-family:"Noto Sans JP","Yu Gothic","Hiragino Kaku Gothic ProN",sans-serif;line-height:1.6}
-  .wrap{width:min(1080px,calc(100% - 32px));margin:auto}
-  header{padding:40px 0 8px;text-align:center}
+  :root{--ink:#1c1713;--red:#b73122;--muted:#756b61;--line:rgba(74,50,30,.16);
+    --f-melee:#b03a26;--f-line:#2a5a8a;--f-area:#4f7a35;--f-enemy:#2d2925;
+    --s-melee:#f3d9c8;--s-line:#d3e0ee;--s-area:#dbe8d0;--s-enemy:#e8dcc8}
+  *{box-sizing:border-box}body{margin:0;background:#efe6d4;color:var(--ink);font-family:"Noto Sans JP","Yu Gothic","Hiragino Kaku Gothic ProN",sans-serif;line-height:1.55}
+  .wrap{width:min(1120px,calc(100% - 28px));margin:auto}
+  header{padding:38px 0 6px;text-align:center}
   header h1{font-family:"Yu Mincho","Hiragino Mincho ProN",serif;font-size:clamp(26px,4vw,40px);margin:4px 0 10px}
   .kicker{color:var(--red);font-weight:900;letter-spacing:.14em;font-size:12px}
   header p{color:var(--muted);font-size:13px;max-width:760px;margin:0 auto}
-  .howto{background:#fffaf0;border:1px solid var(--line);border-radius:16px;padding:18px 22px;margin:22px auto;font-size:13px;max-width:860px}
+  .howto{background:#fffaf0;border:1px solid var(--line);border-radius:16px;padding:16px 20px;margin:20px auto;font-size:13px;max-width:880px}
   .howto b{color:#8d291f}
-  section.cat{padding:14px 0 6px}
-  h2{font-family:"Yu Mincho",serif;color:#8d291f;font-size:24px;border-bottom:2px solid var(--red);padding-bottom:6px;margin:26px 0 16px}
-  .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-  .card{background:#fffaf0;border:1px solid var(--line);border-radius:14px;padding:10px;break-inside:avoid;page-break-inside:avoid}
-  .art{height:150px;display:grid;place-items:center;background:linear-gradient(#fff,#f0e2c8);border-radius:10px;border:1px solid var(--line);overflow:hidden}
-  .art img{max-width:96%;max-height:96%;object-fit:contain}
-  .card h3{margin:8px 0 2px;font-size:15px;display:flex;justify-content:space-between;align-items:baseline;gap:6px}
-  .card h3 small{color:var(--muted);font-weight:400;font-size:10px;white-space:nowrap}
-  .chips{display:flex;gap:4px;flex-wrap:wrap;margin:2px 0 6px}
-  .chips span{font-size:10px;font-weight:800;padding:2px 7px;border-radius:999px;background:#f0e2c8;color:#6a4e26}
-  .chips .t{background:var(--red);color:#fff}
-  .chips .st{background:#dca72c;color:#fff}
-  .stat{font-weight:900;font-size:13px}
-  .param{font-size:11px;color:var(--muted)}
-  .trait{font-size:11px;color:#8d291f;margin-top:4px;font-weight:700}
-  .fl{font-size:11px;color:var(--muted);margin:4px 0 0}
-  .enemy .art{background:linear-gradient(#efe1ca,#d9c3a0)}
-  .future{opacity:.85}.future .art{background:linear-gradient(#2f2420,#171210)}
+  h2{font-family:"Yu Mincho",serif;color:#8d291f;font-size:24px;border-bottom:2px solid var(--red);padding-bottom:6px;margin:28px 0 16px}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  /* ---- TCG カード ---- */
+  .tcg{aspect-ratio:63/88;background:#f7efdf;border-radius:12px;padding:10px 12px 6px;position:relative;display:flex;flex-direction:column;box-shadow:0 8px 20px rgba(60,30,12,.14);break-inside:avoid;page-break-inside:avoid;border:6px solid var(--fc,#8a6d3a);outline:2px solid #e8d5a8;outline-offset:-8px}
+  .t-melee{--fc:var(--f-melee);--sc:var(--s-melee)}
+  .t-line{--fc:var(--f-line);--sc:var(--s-line)}
+  .t-area{--fc:var(--f-area);--sc:var(--s-area)}
+  .t-enemy{--fc:var(--f-enemy);--sc:var(--s-enemy)}
+  .tcg-head{display:flex;align-items:center;gap:6px;padding:2px 2px 4px}
+  .tcg-head .nm{font-family:"Yu Mincho",serif;font-weight:800;font-size:16.5px;flex:1;letter-spacing:-.02em}
+  .tcg-head .hp{font-weight:900;color:#b03a26;font-size:19px;white-space:nowrap}
+  .tcg-head .hp i{font-style:normal;font-size:10px;margin-right:2px}
+  .tcg-head .dot{width:22px;height:22px;border-radius:50%;background:var(--fc);color:#fff;font-size:11px;font-weight:900;display:grid;place-items:center;flex:0 0 22px}
+  .tcg-art{flex:0 0 44%;background:var(--sc);border:2.5px solid #c9a24a;border-radius:6px;display:grid;place-items:center;overflow:hidden}
+  .tcg-art img{max-width:94%;max-height:96%;object-fit:contain}
+  .tcg-info{font-size:9.5px;color:var(--muted);text-align:center;padding:4px 0 3px}
+  .tcg-box{background:rgba(255,255,255,.72);border:1.5px solid #c9a24a;border-radius:6px;padding:4px 8px;margin-bottom:4px;font-size:10px;line-height:1.4}
+  .tcg-box b{display:block;color:#8d291f;font-size:11px}
+  .tcg-box.atk{display:flex;align-items:center;gap:6px}
+  .tcg-box.atk b{color:#2a2118;flex:1;display:block}
+  .tcg-box.atk .ball{width:12px;height:12px;border-radius:50%;background:var(--fc);flex:0 0 12px}
+  .tcg-box.atk .pow{font-size:19px;font-weight:900}
+  .tcg-fl{font-family:"Yu Mincho",serif;font-size:9px;color:var(--muted);margin:1px 0 2px;text-align:center;flex:1}
+  .tcg-foot{display:flex;justify-content:space-between;align-items:center;font-size:9.5px;font-weight:800;gap:4px}
+  .tcg-foot .prm{color:var(--muted);font-weight:400;font-size:8.5px}
+  .tcg-foot .no{color:#5a4632}
+  .tcg-c{text-align:center;font-size:6.8px;color:#a89b88;padding-top:2px}
+  .future{opacity:.85}.future .tcg-art{background:linear-gradient(#2f2420,#171210)}
   footer{padding:26px 0 46px;text-align:center;color:var(--muted);font-size:11px}
-  @media(max-width:760px){.grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:760px){.grid{grid-template-columns:repeat(2,1fr)}.tcg-head .nm{font-size:13px}}
   @media print{
     body{background:#fff}
+    .grid{grid-template-columns:repeat(3,1fr);gap:8px}
     section.cat{page-break-before:always}
     section.cat:first-of-type{page-break-before:auto}
-    @page{size:A4;margin:10mm}
+    .tcg{box-shadow:none}
+    @page{size:A4;margin:8mm}
   }
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
-    <div class="kicker">AOZORA HANTEN MENU BATTLE — CHARACTER GUIDE</div>
-    <h1>キャラクター資料（店主様向け）</h1>
-    <p>全メニュー63品のカードキャラクターと、敵役「厨房の付喪神」の一覧です。<br>ゲーム内の数値・イラストはすべてこの内容で動いています。修正のご要望はお気軽に。</p>
+    <div class="kicker">AOZORA HANTEN MENU BATTLE — CARD CATALOG</div>
+    <h1>カード一覧資料（店主様向け）</h1>
+    <p>全メニュー63品のカードと敵キャラクターを、ゲーム内・実物カードと同じデザインで一覧化しています。<br>数値・イラスト・文言の修正はお気軽にお申し付けください。</p>
   </header>
   <div class="howto">
-    <b>カードの仕組み：</b>お客様が実際に注文して食べると、そのメニューのカードが1枚もらえます。同じカードは集めるほど成長し（3枚でLv2、6枚でLv3…）、<b>10枚で進化</b>（名前に「極・」が付き能力上昇）、<b>100枚（Lv8）でカンスト</b>です。カード枚数はゲーム内フィールドの解放にもつながります。<br>
-    <b>★特性について：</b>各カードの★特性は今後のアップデートで順次実装予定の能力です（現在は図鑑表示のみ）。<br>
-    <b>数値の見方：</b>「HP／攻／移／射」が戦闘の実数値。「攻・防・速・耐・精」はキャラクター設計上の基礎パラメータ（1〜10）です。
+    <b>カードの仕組み：</b>お客様が実際に注文して食べると、そのメニューのカードが1枚もらえます。集めるほど成長し（3枚でLv2、6枚でLv3…）、<b>10枚で進化</b>（「極・」が付き能力上昇）、<b>100枚でカンスト</b>。カード枚数はゲーム内フィールドの解放にもつながります。<br>
+    <b>枠の色＝間合い：</b><span style="color:var(--f-melee);font-weight:900">朱＝近接</span>／<span style="color:var(--f-line);font-weight:900">藍＝直線</span>／<span style="color:var(--f-area);font-weight:900">翠＝十字</span>。ワザの数字は攻撃力（ゲーム内値×10）です。<br>
+    <b>★特性：</b>今後のアップデートで順次実装予定（現在は表示のみ）。
   </div>
   <section class="cat">
     <h2>前菜（9品）</h2>
     <div class="grid">
-      <article class="card">
-        <div class="art"><img src="../cards/ika_kyuri.png" alt="イカとキュウリの和え物" loading="lazy"></div>
-        <h3>イカとキュウリの和え物<small>No.4　¥650</small></h3>
-        <div class="chips"><span class="t">近接</span><span>スイーパー</span></div>
-        <div class="stat">HP4／攻2／移3／射1</div>
-        <div class="param">攻4・防4・速9・耐5・精6</div>
-        <div class="trait">★シャキッと回避：最初に受ける攻撃を高確率で回避</div>
-        <p class="fl">明るく軽快で、誰とでもすぐ仲良くなる。</p>
+      <article class="tcg t-melee">
+        <div class="tcg-head"><span class="nm">イカとキュウリの和え物</span><span class="hp"><i>HP</i>4</span><span class="dot">近</span></div>
+        <div class="tcg-art"><img src="../cards/ika_kyuri.png" alt="イカとキュウリの和え物" loading="lazy"></div>
+        <div class="tcg-info">前菜のカード｜スイーパー｜¥650</div>
+        <div class="tcg-box"><b>特性　シャキッと回避</b><span>最初に受ける攻撃を高確率で回避</span></div>
+        <div class="tcg-box atk"><span class="ball"></span><b>ふみこみ強打（近接・射程1）</b><span class="pow">20</span></div>
+        <p class="tcg-fl">明るく軽快で、誰とでもすぐ仲良くなる。</p>
+        <div class="tcg-foot"><span>移動 3</span><span class="prm">攻4 防4 速9 耐5 精6</span><span class="no">● 004/063</span></div>
+        <div class="tcg-c">©2026 あおぞら飯店メニューバトル / imapp</div>
       </article>
-      <article class="card">
-        <div class="art"><img src="../cards/unpairo.png" alt="雲白肉" loading="lazy"></div>
-        <h3>雲白肉<small>No.5　¥850</small></h3>
-        <div class="chips"><span class="t">近接</span><span>デバッファー</span></div>
-        <div class="stat">HP5／攻3／移3／射1</div>
-        <div class="param">攻7・防5・速6・耐6・精8</div>
-        <div class="trait">★香味にんにく：敵の防御力を低下</div>
-        <p class="fl">上品で大人びた策士。静かに相手を追い詰める。</p>
+      <article class="tcg t-melee">
+        <div class="tcg-head"><span class="nm">雲白肉</span><span class="hp"><i>HP</i>5</span><span class="dot">近</span></div>
+        <div class="tcg-art"><img src="../cards/unpairo.png" alt="雲白肉" loading="lazy"></div>
+        <div class="tcg-info">前菜のカード｜デバッファー｜¥850</div>
+        <div class="tcg-box"><b>特性　香味にんにく</b><span>敵の防御力を低下</span></div>
+        <div class="tcg-box atk"><span class="ball"></span><b>ふみこみ強打（近接・射程1）</b><span class="pow">30</span></div>
+        <p class="tcg-fl">上品で大人びた策士。静かに相手を追い詰める。</p>
+        <div class="tcg-foot"><span>移動 3</span><span class="prm">攻7 防5 速6 耐6 精8</span><span class="no">◆ 005/063</span></div>
+        <div class="tcg-c">©2026 あおぞら飯店メニューバトル / imapp</div>
       </article>
-      <article class="card">
-        <div class="art"><img src="../cards/mushidori.png" alt="蒸し鶏" loading="lazy"></div>
-        <h3>蒸し鶏<small>No.6　¥750</small></h3>
-        <div class="chips"><span class="t">十字</span><span>ヒーラー</span></div>
-        <div class="stat">HP5／攻2／移2／射2</div>
-        <div class="param">攻4・防6・速5・耐7・精9</div>
-        <div class="trait">★ふんわり蒸気：味方を継続回復</div>
-        <p class="fl">穏やかで面倒見がよく、癒し役。</p>
+      <article class="tcg t-area">
+        <div class="tcg-head"><span class="nm">蒸し鶏</span><span class="hp"><i>HP</i>5</span><span class="dot">十</span></div>
+        <div class="tcg-art"><img src="../cards/mushidori.png" alt="蒸し鶏" loading="lazy"></div>
+        <div class="tcg-info">前菜のカード｜ヒーラー｜¥750</div>
+        <div class="tcg-box"><b>特性　ふんわり蒸気</b><span>味方を継続回復</span></div>
+        <div class="tcg-box atk"><span class="ball"></span><b>ひろがる十字火（十字・射程2）</b><span class="pow">20</span></div>
+        <p class="tcg-fl">穏やかで面倒見がよく、癒し役。</p>
+        <div class="tcg-foot"><span>移動 2</span><span class="prm">攻4 防6 速5 耐7 精9</span><span class="no">● 006/063</span></div>
+        <div class="tcg-c">©2026 あおぞら飯店メニューバトル / imapp</div>
       </article>
-      <article class="card">
-        <div class="art"><img src="../cards/yakibuta_mori.png" alt="付き出し焼豚盛り" loading="lazy"></div>
-        <h3>付き出し焼豚盛り<small>No.7　¥750</small></h3>
-        <div class="chips"><span class="t">近接</span><span>アタッカー</span></div>
-        <div class="stat">HP5／攻3／移2／射1</div>
-        <div class="param">攻8・防7・速4・耐8・精6</div>
-        <div class="trait">★焼豚の厚み：残りHPが多いほど攻撃力上昇</div>
-        <p class="fl">豪快でサービス精神旺盛な親分肌。</p>
+      <article class="tcg t-melee">
+        <div class="tcg-head"><span class="nm">付き出し焼豚盛り</span><span class="hp"><i>HP</i>5</span><span class="dot">近</span></div>
+        <div class="tcg-art"><img src="../cards/yakibuta_mori.png" alt="付き出し焼豚盛り" loading="lazy"></div>
+        <div class="tcg-info">前菜のカード｜アタッカー｜¥750</div>
+        <div class="tcg-box"><b>特性　焼豚の厚み</b><span>残りHPが多いほど攻撃力上昇</span></div>
+        <div class="tcg-box atk"><span class="ball"></span><b>ふみこみ強打（近接・射程1）</b><span class="pow">30</span></div>
+        <p class="tcg-fl">豪快でサービス精神旺盛な親分肌。</p>
+        <div class="tcg-foot"><span>移動 2</span><span class="prm">攻8 防7 速4 耐8 精6</span><span class="no">● 007/063</span></div>
+        <div class="tcg-c">©2026 あおぞら飯店メニューバトル / imapp</div>
       </article>
-      <article class="card">
-        <div class="art"><img src="../cards/jaga_sansho.png" alt="じゃがいも山椒オイル和え" loading="lazy"></div>
-        <h3>じゃがいも山椒オイル和え<small>No.8　¥500</small></h3>
-        <div class="chips"><span class="t">十字</span><span>トリッキー型</span></div>
-        <div class="stat">HP5／攻2／移2／射2</div>
-        <div class="param">攻5・防7・速5・耐8・精7</div>
-        <div class="trait">★山椒コンボ：攻撃時に麻痺判定</div>
-        <p class="fl">のんびりしているが芯が強い。</p>
+      <article class="tcg t-area">
+        <div class="tcg-head"><span class="nm">じゃがいも山椒オイル和え</span><span class="hp"><i>HP</i>5</span><span class="dot">十</span></div>
+        <div class="tcg-art"><img src="../cards/jaga_sansho.png" alt="じゃがいも山椒オイル和え" loading="lazy"></div>
+        <div class="tcg-info">前菜のカード｜トリッキー型｜¥500</div>
+        <div class="tcg-box"><b>特性　山椒コンボ</b><span>攻撃時に麻痺判定</span></div>
+        <div class="tcg-box atk"><span class="ball"></span><b>ひろがる十字火（十字・射程2）</b><span class="pow">20</span></div>
+        <p class="tcg-fl">のんびりしているが芯が強い。</p>
+        <div class="tcg-foot"><span>移動 2</span><span class="prm">攻5 防7 速5 耐8 精7</span><span class="no">● 008/063</span></div>
+        <div class="tcg-c">©2026 あおぞら飯店メニューバトル / imapp</div>
       </article>
-      <article class="card">
-        <div class="art"><img src="../cards/nira_namuru.png" alt="ニラもやしナムル" loading="lazy"></div>
-        <h3>ニラもやしナムル<small>No.9　¥500</small></h3>
-        <div class="chips"><span class="t">近接</span><span>スイーパー</span></div>
-        <div class="stat">HP5／攻2／移3／射1</div>
-        <div class="param">攻5・防4・速9・耐6・精6</div>
-        <div class="trait">★シャキシャキ連撃：低威力の複数回攻撃</div>
-        <p class="fl">元気で体育会系。誰よりも先に動く。</p>
+      <article class="tcg t-melee">
+        <div class="tcg-head"><span class="nm">ニラもやしナムル</span><span class="hp"><i>HP</i>5</span><span class="dot">近</span></div>
+        <div class="tcg-art"><img src="../cards/nira_namuru.png" alt="ニラもやしナムル" loading="lazy"></div>
+        <div class="tcg-info">前菜のカード｜スイーパー｜¥500</div>
+        <div class="tcg-box"><b>特性　シャキシャキ連撃</b><span>低威力の複数回攻撃</span></div>
+        <div class="tcg-box atk"><span class="ball"></span><b>ふみこみ強打（近接・射程1）</b><span class="pow">20</span></div>
+        <p class="tcg-fl">元気で体育会系。誰よりも先に動く。</p>
+        <div class="tcg-foot"><span>移動 3</span><span class="prm">攻5 防4 速9 耐6 精6</span><span class="no">● 009/063</span></div>
+        <div class="tcg-c">©2026 あおぞら飯店メニューバトル / imapp</div>
       </article>
-      <article class="card">
-        <div class="art"><img src="../cards/zasai_menma_kimuchi.png" alt="ザーサイ／メンマ／キムチ" loading="lazy"></div>
-        <h3>ザーサイ／メンマ／キムチ<small>No.10　¥350</small></h3>
-        <div class="chips"><span class="t">直線</span><span>トリッキー型</span></div>
-        <div class="stat">HP5／攻3／移3／射3</div>
-        <div class="param">攻6・防6・速7・耐7・精8</div>
-        <div class="trait">★漬物三変化：毎ターン効果が変化</div>
-        <p class="fl">気分屋では？と噂の三位一体キャラ。</p>
+      <article class="tcg t-line">
+        <div class="tcg-head"><span class="nm">ザーサイ／メンマ／キムチ</span><span class="hp"><i>HP</i>5</span><span class="dot">直</span></div>
+        <div class="tcg-art"><img src="../cards/zasai_menma_kimuchi.png" alt="ザーサイ／メンマ／キムチ" loading="lazy"></div>
+        <div class="tcg-info">前菜のカード｜トリッキー型｜¥350</div>
+        <div class="tcg-box"><b>特性　漬物三変化</b><span>毎ターン効果が変化</span></div>
+        <div class="tcg-box atk"><span class="ball"></span><b>のびる一閃（直線・射程3）</b><span class="pow">30</span></div>
+        <p class="tcg-fl">気分屋では？と噂の三位一体キャラ。</p>
+        <div class="tcg-foot"><span>移動 3</span><span class="prm">攻6 防6 速7 耐7 精8</span><span class="no">● 010/063</span></div>
+        <div class="tcg-c">©2026 あおぞら飯店メニューバトル / imapp</div>
       </article>
-      <article class="card">
-        <div class="art"><img src="../cards/kimuchi_hiyayakko.png" alt="キムチ冷奴／ザーサイ冷奴" loading="lazy"></div>
-        <h3>キムチ冷奴／ザーサイ冷奴<small>No.11　¥500</small></h3>
-        <div class="chips"><span class="t">十字</span><span>タンク</span></div>
-        <div class="stat">HP5／攻2／移2／射2</div>
-        <div class="param">攻4・防8・速4・耐7・精9</div>
-        <div class="trait">★ひんやり豆腐壁：属性攻撃を軽減</div>
-        <p class="fl">冷静で寡黙。感情を表に出さない。</p>
+      <article class="tcg t-area">
+        <div class="tcg-head"><span class="nm">キムチ冷奴／ザーサイ冷奴</span><span class="hp"><i>HP</i>5</span><span class="dot">十</span></div>
+        <div class="tcg-art"><img src="../cards/kimuchi_hiyayakko.png" alt="キムチ冷奴／ザーサイ冷奴" loading="lazy"></div>
+        <div class="tcg-info">前菜のカード｜タンク｜¥500</div>
+        <div class="tcg-box"><b>特性　ひんやり豆腐壁</b><span>属性攻撃を軽減</span></div>
+        <div class="tcg-box atk"><span class="ball"></span><b>ひろがる十字火（十字・射程2）</b><span class="pow">20</span></div>
+        <p class="tcg-fl">冷静で寡黙。感情を表に出さない。</p>
+        <div class="tcg-foot"><span>移動 2</span><span class="prm">攻4 防8 速4 耐7 精9</span><span class="no">● 011/063</span></div>
+        <div class="tcg-c">©2026 あおぞら飯店メニューバトル / imapp</div>
       </article>
-      <article class="card">
-        <div class="art"><img src="../cards/uzura_shoyu.png" alt="うずらの卵の醤油漬け" loading="lazy"></div>
-        <h3>うずらの卵の醤油漬け<small>No.12　¥500</small></h3>
-        <div class="chips"><span class="t">直線</span><span>サポーター</span></div>
-        <div class="stat">HP4／攻3／移3／射3</div>
-        <div class="param">攻6・防5・速8・耐5・精8</div>
-        <div class="trait">★つるんと脱出：拘束・行動不能を解除</div>
-        <p class="fl">小粒で礼儀正しい努力家。</p>
+      <article class="tcg t-line">
+        <div class="tcg-head"><span class="nm">うずらの卵の醤油漬け</span><span class="hp"><i>HP</i>4</span><span class="dot">直</span></div>
+        <div class="tcg-art"><img src="../cards/uzura_shoyu.png" alt="うずらの卵の醤油漬け" loading="lazy"></div>
+        <div class="tcg-info">前菜のカード｜サポーター｜¥500</div>
+        <div class="tcg-box"><b>特性　つるんと脱出</b><span>拘束・行動不能を解除</span></div>
+        <div class="tcg-box atk"><span class="ball"></span><b>のびる一閃（直線・射程3）</b><span class="pow">30</span></div>
+        <p class="tcg-fl">小粒で礼儀正しい努力家。</p>
+        <div class="tcg-foot"><span>移動 3</span><span class="prm">攻6 防5 速8 耐5 精8</span><span class="no">● 012/063</span></div>
+        <div class="tcg-c">©2026 あおぞら飯店メニューバトル / imapp</div>
       </article>
     </div>
   </section>
   <section class="cat">
     <h2>麺類（13品）</h2>
     <div class="grid">
-      <article class="card">
-        <div class="art"><img src="../cards/chuka.png" alt="特製中華そば" loading="lazy"></div>
-        <h3>特製中華そば<small>No.2　¥1000</small></h3>
-        <div class="chips"><span class="t">直線</span><span>バッファー</span><span class="st">初期</span></div>
-        <div class="stat">HP4／攻2／移2／射3</div>
-        <div class="param">攻7・防7・速6・耐7・精8</div>
-        <div class="trait">★伝統の一杯：味方全体の能力を小上昇</div>
-        <p class="fl">誠実で頼れるリーダー。長い麺のように遠くまで届く遠距離型。</p>
+      <article class="tcg t-line">
+        <div class="tcg-head"><span class="nm">特製中華そば</span><span class="hp"><i>HP</i>4</span><span class="dot">直</span></div>
+        <div class="tcg-art"><img src="../cards/chuka.png" alt="特製中華そば" loading="lazy"></div>
+        <div class="tcg-info">麺類のカード｜バッファー｜¥1000｜初期カード</div>
+        <div class="tcg-box"><b>特性　伝統の一杯</b><span>味方全体の能力を小上昇</span></div>
+        <div class="tcg-box atk"><span class="ball"></span><b>のびる一閃（直線・射程3）</b><span class="pow">20</span></div>
+        <p class="tcg-fl">誠実で頼れるリーダー。長い麺のように遠くまで届く遠距離型。</p>
+        <div class="tcg-foot"><span>移動 2</span><span class="prm">攻7 防7 速6 耐7 精8</span><span class="no">◆ 002/063</span></div>
+        <div class="tcg-c">©2026 あおぞら飯店メニューバトル / imapp</div>
       </article>
-      <article class="card">
-        <div class="art"><img src="../cards/chashumen.png" alt="チャーシュー麺" loading="lazy"></div>
-        <h3>チャーシュー麺<small>No.13　¥1300</small></h3>
-        <div class="chips"><span class="t">近接</span><span>アタッカー</span></div>
-        <div class="stat">HP5／攻3／移2／射1</div>
-        <div class="param">攻9・防7・速4・耐9・精6</div>
-        <div class="trait">★肉厚ラッシュ：連続物理攻撃</div>
-        <p class="fl">派手好きで自信家。豪快なパワー系。</p>
+      <article class="tcg t-melee">
+        <div class="tcg-head"><span class="nm">チャーシュー麺</span><span class="hp"><i>HP</i>5</span><span class="dot">近</span></div>
+        <div class="tcg-art"><img src="../cards/chashumen.png" alt="チャーシュー麺" loading="lazy"></div>
+        <div class="tcg-info">麺類のカード｜アタッカー｜¥1300</div>
+        <div class="tcg-box"><b>特性　肉厚ラッシュ</b><span>連続物理攻撃</span></div>
+        <div class="tcg-box atk"><span class="ball"></span><b>ふみこみ強打（近接・射程1）</b><span class="pow">30</span></div>
+        <p class="tcg-fl">派手好きで自信家。豪快なパワー系。</p>
+        <div class="tcg-foot"><span>移動 2</span><span class="prm">攻9 防7 速4 耐9 精6</span><span class="no">◆ 013/063</span></div>
+        <div class="tcg-c">©2026 あおぞら飯店メニューバトル / imapp</div>
       </article>
-      <article class="card">
-        <div class="art"><img src="../cards/shinasoba.png" alt="昔ながらの支那そば" loading="lazy"></div>
-        <h3>昔ながらの支那そば<small>No.14　¥950</small></h3>
-        <div class="chips"><span class="t">十字</span><span>ヒーラー</span></div>
-        <div class="stat">HP5／攻2／移2／射2</div>
-        <div class="param">攻5・防6・速5・耐7・精10</div>
-        <div class="trait">★郷愁の安心感：精神異常を解除</div>
-        <p class="fl">懐かしさ漂う穏やかな賢者。</p>
+      <article class="tcg t-area">
+        <div class="tcg-head"><span class="nm">昔ながらの支那そば</span><span class="hp"><i>HP</i>5</span><span class="dot">十</span></div>
+        <div class="tcg-art"><img src="../cards/shinasoba.png" alt="昔ながらの支那そば" loading="lazy"></div>
+        <div class="tcg-info">麺類のカード｜ヒーラー｜¥950</div>
+        <div class="tcg-box"><b>特性　郷愁の安心感</b><span>精神異常を解除</span></div>
+        <div class="tcg-box atk"><span class="ball"></span><b>ひろがる十字火（十字・射程2）</b><span class="pow">20</span></div>
+        <p class="tcg-fl">懐かしさ漂う穏やかな賢者。</p>
+        <div class="tcg-foot"><span>移動 2</span><span class="prm">攻5 防6 速5 耐7 精10</span><span class="no">◆ 014/063</span></div>
+        <div class="tcg-c">©2026 あおぞら飯店メニューバトル / imapp</div>
       </article>
-      <article class="card">
-        <div class="art"><img src="../cards/tanmen.png" alt="野菜たっぷりタンメン" loading="lazy"></div>
-        <h3>野菜たっぷりタンメン<small>No.15　¥1000</small></h3>
-        <div class="chips"><span class="t">十字</span><span>タンク</span></div>
-        <div class="stat">HP5／攻2／移3／射2</div>
-        <div class="param">攻5・防8・速6・耐9・精8</div>
-        <div class="trait">★野菜補給：味方全体の耐久上昇</div>
-        <p class="fl">健康的で協調的な世話焼き。</p>
+      <article class="tcg t-area">
+        <div class="tcg-head"><span class="nm">野菜たっぷりタンメン</span><span class="hp"><i>HP</i>5</span><span class="dot">十</span></div>
+        <div class="tcg-art"><img src="../cards/tanmen.png" alt="野菜たっぷりタンメン" loading="lazy"></div>
+        <div class="tcg-info">麺類のカード｜タンク｜¥1000</div>
+        <div class="tcg-box"><b>特性　野菜補給</b><span>味方全体の耐久上昇</span></div>
+        <div class="tcg-box atk"><span class="ball"></span><b>ひろがる十字火（十字・射程2）</b><span class="pow">20</span></div>
+        <p class="tcg-fl">健康的で協調的な世話焼き。</p>
+        <div class="tcg-foot"><span>移動 3</span><span class="prm">攻5 防8 速6 耐9 精8</span><span class="no">◆ 015/063</span></div>
+        <div class="tcg-c">©2026 あおぞら飯店メニューバトル / imapp</div>
       </article>
-      <article class="card">
-        <div class="art"><img src="../cards/nirasoba.png" alt="絶品ニラそば" loading="lazy"></div>
-        <h3>絶品ニラそば<small>No.16　¥950</small></h3>
-        <div class="chips"><span class="t">直線</span><span>スイーパー</span></div>
-        <div class="stat">HP5／攻3／移3／射3</div>
-        <div class="param">攻8・防4・速9・耐6・精6</div>
-        <div class="trait">★ニラ疾風：速度に応じて攻撃力上昇</div>
-        <p class="fl">勝ち気でスピード好き。</p>
+      <article class="tcg t-line">
+        <div class="tcg-head"><span class="nm">絶品ニラそば</span><span class="hp"><i>HP</i>5</span><span class="dot">直</span></div>
+        <div class="tcg-art"><img src="../cards/nirasoba.png" alt="絶品ニラそば" loading="lazy"></div>
+        <div class="tcg-info">麺類のカード｜スイーパー｜¥950</div>
+        <div class="tcg-box"><b>特性　ニラ疾風</b><span>速度に応じて攻撃力上昇</span></div>
+        <div class="tcg-box atk"><span class="ball"></span><b>のびる一閃（直線・射程3）</b><span class="pow">30</span></div>
+        <p class="tcg-fl">勝ち気でスピード好き。</p>
+        <div class="tcg-foot"><span>移動 3</span><span class="prm">攻8 防4 速9 耐6 精6</span><span class="no">◆ 016/063</span></div>
+        <div class="tcg-c">©2026 あおぞら飯店メニューバトル / imapp</div>
       </article>
-      <article class="card">
-        <div class="art"><img src="../cards/torinegisoba.png" alt="鶏ネギそば" loading="lazy"></div>
-        <h3>鶏ネギそば<small>No.17　¥950</small></h3>
-        <div class="chips"><span class="t">十字</span><span>ヒーラー</span></div>
-        <div class="stat">HP5／攻3／移3／射2</div>
-        <div class="param">攻6・防7・速6・耐8・精9</div>
-        <div class="trait">★鶏だしのぬくもり：味方単体を大回復</div>
-        <p class="fl">優しい世話焼き。仲間を放っておけない。</p>
+      <article class="tcg t-area">
+        <div class="tcg-head"><span class="nm">鶏ネギそば</span><span class="hp"><i>HP</i>5</span><span class="dot">十</span></div>
+        <div class="tcg-art"><img src="../cards/torinegisoba.png" alt="鶏ネギそば" loading="lazy"></div>
+        <div class="tcg-info">麺類のカード｜ヒーラー｜¥950</div>
+        <div class="tcg-box"><b>特性　鶏だしのぬくもり</b><span>味方単体を大回復</span></div>
+        <div class="tcg-box atk"><span class="ball"></span><b>ひろがる十字火（十字・射程2）</b><span class="pow">30</span></div>
+        <p class="tcg-fl">優しい世話焼き。仲間を放っておけない。</p>
+        <div class="tcg-foot"><span>移動 3</span><span class="prm">攻6 防7 速6 耐8 精9</span><span class="no">◆ 017/063</span></div>
+        <div class="tcg-c">©2026 あおぞら飯店メニューバトル / imapp</div>
       </article>
-      <article class="card">
-        <div class="art"><img src="../cards/moyashisoba.png" alt="もやしそば" loading="lazy"></div>
-        <h3>もやしそば<small>No.18　¥1000</small></h3>
-        <div class="chips"><span class="t">直線</span><span>トリッキー型</span></div>
-        <div class="stat">HP5／攻2／移3／射3</div>
-        <div class="param">攻4・防5・速8・耐7・精7</div>
-        <div class="trait">★もやし根性：HPが低いほど回避率上昇</div>
-        <p class="fl">控えめだが粘り強い。</p>
+      <article class="tcg t-line">
+        <div class="tcg-head"><span class="nm">もやしそば</span><span class="hp"><i>HP</i>5</span><span class="dot">直</span></div>
+        <div class="tcg-art"><img src="../cards/moyashisoba.png" alt="もやしそば" loading="lazy"></div>
+        <div class="tcg-info">麺類のカード｜トリッキー型｜¥1000</div>
+        <div class="tcg-box"><b>特性　もやし根性</b><span>HPが低いほど回避率上昇</span></div>
+        <div class="tcg-box atk"><span class="ball"></span><b>のびる一閃（直線・射程3）</b><span class="pow">20</span></div>
+        <p class="tcg-fl">控えめだが粘り強い。</p>
+        <div class="tcg-foot"><span>移動 3</span><span class="prm">攻4 防5 速8 耐7 精7</span><span class="no">◆ 018/063</span></div>
+        <div class="tcg-c">©2026 あおぞら飯店メニューバトル / imapp</div>
       </article>
-      <article class="card">
-        <div class="art"><img src="../cards/ebisoba.png" alt="エビそば" loading="lazy"></div>
-        <h3>エビそば<small>No.19　¥1200</small></h3>
-        <div class="chips"><span class="t">直線</span><span>スイーパー</span></div>
-        <div class="stat">HP4／攻3／移3／射3</div>
-        <div class="param">攻7・防5・速8・耐5・精7</div>
-        <div class="trait">★海老跳ね：攻撃後に後方へ退避</div>
-        <p class="fl">華やかで陽気なお嬢様。</p>
+      <article class="tcg t-line">
+        <div class="tcg-head"><span class="nm">エビそば</span><span class="hp"><i>HP</i>4</span><span class="dot">直</span></div>
+        <div class="tcg-art"><img src="../cards/ebisoba.png" alt="エビそば" loading="lazy"></div>
+        <div class="tcg-info">麺類のカード｜スイーパー｜¥1200</div>
+        <div class="tcg-box"><b>特性　海老跳ね</b><span>攻撃後に後方へ退避</span></div>
+        <div class="tcg-box atk"><span class="ball"></span><b>のびる一閃（直線・射程3）</b><span class="pow">30</span></div>
+        <p class="tcg-fl">華やかで陽気なお嬢様。</p>
+        <div class="tcg-foot"><span>移動 3</span><span class="prm">攻7 防5 速8 耐5 精7</span><span class="no">◆ 019/063</span></div>
+        <div class="tcg-c">©2026 あおぞら飯店メニューバトル / imapp</div>
       </article>
-      <article class="card">
-        <div class="art"><img src="../cards/gomoku_yakisoba.png" alt="五目焼きそば" loading="lazy"></div>
-        <h3>五目焼きそば<small>No.20　¥950</small></h3>
-        <div class="chips"><span class="t">十字</span><span>万能型</span></div>
-        <div class="stat">HP5／攻3／移3／射2</div>
-        <div class="param">攻8・防7・速6・耐8・精7</div>
-        <div class="trait">★五目連携：味方の人数に応じて性能上昇</div>
-        <p class="fl">社交的で何でもこなす万能家。</p>
+      <article class="tcg t-area">
+        <div class="tcg-head"><span class="nm">五目焼きそば</span><span class="hp"><i>HP</i>5</span><span class="dot">十</span></div>
+        <div class="tcg-art"><img src="../cards/gomoku_yakisoba.png" alt="五目焼きそば" loading="lazy"></div>
+        <div class="tcg-info">麺類のカード｜万能型｜¥950</div>
+        <div class="tcg-box"><b>特性　五目連携</b><span>味方の人数に応じて性能上昇</span></div>
+        <div class="tcg-box atk"><span class="ball"></span><b>ひろがる十字火（十字・射程2）</b><span class="pow">30</span></div>
+        <p class="tcg-fl">社交的で何でもこなす万能家。</p>
+        <div class="tcg-foot"><span>移動 3</span><span class="prm">攻8 防7 速6 耐8 精7</span><span class="no">◆ 020/063</span></div>
+        <div class="tcg-c">©2026 あおぞら飯店メニューバトル / imapp</div>
       </article>
-      <article class="card">
-        <div class="art"><img src="../cards/karashisoba.png" alt="からしそば" loading="lazy"></div>
-        <h3>からしそば<small>No.21　¥1200</small></h3>
-        <div class="chips"><span class="t">直線</span><span>デバッファー</span></div>
-        <div class="stat">HP4／攻3／移3／射3</div>
-        <div class="param">攻8・防4・速9・耐5・精7</div>
-        <div class="trait">★鼻抜け刺激：敵の命中率を低下</div>
-        <p class="fl">クールなツンデレ。刺激的な物言い。</p>
+      <article class="tcg t-line">
+        <div class="tcg-head"><span class="nm">からしそば</span><span class="hp"><i>HP</i>4</span><span class="dot">直</span></div>
+        <div class="tcg-art"><img src="../cards/karashisoba.png" alt="からしそば" loading="lazy"></div>
+        <div class="tcg-info">麺類のカード｜デバッファー｜¥1200</div>
+        <div class="tcg-box"><b>特性　鼻抜け刺激</b><span>敵の命中率を低下</span></div>
+        <div class="tcg-box atk"><span class="ball"></span><b>のびる一閃（直線・射程3）</b><span class="pow">30</span></div>
+        <p class="tcg-fl">クールなツンデレ。刺激的な物言い。</p>
+        <div class="tcg-foot"><span>移動 3</span><span class="prm">攻8 防4 速9 耐5 精7</span><span class="no">◆ 021/063</span></div>
+        <div class="tcg-c">©2026 あおぞら飯店メニューバトル / imapp</div>
       </article>
-      <article class="card">
-        <div class="art"><img src="../cards/saraudon.png" alt="皿うどん" loading="lazy"></div>
-        <h3>皿うどん<small>No.22　¥1200</small></h3>
-        <div class="chips"><span class="t">十字</span><span>タンク</span></div>
-        <div class="stat">HP5／攻3／移2／射2</div>
-        <div class="param">攻7・防8・速5・耐9・精6</div>
-        <div class="trait">★パリパリ鎧：一定量のダメージを無効化</div>
-        <p class="fl">固く、包容力のある女将。</p>
+      <article class="tcg t-area">
+        <div class="tcg-head"><span class="nm">皿うどん</span><span class="hp"><i>HP</i>5</span><span class="dot">十</span></div>
+        <div class="tcg-art"><img src="../cards/saraudon.png" alt="皿うどん" loading="lazy"></div>
+        <div class="tcg-info">麺類のカード｜タンク｜¥1200</div>
+        <div class="tcg-box"><b>特性　パリパリ鎧</b><span>一定量のダメージを無効化</span></div>
+        <div class="tcg-box atk"><span class="ball"></span><b>ひろがる十字火（十字・射程2）</b><span class="pow">30</span></div>
+        <p class="tcg-fl">固く、包容力のある女将。</p>
+        <div class="tcg-foot"><span>移動 2</span><span class="prm">攻7 防8 速5 耐9 精6</span><span class="no">◆ 022/063</span></div>
+        <div class="tcg-c">©2026 あおぞら飯店メニューバトル / imapp</div>
       </article>
-      <article class="card">
-        <div class="art"><img src="../cards/tantanmen.png" alt="担々麺" loading="lazy"></div>
-        <h3>担々麺<small>No.23　¥1000</small></h3>
-        <div class="chips"><span class="t">直線</span><span>アタッカー</span></div>
-        <div class="stat">HP5／攻4／移3／射3</div>
-        <div class="param">攻10・防5・速7・耐7・精8</div>
-        <div class="trait">★辣油爆発：高威力の辛味攻撃</div>
-        <p class="fl">強気で好戦的な女王タイプ。</p>
+      <article class="tcg t-line">
+        <div class="tcg-head"><span class="nm">担々麺</span><span class="hp"><i>HP</i>5</span><span class="dot">直</span></div>
+        <div class="tcg-art"><img src="../cards/tantanmen.png" alt="担々麺" loading="lazy"></div>
+        <div class="tcg-info">麺類のカード｜アタッカー｜¥1000</div>
+        <div class="tcg-box"><b>特性　辣油爆発</b><span>高威力の辛味攻撃</span></div>
+        <div class="tcg-box atk"><span class="ball"></span><b>のびる一閃（直線・射程3）</b><span class="pow">40</span></div>
+        <p class="tcg-fl">強気で好戦的な女王タイプ。</p>
+        <div class="tcg-foot"><span>移動 3</span><span class="prm">攻10 防5 速7 耐7 精8</span><span class="no">◆ 023/063</span></div>
+        <div class="tcg-c">©2026 あおぞら飯店メニューバトル / imapp</div>
       </article>
-      <article class="card">
-        <div class="art"><img src="../cards/kimuchi_ramen.png" alt="キムチラーメン" loading="lazy"></div>
-        <h3>キムチラーメン<small>No.24　¥1000</small></h3>
-        <div class="chips"><span class="t">近接</span><span>アタッカー</span></div>
-        <div class="stat">HP5／攻3／移3／射1</div>
-        <div class="param">攻9・防5・速8・耐7・精6</div>
-        <div class="trait">★発酵ブースト：ターン経過で攻撃力上昇</div>
-        <p class="fl">熱血で反骨精神旺盛。</p>
+      <article class="tcg t-melee">
+        <div class="tcg-head"><span class="nm">キムチラーメン</span><span class="hp"><i>HP</i>5</span><span class="dot">近</span></div>
+        <div class="tcg-art"><img src="../cards/kimuchi_ramen.png" alt="キムチラーメン" loading="lazy"></div>
+        <div class="tcg-info">麺類のカード｜アタッカー｜¥1000</div>
+        <div class="tcg-box"><b>特性　発酵ブースト</b><span>ターン経過で攻撃力上昇</span></div>
+        <div class="tcg-box atk"><span class="ball"></span><b>ふみこみ強打（近接・射程1）</b><span class="pow">30</span></div>
+        <p class="tcg-fl">熱血で反骨精神旺盛。</p>
+        <div class="tcg-foot"><span>移動 3</span><span class="prm">攻9 防5 速8 耐7 精6</span><span class="no">◆ 024/063</span></div>
+        <div class="tcg-c">©2026 あおぞら飯店メニューバトル / imapp</div>
       </article>
     </div>
   </section>
   <section class="cat">
     <h2>飯類（12品）</h2>
     <div class="grid">
-      <article class="card">
-        <div class="art"><img src="../cards/chahan.png" alt="炒飯" loading="lazy"></div>
-        <h3>炒飯<small>No.1　¥850</small></h3>
-        <div class="chips"><span class="t">近接</span><span>アタッカー</span><span class="st">初期</span></div>
-        <div class="stat">HP5／攻3／移3／射1</div>
-        <div class="param">攻7・防6・速8・耐7・精6</div>
-        <div class="trait">★鍋振りコンボ：攻撃を連続するほど威力上昇</div>
-        <p class="fl">明るく万能なムードメーカー。鍋を振って踏み込む近接アタッカー。</p>
+      <article class="tcg t-melee">
+        <div class="tcg-head"><span class="nm">炒飯</span><span class="hp"><i>HP</i>5</span><span class="dot">近</span></div>
+        <div class="tcg-art"><img src="../cards/chahan.png" alt="炒飯" loading="lazy"></div>
+        <div class="tcg-info">飯類のカード｜アタッカー｜¥850｜初期カード</div>
+        <div class="tcg-box"><b>特性　鍋振りコンボ</b><span>攻撃を連続するほど威力上昇</span></div>
+        <div class="tcg-box atk"><span class="ball"></span><b>ふみこみ強打（近接・射程1）</b><span class="pow">30</span></div>
+        <p class="tcg-fl">明るく万能なムードメーカー。鍋を振って踏み込む近接アタッカー。</p>
+        <div class="tcg-foot"><span>移動 3</span><span class="prm">攻7 防6 速8 耐7 精6</span><span class="no">◆ 001/063</span></div>
+        <div class="tcg-c">©2026 あおぞら飯店メニューバトル / imapp</div>
       </article>
-      <article class="card">
-        <div class="art"><img src="../cards/tenshin.png" alt="天津飯" loading="lazy"></div>
-        <h3>天津飯<small>No.3　¥900</small></h3>
-        <div class="chips"><span class="t">十字</span><span>ヒーラー</span><span class="st">初期</span></div>
-        <div class="stat">HP4／攻2／移2／射2</div>
-        <div class="param">攻5・防8・速4・耐8・精10</div>
-        <div class="trait">★ふわとろ餡かけ：回復と防御上昇を同時付与</div>
-        <p class="fl">包容力のある癒し役。とろりと餡が面を覆い、十字に焼く。</p>
+      <article class="tcg t-area">
+        <div class="tcg-head"><span class="nm">天津飯</span><span class="hp"><i>HP</i>4</span><span class="dot">十</span></div>
+        <div class="tcg-art"><img src="../cards/tenshin.png" alt="天津飯" loading="lazy"></div>
+        <div class="tcg-info">飯類のカード｜ヒーラー｜¥900｜初期カード</div>
+        <div class="tcg-box"><b>特性　ふわとろ餡かけ</b><span>回復と防御上昇を同時付与</span></div>
+        <div class="tcg-box atk"><span class="ball"></span><b>ひろがる十字火（十字・射程2）</b><span class="pow">20</span></div>
+        <p class="tcg-fl">包容力のある癒し役。とろりと餡が面を覆い、十字に焼く。</p>
+        <div class="tcg-foot"><span>移動 2</span><span class="prm">攻5 防8 速4 耐8 精10</span><span class="no">◆ 003/063</span></div>
+        <div class="tcg-c">©2026 あおぞら飯店メニューバトル / imapp</div>
       </article>
-      <article class="card">
-        <div class="art"><img src="../cards/curry_chahan.png" alt="カレー炒飯 卵のせ" loading="lazy"></div>
-        <h3>カレー炒飯 卵のせ<small>No.25　¥900</small></h3>
-        <div class="chips"><span class="t">十字</span><span>アタッカー</span></div>
-        <div class="stat">HP5／攻3／移3／射2</div>
-        <div class="param">攻8・防6・速7・耐8・精7</div>
-        <div class="trait">★卵のカレーガード：一度だけ致命傷を防ぐ</div>
-        <p class="fl">冒険好きで好奇心旺盛。</p>
+      <article class="tcg t-area">
+        <div class="tcg-head"><span class="nm">カレー炒飯 卵のせ</span><span class="hp"><i>HP</i>5</span><span class="dot">十</span></div>
+        <div class="tcg-art"><img src="../cards/curry_chahan.png" alt="カレー炒飯 卵のせ" loading="lazy"></div>
+        <div class="tcg-info">飯類のカード｜アタッカー｜¥900</div>
+        <div class="tcg-box"><b>特性　卵のカレーガード</b><span>一度だけ致命傷を防ぐ</span></div>
+        <div class="tcg-box atk"><span class="ball"></span><b>ひろがる十字火（十字・射程2）</b><span class="pow">30</span></div>
+        <p class="tcg-fl">冒険好きで好奇心旺盛。</p>
+        <div class="tcg-foot"><span>移動 3</span><span class="prm">攻8 防6 速7 耐8 精7</span><span class="no">◆ 025/063</span></div>
+        <div class="tcg-c">©2026 あおぞら飯店メニューバトル / imapp</div>
       </article>
-      <article class="card">
-        <div class="art"><img src="../cards/shibazuke_chahan.png" alt="しば漬け炒飯" loading="lazy"></div>
-        <h3>しば漬け炒飯<small>No.26　¥850</small></h3>
-        <div class="chips"><span class="t">直線</span><span>デバッファー</span></div>
-        <div class="stat">HP5／攻3／移3／射3</div>
-        <div class="param">攻6・防5・速8・耐6・精9</div>
-        <div class="trait">★紫の余韻：敵に継続的な精神ダメージ</div>
-        <p class="fl">上品で少し皮肉屋。</p>
+      <article class="tcg t-line">
+        <div class="tcg-head"><span class="nm">しば漬け炒飯</span><span class="hp"><i>HP</i>5</span><span class="dot">直</span></div>
+        <div class="tcg-art"><img src="../cards/shibazuke_chahan.png" alt="しば漬け炒飯" loading="lazy"></div>
+        <div class="tcg-info">飯類のカード｜デバッファー｜¥850</div>
+        <div class="tcg-box"><b>特性　紫の余韻</b><span>敵に継続的な精神ダメージ</span></div>
+        <div class="tcg-box atk"><span class="ball"></span><b>のびる一閃（直線・射程3）</b><span class="pow">30</span></div>
+        <p class="tcg-fl">上品で少し皮肉屋。</p>
+        <div class="tcg-foot"><span>移動 3</span><span class="prm">攻6 防5 速8 耐6 精9</span><span class="no">◆ 026/063</span></div>
+        <div class="tcg-c">©2026 あおぞら飯店メニューバトル / imapp</div>
       </article>
-      <article class="card">
-        <div class="art"><img src="../cards/kani_lettuce_chahan.png" alt="蟹レタス炒飯" loading="lazy"></div>
-        <h3>蟹レタス炒飯<small>No.27　¥1200</small></h3>
-        <div class="chips"><span class="t">十字</span><span>サポーター</span></div>
-        <div class="stat">HP5／攻3／移3／射2</div>
-        <div class="param">攻7・防6・速7・耐6・精8</div>
-        <div class="trait">★蟹レタスの舞：味方の命中率と回避率を上昇</div>
-        <p class="fl">優雅で気品が漂う。</p>
+      <article class="tcg t-area">
+        <div class="tcg-head"><span class="nm">蟹レタス炒飯</span><span class="hp"><i>HP</i>5</span><span class="dot">十</span></div>
+        <div class="tcg-art"><img src="../cards/kani_lettuce_chahan.png" alt="蟹レタス炒飯" loading="lazy"></div>
+        <div class="tcg-info">飯類のカード｜サポーター｜¥1200</div>
+        <div class="tcg-box"><b>特性　蟹レタスの舞</b><span>味方の命中率と回避率を上昇</span></div>
+        <div class="tcg-box atk"><span class="ball"></span><b>ひろがる十字火（十字・射程2）</b><span class="pow">30</span></div>
+        <p class="tcg-fl">優雅で気品が漂う。</p>
+        <div class="tcg-foot"><span>移動 3</span><span class="prm">攻7 防6 速7 耐6 精8</span><span class="no">◆ 027/063</span></div>
+        <div class="tcg-c">©2026 あおぞら飯店メニューバトル / imapp</div>
       </article>
-      <article class="card">
-        <div class="art"><img src="../cards/kimuchi_chahan.png" alt="キムチ炒飯" loading="lazy"></div>
-        <h3>キムチ炒飯<small>No.28　¥1000</small></h3>
-        <div class="chips"><span class="t">近接</span><span>アタッカー</span></div>
-        <div class="stat">HP5／攻3／移3／射1</div>
-        <div class="param">攻9・防5・速8・耐7・精6</div>
-        <div class="trait">★赤熱鍋振り：攻撃時に火傷付与</div>
-        <p class="fl">情熱的で負けず嫌い。</p>
+      <article class="tcg t-melee">
+        <div class="tcg-head"><span class="nm">キムチ炒飯</span><span class="hp"><i>HP</i>5</span><span class="dot">近</span></div>
+        <div class="tcg-art"><img src="../cards/kimuchi_chahan.png" alt="キムチ炒飯" loading="lazy"></div>
+        <div class="tcg-info">飯類のカード｜アタッカー｜¥1000</div>
+        <div class="tcg-box"><b>特性　赤熱鍋振り</b><span>攻撃時に火傷付与</span></div>
+        <div class="tcg-box atk"><span class="ball"></span><b>ふみこみ強打（近接・射程1）</b><span class="pow">30</span></div>
+        <p class="tcg-fl">情熱的で負けず嫌い。</p>
+        <div class="tcg-foot"><span>移動 3</span><span class="prm">攻9 防5 速8 耐7 精6</span><span class="no">◆ 028/063</span></div>
+        <div class="tcg-c">©2026 あおぞら飯店メニューバトル / imapp</div>
       </article>
-      <article class="card">
-        <div class="art"><img src="../cards/ebi_chahan.png" alt="海老炒飯" loading="lazy"></div>
-        <h3>海老炒飯<small>No.29　¥1200</small></h3>
-        <div class="chips"><span class="t">直線</span><span>スイーパー</span></div>
-        <div class="stat">HP5／攻3／移3／射3</div>
-        <div class="param">攻7・防5・速9・耐6・精7</div>
-        <div class="trait">★シピシピステップ：高確率で追加行動</div>
-        <p class="fl">天真爛漫でおてんば。</p>
+      <article class="tcg t-line">
+        <div class="tcg-head"><span class="nm">海老炒飯</span><span class="hp"><i>HP</i>5</span><span class="dot">直</span></div>
+        <div class="tcg-art"><img src="../cards/ebi_chahan.png" alt="海老炒飯" loading="lazy"></div>
+        <div class="tcg-info">飯類のカード｜スイーパー｜¥1200</div>
+        <div class="tcg-box"><b>特性　シピシピステップ</b><span>高確率で追加行動</span></div>
+        <div class="tcg-box atk"><span class="ball"></span><b>のびる一閃（直線・射程3）</b><span class="pow">30</span></div>
+        <p class="tcg-fl">天真爛漫でおてんば。</p>
+        <div class="tcg-foot"><span>移動 3</span><span class="prm">攻7 防5 速9 耐6 精7</span><span class="no">◆ 029/063</span></div>
+        <div class="tcg-c">©2026 あおぞら飯店メニューバトル / imapp</div>
       </article>
-      <article class="card">
-        <div class="art"><img src="../cards/yakibuta_tamago.png" alt="焼豚玉子飯" loading="lazy"></div>
-        <h3>焼豚玉子飯<small>No.30　¥1000</small></h3>
-        <div class="chips"><span class="t">近接</span><span>アタッカー</span></div>
-        <div class="stat">HP5／攻3／移2／射1</div>
-        <div class="param">攻9・防8・速4・耐9・精6</div>
-        <div class="trait">★焼豚玉子の底力：HP半分以下で大幅強化</div>
-        <p class="fl">頼れる兄貴分。</p>
+      <article class="tcg t-melee">
+        <div class="tcg-head"><span class="nm">焼豚玉子飯</span><span class="hp"><i>HP</i>5</span><span class="dot">近</span></div>
+        <div class="tcg-art"><img src="../cards/yakibuta_tamago.png" alt="焼豚玉子飯" loading="lazy"></div>
+        <div class="tcg-info">飯類のカード｜アタッカー｜¥1000</div>
+        <div class="tcg-box"><b>特性　焼豚玉子の底力</b><span>HP半分以下で大幅強化</span></div>
+        <div class="tcg-box atk"><span class="ball"></span><b>ふみこみ強打（近接・射程1）</b><span class="pow">30</span></div>
+        <p class="tcg-fl">頼れる兄貴分。</p>
+        <div class="tcg-foot"><span>移動 2</span><span class="prm">攻9 防8 速4 耐9 精6</span><span class="no">◆ 030/063</span></div>
+        <div class="tcg-c">©2026 あおぞら飯店メニューバトル / imapp</div>
       </article>
-      <article class="card">
-        <div class="art"><img src="../cards/chuka_katsucurry.png" alt="中華カツカレー" loading="lazy"></div>
-        <h3>中華カツカレー<small>No.31　¥1000</small></h3>
-        <div class="chips"><span class="t">近接</span><span>アタッカー</span></div>
-        <div class="stat">HP5／攻4／移2／射1</div>
-        <div class="param">攻10・防8・速4・耐9・精7</div>
-        <div class="trait">★カツカレー突撃：防御を一部無視</div>
-        <p class="fl">正義感の強い熱血漢。</p>
+      <article class="tcg t-melee">
+        <div class="tcg-head"><span class="nm">中華カツカレー</span><span class="hp"><i>HP</i>5</span><span class="dot">近</span></div>
+        <div class="tcg-art"><img src="../cards/chuka_katsucurry.png" alt="中華カツカレー" loading="lazy"></div>
+        <div class="tcg-info">飯類のカード｜アタッカー｜¥1000</div>
+        <div class="tcg-box"><b>特性　カツカレー突撃</b><span>防御を一部無視</span></div>
+        <div class="tcg-box atk"><span class="ball"></span><b>ふみこみ強打（近接・射程1）</b><span class="pow">40</span></div>
+        <p class="tcg-fl">正義感の強い熱血漢。</p>
+        <div class="tcg-foot"><span>移動 2</span><span class="prm">攻10 防8 速4 耐9 精7</span><span class="no">◆ 031/063</span></div>
+        <div class="tcg-c">©2026 あおぞら飯店メニューバトル / imapp</div>
       </article>
-      <article class="card">
-        <div class="art"><img src="../cards/omurice.png" alt="町中華のオムライス" loading="lazy"></div>
-        <h3>町中華のオムライス<small>No.32　¥950</small></h3>
-        <div class="chips"><span class="t">十字</span><span>サポーター</span></div>
-        <div class="stat">HP5／攻3／移3／射2</div>
-        <div class="param">攻6・防6・速6・耐7・精9</div>
-        <div class="trait">★ケチャップスマイル：味方の精神力を回復</div>
-        <p class="fl">人懐っこいレトロアイドル。</p>
+      <article class="tcg t-area">
+        <div class="tcg-head"><span class="nm">町中華のオムライス</span><span class="hp"><i>HP</i>5</span><span class="dot">十</span></div>
+        <div class="tcg-art"><img src="../cards/omurice.png" alt="町中華のオムライス" loading="lazy"></div>
+        <div class="tcg-info">飯類のカード｜サポーター｜¥950</div>
+        <div class="tcg-box"><b>特性　ケチャップスマイル</b><span>味方の精神力を回復</span></div>
+        <div class="tcg-box atk"><span class="ball"></span><b>ひろがる十字火（十字・射程2）</b><span class="pow">30</span></div>
+        <p class="tcg-fl">人懐っこいレトロアイドル。</p>
+        <div class="tcg-foot"><span>移動 3</span><span class="prm">攻6 防6 速6 耐7 精9</span><span class="no">◆ 032/063</span></div>
+        <div class="tcg-c">©2026 あおぞら飯店メニューバトル / imapp</div>
       </article>
-      <article class="card">
-        <div class="art"><img src="../cards/shirogohan.png" alt="白ご飯" loading="lazy"></div>
-        <h3>白ご飯<small>No.33　¥350</small></h3>
-        <div class="chips"><span class="t">十字</span><span>タンク</span></div>
-        <div class="stat">HP6／攻2／移2／射2</div>
-        <div class="param">攻3・防8・速4・耐10・精9</div>
-        <div class="trait">★最高の相棒：隣接する味方の能力を強化</div>
-        <p class="fl">無口で純粋。誰とでも相性がいい。</p>
+      <article class="tcg t-area">
+        <div class="tcg-head"><span class="nm">白ご飯</span><span class="hp"><i>HP</i>6</span><span class="dot">十</span></div>
+        <div class="tcg-art"><img src="../cards/shirogohan.png" alt="白ご飯" loading="lazy"></div>
+        <div class="tcg-info">飯類のカード｜タンク｜¥350</div>
+        <div class="tcg-box"><b>特性　最高の相棒</b><span>隣接する味方の能力を強化</span></div>
+        <div class="tcg-box atk"><span class="ball"></span><b>ひろがる十字火（十字・射程2）</b><span class="pow">20</span></div>
+        <p class="tcg-fl">無口で純粋。誰とでも相性がいい。</p>
+        <div class="tcg-foot"><span>移動 2</span><span class="prm">攻3 防8 速4 耐10 精9</span><span class="no">● 033/063</span></div>
+        <div class="tcg-c">©2026 あおぞら飯店メニューバトル / imapp</div>
       </article>
-      <article class="card">
-        <div class="art"><img src="../cards/tamago_soup.png" alt="特製玉子スープ" loading="lazy"></div>
-        <h3>特製玉子スープ<small>No.34　¥500</small></h3>
-        <div class="chips"><span class="t">十字</span><span>ヒーラー</span></div>
-        <div class="stat">HP5／攻2／移2／射2</div>
-        <div class="param">攻3・防6・速5・耐7・精10</div>
-        <div class="trait">★玉子のベール：全体回復と状態異常解除</div>
-        <p class="fl">優しい治療師。</p>
+      <article class="tcg t-area">
+        <div class="tcg-head"><span class="nm">特製玉子スープ</span><span class="hp"><i>HP</i>5</span><span class="dot">十</span></div>
+        <div class="tcg-art"><img src="../cards/tamago_soup.png" alt="特製玉子スープ" loading="lazy"></div>
+        <div class="tcg-info">飯類のカード｜ヒーラー｜¥500</div>
+        <div class="tcg-box"><b>特性　玉子のベール</b><span>全体回復と状態異常解除</span></div>
+        <div class="tcg-box atk"><span class="ball"></span><b>ひろがる十字火（十字・射程2）</b><span class="pow">20</span></div>
+        <p class="tcg-fl">優しい治療師。</p>
+        <div class="tcg-foot"><span>移動 2</span><span class="prm">攻3 防6 速5 耐7 精10</span><span class="no">● 034/063</span></div>
+        <div class="tcg-c">©2026 あおぞら飯店メニューバトル / imapp</div>
       </article>
     </div>
   </section>
   <section class="cat">
     <h2>一品（26品）</h2>
     <div class="grid">
-      <article class="card">
-        <div class="art"><img src="../cards/gyoza.png" alt="餃子" loading="lazy"></div>
-        <h3>餃子<small>No.35　¥600</small></h3>
-        <div class="chips"><span class="t">近接</span><span>アタッカー</span></div>
-        <div class="stat">HP5／攻3／移3／射1</div>
-        <div class="param">攻8・防6・速8・耐7・精6</div>
-        <div class="trait">★五連餃子拳：5回の連続攻撃</div>
-        <p class="fl">元気で正義感の強い拳法少年。</p>
+      <article class="tcg t-melee">
+        <div class="tcg-head"><span class="nm">餃子</span><span class="hp"><i>HP</i>5</span><span class="dot">近</span></div>
+        <div class="tcg-art"><img src="../cards/gyoza.png" alt="餃子" loading="lazy"></div>
+        <div class="tcg-info">一品のカード｜アタッカー｜¥600</div>
+        <div class="tcg-box"><b>特性　五連餃子拳</b><span>5回の連続攻撃</span></div>
+        <div class="tcg-box atk"><span class="ball"></span><b>ふみこみ強打（近接・射程1）</b><span class="pow">30</span></div>
+        <p class="tcg-fl">元気で正義感の強い拳法少年。</p>
+        <div class="tcg-foot"><span>移動 3</span><span class="prm">攻8 防6 速8 耐7 精6</span><span class="no">● 035/063</span></div>
+        <div class="tcg-c">©2026 あおぞら飯店メニューバトル / imapp</div>
       </article>
-      <article class="card">
-        <div class="art"><img src="../cards/harumaki.png" alt="春巻き" loading="lazy"></div>
-        <h3>春巻き<small>No.36　¥450</small></h3>
-        <div class="chips"><span class="t">直線</span><span>スイーパー</span></div>
-        <div class="stat">HP5／攻3／移3／射3</div>
-        <div class="param">攻7・防6・速8・耐6・精8</div>
-        <div class="trait">★春巻きロール：攻撃をひらりと回避</div>
-        <p class="fl">スタイリッシュで大人びた女性。</p>
+      <article class="tcg t-line">
+        <div class="tcg-head"><span class="nm">春巻き</span><span class="hp"><i>HP</i>5</span><span class="dot">直</span></div>
+        <div class="tcg-art"><img src="../cards/harumaki.png" alt="春巻き" loading="lazy"></div>
+        <div class="tcg-info">一品のカード｜スイーパー｜¥450</div>
+        <div class="tcg-box"><b>特性　春巻きロール</b><span>攻撃をひらりと回避</span></div>
+        <div class="tcg-box atk"><span class="ball"></span><b>のびる一閃（直線・射程3）</b><span class="pow">30</span></div>
+        <p class="tcg-fl">スタイリッシュで大人びた女性。</p>
+        <div class="tcg-foot"><span>移動 3</span><span class="prm">攻7 防6 速8 耐6 精8</span><span class="no">● 036/063</span></div>
+        <div class="tcg-c">©2026 あおぞら飯店メニューバトル / imapp</div>
       </article>
-      <article class="card">
-        <div class="art"><img src="../cards/ika_dango.png" alt="イカ団子" loading="lazy"></div>
-        <h3>イカ団子<small>No.37　¥800</small></h3>
-        <div class="chips"><span class="t">近接</span><span>トリッキー型</span></div>
-        <div class="stat">HP5／攻3／移3／射1</div>
-        <div class="param">攻6・防7・速9・耐8・精5</div>
-        <div class="trait">★シコシコ反弾：被弾時に反撃</div>
-        <p class="fl">お調子者。弾むように元気。</p>
+      <article class="tcg t-melee">
+        <div class="tcg-head"><span class="nm">イカ団子</span><span class="hp"><i>HP</i>5</span><span class="dot">近</span></div>
+        <div class="tcg-art"><img src="../cards/ika_dango.png" alt="イカ団子" loading="lazy"></div>
+        <div class="tcg-info">一品のカード｜トリッキー型｜¥800</div>
+        <div class="tcg-box"><b>特性　シコシコ反弾</b><span>被弾時に反撃</span></div>
+        <div class="tcg-box atk"><span class="ball"></span><b>ふみこみ強打（近接・射程1）</b><span class="pow">30</span></div>
+        <p class="tcg-fl">お調子者。弾むように元気。</p>
+        <div class="tcg-foot"><span>移動 3</span><span class="prm">攻6 防7 速9 耐8 精5</span><span class="no">◆ 037/063</span></div>
+        <div class="tcg-c">©2026 あおぞら飯店メニューバトル / imapp</div>
       </article>
-      <article class="card">
-        <div class="art"><img src="../cards/karaage.png" alt="鶏の唐揚げ" loading="lazy"></div>
-        <h3>鶏の唐揚げ<small>No.38　¥850</small></h3>
-        <div class="chips"><span class="t">近接</span><span>アタッカー</span></div>
-        <div class="stat">HP5／攻3／移3／射1</div>
-        <div class="param">攻9・防7・速7・耐9・精5</div>
-        <div class="trait">★カリッと豪腕：高確率で会心</div>
-        <p class="fl">体育会系の直球勝負。</p>
+      <article class="tcg t-melee">
+        <div class="tcg-head"><span class="nm">鶏の唐揚げ</span><span class="hp"><i>HP</i>5</span><span class="dot">近</span></div>
+        <div class="tcg-art"><img src="../cards/karaage.png" alt="鶏の唐揚げ" loading="lazy"></div>
+        <div class="tcg-info">一品のカード｜アタッカー｜¥850</div>
+        <div class="tcg-box"><b>特性　カリッと豪腕</b><span>高確率で会心</span></div>
+        <div class="tcg-box atk"><span class="ball"></span><b>ふみこみ強打（近接・射程1）</b><span class="pow">30</span></div>
+        <p class="tcg-fl">体育会系の直球勝負。</p>
+        <div class="tcg-foot"><span>移動 3</span><span class="prm">攻9 防7 速7 耐9 精5</span><span class="no">◆ 038/063</span></div>
+        <div class="tcg-c">©2026 あおぞら飯店メニューバトル / imapp</div>
       </article>
-      <article class="card">
-        <div class="art"><img src="../cards/ebiten.png" alt="エビの天ぷら" loading="lazy"></div>
-        <h3>エビの天ぷら<small>No.39　¥950</small></h3>
-        <div class="chips"><span class="t">直線</span><span>スイーパー</span></div>
-        <div class="stat">HP4／攻3／移3／射3</div>
-        <div class="param">攻8・防5・速9・耐5・精8</div>
-        <div class="trait">★天シバ連翔：先制攻撃と回避上昇</div>
-        <p class="fl">華やかで小悪魔な姫様気質。</p>
+      <article class="tcg t-line">
+        <div class="tcg-head"><span class="nm">エビの天ぷら</span><span class="hp"><i>HP</i>4</span><span class="dot">直</span></div>
+        <div class="tcg-art"><img src="../cards/ebiten.png" alt="エビの天ぷら" loading="lazy"></div>
+        <div class="tcg-info">一品のカード｜スイーパー｜¥950</div>
+        <div class="tcg-box"><b>特性　天シバ連翔</b><span>先制攻撃と回避上昇</span></div>
+        <div class="tcg-box atk"><span class="ball"></span><b>のびる一閃（直線・射程3）</b><span class="pow">30</span></div>
+        <p class="tcg-fl">華やかで小悪魔な姫様気質。</p>
+        <div class="tcg-foot"><span>移動 3</span><span class="prm">攻8 防5 速9 耐5 精8</span><span class="no">◆ 039/063</span></div>
+        <div class="tcg-c">©2026 あおぞら飯店メニューバトル / imapp</div>
       </article>
-      <article class="card">
-        <div class="art"><img src="../cards/kanitama.png" alt="カニ玉" loading="lazy"></div>
-        <h3>カニ玉<small>No.40　¥850</small></h3>
-        <div class="chips"><span class="t">十字</span><span>タンク</span></div>
-        <div class="stat">HP5／攻2／移2／射2</div>
-        <div class="param">攻5・防8・速4・耐8・精10</div>
-        <div class="trait">★黄金あんかけ：味方全体に防御膜</div>
-        <p class="fl">落ち着いたお姉さん。</p>
+      <article class="tcg t-area">
+        <div class="tcg-head"><span class="nm">カニ玉</span><span class="hp"><i>HP</i>5</span><span class="dot">十</span></div>
+        <div class="tcg-art"><img src="../cards/kanitama.png" alt="カニ玉" loading="lazy"></div>
+        <div class="tcg-info">一品のカード｜タンク｜¥850</div>
+        <div class="tcg-box"><b>特性　黄金あんかけ</b><span>味方全体に防御膜</span></div>
+        <div class="tcg-box atk"><span class="ball"></span><b>ひろがる十字火（十字・射程2）</b><span class="pow">20</span></div>
+        <p class="tcg-fl">落ち着いたお姉さん。</p>
+        <div class="tcg-foot"><span>移動 2</span><span class="prm">攻5 防8 速4 耐8 精10</span><span class="no">◆ 040/063</span></div>
+        <div class="tcg-c">©2026 あおぞら飯店メニューバトル / imapp</div>
       </article>
-      <article class="card">
-        <div class="art"><img src="../cards/niratama.png" alt="特製ニラ玉" loading="lazy"></div>
-        <h3>特製ニラ玉<small>No.41　¥850</small></h3>
-        <div class="chips"><span class="t">十字</span><span>バッファー</span></div>
-        <div class="stat">HP5／攻3／移3／射2</div>
-        <div class="param">攻6・防6・速7・耐7・精8</div>
-        <div class="trait">★ニラ玉応援：味方一人の全能力を上昇</div>
-        <p class="fl">真面目で実直な優等生。</p>
+      <article class="tcg t-area">
+        <div class="tcg-head"><span class="nm">特製ニラ玉</span><span class="hp"><i>HP</i>5</span><span class="dot">十</span></div>
+        <div class="tcg-art"><img src="../cards/niratama.png" alt="特製ニラ玉" loading="lazy"></div>
+        <div class="tcg-info">一品のカード｜バッファー｜¥850</div>
+        <div class="tcg-box"><b>特性　ニラ玉応援</b><span>味方一人の全能力を上昇</span></div>
+        <div class="tcg-box atk"><span class="ball"></span><b>ひろがる十字火（十字・射程2）</b><span class="pow">30</span></div>
+        <p class="tcg-fl">真面目で実直な優等生。</p>
+        <div class="tcg-foot"><span>移動 3</span><span class="prm">攻6 防6 速7 耐7 精8</span><span class="no">◆ 041/063</span></div>
+        <div class="tcg-c">©2026 あおぞら飯店メニューバトル / imapp</div>
       </article>
-      <article class="card">
-        <div class="art"><img src="../cards/nasu_karaage.png" alt="茄子の唐揚げ" loading="lazy"></div>
-        <h3>茄子の唐揚げ<small>No.42　¥650</small></h3>
-        <div class="chips"><span class="t">近接</span><span>トリッキー型</span></div>
-        <div class="stat">HP5／攻3／移3／射1</div>
-        <div class="param">攻7・防7・速6・耐8・精8</div>
-        <div class="trait">★山椒紫霞：回避後に毒を付与</div>
-        <p class="fl">無口でミステリアス。</p>
+      <article class="tcg t-melee">
+        <div class="tcg-head"><span class="nm">茄子の唐揚げ</span><span class="hp"><i>HP</i>5</span><span class="dot">近</span></div>
+        <div class="tcg-art"><img src="../cards/nasu_karaage.png" alt="茄子の唐揚げ" loading="lazy"></div>
+        <div class="tcg-info">一品のカード｜トリッキー型｜¥650</div>
+        <div class="tcg-box"><b>特性　山椒紫霞</b><span>回避後に毒を付与</span></div>
+        <div class="tcg-box atk"><span class="ball"></span><b>ふみこみ強打（近接・射程1）</b><span class="pow">30</span></div>
+        <p class="tcg-fl">無口でミステリアス。</p>
+        <div class="tcg-foot"><span>移動 3</span><span class="prm">攻7 防7 速6 耐8 精8</span><span class="no">● 042/063</span></div>
+        <div class="tcg-c">©2026 あおぞら飯店メニューバトル / imapp</div>
       </article>
-      <article class="card">
-        <div class="art"><img src="../cards/hamukatsu.png" alt="ハムカツ" loading="lazy"></div>
-        <h3>ハムカツ<small>No.43　¥650</small></h3>
-        <div class="chips"><span class="t">近接</span><span>タンク</span></div>
-        <div class="stat">HP5／攻3／移2／射1</div>
-        <div class="param">攻8・防8・速5・耐9・精6</div>
-        <div class="trait">★サクサクの鎧：物理攻撃を軽減</div>
-        <p class="fl">明るくサクサク陽気な宣伝部長。</p>
+      <article class="tcg t-melee">
+        <div class="tcg-head"><span class="nm">ハムカツ</span><span class="hp"><i>HP</i>5</span><span class="dot">近</span></div>
+        <div class="tcg-art"><img src="../cards/hamukatsu.png" alt="ハムカツ" loading="lazy"></div>
+        <div class="tcg-info">一品のカード｜タンク｜¥650</div>
+        <div class="tcg-box"><b>特性　サクサクの鎧</b><span>物理攻撃を軽減</span></div>
+        <div class="tcg-box atk"><span class="ball"></span><b>ふみこみ強打（近接・射程1）</b><span class="pow">30</span></div>
+        <p class="tcg-fl">明るくサクサク陽気な宣伝部長。</p>
+        <div class="tcg-foot"><span>移動 2</span><span class="prm">攻8 防8 速5 耐9 精6</span><span class="no">● 043/063</span></div>
+        <div class="tcg-c">©2026 あおぞら飯店メニューバトル / imapp</div>
       </article>
-      <article class="card">
-        <div class="art"><img src="../cards/yurinchi.png" alt="油淋鶏" loading="lazy"></div>
-        <h3>油淋鶏<small>No.44　¥850</small></h3>
-        <div class="chips"><span class="t">近接</span><span>アタッカー</span></div>
-        <div class="stat">HP5／攻3／移3／射1</div>
-        <div class="param">攻9・防6・速8・耐8・精7</div>
-        <div class="trait">★香味油淋斬：防御低下付きの強攻撃</div>
-        <p class="fl">カリスマ性のある武闘家。</p>
+      <article class="tcg t-melee">
+        <div class="tcg-head"><span class="nm">油淋鶏</span><span class="hp"><i>HP</i>5</span><span class="dot">近</span></div>
+        <div class="tcg-art"><img src="../cards/yurinchi.png" alt="油淋鶏" loading="lazy"></div>
+        <div class="tcg-info">一品のカード｜アタッカー｜¥850</div>
+        <div class="tcg-box"><b>特性　香味油淋斬</b><span>防御低下付きの強攻撃</span></div>
+        <div class="tcg-box atk"><span class="ball"></span><b>ふみこみ強打（近接・射程1）</b><span class="pow">30</span></div>
+        <p class="tcg-fl">カリスマ性のある武闘家。</p>
+        <div class="tcg-foot"><span>移動 3</span><span class="prm">攻9 防6 速8 耐8 精7</span><span class="no">◆ 044/063</span></div>
+        <div class="tcg-c">©2026 あおぞら飯店メニューバトル / imapp</div>
       </article>
-      <article class="card">
-        <div class="art"><img src="../cards/mala_potato.png" alt="麻辣フライドポテト" loading="lazy"></div>
-        <h3>麻辣フライドポテト<small>No.45　¥650</small></h3>
-        <div class="chips"><span class="t">直線</span><span>スイーパー</span></div>
-        <div class="stat">HP5／攻3／移4／射3</div>
-        <div class="param">攻9・防4・速10・耐6・精6</div>
-        <div class="trait">★麻辣スパーク：麻痺と火傷を同時判定</div>
-        <p class="fl">派手で挑発的なストリート少年。</p>
+      <article class="tcg t-line">
+        <div class="tcg-head"><span class="nm">麻辣フライドポテト</span><span class="hp"><i>HP</i>5</span><span class="dot">直</span></div>
+        <div class="tcg-art"><img src="../cards/mala_potato.png" alt="麻辣フライドポテト" loading="lazy"></div>
+        <div class="tcg-info">一品のカード｜スイーパー｜¥650</div>
+        <div class="tcg-box"><b>特性　麻辣スパーク</b><span>麻痺と火傷を同時判定</span></div>
+        <div class="tcg-box atk"><span class="ball"></span><b>のびる一閃（直線・射程3）</b><span class="pow">30</span></div>
+        <p class="tcg-fl">派手で挑発的なストリート少年。</p>
+        <div class="tcg-foot"><span>移動 4</span><span class="prm">攻9 防4 速10 耐6 精6</span><span class="no">● 045/063</span></div>
+        <div class="tcg-c">©2026 あおぞら飯店メニューバトル / imapp</div>
       </article>
-      <article class="card">
-        <div class="art"><img src="../cards/mabo_tofu.png" alt="四川麻婆豆腐" loading="lazy"></div>
-        <h3>四川麻婆豆腐<small>No.46　¥850</small></h3>
-        <div class="chips"><span class="t">十字</span><span>アタッカー</span></div>
-        <div class="stat">HP5／攻4／移3／射2</div>
-        <div class="param">攻10・防6・速7・耐8・精9</div>
-        <div class="trait">★四川紅蓮撃：敵全体へ高威力攻撃</div>
-        <p class="fl">辛口に見えて味方には誠実。</p>
+      <article class="tcg t-area">
+        <div class="tcg-head"><span class="nm">四川麻婆豆腐</span><span class="hp"><i>HP</i>5</span><span class="dot">十</span></div>
+        <div class="tcg-art"><img src="../cards/mabo_tofu.png" alt="四川麻婆豆腐" loading="lazy"></div>
+        <div class="tcg-info">一品のカード｜アタッカー｜¥850</div>
+        <div class="tcg-box"><b>特性　四川紅蓮撃</b><span>敵全体へ高威力攻撃</span></div>
+        <div class="tcg-box atk"><span class="ball"></span><b>ひろがる十字火（十字・射程2）</b><span class="pow">40</span></div>
+        <p class="tcg-fl">辛口に見えて味方には誠実。</p>
+        <div class="tcg-foot"><span>移動 3</span><span class="prm">攻10 防6 速7 耐8 精9</span><span class="no">◆ 046/063</span></div>
+        <div class="tcg-c">©2026 あおぞら飯店メニューバトル / imapp</div>
       </article>
-      <article class="card">
-        <div class="art"><img src="../cards/mabo_nasu.png" alt="麻婆茄子" loading="lazy"></div>
-        <h3>麻婆茄子<small>No.47　¥950</small></h3>
-        <div class="chips"><span class="t">十字</span><span>デバッファー</span></div>
-        <div class="stat">HP5／攻3／移3／射2</div>
-        <div class="param">攻8・防6・速7・耐7・精10</div>
-        <div class="trait">★紫翳誘惑：敵を混乱させる</div>
-        <p class="fl">妖艶で策略家。</p>
+      <article class="tcg t-area">
+        <div class="tcg-head"><span class="nm">麻婆茄子</span><span class="hp"><i>HP</i>5</span><span class="dot">十</span></div>
+        <div class="tcg-art"><img src="../cards/mabo_nasu.png" alt="麻婆茄子" loading="lazy"></div>
+        <div class="tcg-info">一品のカード｜デバッファー｜¥950</div>
+        <div class="tcg-box"><b>特性　紫翳誘惑</b><span>敵を混乱させる</span></div>
+        <div class="tcg-box atk"><span class="ball"></span><b>ひろがる十字火（十字・射程2）</b><span class="pow">30</span></div>
+        <p class="tcg-fl">妖艶で策略家。</p>
+        <div class="tcg-foot"><span>移動 3</span><span class="prm">攻8 防6 速7 耐7 精10</span><span class="no">◆ 047/063</span></div>
+        <div class="tcg-c">©2026 あおぞら飯店メニューバトル / imapp</div>
       </article>
-      <article class="card">
-        <div class="art"><img src="../cards/ebichiri.png" alt="至高のエビチリソース" loading="lazy"></div>
-        <h3>至高のエビチリソース<small>No.48　¥1200</small></h3>
-        <div class="chips"><span class="t">直線</span><span>アタッカー</span></div>
-        <div class="stat">HP5／攻3／移3／射3</div>
-        <div class="param">攻9・防5・速9・耐6・精8</div>
-        <div class="trait">★至高の輝き：自身を強化して攻撃</div>
-        <p class="fl">誇り高きスターパフォーマー。</p>
+      <article class="tcg t-line">
+        <div class="tcg-head"><span class="nm">至高のエビチリソース</span><span class="hp"><i>HP</i>5</span><span class="dot">直</span></div>
+        <div class="tcg-art"><img src="../cards/ebichiri.png" alt="至高のエビチリソース" loading="lazy"></div>
+        <div class="tcg-info">一品のカード｜アタッカー｜¥1200</div>
+        <div class="tcg-box"><b>特性　至高の輝き</b><span>自身を強化して攻撃</span></div>
+        <div class="tcg-box atk"><span class="ball"></span><b>のびる一閃（直線・射程3）</b><span class="pow">30</span></div>
+        <p class="tcg-fl">誇り高きスターパフォーマー。</p>
+        <div class="tcg-foot"><span>移動 3</span><span class="prm">攻9 防5 速9 耐6 精8</span><span class="no">◆ 048/063</span></div>
+        <div class="tcg-c">©2026 あおぞら飯店メニューバトル / imapp</div>
       </article>
-      <article class="card">
-        <div class="art"><img src="../cards/happosai.png" alt="八宝菜" loading="lazy"></div>
-        <h3>八宝菜<small>No.49　¥1000</small></h3>
-        <div class="chips"><span class="t">十字</span><span>万能型</span></div>
-        <div class="stat">HP5／攻3／移2／射2</div>
-        <div class="param">攻7・防9・速5・耐9・精9</div>
-        <div class="trait">★八宝の恵み：味方全体を回復・強化</div>
-        <p class="fl">包容力のある万能女将。</p>
+      <article class="tcg t-area">
+        <div class="tcg-head"><span class="nm">八宝菜</span><span class="hp"><i>HP</i>5</span><span class="dot">十</span></div>
+        <div class="tcg-art"><img src="../cards/happosai.png" alt="八宝菜" loading="lazy"></div>
+        <div class="tcg-info">一品のカード｜万能型｜¥1000</div>
+        <div class="tcg-box"><b>特性　八宝の恵み</b><span>味方全体を回復・強化</span></div>
+        <div class="tcg-box atk"><span class="ball"></span><b>ひろがる十字火（十字・射程2）</b><span class="pow">30</span></div>
+        <p class="tcg-fl">包容力のある万能女将。</p>
+        <div class="tcg-foot"><span>移動 2</span><span class="prm">攻7 防9 速5 耐9 精9</span><span class="no">◆ 049/063</span></div>
+        <div class="tcg-c">©2026 あおぞら飯店メニューバトル / imapp</div>
       </article>
-      <article class="card">
-        <div class="art"><img src="../cards/nikuyasai.png" alt="肉野菜炒め" loading="lazy"></div>
-        <h3>肉野菜炒め<small>No.50　¥850</small></h3>
-        <div class="chips"><span class="t">近接</span><span>万能型</span></div>
-        <div class="stat">HP5／攻3／移3／射1</div>
-        <div class="param">攻8・防8・速6・耐9・精6</div>
-        <div class="trait">★栄養満点：耐久力と攻撃力を同時上昇</div>
-        <p class="fl">固い体で頼れる男気ある兄貴。</p>
+      <article class="tcg t-melee">
+        <div class="tcg-head"><span class="nm">肉野菜炒め</span><span class="hp"><i>HP</i>5</span><span class="dot">近</span></div>
+        <div class="tcg-art"><img src="../cards/nikuyasai.png" alt="肉野菜炒め" loading="lazy"></div>
+        <div class="tcg-info">一品のカード｜万能型｜¥850</div>
+        <div class="tcg-box"><b>特性　栄養満点</b><span>耐久力と攻撃力を同時上昇</span></div>
+        <div class="tcg-box atk"><span class="ball"></span><b>ふみこみ強打（近接・射程1）</b><span class="pow">30</span></div>
+        <p class="tcg-fl">固い体で頼れる男気ある兄貴。</p>
+        <div class="tcg-foot"><span>移動 3</span><span class="prm">攻8 防8 速6 耐9 精6</span><span class="no">◆ 050/063</span></div>
+        <div class="tcg-c">©2026 あおぞら飯店メニューバトル / imapp</div>
       </article>
-      <article class="card">
-        <div class="art"><img src="../cards/mushiro.png" alt="ムーシーロー" loading="lazy"></div>
-        <h3>ムーシーロー<small>No.51　¥950</small></h3>
-        <div class="chips"><span class="t">十字</span><span>サポーター</span></div>
-        <div class="stat">HP5／攻3／移2／射2</div>
-        <div class="param">攻6・防7・速5・耐7・精10</div>
-        <div class="trait">★木耳の知恵：敵の能力を分析・可視化</div>
-        <p class="fl">知的で研究熱心な学者。</p>
+      <article class="tcg t-area">
+        <div class="tcg-head"><span class="nm">ムーシーロー</span><span class="hp"><i>HP</i>5</span><span class="dot">十</span></div>
+        <div class="tcg-art"><img src="../cards/mushiro.png" alt="ムーシーロー" loading="lazy"></div>
+        <div class="tcg-info">一品のカード｜サポーター｜¥950</div>
+        <div class="tcg-box"><b>特性　木耳の知恵</b><span>敵の能力を分析・可視化</span></div>
+        <div class="tcg-box atk"><span class="ball"></span><b>ひろがる十字火（十字・射程2）</b><span class="pow">30</span></div>
+        <p class="tcg-fl">知的で研究熱心な学者。</p>
+        <div class="tcg-foot"><span>移動 2</span><span class="prm">攻6 防7 速5 耐7 精10</span><span class="no">◆ 051/063</span></div>
+        <div class="tcg-c">©2026 あおぞら飯店メニューバトル / imapp</div>
       </article>
-      <article class="card">
-        <div class="art"><img src="../cards/tomato_tamago.png" alt="トマト卵炒め" loading="lazy"></div>
-        <h3>トマト卵炒め<small>No.52　¥850</small></h3>
-        <div class="chips"><span class="t">十字</span><span>ヒーラー</span></div>
-        <div class="stat">HP5／攻2／移3／射2</div>
-        <div class="param">攻5・防6・速7・耐7・精9</div>
-        <div class="trait">★トマトハート：回復時に追加の精神回復</div>
-        <p class="fl">愛情深く人懐っこい。</p>
+      <article class="tcg t-area">
+        <div class="tcg-head"><span class="nm">トマト卵炒め</span><span class="hp"><i>HP</i>5</span><span class="dot">十</span></div>
+        <div class="tcg-art"><img src="../cards/tomato_tamago.png" alt="トマト卵炒め" loading="lazy"></div>
+        <div class="tcg-info">一品のカード｜ヒーラー｜¥850</div>
+        <div class="tcg-box"><b>特性　トマトハート</b><span>回復時に追加の精神回復</span></div>
+        <div class="tcg-box atk"><span class="ball"></span><b>ひろがる十字火（十字・射程2）</b><span class="pow">20</span></div>
+        <p class="tcg-fl">愛情深く人懐っこい。</p>
+        <div class="tcg-foot"><span>移動 3</span><span class="prm">攻5 防6 速7 耐7 精9</span><span class="no">◆ 052/063</span></div>
+        <div class="tcg-c">©2026 あおぞら飯店メニューバトル / imapp</div>
       </article>
-      <article class="card">
-        <div class="art"><img src="../cards/ebitama.png" alt="海老卵炒め" loading="lazy"></div>
-        <h3>海老卵炒め<small>No.53　¥950</small></h3>
-        <div class="chips"><span class="t">直線</span><span>スイーパー</span></div>
-        <div class="stat">HP5／攻3／移3／射3</div>
-        <div class="param">攻7・防5・速9・耐6・精7</div>
-        <div class="trait">★海老玉ジャンプ：素早い二段攻撃</div>
-        <p class="fl">元気で跳ねることが好き。</p>
+      <article class="tcg t-line">
+        <div class="tcg-head"><span class="nm">海老卵炒め</span><span class="hp"><i>HP</i>5</span><span class="dot">直</span></div>
+        <div class="tcg-art"><img src="../cards/ebitama.png" alt="海老卵炒め" loading="lazy"></div>
+        <div class="tcg-info">一品のカード｜スイーパー｜¥950</div>
+        <div class="tcg-box"><b>特性　海老玉ジャンプ</b><span>素早い二段攻撃</span></div>
+        <div class="tcg-box atk"><span class="ball"></span><b>のびる一閃（直線・射程3）</b><span class="pow">30</span></div>
+        <p class="tcg-fl">元気で跳ねることが好き。</p>
+        <div class="tcg-foot"><span>移動 3</span><span class="prm">攻7 防5 速9 耐6 精7</span><span class="no">◆ 053/063</span></div>
+        <div class="tcg-c">©2026 あおぞら飯店メニューバトル / imapp</div>
       </article>
-      <article class="card">
-        <div class="art"><img src="../cards/butakimuchi.png" alt="豚キムチ炒め" loading="lazy"></div>
-        <h3>豚キムチ炒め<small>No.54　¥950</small></h3>
-        <div class="chips"><span class="t">近接</span><span>アタッカー</span></div>
-        <div class="stat">HP5／攻4／移3／射1</div>
-        <div class="param">攻10・防6・速8・耐8・精5</div>
-        <div class="trait">★激辛魂：怒り状態で攻撃大幅上昇</div>
-        <p class="fl">短気だが仲間思いの不良少年。</p>
+      <article class="tcg t-melee">
+        <div class="tcg-head"><span class="nm">豚キムチ炒め</span><span class="hp"><i>HP</i>5</span><span class="dot">近</span></div>
+        <div class="tcg-art"><img src="../cards/butakimuchi.png" alt="豚キムチ炒め" loading="lazy"></div>
+        <div class="tcg-info">一品のカード｜アタッカー｜¥950</div>
+        <div class="tcg-box"><b>特性　激辛魂</b><span>怒り状態で攻撃大幅上昇</span></div>
+        <div class="tcg-box atk"><span class="ball"></span><b>ふみこみ強打（近接・射程1）</b><span class="pow">40</span></div>
+        <p class="tcg-fl">短気だが仲間思いの不良少年。</p>
+        <div class="tcg-foot"><span>移動 3</span><span class="prm">攻10 防6 速8 耐8 精5</span><span class="no">◆ 054/063</span></div>
+        <div class="tcg-c">©2026 あおぞら飯店メニューバトル / imapp</div>
       </article>
-      <article class="card">
-        <div class="art"><img src="../cards/chinjao.png" alt="青椒肉絲" loading="lazy"></div>
-        <h3>青椒肉絲<small>No.55　¥1000</small></h3>
-        <div class="chips"><span class="t">直線</span><span>スイーパー</span></div>
-        <div class="stat">HP5／攻3／移4／射3</div>
-        <div class="param">攻8・防6・速10・耐6・精7</div>
-        <div class="trait">★細切り乱舞：速度依存の連続攻撃</div>
-        <p class="fl">冷静で俊敏な剣士タイプ。</p>
+      <article class="tcg t-line">
+        <div class="tcg-head"><span class="nm">青椒肉絲</span><span class="hp"><i>HP</i>5</span><span class="dot">直</span></div>
+        <div class="tcg-art"><img src="../cards/chinjao.png" alt="青椒肉絲" loading="lazy"></div>
+        <div class="tcg-info">一品のカード｜スイーパー｜¥1000</div>
+        <div class="tcg-box"><b>特性　細切り乱舞</b><span>速度依存の連続攻撃</span></div>
+        <div class="tcg-box atk"><span class="ball"></span><b>のびる一閃（直線・射程3）</b><span class="pow">30</span></div>
+        <p class="tcg-fl">冷静で俊敏な剣士タイプ。</p>
+        <div class="tcg-foot"><span>移動 4</span><span class="prm">攻8 防6 速10 耐6 精7</span><span class="no">◆ 055/063</span></div>
+        <div class="tcg-c">©2026 あおぞら飯店メニューバトル / imapp</div>
       </article>
-      <article class="card">
-        <div class="art"><img src="../cards/subuta.png" alt="酢豚" loading="lazy"></div>
-        <h3>酢豚<small>No.56　¥1000</small></h3>
-        <div class="chips"><span class="t">近接</span><span>トリッキー型</span></div>
-        <div class="stat">HP5／攻3／移3／射1</div>
-        <div class="param">攻8・防7・速7・耐8・精8</div>
-        <div class="trait">★酸甘反転：弱体効果を強化効果へ変換</div>
-        <p class="fl">明るく甘酸っぱい人気者。</p>
+      <article class="tcg t-melee">
+        <div class="tcg-head"><span class="nm">酢豚</span><span class="hp"><i>HP</i>5</span><span class="dot">近</span></div>
+        <div class="tcg-art"><img src="../cards/subuta.png" alt="酢豚" loading="lazy"></div>
+        <div class="tcg-info">一品のカード｜トリッキー型｜¥1000</div>
+        <div class="tcg-box"><b>特性　酸甘反転</b><span>弱体効果を強化効果へ変換</span></div>
+        <div class="tcg-box atk"><span class="ball"></span><b>ふみこみ強打（近接・射程1）</b><span class="pow">30</span></div>
+        <p class="tcg-fl">明るく甘酸っぱい人気者。</p>
+        <div class="tcg-foot"><span>移動 3</span><span class="prm">攻8 防7 速7 耐8 精8</span><span class="no">◆ 056/063</span></div>
+        <div class="tcg-c">©2026 あおぞら飯店メニューバトル / imapp</div>
       </article>
-      <article class="card">
-        <div class="art"><img src="../cards/aona_itame.png" alt="青菜炒め" loading="lazy"></div>
-        <h3>青菜炒め<small>No.57　¥850</small></h3>
-        <div class="chips"><span class="t">十字</span><span>ヒーラー</span></div>
-        <div class="stat">HP5／攻2／移3／射2</div>
-        <div class="param">攻4・防8・速6・耐8・精10</div>
-        <div class="trait">★緑の回生：毎ターン味方全体を小回復</div>
-        <p class="fl">穏やかな植物の精霊。</p>
+      <article class="tcg t-area">
+        <div class="tcg-head"><span class="nm">青菜炒め</span><span class="hp"><i>HP</i>5</span><span class="dot">十</span></div>
+        <div class="tcg-art"><img src="../cards/aona_itame.png" alt="青菜炒め" loading="lazy"></div>
+        <div class="tcg-info">一品のカード｜ヒーラー｜¥850</div>
+        <div class="tcg-box"><b>特性　緑の回生</b><span>毎ターン味方全体を小回復</span></div>
+        <div class="tcg-box atk"><span class="ball"></span><b>ひろがる十字火（十字・射程2）</b><span class="pow">20</span></div>
+        <p class="tcg-fl">穏やかな植物の精霊。</p>
+        <div class="tcg-foot"><span>移動 3</span><span class="prm">攻4 防8 速6 耐8 精10</span><span class="no">◆ 057/063</span></div>
+        <div class="tcg-c">©2026 あおぞら飯店メニューバトル / imapp</div>
       </article>
-      <article class="card">
-        <div class="art"><img src="../cards/nira_moyashi_itame.png" alt="ニラもやし炒め" loading="lazy"></div>
-        <h3>ニラもやし炒め<small>No.58　¥850</small></h3>
-        <div class="chips"><span class="t">近接</span><span>スイーパー</span></div>
-        <div class="stat">HP5／攻3／移4／射1</div>
-        <div class="param">攻6・防5・速10・耐7・精6</div>
-        <div class="trait">★シャキうま疾走：先制全体攻撃</div>
-        <p class="fl">活発なストリート料理人。</p>
+      <article class="tcg t-melee">
+        <div class="tcg-head"><span class="nm">ニラもやし炒め</span><span class="hp"><i>HP</i>5</span><span class="dot">近</span></div>
+        <div class="tcg-art"><img src="../cards/nira_moyashi_itame.png" alt="ニラもやし炒め" loading="lazy"></div>
+        <div class="tcg-info">一品のカード｜スイーパー｜¥850</div>
+        <div class="tcg-box"><b>特性　シャキうま疾走</b><span>先制全体攻撃</span></div>
+        <div class="tcg-box atk"><span class="ball"></span><b>ふみこみ強打（近接・射程1）</b><span class="pow">30</span></div>
+        <p class="tcg-fl">活発なストリート料理人。</p>
+        <div class="tcg-foot"><span>移動 4</span><span class="prm">攻6 防5 速10 耐7 精6</span><span class="no">◆ 058/063</span></div>
+        <div class="tcg-c">©2026 あおぞら飯店メニューバトル / imapp</div>
       </article>
-      <article class="card">
-        <div class="art"><img src="../cards/nira_reba.png" alt="ニラレバ炒め" loading="lazy"></div>
-        <h3>ニラレバ炒め<small>No.59　¥850</small></h3>
-        <div class="chips"><span class="t">近接</span><span>タンク</span></div>
-        <div class="stat">HP6／攻3／移2／射1</div>
-        <div class="param">攻8・防8・速5・耐10・精8</div>
-        <div class="trait">★鉄分補給：耐久力と状態異常耐性上昇</div>
-        <p class="fl">無口で責任感が強い職人。</p>
+      <article class="tcg t-melee">
+        <div class="tcg-head"><span class="nm">ニラレバ炒め</span><span class="hp"><i>HP</i>6</span><span class="dot">近</span></div>
+        <div class="tcg-art"><img src="../cards/nira_reba.png" alt="ニラレバ炒め" loading="lazy"></div>
+        <div class="tcg-info">一品のカード｜タンク｜¥850</div>
+        <div class="tcg-box"><b>特性　鉄分補給</b><span>耐久力と状態異常耐性上昇</span></div>
+        <div class="tcg-box atk"><span class="ball"></span><b>ふみこみ強打（近接・射程1）</b><span class="pow">30</span></div>
+        <p class="tcg-fl">無口で責任感が強い職人。</p>
+        <div class="tcg-foot"><span>移動 2</span><span class="prm">攻8 防8 速5 耐10 精8</span><span class="no">◆ 059/063</span></div>
+        <div class="tcg-c">©2026 あおぞら飯店メニューバトル / imapp</div>
       </article>
-      <article class="card">
-        <div class="art"><img src="../cards/hoikoro.png" alt="回鍋肉" loading="lazy"></div>
-        <h3>回鍋肉<small>No.60　¥950</small></h3>
-        <div class="chips"><span class="t">近接</span><span>タンク</span></div>
-        <div class="stat">HP6／攻4／移2／射1</div>
-        <div class="param">攻10・防9・速4・耐10・精7</div>
-        <div class="trait">★二度炒めの極意：一度倒されても復活</div>
-        <p class="fl">豪快で面倒見のいいベテラン戦士。</p>
+      <article class="tcg t-melee">
+        <div class="tcg-head"><span class="nm">回鍋肉</span><span class="hp"><i>HP</i>6</span><span class="dot">近</span></div>
+        <div class="tcg-art"><img src="../cards/hoikoro.png" alt="回鍋肉" loading="lazy"></div>
+        <div class="tcg-info">一品のカード｜タンク｜¥950</div>
+        <div class="tcg-box"><b>特性　二度炒めの極意</b><span>一度倒されても復活</span></div>
+        <div class="tcg-box atk"><span class="ball"></span><b>ふみこみ強打（近接・射程1）</b><span class="pow">40</span></div>
+        <p class="tcg-fl">豪快で面倒見のいいベテラン戦士。</p>
+        <div class="tcg-foot"><span>移動 2</span><span class="prm">攻10 防9 速4 耐10 精7</span><span class="no">◆ 060/063</span></div>
+        <div class="tcg-c">©2026 あおぞら飯店メニューバトル / imapp</div>
       </article>
     </div>
   </section>
   <section class="cat">
     <h2>甘味（3品）</h2>
     <div class="grid">
-      <article class="card">
-        <div class="art"><img src="../cards/agepan.png" alt="揚げパン" loading="lazy"></div>
-        <h3>揚げパン<small>No.61　¥500</small></h3>
-        <div class="chips"><span class="t">直線</span><span>バッファー</span></div>
-        <div class="stat">HP5／攻3／移3／射3</div>
-        <div class="param">攻6・防5・速8・耐7・精8</div>
-        <div class="trait">★砂糖ハイテンション：味方の速度を上昇</div>
-        <p class="fl">とにかく前向きな元気っ子。</p>
+      <article class="tcg t-line">
+        <div class="tcg-head"><span class="nm">揚げパン</span><span class="hp"><i>HP</i>5</span><span class="dot">直</span></div>
+        <div class="tcg-art"><img src="../cards/agepan.png" alt="揚げパン" loading="lazy"></div>
+        <div class="tcg-info">甘味のカード｜バッファー｜¥500</div>
+        <div class="tcg-box"><b>特性　砂糖ハイテンション</b><span>味方の速度を上昇</span></div>
+        <div class="tcg-box atk"><span class="ball"></span><b>のびる一閃（直線・射程3）</b><span class="pow">30</span></div>
+        <p class="tcg-fl">とにかく前向きな元気っ子。</p>
+        <div class="tcg-foot"><span>移動 3</span><span class="prm">攻6 防5 速8 耐7 精8</span><span class="no">● 061/063</span></div>
+        <div class="tcg-c">©2026 あおぞら飯店メニューバトル / imapp</div>
       </article>
-      <article class="card">
-        <div class="art"><img src="../cards/gomadango.png" alt="胡麻団子" loading="lazy"></div>
-        <h3>胡麻団子<small>No.62　¥500</small></h3>
-        <div class="chips"><span class="t">十字</span><span>トリッキー型</span></div>
-        <div class="stat">HP5／攻2／移2／射2</div>
-        <div class="param">攻5・防8・速5・耐8・精10</div>
-        <div class="trait">★胡麻の結界：精神攻撃を反射</div>
-        <p class="fl">静かで芯の強いお嬢様。</p>
+      <article class="tcg t-area">
+        <div class="tcg-head"><span class="nm">胡麻団子</span><span class="hp"><i>HP</i>5</span><span class="dot">十</span></div>
+        <div class="tcg-art"><img src="../cards/gomadango.png" alt="胡麻団子" loading="lazy"></div>
+        <div class="tcg-info">甘味のカード｜トリッキー型｜¥500</div>
+        <div class="tcg-box"><b>特性　胡麻の結界</b><span>精神攻撃を反射</span></div>
+        <div class="tcg-box atk"><span class="ball"></span><b>ひろがる十字火（十字・射程2）</b><span class="pow">20</span></div>
+        <p class="tcg-fl">静かで芯の強いお嬢様。</p>
+        <div class="tcg-foot"><span>移動 2</span><span class="prm">攻5 防8 速5 耐8 精10</span><span class="no">● 062/063</span></div>
+        <div class="tcg-c">©2026 あおぞら飯店メニューバトル / imapp</div>
       </article>
-      <article class="card">
-        <div class="art"><img src="../cards/vanilla_ice.png" alt="バニラアイス" loading="lazy"></div>
-        <h3>バニラアイス<small>No.63　¥350</small></h3>
-        <div class="chips"><span class="t">十字</span><span>ヒーラー</span></div>
-        <div class="stat">HP5／攻2／移2／射2</div>
-        <div class="param">攻3・防6・速4・耐6・精10</div>
-        <div class="trait">★バニラドリーム：敵を眠らせ、味方を回復</div>
-        <p class="fl">夢見がちで眠たげな癒し系。</p>
+      <article class="tcg t-area">
+        <div class="tcg-head"><span class="nm">バニラアイス</span><span class="hp"><i>HP</i>5</span><span class="dot">十</span></div>
+        <div class="tcg-art"><img src="../cards/vanilla_ice.png" alt="バニラアイス" loading="lazy"></div>
+        <div class="tcg-info">甘味のカード｜ヒーラー｜¥350</div>
+        <div class="tcg-box"><b>特性　バニラドリーム</b><span>敵を眠らせ、味方を回復</span></div>
+        <div class="tcg-box atk"><span class="ball"></span><b>ひろがる十字火（十字・射程2）</b><span class="pow">20</span></div>
+        <p class="tcg-fl">夢見がちで眠たげな癒し系。</p>
+        <div class="tcg-foot"><span>移動 2</span><span class="prm">攻3 防6 速4 耐6 精10</span><span class="no">● 063/063</span></div>
+        <div class="tcg-c">©2026 あおぞら飯店メニューバトル / imapp</div>
       </article>
     </div>
   </section>
   <section class="cat">
     <h2>敵キャラクター — 厨房の付喪神（実装済み6体＋砦）</h2>
     <div class="grid">
-      <article class="card enemy">
-        <div class="art"><img src="../enemies/nabe.png" alt="鍋" loading="lazy"></div>
-        <h3>鍋</h3>
-        <div class="stat">攻撃2／HP3</div>
-        <div class="trait">隣接4マスを攻撃・毎ラウンド1マス接近</div>
-        <p class="fl">煮えたぎる寸胴の暴れん坊。毎ラウンド1マス迫り、隣接4セルを脅かす。</p>
+      <article class="tcg t-enemy">
+        <div class="tcg-head"><span class="nm">鍋</span><span class="hp"><i>HP</i>3　<i>攻</i>2</span></div>
+        <div class="tcg-art"><img src="../enemies/nabe.png" alt="鍋" loading="lazy"></div>
+        <div class="tcg-box"><b>行動</b><span>隣接4マスを攻撃・毎ラウンド1マス接近</span></div>
+        <p class="tcg-fl">煮えたぎる寸胴の暴れん坊。毎ラウンド1マス迫り、隣接4セルを脅かす。</p>
+        <div class="tcg-c">KITCHEN YOKAI — 厨房の付喪神</div>
       </article>
-      <article class="card enemy">
-        <div class="art"><img src="../enemies/abura.png" alt="油" loading="lazy"></div>
-        <h3>油</h3>
-        <div class="stat">攻撃1／HP2</div>
-        <div class="trait">向いた方向へ直線3マス・移動しない・毎ラウンド右回転</div>
-        <p class="fl">跳ね油の三白眼スナイパー。動かないが毎ラウンド時計回りに射線を回す。</p>
+      <article class="tcg t-enemy">
+        <div class="tcg-head"><span class="nm">油</span><span class="hp"><i>HP</i>2　<i>攻</i>1</span></div>
+        <div class="tcg-art"><img src="../enemies/abura.png" alt="油" loading="lazy"></div>
+        <div class="tcg-box"><b>行動</b><span>向いた方向へ直線3マス・移動しない・毎ラウンド右回転</span></div>
+        <p class="tcg-fl">跳ね油の三白眼スナイパー。動かないが毎ラウンド時計回りに射線を回す。</p>
+        <div class="tcg-c">KITCHEN YOKAI — 厨房の付喪神</div>
       </article>
-      <article class="card enemy">
-        <div class="art"><img src="../enemies/seiro.png" alt="蒸籠" loading="lazy"></div>
-        <h3>蒸籠</h3>
-        <div class="stat">攻撃2／HP4</div>
-        <div class="trait">周囲3×3を攻撃・移動しない・1ラウンド溜めてから発火</div>
-        <p class="fl">積み重なった蒸籠の巨体。1ラウンド溜めて周囲3×3を蒸し上げる。</p>
+      <article class="tcg t-enemy">
+        <div class="tcg-head"><span class="nm">蒸籠</span><span class="hp"><i>HP</i>4　<i>攻</i>2</span></div>
+        <div class="tcg-art"><img src="../enemies/seiro.png" alt="蒸籠" loading="lazy"></div>
+        <div class="tcg-box"><b>行動</b><span>周囲3×3を攻撃・移動しない・1ラウンド溜めてから発火</span></div>
+        <p class="tcg-fl">積み重なった蒸籠の巨体。1ラウンド溜めて周囲3×3を蒸し上げる。</p>
+        <div class="tcg-c">KITCHEN YOKAI — 厨房の付喪神</div>
       </article>
-      <article class="card enemy">
-        <div class="art"><img src="../enemies/hocho.png" alt="包丁" loading="lazy"></div>
-        <h3>包丁</h3>
-        <div class="stat">攻撃3／HP2</div>
-        <div class="trait">隣接4マスを攻撃・毎ラウンド2マス接近</div>
-        <p class="fl">研ぎ澄まされた快速アサシン。毎ラウンド2マス駆け、切れ味は鋭いが打たれ弱い。</p>
+      <article class="tcg t-enemy">
+        <div class="tcg-head"><span class="nm">包丁</span><span class="hp"><i>HP</i>2　<i>攻</i>3</span></div>
+        <div class="tcg-art"><img src="../enemies/hocho.png" alt="包丁" loading="lazy"></div>
+        <div class="tcg-box"><b>行動</b><span>隣接4マスを攻撃・毎ラウンド2マス接近</span></div>
+        <p class="tcg-fl">研ぎ澄まされた快速アサシン。毎ラウンド2マス駆け、切れ味は鋭いが打たれ弱い。</p>
+        <div class="tcg-c">KITCHEN YOKAI — 厨房の付喪神</div>
       </article>
-      <article class="card enemy">
-        <div class="art"><img src="../enemies/menbo.png" alt="麺棒" loading="lazy"></div>
-        <h3>麺棒</h3>
-        <div class="stat">攻撃1／HP3</div>
-        <div class="trait">向いた方向へ直線4マス・移動しない・毎ラウンド左回転</div>
-        <p class="fl">長柄の砲台。射線4マスを油とは逆の左回りで薙ぐ。並ばれると読みが地獄。</p>
+      <article class="tcg t-enemy">
+        <div class="tcg-head"><span class="nm">麺棒</span><span class="hp"><i>HP</i>3　<i>攻</i>1</span></div>
+        <div class="tcg-art"><img src="../enemies/menbo.png" alt="麺棒" loading="lazy"></div>
+        <div class="tcg-box"><b>行動</b><span>向いた方向へ直線4マス・移動しない・毎ラウンド左回転</span></div>
+        <p class="tcg-fl">長柄の砲台。射線4マスを油とは逆の左回りで薙ぐ。並ばれると読みが地獄。</p>
+        <div class="tcg-c">KITCHEN YOKAI — 厨房の付喪神</div>
       </article>
-      <article class="card enemy">
-        <div class="art"><img src="../enemies/reizoko.png" alt="冷蔵庫" loading="lazy"></div>
-        <h3>冷蔵庫</h3>
-        <div class="stat">攻撃2／HP8</div>
-        <div class="trait">隣接4マスを攻撃・移動しない</div>
-        <p class="fl">竈の前に鎮座する砦番。動かないが、どかすには相当な火力が要る。</p>
+      <article class="tcg t-enemy">
+        <div class="tcg-head"><span class="nm">冷蔵庫</span><span class="hp"><i>HP</i>8　<i>攻</i>2</span></div>
+        <div class="tcg-art"><img src="../enemies/reizoko.png" alt="冷蔵庫" loading="lazy"></div>
+        <div class="tcg-box"><b>行動</b><span>隣接4マスを攻撃・移動しない</span></div>
+        <p class="tcg-fl">竈の前に鎮座する砦番。動かないが、どかすには相当な火力が要る。</p>
+        <div class="tcg-c">KITCHEN YOKAI — 厨房の付喪神</div>
       </article>
-      <article class="card enemy">
-        <div class="art"><img src="../forts/kamado.png" alt="竈" loading="lazy"></div>
-        <h3>竈（敵砦）</h3>
-        <div class="stat">HP6〜8（ウェーブによる）</div>
-        <div class="trait">援軍の出撃元。破壊すると残りの敵が消え早期クリア</div>
-        <p class="fl">敵の出撃元にして大将格。叩き壊せば残りの敵は予告ごと消え、早期クリアになる。</p>
+      <article class="tcg t-enemy">
+        <div class="tcg-head"><span class="nm">竈（敵砦）</span><span class="hp"><i>HP</i>6〜8</span></div>
+        <div class="tcg-art"><img src="../forts/kamado.png" alt="竈（敵砦）" loading="lazy"></div>
+        <div class="tcg-box"><b>行動</b><span>援軍の出撃元。破壊すると残りの敵・予告・援軍が消え早期クリア</span></div>
+        <p class="tcg-fl">敵の出撃元にして大将格。叩き壊せば残りの敵は予告ごと消え、早期クリアになる。</p>
+        <div class="tcg-c">KITCHEN YOKAI — 厨房の付喪神</div>
       </article>
     </div>
     <h2>今後登場予定</h2>
     <div class="grid">
-      <article class="card enemy future">
-        <div class="art"><img src="../enemies/gotoku.png" alt="五徳" loading="lazy"></div>
-        <h3>五徳</h3>
-        <div class="trait">十字砲（実装予定）</div>
+      <article class="tcg t-enemy future">
+        <div class="tcg-head"><span class="nm">五徳</span><span class="hp">？？？</span></div>
+        <div class="tcg-art"><img src="../enemies/gotoku.png" alt="五徳" loading="lazy"></div>
+        <div class="tcg-box"><b>行動</b><span>十字砲（実装予定）</span></div>
+        <p class="tcg-fl"></p>
+        <div class="tcg-c">KITCHEN YOKAI — 厨房の付喪神</div>
       </article>
-      <article class="card enemy future">
-        <div class="art"><img src="../enemies/kankisen.png" alt="換気扇" loading="lazy"></div>
-        <h3>換気扇</h3>
-        <div class="trait">吸引トラップ（実装予定）</div>
+      <article class="tcg t-enemy future">
+        <div class="tcg-head"><span class="nm">換気扇</span><span class="hp">？？？</span></div>
+        <div class="tcg-art"><img src="../enemies/kankisen.png" alt="換気扇" loading="lazy"></div>
+        <div class="tcg-box"><b>行動</b><span>吸引トラップ（実装予定）</span></div>
+        <p class="tcg-fl"></p>
+        <div class="tcg-c">KITCHEN YOKAI — 厨房の付喪神</div>
       </article>
-      <article class="card enemy future">
-        <div class="art"><img src="../enemies/daikaryoku.png" alt="大火力" loading="lazy"></div>
-        <h3>大火力</h3>
-        <div class="trait">ラスボス（実装予定）</div>
+      <article class="tcg t-enemy future">
+        <div class="tcg-head"><span class="nm">大火力</span><span class="hp">？？？</span></div>
+        <div class="tcg-art"><img src="../enemies/daikaryoku.png" alt="大火力" loading="lazy"></div>
+        <div class="tcg-box"><b>行動</b><span>ラスボス（実装予定）</span></div>
+        <p class="tcg-fl"></p>
+        <div class="tcg-c">KITCHEN YOKAI — 厨房の付喪神</div>
       </article>
     </div>
   </section>
