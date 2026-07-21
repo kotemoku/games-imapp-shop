@@ -117,3 +117,6 @@
   Cache-Control: no-cache, must-revalidate
 /yakishi/assets/*
   Cache-Control: public, max-age=31536000, immutable
+# morse-spy は Flutter Web。assets/ は同名（非ハッシュ）で差し替わるため no-cache。
+/morse-spy/assets/*
+  Cache-Control: no-cache, must-revalidate
