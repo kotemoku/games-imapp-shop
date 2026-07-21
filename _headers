@@ -120,3 +120,5 @@
 # morse-spy は Flutter Web。assets/ は同名（非ハッシュ）で差し替わるため no-cache。
 /morse-spy/assets/*
   Cache-Control: no-cache, must-revalidate
+/hana-irozuke/assets/*
+  Cache-Control: no-cache, must-revalidate
