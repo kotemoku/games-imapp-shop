@@ -1,0 +1,35 @@
+{
+    "name": "MORSE SPY",
+    "short_name": "MORSE SPY",
+    "start_url": ".",
+    "display": "standalone",
+    "background_color": "#0A0E1A",
+    "theme_color": "#00FF41",
+    "description": "Secret Morse code messenger. Encode, decode, and communicate in covert operations.",
+    "orientation": "portrait-primary",
+    "prefer_related_applications": false,
+    "icons": [
+        {
+            "src": "icons/Icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/Icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/Icon-maskable-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "maskable"
+        },
+        {
+            "src": "icons/Icon-maskable-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
+        }
+    ]
+}

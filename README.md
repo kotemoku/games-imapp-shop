@@ -21,6 +21,7 @@ Cloudflare Pages で `games.imapp.shop` カスタムドメインを当てる。
 | パス | ゲーム | リポジトリ |
 |------|--------|-----------|
 | `/burger/` | Burger Stack Rush | `burger_stack_rush` (Phaser4 + Vite。旧 Flutter から移行済) |
+| `/morse-spy/` | MORSE SPY | `morse_spy` (Flutter Web + Firebase・PWA) ※連携実装済み・**公開前に Firebase 承認済みドメイン/App Check の別オリジン対応が必要**（`docs/embed-notice-morse-spy.md` §5）。スパイ風モールス通信メッセンジャー。EMBED-CONTRACT 標準（source=morse-spy / config / game_over、score=累積XP）実装済み・配信バンドル未投入 |
 | `/packer-panic/` | ふんべつ！パッカーパニック | `packer-panic` (Web) |
 | `/tsukurun/` | ツクルン (家具組み立てタイムアタック) | `つくチャレ-phaser` (Phaser4 + Vite) |
 | `/pizza-oven-rush/` | ピザ・オーブン・ラッシュ | `pizza-oven-rush` (Phaser4 + Vite) |

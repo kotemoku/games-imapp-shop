@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#07110f" />
+  <meta name="description" content="モールス信号を操り極秘任務に挑むブラウザゲーム『MORSE SPY』。スパイ気分で遊ぶうちに、停電・遭難など災害時に役立つモールス通信が自然と身につく。無料・匿名で今すぐ。" />
+  <meta property="og:title" content="MORSE SPY｜遊びながら身につく、災害時にも使える通信スキル" />
+  <meta property="og:description" content="その一打が、世界を救う。スパイ任務を楽しむうちに、停電・遭難で役立つモールス信号が身につくブラウザゲーム。" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://morse-spy.web.app/" />
+  <meta property="og:image" content="https://morse-spy.web.app/icons/Icon-512.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="MORSE SPY｜遊びながら身につく、災害時にも使える通信スキル" />
+  <meta name="twitter:description" content="スパイ任務を楽しむうちに、災害時に役立つモールス信号が身につく。" />
+  <title>MORSE SPY｜遊びながら身につく、災害時にも使える通信スキル</title>
+  <script>document.documentElement.classList.add('js');</script>
+  <style>
+    :root {
+      --bg: #06100e;
+      --bg-deep: #020706;
+      --panel: rgba(10, 28, 24, 0.82);
+      --panel-strong: #0b201b;
+      --line: rgba(139, 255, 205, 0.18);
+      --green: #7dffc1;
+      --green-strong: #3fe990;
+      --amber: #ffd17a;
+      --red: #ff5d5d;
+      --white: #f1fff8;
+      --muted: #a7c8b9;
+      --shadow: 0 28px 80px rgba(0, 0, 0, 0.42);
+      --radius-lg: 28px;
+      --radius-md: 18px;
+      --max: 1180px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--white);
+      background:
+        radial-gradient(circle at 18% 4%, rgba(63, 233, 144, 0.12), transparent 34%),
+        radial-gradient(circle at 88% 15%, rgba(255, 209, 122, 0.08), transparent 30%),
+        linear-gradient(180deg, #071411 0%, var(--bg) 44%, var(--bg-deep) 100%);
+      font-family: Inter, "Noto Sans JP", "Yu Gothic", "Hiragino Kaku Gothic ProN", sans-serif;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.28;
+      background-image:
+        linear-gradient(rgba(125,255,193,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(125,255,193,.025) 1px, transparent 1px);
+      background-size: 42px 42px;
+      mask-image: linear-gradient(to bottom, black, transparent 88%);
+      z-index: -1;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    img, svg { max-width: 100%; display: block; }
+
+    .container { width: min(calc(100% - 40px), var(--max)); margin-inline: auto; }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      backdrop-filter: blur(14px);
+      background: rgba(3, 10, 8, 0.72);
+      border-bottom: 1px solid rgba(125,255,193,.1);
+    }
+
+    .nav {
+      min-height: 74px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 900;
+      letter-spacing: .16em;
+    }
+
+    .brand-mark {
+      width: 38px;
+      aspect-ratio: 1;
+      border: 1px solid rgba(125,255,193,.45);
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      color: var(--green);
+      box-shadow: inset 0 0 18px rgba(63,233,144,.08), 0 0 24px rgba(63,233,144,.08);
+    }
+
+    .brand-mark span { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; }
+
+    .nav-links { display: flex; align-items: center; gap: 28px; color: var(--muted); font-size: 14px; }
+    .nav-links a:hover { color: var(--white); }
+
+    .btn {
+      min-height: 54px;
+      padding: 0 24px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      font-weight: 850;
+      letter-spacing: .04em;
+      transition: transform .2s ease, background .2s ease, border-color .2s ease, box-shadow .2s ease;
+      cursor: pointer;
+    }
+
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary {
+      color: #052015;
+      background: linear-gradient(135deg, #a0ffd2 0%, var(--green-strong) 100%);
+      box-shadow: 0 14px 36px rgba(63,233,144,.24);
+    }
+    .btn-secondary { border-color: rgba(125,255,193,.3); background: rgba(125,255,193,.055); }
+    .btn-compact { min-height: 42px; padding: 0 18px; font-size: 13px; }
+
+    .hero {
+      position: relative;
+      padding: 92px 0 70px;
+      min-height: 760px;
+      display: grid;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 720px;
+      aspect-ratio: 1;
+      right: -260px;
+      top: 30px;
+      border-radius: 50%;
+      border: 1px solid rgba(125,255,193,.12);
+      box-shadow: inset 0 0 100px rgba(63,233,144,.035);
+      background: repeating-radial-gradient(circle, transparent 0 64px, rgba(125,255,193,.05) 65px 66px);
+      pointer-events: none;
+    }
+
+    .hero-grid { display: grid; grid-template-columns: 1.06fr .94fr; gap: 62px; align-items: center; position: relative; z-index: 2; }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--green);
+      font: 700 12px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      margin-bottom: 22px;
+    }
+
+    .eyebrow::before { content: ""; width: 8px; height: 8px; background: var(--green-strong); border-radius: 50%; box-shadow: 0 0 16px var(--green-strong); }
+
+    h1, h2, h3, p { margin-top: 0; }
+    h1 {
+      font-size: clamp(48px, 7vw, 94px);
+      line-height: .98;
+      letter-spacing: -.055em;
+      margin-bottom: 28px;
+      max-width: 760px;
+    }
+
+    h1 .line-2 { display: block; color: transparent; -webkit-text-stroke: 1px rgba(241,255,248,.82); }
+    .hero-lead { font-size: clamp(17px, 2vw, 21px); color: #c5e1d4; max-width: 650px; margin-bottom: 32px; }
+    .hero-lead strong { color: var(--white); }
+
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 24px; }
+    .microcopy { display: flex; flex-wrap: wrap; gap: 18px; color: var(--muted); font-size: 13px; }
+    .microcopy span::before { content: "✓"; color: var(--green); margin-right: 7px; }
+
+    .terminal {
+      position: relative;
+      background: linear-gradient(145deg, rgba(15,42,35,.92), rgba(4,13,11,.96));
+      border: 1px solid rgba(125,255,193,.2);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow), inset 0 1px 0 rgba(255,255,255,.04);
+      overflow: hidden;
+      transform: rotate(1.4deg);
+    }
+
+    .terminal::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(255,255,255,.025) 50%, transparent 50%);
+      background-size: 100% 4px;
+      opacity: .55;
+      pointer-events: none;
+    }
+
+    .terminal-top {
+      height: 54px;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(125,255,193,.12);
+      color: var(--muted);
+      font: 700 11px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+      letter-spacing: .16em;
+    }
+
+    .status { color: var(--green); display: inline-flex; align-items: center; gap: 8px; }
+    .status::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 12px var(--green); animation: blink 1.8s infinite; }
+
+    .terminal-body { padding: 28px; }
+    .mission-meta { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 20px; color: var(--muted); font: 700 11px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .mission-title { font-size: 26px; line-height: 1.25; margin-bottom: 8px; }
+    .mission-desc { color: var(--muted); font-size: 14px; margin-bottom: 22px; }
+
+    /* SOS trainer */
+    .sos-display { display: flex; justify-content: center; gap: clamp(18px, 6vw, 40px); margin: 6px 0 20px; }
+    .sos-letter {
+      font: 900 clamp(44px, 12vw, 62px)/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+      color: rgba(125,255,193,.16);
+      transition: color .3s ease, text-shadow .3s ease;
+      width: clamp(48px, 14vw, 74px);
+      text-align: center;
+    }
+    .sos-letter.lit { color: var(--green); text-shadow: 0 0 26px var(--green), 0 0 60px rgba(63,233,144,.35); }
+
+    .waveform {
+      height: 74px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 10px 16px;
+      background: rgba(0,0,0,.18);
+      border: 1px solid rgba(125,255,193,.1);
+      border-radius: 14px;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .waveform i { width: 4px; border-radius: 99px; background: linear-gradient(to top, rgba(63,233,144,.2), var(--green)); animation: wave 1.2s ease-in-out infinite alternate; }
+    .waveform i:nth-child(2n) { animation-delay: -.4s; }
+    .waveform i:nth-child(3n) { animation-delay: -.8s; }
+    .waveform i:nth-child(5n) { background: var(--amber); }
+
+    .trainer-keys { display: flex; gap: 10px; margin-bottom: 12px; }
+    .morse-key {
+      flex: 1;
+      min-height: 58px;
+      border-radius: 14px;
+      border: 1px solid rgba(125,255,193,.2);
+      color: var(--white);
+      background: rgba(125,255,193,.07);
+      font: 900 23px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+      cursor: pointer;
+      transition: .16s ease;
+    }
+    .morse-key:hover, .morse-key:active { background: rgba(125,255,193,.16); transform: translateY(-1px); }
+    .morse-key.pressed { background: var(--green-strong); color: #052015; border-color: var(--green-strong); box-shadow: 0 0 22px rgba(63,233,144,.5); }
+    .morse-key:disabled { opacity: .32; cursor: not-allowed; transform: none; }
+
+    .trainer-status { min-height: 42px; color: var(--muted); font-size: 14px; text-align: center; }
+    .trainer-status.progress { color: var(--amber); }
+    .trainer-status.done { color: var(--green); font-weight: 800; }
+    .trainer-cta { display: none; margin-top: 14px; width: 100%; }
+    .trainer-cta.show { display: inline-flex; }
+
+    section { padding: 104px 0; }
+    .section-kicker { color: var(--green); font: 800 12px/1 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .18em; margin-bottom: 18px; }
+    .section-title { font-size: clamp(34px, 5vw, 58px); line-height: 1.12; letter-spacing: -.04em; margin-bottom: 20px; }
+    .section-lead { max-width: 720px; color: var(--muted); font-size: 18px; margin-bottom: 52px; }
+
+    .story-strip { border-block: 1px solid rgba(125,255,193,.11); background: rgba(4,14,11,.42); }
+    .story-inner { display: grid; grid-template-columns: .8fr 1.2fr; gap: 70px; align-items: center; }
+    .big-code { font: 900 clamp(52px, 10vw, 126px)/.9 ui-monospace, SFMono-Regular, Menlo, monospace; color: rgba(125,255,193,.11); letter-spacing: -.08em; }
+    .story-copy p { color: #c3ddd1; font-size: 18px; }
+
+    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .step-card, .feature-card, .mission-card, .faq-item, .scene-card, .duality-col {
+      background: linear-gradient(145deg, rgba(12,35,29,.82), rgba(5,16,13,.82));
+      border: 1px solid rgba(125,255,193,.12);
+      border-radius: var(--radius-md);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.025);
+    }
+
+    .step-card { padding: 28px; min-height: 260px; position: relative; overflow: hidden; }
+    .step-card::after { content: attr(data-step); position: absolute; right: 16px; bottom: -16px; font: 900 96px/1 ui-monospace, SFMono-Regular, Menlo, monospace; color: rgba(125,255,193,.045); }
+    .step-icon { width: 52px; height: 52px; border-radius: 14px; display: grid; place-items: center; border: 1px solid rgba(125,255,193,.22); color: var(--green); margin-bottom: 24px; font: 900 18px/1 ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .step-card h3 { font-size: 22px; margin-bottom: 12px; }
+    .step-card p { color: var(--muted); font-size: 15px; }
+
+    /* Duality: game <-> real skill */
+    .duality { display: grid; grid-template-columns: 1fr auto 1fr; gap: 0; align-items: stretch; border-radius: var(--radius-md); overflow: hidden; }
+    .duality-col { padding: 34px 30px; border-radius: 0; }
+    .duality-col h3 { font-size: 22px; margin-bottom: 20px; letter-spacing: .01em; }
+    .duality-col.game h3 { color: var(--green); }
+    .duality-col.real h3 { color: var(--amber); }
+    .duality-col .tag { font: 800 11px/1 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .14em; color: var(--muted); margin-bottom: 10px; }
+    .duality-col ul { list-style: none; margin: 0; padding: 0; }
+    .duality-col li { display: flex; align-items: center; gap: 12px; padding: 11px 0; border-bottom: 1px dashed rgba(139,152,168,.14); color: #cfe7dc; font-size: 15px; }
+    .duality-col li:last-child { border-bottom: none; }
+    .duality-col li .ic { width: 24px; text-align: center; }
+    .duality-mid { display: grid; place-items: center; padding: 0 6px; background: linear-gradient(180deg, rgba(63,233,144,.08), rgba(255,209,122,.08)); }
+    .duality-mid span { writing-mode: vertical-rl; font: 700 18px/1 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .3em; color: var(--muted); opacity: .8; }
+    .duality-bridge { text-align: center; margin-top: 34px; font-size: clamp(19px, 2.4vw, 24px); font-weight: 700; }
+    .duality-bridge em { color: var(--green); font-style: italic; }
+
+    /* Scenes */
+    .scenes { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+    .scene-card { padding: 26px; }
+    .scene-idx { font: 800 11px/1 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .14em; color: var(--green); opacity: .8; margin-bottom: 12px; }
+    .scene-ico { font-size: 30px; margin-bottom: 12px; }
+    .scene-card h3 { font-size: 19px; margin-bottom: 8px; }
+    .scene-card p { color: var(--muted); font-size: 14px; margin: 0; }
+    .scene-quote { margin-top: 16px; padding: 11px 14px; border-left: 3px solid var(--green); border-radius: 0 8px 8px 0; background: rgba(0,0,0,.2); color: #d3ece0; font-size: 13px; font-style: italic; }
+
+    .missions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .mission-card { padding: 26px; position: relative; overflow: hidden; }
+    .mission-card.featured { border-color: rgba(255,209,122,.34); background: linear-gradient(145deg, rgba(45,34,17,.7), rgba(7,18,14,.9)); }
+    .mission-label { color: var(--green); font: 800 11px/1 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .14em; margin-bottom: 18px; }
+    .mission-card.featured .mission-label { color: var(--amber); }
+    .mission-card h3 { font-size: 24px; margin-bottom: 10px; }
+    .mission-card p { color: var(--muted); font-size: 15px; min-height: 78px; }
+    .difficulty { display: flex; gap: 5px; margin-top: 24px; }
+    .difficulty i { width: 24px; height: 4px; background: rgba(125,255,193,.13); border-radius: 10px; }
+    .difficulty i.on { background: var(--green); box-shadow: 0 0 8px rgba(63,233,144,.35); }
+    .featured .difficulty i.on { background: var(--amber); }
+
+    .feature-grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: 20px; }
+    .feature-card { padding: 32px; }
+    .feature-card.large { min-height: 430px; display: flex; flex-direction: column; justify-content: space-between; }
+    .feature-card h3 { font-size: 28px; margin-bottom: 10px; }
+    .feature-card p { color: var(--muted); }
+    .codebook { margin-top: 28px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+    .code-chip { padding: 11px 8px; border-radius: 9px; background: rgba(125,255,193,.06); border: 1px solid rgba(125,255,193,.1); text-align: center; font: 700 12px/1.35 ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .code-chip b { color: var(--green); display: block; font-size: 16px; margin-bottom: 5px; }
+    .side-stack { display: grid; gap: 20px; }
+
+    /* Roadmap */
+    .roadmap { max-width: 760px; position: relative; padding-left: 34px; }
+    .roadmap::before { content: ""; position: absolute; left: 9px; top: 8px; bottom: 8px; width: 2px; background: linear-gradient(180deg, var(--green), var(--amber)); }
+    .rm-row { position: relative; padding-bottom: 34px; }
+    .rm-row:last-child { padding-bottom: 0; }
+    .rm-node { position: absolute; left: -34px; top: 2px; width: 20px; height: 20px; border-radius: 50%; background: var(--bg); border: 2px solid var(--green); box-shadow: 0 0 12px rgba(63,233,144,.3); }
+    .rm-time { font: 800 15px/1 ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--green); letter-spacing: .08em; margin-bottom: 6px; }
+    .rm-goal { font-size: 16px; color: #d7ede3; }
+    .rm-goal strong { color: var(--amber); font-weight: 700; }
+    .roadmap-note { text-align: center; margin-top: 44px; font-size: 18px; font-weight: 700; }
+    .roadmap-note em { color: var(--green); font-style: normal; }
+
+    .cta-panel {
+      position: relative;
+      overflow: hidden;
+      padding: 66px;
+      border-radius: 32px;
+      border: 1px solid rgba(125,255,193,.2);
+      background: linear-gradient(135deg, rgba(14,47,37,.95), rgba(5,16,13,.98));
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
+    .cta-panel::before { content: "... --- ..."; position: absolute; inset: auto 0 -28px; font: 900 clamp(54px, 10vw, 126px)/1 ui-monospace, SFMono-Regular, Menlo, monospace; color: rgba(125,255,193,.035); letter-spacing: .12em; white-space: nowrap; }
+    .cta-panel > * { position: relative; z-index: 1; }
+    .cta-panel .section-title { max-width: 800px; margin-inline: auto; }
+    .cta-panel p { color: var(--muted); max-width: 650px; margin: 0 auto 28px; }
+
+    .faq-list { display: grid; gap: 12px; max-width: 860px; }
+    .faq-item { padding: 0 22px; }
+    .faq-item summary { cursor: pointer; list-style: none; padding: 22px 36px 22px 0; font-weight: 800; position: relative; }
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item summary::after { content: "+"; position: absolute; right: 0; top: 17px; font-size: 24px; color: var(--green); }
+    .faq-item[open] summary::after { content: "−"; }
+    .faq-item p { color: var(--muted); padding: 0 0 22px; margin: 0; }
+    .faq-item p a { color: var(--green); text-decoration: underline; }
+
+    footer { padding: 46px 0; border-top: 1px solid rgba(125,255,193,.1); color: var(--muted); font-size: 13px; }
+    .footer-disclaimer { max-width: 620px; margin: 0 auto 26px; padding: 14px 20px; border: 1px solid rgba(255,93,93,.32); background: rgba(255,93,93,.05); border-radius: 12px; color: #ffb4b4; line-height: 1.7; text-align: center; }
+    .footer-honesty { max-width: 720px; margin: 0 auto 26px; text-align: center; color: var(--muted); line-height: 1.7; }
+    .footer-inner { display: flex; justify-content: space-between; gap: 24px; align-items: center; }
+    .footer-links { display: flex; gap: 22px; flex-wrap: wrap; }
+    .footer-links a:hover { color: var(--white); }
+
+    .reveal { opacity: 1; transform: none; }
+    .js .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
+    .js .reveal.is-visible { opacity: 1; transform: translateY(0); }
+
+    @keyframes blink { 50% { opacity: .35; } }
+    @keyframes wave { from { height: 10px; opacity: .35; } to { height: 54px; opacity: 1; } }
+
+    @media (max-width: 920px) {
+      .nav-links a:not(.btn) { display: none; }
+      .hero { padding-top: 72px; }
+      .hero-grid, .story-inner, .feature-grid { grid-template-columns: 1fr; }
+      .hero-grid { gap: 48px; }
+      .terminal { max-width: 620px; transform: none; }
+      .steps, .missions { grid-template-columns: 1fr; }
+      .step-card { min-height: auto; }
+      .big-code { display: none; }
+      .duality { grid-template-columns: 1fr; }
+      .duality-mid { padding: 12px 0; }
+      .duality-mid span { writing-mode: horizontal-tb; }
+      .cta-panel { padding: 48px 26px; }
+    }
+
+    @media (max-width: 620px) {
+      .container { width: min(calc(100% - 28px), var(--max)); }
+      .nav { min-height: 66px; }
+      .brand { font-size: 14px; }
+      .brand-mark { width: 34px; }
+      .btn-compact { padding: 0 14px; }
+      .hero { min-height: auto; padding: 64px 0 52px; }
+      h1 { font-size: clamp(44px, 15vw, 68px); }
+      section { padding: 76px 0; }
+      .terminal-body { padding: 20px; }
+      .mission-title { font-size: 22px; }
+      .hero-actions .btn { width: 100%; }
+      .microcopy { gap: 8px 14px; }
+      .codebook { grid-template-columns: repeat(3, 1fr); }
+      .footer-inner { flex-direction: column; align-items: flex-start; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+      .reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav">
+      <a class="brand" href="#top" aria-label="MORSE SPY トップへ">
+        <span class="brand-mark" aria-hidden="true"><span>·−</span></span>
+        <span>MORSE SPY</span>
+      </a>
+      <nav class="nav-links" aria-label="メインナビゲーション">
+        <a href="#try">体験</a>
+        <a href="#how-to-play">遊び方</a>
+        <a href="#real">実は防災</a>
+        <a href="#faq">FAQ</a>
+        <a class="btn btn-primary btn-compact" href="https://morse-spy.web.app/">MISSION START</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <div class="eyebrow">Browser Spy Mission / Top Secret</div>
+          <h1>その一打が、<span class="line-2">世界を救う。</span></h1>
+          <p class="hero-lead">
+            <strong>短点「・」と長点「−」だけを武器に、極秘通信を成功させろ。</strong><br />
+            スパイ任務を遊ぶうちに、<strong>停電・遭難で本当に役立つモールス信号</strong>が自然と身につくブラウザゲーム。
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#try">30秒で体験する <span aria-hidden="true">→</span></a>
+            <a class="btn btn-secondary" href="https://morse-spy.web.app/">極秘任務を開始する</a>
+          </div>
+          <div class="microcopy" aria-label="ゲームの特徴">
+            <span>ブラウザですぐ開始</span>
+            <span>コア機能は無料</span>
+            <span>個人情報 不要</span>
+            <span>スマホ対応</span>
+          </div>
+        </div>
+
+        <div class="terminal" id="try" aria-label="モールス通信体験デモ">
+          <div class="terminal-top">
+            <span>FIELD TERMINAL / MS-01</span>
+            <span class="status">LINK SECURE</span>
+          </div>
+          <div class="terminal-body">
+            <div class="mission-meta"><span>MISSION 001</span><span>SOS TRAINING</span></div>
+            <h2 class="mission-title">まず、SOS を打ってみよう</h2>
+            <p class="mission-desc">下のキーを順番にタップ。音と光で、世界共通の救難信号を覚える。</p>
+
+            <div class="sos-display" aria-hidden="true">
+              <span class="sos-letter" id="sos-0">S</span>
+              <span class="sos-letter" id="sos-1">O</span>
+              <span class="sos-letter" id="sos-2">S</span>
+            </div>
+
+            <div class="waveform" aria-hidden="true">
+              <i style="height:18px"></i><i style="height:52px"></i><i style="height:28px"></i><i style="height:64px"></i><i style="height:36px"></i><i style="height:48px"></i><i style="height:20px"></i><i style="height:58px"></i><i style="height:31px"></i><i style="height:66px"></i><i style="height:27px"></i><i style="height:54px"></i><i style="height:35px"></i><i style="height:61px"></i><i style="height:22px"></i><i style="height:46px"></i><i style="height:29px"></i><i style="height:59px"></i><i style="height:24px"></i><i style="height:50px"></i><i style="height:34px"></i><i style="height:62px"></i><i style="height:25px"></i><i style="height:44px"></i>
+            </div>
+
+            <div class="trainer-keys" id="trainerKeys" aria-label="モールス入力キー"></div>
+            <p class="trainer-status" id="trainerStatus" aria-live="polite">短点「・」を3回タップ → 文字「S」が光ります</p>
+            <a class="btn btn-primary trainer-cta" id="trainerCta" href="https://morse-spy.web.app/">続きを訓練する <span aria-hidden="true">→</span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="story-strip">
+      <div class="container story-inner reveal">
+        <div class="big-code">...<br>−−−<br>...</div>
+        <div class="story-copy">
+          <div class="section-kicker">THE MISSION</div>
+          <h2 class="section-title">敵に傍受される前に、<br />通信を完了せよ。</h2>
+          <p>あなたは極秘作戦の通信エージェント。届いた指令を読み、短点と長点を正確に打ち込み、本部へ情報を届ける。必要なのは知識ではなく、観察力とリズム感。そして——その技術は、電気が消えた現実でもあなたを助ける。</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="how-to-play">
+      <div class="container">
+        <div class="reveal">
+          <div class="section-kicker">HOW TO PLAY</div>
+          <h2 class="section-title">3ステップで、任務開始。</h2>
+          <p class="section-lead">長い説明は不要。受信して、打って、成功させる。初心者でも最初のミッションから遊べます。</p>
+        </div>
+        <div class="steps">
+          <article class="step-card reveal" data-step="01">
+            <div class="step-icon">RX</div>
+            <h3>指令を受信する</h3>
+            <p>ハンドラー GHOST から届く指令を確認。暗号手帳（早見表）はいつでも参照できます。</p>
+          </article>
+          <article class="step-card reveal" data-step="02">
+            <div class="step-icon">·−</div>
+            <h3>モールスを解読・送信</h3>
+            <p>短点「・」と長点「−」で解読・入力。テンポと正確さが通信成功率を左右します。</p>
+          </article>
+          <article class="step-card reveal" data-step="03">
+            <div class="step-icon">OK</div>
+            <h3>任務を完遂する</h3>
+            <p>速度・精度・連続成功で評価。より危険な作戦と上位エージェントランクへ挑みます。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="real">
+      <div class="container">
+        <div class="reveal">
+          <div class="section-kicker">GAME × TRAINING</div>
+          <h2 class="section-title">これは、ゲーム。<br />そして、訓練。</h2>
+          <p class="section-lead">スパイの世界観で楽しんでいるうちに、本物のモールス信号が身につく。両立できるのは、それが100年使われてきた世界共通言語だから。</p>
+        </div>
+        <div class="duality reveal">
+          <div class="duality-col game">
+            <div class="tag">// 表向き</div>
+            <h3>スパイごっこ</h3>
+            <ul>
+              <li><span class="ic">🕵️</span>AI ハンドラー GHOST の極秘任務</li>
+              <li><span class="ic">📡</span>暗号風の通信（モールス変換）</li>
+              <li><span class="ic">🏅</span>階級システムとエンブレム</li>
+              <li><span class="ic">💀</span>自動消滅メッセージ</li>
+              <li><span class="ic">📍</span>GPS 連動のデッドドロップ</li>
+            </ul>
+          </div>
+          <div class="duality-mid" aria-hidden="true"><span>&gt;&gt;</span></div>
+          <div class="duality-col real">
+            <div class="tag">// 裏で身につく力</div>
+            <h3>本物の通信力</h3>
+            <ul>
+              <li><span class="ic">⚡</span>停電時の家族間通信</li>
+              <li><span class="ic">🆘</span>世界共通 SOS の発信</li>
+              <li><span class="ic">🔦</span>光信号での意思伝達</li>
+              <li><span class="ic">🌊</span>海上・山岳での緊急連絡</li>
+              <li><span class="ic">👨‍👧</span>親子で学ぶ防災教育</li>
+            </ul>
+          </div>
+        </div>
+        <p class="duality-bridge reveal">楽しんでたら、<em>勝手に身についていた</em>。</p>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="reveal">
+          <div class="section-kicker">REAL-WORLD USE CASES</div>
+          <h2 class="section-title">こんな時に、活きる。</h2>
+          <p class="section-lead">電話も電波も使えない状況で、光・音・リズムだけで意思を伝える。それがモールスの強みです。</p>
+        </div>
+        <div class="scenes">
+          <article class="scene-card reveal">
+            <div class="scene-idx">CASE 01</div>
+            <div class="scene-ico" aria-hidden="true">🏠</div>
+            <h3>停電した夜</h3>
+            <p>電話も Wi-Fi も使えない。でも懐中電灯一つで、隣の部屋にも上の階にも意思を伝えられる。</p>
+            <p class="scene-quote">「リビングで懐中電灯を点滅させ、2階の子供に『大丈夫』と伝える」</p>
+          </article>
+          <article class="scene-card reveal">
+            <div class="scene-idx">CASE 02</div>
+            <div class="scene-ico" aria-hidden="true">🏔️</div>
+            <h3>山で電波がない時</h3>
+            <p>電波が届かない山中でも、ホイッスルや木の枝でモールスは打てる。離れた仲間と意思疎通が可能に。</p>
+            <p class="scene-quote">「離れた仲間にホイッスルで『安全』『集合』を打つ」</p>
+          </article>
+          <article class="scene-card reveal">
+            <div class="scene-idx">CASE 03</div>
+            <div class="scene-ico" aria-hidden="true">👶</div>
+            <h3>親子で防災学習</h3>
+            <p>教科書では退屈な防災を、ゲームで自然に。「自分で打てた！」という成功体験から始まる。</p>
+            <p class="scene-quote">「お風呂で蛇口を打ちながら、一緒に SOS を覚える」</p>
+          </article>
+          <article class="scene-card reveal">
+            <div class="scene-idx">CASE 04</div>
+            <div class="scene-ico" aria-hidden="true">🛟</div>
+            <h3>海・川での緊急時</h3>
+            <p>海上保安庁も使う世界共通の救難信号。鏡や音で発信すれば、声が届かない距離でも助けを呼べる。</p>
+            <p class="scene-quote">「鏡の反射で、対岸の人に救助要請を送る」</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="missions">
+      <div class="container">
+        <div class="reveal">
+          <div class="section-kicker">MISSION FILES</div>
+          <h2 class="section-title">あなたの通信技能が、<br />作戦の結末を変える。</h2>
+          <p class="section-lead">単なる反復練習ではなく、状況が変化する「任務」として挑む。次へ進みたくなる設計です。</p>
+        </div>
+        <div class="missions">
+          <article class="mission-card reveal">
+            <div class="mission-label">FILE 01 / TRAINING</div>
+            <h3>基礎通信訓練</h3>
+            <p>一文字ずつ確認しながら入力。初めてモールスに触れるエージェント向け。</p>
+            <div class="difficulty" aria-label="難易度1"><i class="on"></i><i></i><i></i><i></i><i></i></div>
+          </article>
+          <article class="mission-card featured reveal">
+            <div class="mission-label">FILE 02 / FIELD</div>
+            <h3>潜入先からの報告</h3>
+            <p>制限時間内に作戦コードを送信。焦りの中でも正確さを保てるか。</p>
+            <div class="difficulty" aria-label="難易度3"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></div>
+          </article>
+          <article class="mission-card reveal">
+            <div class="mission-label">FILE 03 / INTERCEPT</div>
+            <h3>敵通信の傍受</h3>
+            <p>ノイズに紛れた信号を読み解き、作戦決行前に暗号を特定せよ。</p>
+            <div class="difficulty" aria-label="難易度5"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="feature-grid">
+          <article class="feature-card large reveal">
+            <div>
+              <div class="section-kicker">CODEBOOK</div>
+              <h3>知らなくても遊べる。<br />遊ぶほど読める。</h3>
+              <p>モールス表は「教材」ではなく、エージェント用の暗号手帳として自然に参照。正解・不正解だけでなく、どこが違ったかもその場で確認できます。</p>
+            </div>
+            <div class="codebook" aria-label="モールス信号例">
+              <div class="code-chip"><b>A</b>・−</div>
+              <div class="code-chip"><b>B</b>−・・・</div>
+              <div class="code-chip"><b>C</b>−・−・</div>
+              <div class="code-chip"><b>D</b>−・・</div>
+              <div class="code-chip"><b>E</b>・</div>
+              <div class="code-chip"><b>F</b>・・−・</div>
+              <div class="code-chip"><b>G</b>−−・</div>
+              <div class="code-chip"><b>H</b>・・・・</div>
+              <div class="code-chip"><b>I</b>・・</div>
+              <div class="code-chip"><b>J</b>・−−−</div>
+            </div>
+          </article>
+          <div class="side-stack">
+            <article class="feature-card reveal">
+              <div class="section-kicker">FEEDBACK</div>
+              <h3>押した瞬間が気持ちいい。</h3>
+              <p>音、光、波形、振動。シンプルな入力だからこそ、反応の気持ちよさをゲーム体験の中心に。</p>
+            </article>
+            <article class="feature-card reveal">
+              <div class="section-kicker">RANKING</div>
+              <h3>速さだけではない評価。</h3>
+              <p>通信精度、連続成功、ノーミス、潜伏評価など、再挑戦したくなる結果画面へ。</p>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="reveal">
+          <div class="section-kicker">SKILL TIMELINE</div>
+          <h2 class="section-title">どれくらいで、使えるようになる？</h2>
+          <p class="section-lead">毎日少しの訓練で、確実にスキルは身につく。目安は以下のとおり。</p>
+        </div>
+        <div class="roadmap">
+          <div class="rm-row reveal"><span class="rm-node"></span>
+            <div class="rm-time">⏱ 5分</div>
+            <div class="rm-goal">最初の解読体験。<strong>「SOS」が読めるようになる</strong></div>
+          </div>
+          <div class="rm-row reveal"><span class="rm-node"></span>
+            <div class="rm-time">⏱ 30分</div>
+            <div class="rm-goal">SOS を自力で打てる。<strong>緊急時に発信できる</strong></div>
+          </div>
+          <div class="rm-row reveal"><span class="rm-node"></span>
+            <div class="rm-time">⏱ 1週間</div>
+            <div class="rm-goal">緊急用語 10 個を習得（助けて / 安全 / 水 / 避難 など）</div>
+          </div>
+          <div class="rm-row reveal"><span class="rm-node"></span>
+            <div class="rm-time">⏱ 1ヶ月</div>
+            <div class="rm-goal">友達と<strong>暗号会話ができる</strong>レベル。アルファベット全制覇</div>
+          </div>
+        </div>
+        <p class="roadmap-note reveal">毎日3分。気づけば、<em>命を守るスキル</em>が身についている。</p>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="cta-panel reveal">
+          <div class="section-kicker">READY, AGENT?</div>
+          <h2 class="section-title">通信回線は確保した。<br />あとは、あなたが打つだけだ。</h2>
+          <p>モールス信号を知らなくても問題ありません。最初の訓練から、極秘任務を始めてください。コア機能は無料・個人情報不要です。</p>
+          <a class="btn btn-primary" href="https://morse-spy.web.app/">MISSION START <span aria-hidden="true">→</span></a>
+        </div>
+      </div>
+    </section>
+
+    <section id="faq">
+      <div class="container">
+        <div class="reveal">
+          <div class="section-kicker">FAQ</div>
+          <h2 class="section-title">作戦前の確認事項。</h2>
+        </div>
+        <div class="faq-list">
+          <details class="faq-item reveal">
+            <summary>モールス信号を知らなくても遊べますか？</summary>
+            <p>はい。画面内の暗号手帳（早見表）を見ながら進められる設計です。最初の通信訓練から、暗記なしで遊べます。</p>
+          </details>
+          <details class="faq-item reveal">
+            <summary>料金はかかりますか？広告は？</summary>
+            <p>コア機能は完全無料です。GHOST 任務・フィールドマニュアル・1:1 モールスチャット・シグナルランプ・デッドドロップ・SOS 学習まで無料で使えます。匿名認証なのでメールアドレスや電話番号も不要。邪魔なバナー広告は出しません。</p>
+          </details>
+          <details class="faq-item reveal">
+            <summary>スマートフォンでも遊べますか？</summary>
+            <p>スマートフォン・PC のブラウザに対応する PWA です。ホーム画面に追加すればアプリのように使えます。</p>
+          </details>
+          <details class="faq-item reveal">
+            <summary>災害時に本当に役立ちますか？</summary>
+            <p>学べるスキル（モールス信号そのもの）は世界共通の本物で、海上保安庁・救難隊などでも使われています。ただし<strong>本アプリ自体が災害時に動作する保証はありません</strong>。平時に予習する訓練ツールとしてお使いください。</p>
+          </details>
+          <details class="faq-item reveal">
+            <summary>「暗号」「極秘通信」とありますが、本物の暗号化ですか？</summary>
+            <p>いいえ。本アプリは「スパイ風のロールプレイを楽しむ」エンタメ＆訓練アプリで、本物の End-to-End 暗号化（E2EE）は実装していません。モールス信号は誰でも読める公開符号です。機密通信の用途には使わないでください。詳細は<a href="/docs/privacy-policy.md">プライバシーポリシー</a>をご覧ください。</p>
+          </details>
+          <details class="faq-item reveal">
+            <summary>退会・データ削除はできますか？</summary>
+            <p>はい。設定画面の「アカウントを削除」からいつでも完全に退会でき、コードネーム・メッセージ・位置情報など全データが物理削除されます。</p>
+          </details>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-disclaimer">
+        ⚠️ 緊急時は 警察 <strong>110</strong> ・ 救急/消防 <strong>119</strong> ・ 海上保安庁 <strong>118</strong> へ。<br />
+        本アプリは平時の訓練用であり、緊急通報の代替手段ではありません。
+      </div>
+      <p class="footer-honesty">
+        モールス信号は誰でも読める公開符号です。MORSE SPY は本物の暗号化ではなく、「秘密を共有する気分」を楽しむエンタメ＆モールス訓練アプリです。
+      </p>
+      <div class="footer-inner">
+        <div>© 2026 MORSE SPY. ALL RIGHTS RESERVED.</div>
+        <div class="footer-links">
+          <a href="/docs/terms-of-service.md">利用規約</a>
+          <a href="/docs/privacy-policy.md">プライバシーポリシー</a>
+          <a href="mailto:komok2009@gmail.com">お問い合わせ</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ── 30-second SOS trainer (Web Audio beep + haptics + letter light-up) ──
+    (function () {
+      const status = document.getElementById('trainerStatus');
+      const keysRow = document.getElementById('trainerKeys');
+      const cta = document.getElementById('trainerCta');
+      const letters = [
+        document.getElementById('sos-0'),
+        document.getElementById('sos-1'),
+        document.getElementById('sos-2'),
+      ];
+      if (!status || !keysRow) return;
+
+      // SOS = S(・・・) O(−−−) S(・・・) — 3 keys per letter.
+      const sequence = [
+        { letter: 0, type: 'dot' }, { letter: 0, type: 'dot' }, { letter: 0, type: 'dot' },
+        { letter: 1, type: 'dash' }, { letter: 1, type: 'dash' }, { letter: 1, type: 'dash' },
+        { letter: 2, type: 'dot' }, { letter: 2, type: 'dot' }, { letter: 2, type: 'dot' },
+      ];
+      let step = 0;
+      let audioCtx = null;
+
+      function getAudio() {
+        if (!audioCtx) {
+          try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
+          catch (e) { audioCtx = null; }
+        }
+        return audioCtx;
+      }
+      function beep(ms) {
+        const ctx = getAudio();
+        if (!ctx) return;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.value = 700;
+        osc.connect(gain).connect(ctx.destination);
+        const now = ctx.currentTime;
+        gain.gain.setValueAtTime(0.0001, now);
+        gain.gain.exponentialRampToValueAtTime(0.18, now + 0.01);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + ms / 1000);
+        osc.start(now);
+        osc.stop(now + ms / 1000 + 0.05);
+      }
+      function vibrate(ms) {
+        if ('vibrate' in navigator) { try { navigator.vibrate(ms); } catch (e) {} }
+      }
+
+      function renderKeys() {
+        keysRow.innerHTML = '';
+        if (step >= sequence.length) return;
+        const cur = sequence[step].letter;
+        const start = cur * 3;
+        for (let i = 0; i < 3; i++) {
+          const idx = start + i;
+          const item = sequence[idx];
+          const pressed = idx < step;
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'morse-key' + (pressed ? ' pressed' : '');
+          btn.textContent = item.type === 'dot' ? '・' : '−';
+          btn.setAttribute('aria-label', item.type === 'dot' ? '短点' : '長点');
+          if (!pressed && idx === step) btn.addEventListener('click', onPress);
+          else btn.disabled = true;
+          keysRow.appendChild(btn);
+        }
+      }
+      function updateStatus() {
+        if (step >= sequence.length) {
+          status.className = 'trainer-status done';
+          status.textContent = '🎉 SOS 完成！ これが世界共通の救難信号。今あなたは、それを打てた。';
+          if (cta) cta.classList.add('show');
+          return;
+        }
+        const ch = ['S', 'O', 'S'][sequence[step].letter];
+        const name = sequence[step].type === 'dot' ? '短点「・」' : '長点「−」';
+        const doneLetters = sequence[step].letter;
+        if (step % 3 === 0 && step > 0) {
+          status.className = 'trainer-status progress';
+          status.textContent = '✓ 「' + ['S', 'O', 'S'][doneLetters - 1] + '」点灯！ 次は「' + ch + '」を ' + name + ' で3回。';
+        } else {
+          status.className = 'trainer-status';
+          status.textContent = '「' + ch + '」を ' + name + ' で打つ。あと ' + (3 - (step % 3)) + ' 回。';
+        }
+      }
+      function onPress() {
+        const item = sequence[step];
+        beep(item.type === 'dot' ? 180 : 540);
+        vibrate(item.type === 'dot' ? 25 : 60);
+        step++;
+        if (step % 3 === 0) letters[sequence[step - 1].letter].classList.add('lit');
+        renderKeys();
+        updateStatus();
+      }
+
+      renderKeys();
+      updateStatus();
+    })();
+
+    // ── Scroll reveal ──
+    (function () {
+      const obs = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) { e.target.classList.add('is-visible'); obs.unobserve(e.target); }
+        });
+      }, { threshold: 0.12 });
+      document.querySelectorAll('.reveal').forEach((el) => obs.observe(el));
+    })();
+  </script>
+</body>
+</html>
