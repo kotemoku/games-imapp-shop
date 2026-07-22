@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>京都丹波・年表かるた</title>
+<meta name="description" content="京都丹波（亀岡・南丹・京丹波）の年表かるた。古い順に札を並べ、3つのまちをひとつに。" />
+<meta name="theme-color" content="#274a6d" />
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16.png" />
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+<link rel="manifest" href="manifest.webmanifest" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="丹波かるた" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;700;900&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet" />
+  <script type="module" crossorigin src="./assets/index-1PFWLM1z.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-Ci5eIZUS.css">
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="title-block"><h1 id="hTitle"></h1><div class="sub" id="hSub"></div></div>
+    <div class="top-right">
+      <button class="helpbtn" id="helpBtn" title="how to play" aria-label="how to play">?</button>
+      <button class="langbtn" id="langBtn">EN</button>
+      <span class="mode-pill" id="modePill"></span>
+    </div>
+  </header>
+  <div class="scorebar">
+    <div class="score you"><span class="k" id="kYou"></span><span class="v" id="sYou">0</span></div>
+    <div class="score ai" id="scoreAiBox"><span class="k" id="kAi"></span><span class="v" id="sAi">0</span></div>
+    <div class="score miss"><span class="k" id="kMiss"></span><span class="v" id="sMiss">0</span></div>
+    <div class="progress"><i id="prog"></i></div>
+    <div class="turn-hint" id="hint"></div>
+  </div>
+  <div class="riverwrap"><div class="rl" id="rlLabel"></div><div class="river" id="river"></div></div>
+  <div class="board" id="board"></div>
+  <div class="controls" id="controls">
+    <div class="ctl" id="diffCtl"><label for="diff" id="diffLabel"></label>
+      <select id="diff"><option value="easy"></option><option value="normal"></option><option value="hard"></option></select></div>
+    <label class="switch"><input type="checkbox" id="hideYr" /><span class="track"></span><span id="hideYrLabel"></span></label>
+    <label class="switch"><input type="checkbox" id="mute" /><span class="track"></span><span id="muteLabel"></span></label>
+    <button class="btn" id="changeMode"></button>
+  </div>
+  <div class="foot" id="foot"></div>
+</div>
+<div class="toasts" id="toasts"></div>
+
+<!-- Start -->
+<div class="overlay" id="startOv"><div class="panel">
+  <div class="langrow"><button class="langbtn" id="langBtn2">EN</button></div>
+  <div class="eyebrow" id="stEyebrow"></div><h2 id="stTitle"></h2>
+  <div class="tenant hidden" id="tenantBadge"></div>
+  <div class="ed-toggle" id="edToggle">
+    <button class="ed-btn active" data-ed="history" id="edHistBtn"></button>
+    <button class="ed-btn" data-ed="bosai" id="edBosaiBtn"></button>
+  </div>
+  <p id="stLead"></p>
+  <div class="mode-choose">
+    <div class="mode-card keiko" data-mode="keiko" tabindex="0" role="button"><div class="ico">稽</div><div><div class="mt" id="mcKeikoT"></div><div class="md" id="mcKeikoD"></div></div></div>
+    <div class="mode-card taikyoku" data-mode="taikyoku" tabindex="0" role="button"><div class="ico">対</div><div><div class="mt" id="mcTaiT"></div><div class="md" id="mcTaiD"></div></div></div>
+  </div>
+  <span class="howlink" id="howLink"></span>
+</div></div>
+
+<!-- Tutorial -->
+<div class="overlay hidden" id="tutOv"><div class="panel">
+  <div class="eyebrow" id="tutEyebrow"></div><h2 id="tutTitle"></h2>
+  <div class="tut-beats">
+    <div class="tut-beat"><div class="n">1</div><div class="tx" id="tutB1"></div></div>
+    <div class="tut-beat"><div class="n">2</div><div class="tx" id="tutB2"></div></div>
+    <div class="tut-beat"><div class="n">3</div><div class="tx" id="tutB3"><span class="tut-b3-text"></span> <span class="tut-mini"><i></i><i></i><i></i></span></div></div>
+  </div>
+  <button class="cta" id="tutStart"></button>
+  <div style="margin-top:10px"><button class="cta ghost" id="tutSkip"></button></div>
+</div></div>
+
+<!-- Bloom -->
+<div class="bloom-stage" id="bloomStage">
+  <svg class="bloom-svg" id="bloomSvg" viewBox="0 0 200 200" aria-hidden="true"></svg>
+  <div class="bloom-cap"><div class="t" id="bloomT"></div><div class="s" id="bloomS"></div></div>
+</div>
+
+<!-- Reflection -->
+<div class="overlay sheet hidden" id="reflectOv"><div class="reflect">
+  <div class="reflect-head"><div class="eyebrow" id="rfEyebrow"></div><h2 id="rfTitle"></h2>
+    <div class="badge hidden" id="reflectBadge"></div><div class="verdict" id="reflectVerdict"></div></div>
+  <div class="reflect-lead" id="reflectLead"></div>
+  <div class="timeline" id="timeline"></div>
+  <div class="tl-capstone"><div class="yr" id="capYr">2026</div><div class="tx" id="capT"></div><div class="sub" id="capS"></div></div>
+  <div class="push-optin hidden" id="pushOptin">
+    <div class="po-title" id="poTitle"></div>
+    <div class="po-lead" id="poLead"></div>
+    <div class="po-topics" id="poTopics">
+      <label class="po-topic"><input type="checkbox" id="poT1" checked /><span id="poT1L"></span></label>
+      <label class="po-topic"><input type="checkbox" id="poT2" checked /><span id="poT2L"></span></label>
+      <label class="po-topic"><input type="checkbox" id="poT3" checked /><span id="poT3L"></span></label>
+    </div>
+    <div class="po-unavail hidden" id="poUnavail"></div>
+    <div class="po-actions"><button class="cta" id="poSubscribe"></button><button class="cta ghost" id="poLater"></button></div>
+  </div>
+  <div class="reflect-actions"><button class="btn" id="reflectAgain"></button><button class="btn" id="reflectChange"></button></div>
+</div></div>
+
+<!-- Deep-dive (native GPS / web preview) -->
+<div class="overlay hidden" id="deepOv"><div class="panel deep-panel">
+  <button class="deep-close" id="deepClose" aria-label="close">×</button>
+  <div class="eyebrow" id="deepEyebrow"></div>
+  <h2 id="deepTitle"></h2>
+  <div class="deep-hazard hidden" id="deepHazard"></div>
+  <div class="deep-status" id="deepStatus"></div>
+  <div class="deep-body hidden" id="deepBody">
+    <div class="deep-images" id="deepImages"></div>
+    <p class="deep-text" id="deepText"></p>
+    <a class="deep-src" id="deepSrc" target="_blank" rel="noopener"></a>
+  </div>
+  <div class="deep-actions" id="deepActions"></div>
+</div></div>
+
+</body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "name": "京都丹波・年表かるた",
+  "short_name": "丹波かるた",
+  "description": "京都丹波（亀岡・南丹・京丹波）の年表かるた。古い順に札を並べ、3つのまちをひとつに。",
+  "lang": "ja",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#e7e8e3",
+  "theme_color": "#274a6d",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

@@ -122,3 +122,5 @@
   Cache-Control: no-cache, must-revalidate
 /hana-irozuke/assets/*
   Cache-Control: no-cache, must-revalidate
+/kyototamba-karuta/assets/*
+  Cache-Control: no-cache, must-revalidate
