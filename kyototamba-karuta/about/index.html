@@ -4,10 +4,10 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>京都丹波・年表かるた ｜ 亀岡・南丹・京丹波の時をならべる</title>
-<meta name="description" content="亀岡・南丹・京丹波の出来事を古い順にならべ、3つのまちをひとつの京都丹波へ。れきし・そなえ・ぜんぶの3編、周回するほど年号が隠れていく年表かるた。" />
+<meta name="description" content="亀岡・南丹・京丹波の出来事を古い順にならべる年表かるた。周回するほど年号が隠れ、現地を訪ねると深掘りが開く。花びらを集めて京都丹波をめぐろう。" />
 <meta property="og:type" content="website" />
 <meta property="og:title" content="京都丹波・年表かるた" />
-<meta property="og:description" content="古い順にならべて、3つのまちをひとつに。れきし・そなえ・ぜんぶ。周回するほど難しくなる年表かるた。" />
+<meta property="og:description" content="古い順にならべて、3つのまちをひとつに。現地を訪ねて花びらを集める、周遊する年表かるた。" />
 <meta property="og:url" content="https://games.imapp.shop/kyototamba-karuta/about/" />
 <meta property="og:image" content="https://games.imapp.shop/kyototamba-karuta/icons/icon-512.png" />
 <meta name="twitter:card" content="summary_large_image" />
@@ -69,6 +69,18 @@
   .arw{color:var(--sumi-soft);font-size:18px}
   .ladder-cap{display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:center;margin-top:16px;font-size:12px;color:var(--sumi-soft)}
   .ladder-cap b{color:var(--sumi);font-family:var(--mincho)}
+  /* meguri (touring) */
+  .mg-wrap{display:flex;flex-direction:column;align-items:center;margin-top:24px}
+  .mg-petals{width:min(38vw,150px);height:auto;filter:drop-shadow(0 10px 18px rgba(23,49,76,.22))}
+  .mg-ranks{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:18px}
+  .mg-rank-chip{font-family:var(--mincho);font-size:12px;font-weight:700;color:var(--sumi);border:1px solid var(--line);border-radius:99px;background:rgba(255,255,255,.6);padding:5px 13px}
+  .mg-rank-chip.last{border-color:var(--gold);color:var(--gold)}
+  .mg-arw{color:var(--sumi-soft);font-size:12px;align-self:center}
+  .routes{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:22px;width:100%}
+  .route{--c:var(--ai);background:rgba(255,255,255,.55);border:1px solid var(--line);border-left:4px solid var(--c);border-radius:10px;padding:14px 16px}
+  .route .rn{font-family:var(--mincho);font-weight:700;font-size:14.5px}
+  .route .rd{font-size:11.5px;color:var(--sumi-soft);margin-top:4px;line-height:1.6}
+  @media (max-width:640px){ .routes{grid-template-columns:1fr} }
   /* feature rows */
   .feat{display:grid;grid-template-columns:1fr;gap:14px;margin-top:24px}
   .card{background:rgba(255,255,255,.55);border:1px solid var(--line);border-radius:12px;padding:20px 20px}
@@ -152,12 +164,43 @@
     <p class="sec-lead" style="margin-top:14px">隠れる場所は札ごとにランダム。いつも同じ所じゃないから、ちゃんと覚えていないと迷う。</p>
   </section>
 
+  <section id="meguri">
+    <div class="sec-eyebrow">めぐり帳</div>
+    <h2>花びらを集めて、京都丹波をめぐる</h2>
+    <p class="sec-lead">札の舞台は、ぜんぶ実在の場所。訪ねるたびに自分の花が色づき、3つのまちがそろうと満開に。称号も育つ。</p>
+    <div class="mg-wrap">
+      <svg class="mg-petals" viewBox="0 0 200 200" role="img" aria-label="めぐりの花（花びらが色づいていく）">
+        <ellipse cx="134" cy="100" rx="26" ry="40" transform="rotate(0 134 100)" fill="#c67049" opacity="0.95"/>
+        <ellipse cx="117" cy="129.4" rx="26" ry="40" transform="rotate(60 117 129.4)" fill="#749a63" opacity="0.95"/>
+        <ellipse cx="83" cy="129.4" rx="26" ry="40" transform="rotate(120 83 129.4)" fill="#4d85ac" opacity="0.2"/>
+        <ellipse cx="66" cy="100" rx="26" ry="40" transform="rotate(180 66 100)" fill="#95492f" opacity="0.95"/>
+        <ellipse cx="83" cy="70.6" rx="26" ry="40" transform="rotate(240 83 70.6)" fill="#4d6c41" opacity="0.95"/>
+        <ellipse cx="117" cy="70.6" rx="26" ry="40" transform="rotate(300 117 70.6)" fill="#305b7f" opacity="0.2"/>
+        <circle cx="100" cy="100" r="17" fill="#c8c9c2"/>
+      </svg>
+      <div class="mg-ranks">
+        <span class="mg-rank-chip">旅のはじまり</span><span class="mg-arw">→</span>
+        <span class="mg-rank-chip">丹波の旅人</span><span class="mg-arw">→</span>
+        <span class="mg-rank-chip">三まちの郷士</span><span class="mg-arw">→</span>
+        <span class="mg-rank-chip">名主</span><span class="mg-arw">→</span>
+        <span class="mg-rank-chip last">名誉領主</span>
+      </div>
+      <div class="routes">
+        <div class="route" style="--c:var(--kameoka)"><div class="rn">戦国と城の道</div><div class="rd">亀山城跡 → 八木城跡 → 園部城跡。丹波攻めから「日本最後の城」まで。</div></div>
+        <div class="route" style="--c:var(--gold)"><div class="rn">古代・祈りの道</div><div class="rd">穴太寺・国分寺跡・生身天満宮・出雲大神宮・九手神社。</div></div>
+        <div class="route" style="--c:var(--kyotamba)"><div class="rn">水とそなえの道</div><div class="rd">大野・和知・日吉・畑川。川を治めた4つのダムで備えを学ぶ。</div></div>
+        <div class="route" style="--c:var(--nantan)"><div class="rn">里山と絶景の道</div><div class="rd">かやぶきの里・鍾乳洞・るり渓・トロッコ・長老ヶ岳。</div></div>
+      </div>
+    </div>
+    <p class="sec-lead" style="margin-top:16px">「近くの未訪問をさがす」ボタンで、いまいる場所から次の一枚がすぐ見つかる。めぐりはシェアして自慢できる。</p>
+  </section>
+
   <section id="features">
     <div class="sec-eyebrow">もっと深く</div>
     <h2>現地へ、そして出典へ</h2>
     <div class="feat">
-      <div class="card gps"><span class="tag">現地で深掘り</span><h3>行って、撮って、深く知る</h3><p>札の舞台に立って写真を撮ると、その場所の「昔と今」が開く。行かなくても遊べる、ご褒美の仕組み（現地GPSはアプリ版）。</p></div>
-      <div class="card src"><span class="tag">正確さは機能</span><h3>すべての札に出典</h3><p>合併・ダム・指定年などは公的資料で確認済み。振り返りの年表から一次情報へたどれる。防災は安全な見学地点だけを案内。</p></div>
+      <div class="card gps"><span class="tag">現地で深掘り</span><h3>行って、撮って、深く知る</h3><p>札の舞台に立つと端末が現地を判定し、写真を撮るとその場所の「昔と今」が開く。位置情報は端末の中だけで判定し、どこにも送信されない。行かなくても遊べる、ご褒美の仕組み。</p></div>
+      <div class="card src"><span class="tag">正確さは機能</span><h3>すべての札に出典</h3><p>合併・ダム・指定年などは公的資料で確認済み。振り返りの年表から一次情報へたどれる。防災の学びは各カードに、現地案内は安全な見学地点だけ。</p></div>
     </div>
   </section>
 
