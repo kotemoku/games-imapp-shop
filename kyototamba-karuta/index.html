@@ -16,14 +16,15 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;700;900&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet" />
-  <script type="module" crossorigin src="./assets/index-CG5ZjUat.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-Bz9KQoWN.css">
+  <script type="module" crossorigin src="./assets/index-BkyiIF4a.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-CGGklI_d.css">
 </head>
 <body>
 <div class="wrap">
   <header class="top">
     <div class="title-block"><h1 id="hTitle"></h1><div class="sub" id="hSub"></div></div>
     <div class="top-right">
+      <button class="megbtn" id="meguriBtn" aria-label="touring passport">🌸 <span id="meguriBtnLabel"></span></button>
       <button class="helpbtn" id="helpBtn" title="how to play" aria-label="how to play">?</button>
       <button class="langbtn" id="langBtn">EN</button>
       <span class="mode-pill" id="modePill"></span>
@@ -104,6 +105,23 @@
     <div class="po-actions"><button class="cta" id="poSubscribe"></button><button class="cta ghost" id="poLater"></button></div>
   </div>
   <div class="reflect-actions"><button class="btn" id="reflectAgain"></button><button class="btn" id="reflectChange"></button></div>
+</div></div>
+
+<!-- めぐり帳 (touring passport) -->
+<div class="overlay sheet hidden" id="meguriOv"><div class="reflect meguri">
+  <button class="deep-close" id="meguriClose" aria-label="close">×</button>
+  <div class="reflect-head"><div class="eyebrow" id="mgEyebrow"></div><h2 id="mgTitle"></h2></div>
+  <div class="mg-flower" id="mgFlower"></div>
+  <div class="mg-rank" id="mgRank"></div>
+  <div class="mg-stats" id="mgStats"></div>
+  <div class="mg-bloomline" id="mgBloomline"></div>
+  <div class="mg-actions">
+    <button class="cta ghost" id="mgNear"></button>
+    <button class="cta ghost" id="mgShare"></button>
+  </div>
+  <div class="mg-near hidden" id="mgNearList"></div>
+  <h3 class="mg-courses-h" id="mgCoursesH"></h3>
+  <div class="mg-courses" id="mgCourses"></div>
 </div></div>
 
 <!-- Deep-dive (native GPS / web preview) -->
