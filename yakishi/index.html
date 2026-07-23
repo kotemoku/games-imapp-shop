@@ -14,7 +14,8 @@
     --panel:rgba(20,14,11,.72); --line:rgba(255,180,110,.16);
   }
   *{box-sizing:border-box; -webkit-tap-highlight-color:transparent}
-  html,body{margin:0;height:100%;background:#0a0706;overflow:hidden;
+  /* overscroll-behavior: 引っ張って更新・戻るスワイプにドラッグを食われない（実機で事故報告あり） */
+  html,body{margin:0;height:100%;background:#0a0706;overflow:hidden;overscroll-behavior:none;
     font-family:"Noto Sans JP",system-ui,-apple-system,"Hiragino Kaku Gothic ProN",sans-serif;
     color:#f3e7d6; user-select:none; touch-action:none}
   /* The canvas is absolutely positioned so its CSS size is fixed by the container and can
@@ -149,7 +150,7 @@
   #service .cheer{font-size:22px;font-weight:800;color:var(--gold);text-shadow:0 2px 14px rgba(0,0,0,.8)}
   #service .why{font-size:11px;color:#e9d8c2;margin-top:4px;text-shadow:0 1px 4px #000}
 </style>
-  <script type="module" crossorigin src="./assets/index-zeQFc2We.js"></script>
+  <script type="module" crossorigin src="./assets/index-D_N8rEXN.js"></script>
 </head>
 <body>
   <div id="game"></div>
