@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="referrer" content="no-referrer" />
+<title>日本料理 津多屋｜京都丹波・年表かるた 休憩処</title>
+<meta name="description" content="1956年創業、南丹市園部の日本料理店・津多屋。名物の笑日餅、園部城弁当、季節の会席料理。京都丹波・年表かるたの周遊途中に立ち寄れる休憩処です。" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="日本料理 津多屋｜園部で、ほっとひと息。" />
+<meta property="og:description" content="園部城跡のそば。季節の料理と名物・笑日餅を楽しめる、1956年創業の日本料理店。" />
+<meta property="og:url" content="https://games.imapp.shop/kyototamba-karuta/shops/tsutaya/b/" />
+<meta property="og:image" content="https://games.imapp.shop/kyototamba-karuta/shops/tsutaya/b/img/hero.jpg" />
+<link rel="icon" href="../../../icons/favicon-32.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&family=Noto+Sans+JP:wght@400;500;600;700&family=Zen+Old+Mincho:wght@400;600;700;900&display=swap" rel="stylesheet" />
+<script>document.documentElement.classList.add("js");</script>
+<style>
+:root{
+  --cream:#f8f3e8;
+  --cream-deep:#eee4d2;
+  --paper:#fffdf8;
+  --ink:#3f3a34;
+  --ink-soft:#746c63;
+  --green:#55735d;
+  --green-deep:#3e5a47;
+  --red:#a85c4e;
+  --gold:#b68a45;
+  --line:rgba(63,58,52,.12);
+  --shadow:0 20px 60px rgba(84,67,45,.13);
+  --mincho:"Zen Old Mincho","Yu Mincho","Hiragino Mincho ProN",serif;
+  --sans:"Noto Sans JP",system-ui,sans-serif;
+  --hand:"Klee One",cursive;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;color:var(--ink);background:var(--cream);font-family:var(--sans);line-height:1.9;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit}
+img{display:block;width:100%;height:100%;object-fit:cover}
+.container{width:min(1120px,calc(100% - 44px));margin-inline:auto}
+.serif{font-family:var(--mincho)}
+.small-label{display:inline-flex;align-items:center;gap:10px;color:var(--green);font-size:11px;font-weight:700;letter-spacing:.18em}
+.small-label::before{content:"";width:28px;height:1px;background:currentColor}
+.section-title{margin:13px 0 0;font-family:var(--mincho);font-size:clamp(30px,4vw,50px);font-weight:700;line-height:1.45;letter-spacing:.035em}
+.section-copy{margin:20px 0 0;color:var(--ink-soft);font-size:14.5px;line-height:2}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:54px;padding:0 23px;border-radius:999px;text-decoration:none;font-size:13px;font-weight:700;letter-spacing:.03em;transition:.2s ease}
+.btn:hover{transform:translateY(-2px)}
+.btn-red{background:var(--red);color:#fff;box-shadow:0 12px 28px rgba(168,92,78,.25)}
+.btn-white{background:rgba(255,255,255,.88);color:var(--ink);box-shadow:0 12px 28px rgba(45,35,25,.12);backdrop-filter:blur(10px)}
+.btn-outline{border:1px solid var(--line);background:rgba(255,255,255,.56)}
+
+/* header */
+.top-note{background:var(--green-deep);color:#fff;text-align:center;padding:7px 15px;font-size:10.5px;font-weight:600;letter-spacing:.08em}
+.site-header{position:absolute;z-index:30;top:34px;left:0;right:0;color:#fff}
+.header-inner{display:flex;justify-content:space-between;align-items:center;padding:18px 0;border-bottom:1px solid rgba(255,255,255,.25)}
+.logo{text-decoration:none;display:flex;align-items:center;gap:12px}
+.logo-mark{width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.9);color:var(--green-deep);display:grid;place-items:center;font-family:var(--mincho);font-size:18px;font-weight:700;box-shadow:0 8px 26px rgba(0,0,0,.12)}
+.logo-text strong{display:block;font-family:var(--mincho);font-size:18px;letter-spacing:.12em}
+.logo-text span{display:block;margin-top:1px;font-size:9px;letter-spacing:.13em;color:rgba(255,255,255,.75)}
+.header-links{display:flex;align-items:center;gap:23px;font-size:11px;font-weight:600}
+.header-links a{text-decoration:none;color:rgba(255,255,255,.9)}
+.header-links .reserve{border:1px solid rgba(255,255,255,.55);border-radius:999px;padding:10px 16px}
+
+/* hero */
+.hero{position:relative;min-height:790px;color:#fff;overflow:hidden;background:#53654f}
+.hero-photo{position:absolute;inset:0;background-image:url('img/hero.jpg');background-position:center 48%;background-size:cover;transform:scale(1.02)}
+.hero-photo::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(30,37,30,.72) 0%,rgba(32,37,31,.42) 52%,rgba(32,37,31,.14) 100%),linear-gradient(0deg,rgba(38,32,25,.32),transparent 45%)}
+.hero-content{position:relative;z-index:2;min-height:790px;display:flex;align-items:center;padding-top:130px;padding-bottom:90px}
+.hero-copy{max-width:700px}
+.hero-kicker{display:flex;align-items:center;gap:12px;font-size:11px;font-weight:700;letter-spacing:.17em;color:#f5e4c1}
+.hero-kicker .ad{border:1px solid rgba(255,255,255,.5);border-radius:999px;padding:2px 8px;font-size:9px}
+.hero h1{margin:22px 0 0;font-family:var(--mincho);font-size:clamp(52px,8vw,94px);font-weight:700;line-height:1.08;letter-spacing:.09em;text-shadow:0 3px 18px rgba(0,0,0,.2)}
+.hero-message{margin:25px 0 0;font-family:var(--hand);font-size:clamp(20px,2.7vw,32px);line-height:1.7;letter-spacing:.05em}
+.hero-message b{font-weight:600;color:#ffe8b9}
+.hero-desc{max-width:590px;margin:20px 0 0;font-size:14px;color:rgba(255,255,255,.85)}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:32px}
+.hero-tags{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px}
+.hero-tags span{padding:7px 12px;border:1px solid rgba(255,255,255,.36);border-radius:999px;font-size:10.5px;color:rgba(255,255,255,.9);backdrop-filter:blur(5px)}
+.scroll-note{position:absolute;z-index:3;right:36px;bottom:30px;writing-mode:vertical-rl;font-size:9px;letter-spacing:.23em;color:rgba(255,255,255,.65)}
+.scroll-note::after{content:"";display:block;width:1px;height:68px;margin:12px auto 0;background:rgba(255,255,255,.5)}
+
+/* floating intro */
+.intro-wrap{position:relative;z-index:4;margin-top:-56px}
+.intro-card{display:grid;grid-template-columns:1.08fr .92fr;background:var(--paper);border-radius:28px;overflow:hidden;box-shadow:var(--shadow)}
+.intro-copy{padding:58px 60px}
+.intro-copy .catch{margin:14px 0 0;font-family:var(--mincho);font-size:clamp(28px,3.5vw,46px);line-height:1.55;letter-spacing:.035em}
+.intro-copy p{margin:20px 0 0;color:var(--ink-soft);font-size:14px}
+.intro-photo{min-height:410px;background:#ddd}
+.intro-photo img{object-position:center 55%}
+
+/* menu */
+.section{padding:110px 0}
+.menu-head{display:flex;justify-content:space-between;align-items:end;gap:60px}
+.menu-head .section-copy{max-width:450px;margin:0}
+.photo-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:22px;margin-top:48px}
+.feature-card,.mini-card{position:relative;overflow:hidden;border-radius:26px;background:#ddd;box-shadow:0 14px 40px rgba(84,67,45,.11)}
+.feature-card{min-height:590px}
+.feature-card::after,.mini-card::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(35,29,23,.68),rgba(35,29,23,0) 58%)}
+.feature-card img{object-position:center 50%}
+.card-copy{position:absolute;z-index:2;left:34px;right:34px;bottom:30px;color:#fff}
+.card-copy .tag{font-size:10px;font-weight:700;letter-spacing:.14em;color:#f6dca5}
+.card-copy h3{margin:7px 0 0;font-family:var(--mincho);font-size:clamp(29px,3.3vw,43px);line-height:1.35;letter-spacing:.04em}
+.card-copy p{margin:8px 0 0;font-size:12px;color:rgba(255,255,255,.82)}
+.card-copy .price{display:inline-block;margin-top:14px;padding:6px 11px;border-radius:999px;background:rgba(255,255,255,.9);color:var(--ink);font-size:11px;font-weight:700}
+.mini-stack{display:grid;gap:22px}
+.mini-card{min-height:284px}
+.mini-card .card-copy{left:26px;right:26px;bottom:23px}
+.mini-card .card-copy h3{font-size:25px}
+.menu-note{margin-top:16px;text-align:right;color:var(--ink-soft);font-size:10.5px}
+
+/* cafe */
+.cafe{padding:0 0 110px}
+.cafe-card{display:grid;grid-template-columns:.92fr 1.08fr;background:#e8efe5;border-radius:32px;overflow:hidden}
+.cafe-photo{min-height:470px}
+.cafe-photo img{object-position:center 50%}
+.cafe-copy{position:relative;padding:68px 65px;display:flex;flex-direction:column;justify-content:center}
+.cafe-copy::after{content:"夏";position:absolute;right:20px;bottom:-50px;font-family:var(--mincho);font-size:210px;line-height:1;color:rgba(62,90,71,.055)}
+.cafe-copy h2{position:relative;z-index:1;margin:13px 0 0;font-family:var(--mincho);font-size:clamp(32px,4vw,48px);line-height:1.45}
+.cafe-copy p{position:relative;z-index:1;margin:20px 0 0;color:var(--ink-soft);font-size:14px}
+.cafe-info{position:relative;z-index:1;display:flex;gap:10px;flex-wrap:wrap;margin-top:23px}
+.cafe-info span{padding:7px 11px;border-radius:999px;background:rgba(255,255,255,.62);font-size:10.5px;font-weight:600;color:var(--green-deep)}
+
+/* story */
+.story{background:var(--paper);border-block:1px solid var(--line)}
+.story-grid{display:grid;grid-template-columns:.95fr 1.05fr;gap:80px;align-items:center}
+.story-photo{position:relative;min-height:560px;border-radius:28px;overflow:hidden}
+.story-photo::before{content:"";position:absolute;z-index:2;inset:18px;border:1px solid rgba(255,255,255,.7);border-radius:18px;pointer-events:none}
+.story-photo img{object-position:center}
+.story-copy .large-quote{margin:18px 0 0;font-family:var(--hand);font-size:clamp(25px,3.5vw,42px);line-height:1.65;color:var(--green-deep)}
+.story-copy p{margin:20px 0 0;color:var(--ink-soft);font-size:14px}
+.history-chip{display:inline-flex;align-items:center;gap:11px;margin-top:28px;padding:10px 15px;border-radius:999px;background:var(--cream);font-size:11px;color:var(--ink-soft)}
+.history-chip strong{font-family:var(--mincho);font-size:20px;color:var(--red)}
+
+/* karuta */
+.karuta-section{padding:110px 0;background:var(--green-deep);color:#fff;position:relative;overflow:hidden}
+.karuta-section::before{content:"";position:absolute;right:-120px;top:-120px;width:420px;height:420px;border:1px solid rgba(255,255,255,.09);border-radius:50%}
+.karuta-grid{position:relative;z-index:1;display:grid;grid-template-columns:1fr .84fr;gap:75px;align-items:center}
+.karuta-section .small-label{color:#ead4a8}
+.karuta-section .section-copy{color:rgba(255,255,255,.72)}
+.route-card{margin-top:30px;padding:22px 24px;border-radius:20px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.12)}
+.route-card strong{display:block;font-family:var(--mincho);font-size:18px;color:#f4d99f}
+.route-card p{margin:7px 0 0;font-size:12px;color:rgba(255,255,255,.72)}
+.karuta-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:27px}
+.distance-card{position:relative;min-height:420px;border-radius:30px;background:var(--cream);color:var(--ink);padding:40px;transform:rotate(2deg);box-shadow:0 30px 70px rgba(0,0,0,.26)}
+.distance-card::before{content:"";position:absolute;inset:14px;border:1px solid rgba(63,58,52,.15);border-radius:22px}
+.distance-card .kana{position:relative;z-index:1;color:var(--red);font-size:10px;font-weight:700;letter-spacing:.16em}
+.distance-card h3{position:relative;z-index:1;margin:24px 0 0;font-family:var(--mincho);font-size:36px;line-height:1.55}
+.distance-card h3 b{font-size:60px;color:var(--green-deep)}
+.distance-card .route-line{position:relative;z-index:1;margin-top:42px;height:2px;background:rgba(63,58,52,.16)}
+.distance-card .route-line::before,.distance-card .route-line::after{content:"";position:absolute;top:50%;width:12px;height:12px;border-radius:50%;transform:translateY(-50%)}
+.distance-card .route-line::before{left:0;background:var(--red)}
+.distance-card .route-line::after{right:0;background:var(--green)}
+.distance-labels{position:relative;z-index:1;display:flex;justify-content:space-between;margin-top:12px;font-size:10px;color:var(--ink-soft)}
+.distance-number{position:relative;z-index:1;margin-top:30px;font-family:var(--mincho);font-size:43px;color:var(--green-deep)}
+.distance-number small{font-size:12px;color:var(--ink-soft)}
+
+/* info */
+.info-grid{display:grid;grid-template-columns:.78fr 1.22fr;gap:75px;align-items:start}
+.reserve-box{margin-top:30px;padding:30px;border-radius:24px;background:var(--paper);box-shadow:var(--shadow)}
+.reserve-box .badge{display:inline-block;padding:5px 9px;border-radius:999px;background:var(--red);color:#fff;font-size:9px;font-weight:700;letter-spacing:.12em}
+.reserve-box h3{margin:14px 0 0;font-family:var(--mincho);font-size:27px;line-height:1.55}
+.reserve-box p{margin:10px 0 0;color:var(--ink-soft);font-size:12.5px}
+.reserve-box .btn{width:100%;margin-top:20px}
+.info-list{margin:0;border-top:1px solid var(--line)}
+.info-row{display:grid;grid-template-columns:125px 1fr;gap:25px;padding:19px 0;border-bottom:1px solid var(--line)}
+.info-row dt{font-size:10px;font-weight:700;letter-spacing:.1em;color:var(--green)}
+.info-row dd{margin:0;color:var(--ink-soft);font-size:13px}
+.info-row dd strong{color:var(--red)}
+.link-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
+.link-row .btn{min-height:48px;padding-inline:18px;font-size:11px}
+
+/* footer */
+.footer{background:#3c5141;color:#fff;padding:52px 0 92px}
+.footer-inner{display:flex;justify-content:space-between;align-items:end;gap:50px}
+.footer strong{font-family:var(--mincho);font-size:25px;letter-spacing:.11em}
+.footer p{max-width:720px;margin:12px 0 0;font-size:10px;line-height:1.8;color:rgba(255,255,255,.62)}
+.footer a{color:#f2d79f;text-decoration:none;font-size:11px;font-weight:700}
+.mobile-bar{display:none;position:fixed;z-index:50;left:10px;right:10px;bottom:10px;padding:8px;border-radius:20px;background:rgba(255,253,248,.94);box-shadow:0 14px 45px rgba(40,32,24,.25);backdrop-filter:blur(14px)}
+.mobile-inner{display:grid;grid-template-columns:.85fr 1.15fr;gap:8px}
+.mobile-bar .btn{min-height:49px;padding:0 10px;font-size:11px}
+
+.reveal{transition:opacity .7s ease,transform .7s ease}
+.js .reveal{opacity:0;transform:translateY(22px)}
+.js .reveal.is-visible{opacity:1;transform:none}
+
+@media(max-width:900px){
+  .header-links a:not(.reserve){display:none}
+  .intro-card,.story-grid,.karuta-grid,.info-grid{gap:45px}
+  .intro-copy{padding:48px 42px}
+}
+@media(max-width:720px){
+  .container{width:min(100% - 28px,1120px)}
+  .top-note{font-size:9.5px;letter-spacing:.03em}
+  .site-header{top:31px}
+  .header-inner{padding:14px 0}
+  .logo-mark{width:36px;height:36px;font-size:16px}
+  .logo-text strong{font-size:15px}
+  .header-links .reserve{display:none}
+  .hero,.hero-content{min-height:720px}
+  .hero-photo{background-position:62% center}
+  .hero-content{padding-top:130px;align-items:flex-end;padding-bottom:72px}
+  .hero h1{font-size:53px}
+  .hero-message{font-size:22px}
+  .hero-desc{font-size:12.5px}
+  .hero-actions .btn{width:100%}
+  .hero-tags{gap:7px}
+  .scroll-note{display:none}
+  .intro-wrap{margin-top:-32px}
+  .intro-card,.photo-grid,.cafe-card,.story-grid,.karuta-grid,.info-grid{grid-template-columns:1fr}
+  .intro-copy{padding:38px 27px}
+  .intro-photo{min-height:310px;order:-1}
+  .section{padding:80px 0}
+  .menu-head{display:block}
+  .menu-head .section-copy{margin-top:16px}
+  .photo-grid{gap:16px}
+  .feature-card{min-height:470px}
+  .mini-stack{gap:16px}
+  .mini-card{min-height:260px}
+  .card-copy{left:23px;right:23px;bottom:22px}
+  .cafe{padding-bottom:80px}
+  .cafe-photo{min-height:330px}
+  .cafe-copy{padding:42px 28px 50px}
+  .story-photo{min-height:410px}
+  .story-grid{gap:44px}
+  .karuta-section{padding:80px 0}
+  .distance-card{max-width:380px;margin:auto;min-height:390px;padding:34px 30px}
+  .distance-card h3{font-size:30px}
+  .distance-card h3 b{font-size:50px}
+  .info-row{grid-template-columns:88px 1fr;gap:13px}
+  .footer{padding-bottom:110px}
+  .footer-inner{display:block}
+  .footer a{display:inline-block;margin-top:22px}
+  .mobile-bar{display:block}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.js .reveal{opacity:1;transform:none;transition:none}.btn{transition:none}}
+</style>
+</head>
+<body>
+<div class="top-note">ご来店は前日までのご予約をお願いいたします</div>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="logo" href="#top" aria-label="津多屋 トップへ">
+      <span class="logo-mark">津</span>
+      <span class="logo-text"><strong>日本料理 津多屋</strong><span>KYOTO TAMBA / SONOBE</span></span>
+    </a>
+    <nav class="header-links" aria-label="ページ内メニュー">
+      <a href="#meibutsu">お料理</a>
+      <a href="#story">津多屋のこと</a>
+      <a href="#karuta">かるた周遊</a>
+      <a class="reserve" href="tel:0771-62-0508">予約 0771-62-0508</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+<section class="hero">
+  <div class="hero-photo" role="img" aria-label="津多屋の季節の料理"></div>
+  <div class="container hero-content">
+    <div class="hero-copy reveal">
+      <div class="hero-kicker">京都丹波・年表かるた 休憩処 <span class="ad">広告</span></div>
+      <h1>日本料理<br>津多屋</h1>
+      <div class="hero-message">園部で、<b>ほっとひと息。</b></div>
+      <p class="hero-desc">季節の料理と、名物の笑日餅。園部城跡を歩いたあとは、昔からこの町の節目に寄り添ってきた津多屋で、ゆっくりお過ごしください。</p>
+      <div class="hero-actions">
+        <a class="btn btn-red" href="tel:0771-62-0508">電話で予約する</a>
+        <a class="btn btn-white" href="https://www.google.com/maps/dir/?api=1&destination=35.111595,135.472656" target="_blank" rel="noopener">Googleマップで行く</a>
+      </div>
+      <div class="hero-tags"><span>創業 1956年</span><span>完全予約制</span><span>水曜休</span></div>
+    </div>
+  </div>
+  <div class="scroll-note">SCROLL</div>
+</section>
+
+<div class="intro-wrap">
+  <div class="container">
+    <div class="intro-card reveal">
+      <div class="intro-copy">
+        <div class="small-label">WELCOME</div>
+        <div class="catch">旅の途中に、<br>園部らしいお昼を。</div>
+        <p>平日限定の「こいでやす御膳」や「園部城弁当」、季節を映す会席料理。観光の途中にも、ご家族のお集まりにも、肩ひじ張らずに楽しめる一席をご用意しています。</p>
+      </div>
+      <div class="intro-photo">
+        <img src="img/intro.jpg" alt="津多屋のお料理" loading="eager" />
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="section" id="meibutsu">
+  <div class="container">
+    <div class="menu-head reveal">
+      <div>
+        <div class="small-label">TSUTAYA SPECIAL</div>
+        <h2 class="section-title">津多屋のおいしいもの</h2>
+      </div>
+      <p class="section-copy">きちんとした日本料理を、もっと親しみやすく。季節の彩りと、園部ならではの名前を添えた料理をお楽しみください。</p>
+    </div>
+
+    <div class="photo-grid">
+      <article class="feature-card reveal">
+        <img src="img/warabi.jpg" alt="名物 笑日餅（わらびもち）" loading="lazy" />
+        <div class="card-copy">
+          <div class="tag">名物・お土産</div>
+          <h3>笑日餅<br><span style="font-size:.58em">（わらびもち）</span></h3>
+          <p>地元のお土産として親しまれる、津多屋の看板名物。前日までのご予約がおすすめです。</p>
+          <span class="price">100gパック 390円〜</span>
+        </div>
+      </article>
+
+      <div class="mini-stack">
+        <article class="mini-card reveal">
+          <img src="img/koide.jpg" alt="こいでやす御膳" loading="lazy" />
+          <div class="card-copy">
+            <div class="tag">平日限定ランチ</div>
+            <h3>こいでやす御膳</h3>
+            <span class="price">1,980円・前日までに要予約</span>
+          </div>
+        </article>
+        <article class="mini-card reveal">
+          <img src="img/kaiseki.jpg" alt="季節の会席料理" loading="lazy" />
+          <div class="card-copy">
+            <div class="tag">季節の会席料理</div>
+            <h3>旬をいただく一皿</h3>
+            <span class="price">夜会席 6,655円〜</span>
+          </div>
+        </article>
+      </div>
+    </div>
+    <div class="menu-note">価格・内容は季節により変わる場合があります。最新情報はお店にご確認ください。</div>
+  </div>
+</section>
+
+<section class="cafe">
+  <div class="container">
+    <div class="cafe-card reveal">
+      <div class="cafe-photo">
+        <img src="img/kakigori.jpg" alt="四角いかき氷" loading="lazy" />
+      </div>
+      <div class="cafe-copy">
+        <div class="small-label">SUMMER CAFE</div>
+        <h2>夏だけ開く、<br>笑日餅cafe。</h2>
+        <p>6月から9月末まで、津多屋1階で期間限定営業。四角いかき氷と笑日餅で、暑い日の散策をひと休みしませんか。</p>
+        <div class="cafe-info"><span>12:00〜16:00</span><span>水曜休</span><span>土日は店頭販売のみ</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section story" id="story">
+  <div class="container story-grid">
+    <div class="story-photo reveal">
+      <img src="img/story.jpg" alt="津多屋の紹介" loading="lazy" />
+    </div>
+    <div class="story-copy reveal">
+      <div class="small-label">OUR STORY</div>
+      <h2 class="section-title">祖母の名は、ツタ。</h2>
+      <div class="large-quote">映画館の記憶が残る場所で、<br>七十年のおもてなし。</div>
+      <p>1956年、祖母の柴田ツタが旅館業として創業し、その名から「津多屋」と名付けられました。現在の店は、かつて園部町唯一の映画館として親しまれた園部映画劇場の跡にあります。</p>
+      <p>ご法事やご慶事、歓送迎会、地域の寄り合い。まちの人の大切な日と、旅の途中の小さな休憩。どちらも温かく迎える店でありたいと考えています。</p>
+      <div class="history-chip"><strong>1956</strong> 昭和31年創業</div>
+    </div>
+  </div>
+</section>
+
+<section class="karuta-section" id="karuta">
+  <div class="container karuta-grid">
+    <div class="reveal">
+      <div class="small-label">KARUTA SPOT</div>
+      <h2 class="section-title">園部城跡をめぐったあとに。</h2>
+      <p class="section-copy">津多屋は、京都丹波・年表かるたの札にも登場する園部城跡から約650m。「戦国と城の道」の締めくくりに、園部らしい料理と甘味でひと休みできます。</p>
+      <div class="route-card">
+        <strong>戦国と城の道</strong>
+        <p>亀山城跡 → 八木城跡 → 園部城跡 → 津多屋</p>
+      </div>
+      <div class="karuta-actions">
+        <a class="btn btn-red" href="../../../">京都丹波・年表かるたで遊ぶ</a>
+        <a class="btn btn-white" href="https://www.google.com/maps/dir/?api=1&destination=35.111595,135.472656" target="_blank" rel="noopener">ここまでの経路を見る</a>
+      </div>
+    </div>
+
+    <div class="distance-card reveal" aria-label="園部城跡から津多屋まで約650メートル">
+      <div class="kana">WALKING MAP</div>
+      <h3><b>城</b>から、<br>おいしい寄り道。</h3>
+      <div class="route-line"></div>
+      <div class="distance-labels"><span>園部城跡</span><span>津多屋</span></div>
+      <div class="distance-number">約650m <small>徒歩圏内</small></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="info">
+  <div class="container info-grid">
+    <div class="reveal">
+      <div class="small-label">INFORMATION</div>
+      <h2 class="section-title">ご予約・アクセス</h2>
+      <p class="section-copy">お料理のご用意があるため、ご来店は前日までのご予約をお願いいたします。</p>
+      <div class="reserve-box">
+        <span class="badge">完全予約制</span>
+        <h3>お電話またはLINEで<br>ご予約ください。</h3>
+        <p>人数変更は2日前、キャンセルは5日前までにご連絡ください。</p>
+        <a class="btn btn-red" href="tel:0771-62-0508">0771-62-0508 に電話</a>
+      </div>
+    </div>
+
+    <div class="reveal">
+      <dl class="info-list">
+        <div class="info-row"><dt>店名</dt><dd>日本料理 津多屋</dd></div>
+        <div class="info-row"><dt>住所</dt><dd>京都府南丹市園部町若松町62-7</dd></div>
+        <div class="info-row"><dt>営業時間</dt><dd>11:30〜14:30 ／ 17:00〜22:00（L.O.21:30）</dd></div>
+        <div class="info-row"><dt>定休日</dt><dd>水曜日</dd></div>
+        <div class="info-row"><dt>ご予約</dt><dd><strong>完全予約制・前日まで</strong><br>ランチも前日までにご予約ください。</dd></div>
+        <div class="info-row"><dt>アクセス</dt><dd>京都縦貫道 園部ICから車で約5分<br>JR園部駅から車で約5分</dd></div>
+        <div class="info-row"><dt>送迎</dt><dd>予約時にご相談ください。8名様以上から・地域条件あり。</dd></div>
+        <div class="info-row"><dt>お支払い</dt><dd>クレジットカード利用不可</dd></div>
+      </dl>
+      <div class="link-row">
+        <a class="btn btn-outline" href="https://r.goope.jp/sr-26-262131s320/" target="_blank" rel="noopener">公式サイト</a>
+        <a class="btn btn-outline" href="https://instagram.com/tsutayanantan508" target="_blank" rel="noopener">Instagram</a>
+        <a class="btn btn-outline" href="https://lin.ee/1nRQlrukG" target="_blank" rel="noopener">LINE</a>
+        <a class="btn btn-outline" href="https://www.google.com/maps/dir/?api=1&destination=35.111595,135.472656" target="_blank" rel="noopener">Googleマップ</a>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="footer">
+  <div class="container footer-inner">
+    <div>
+      <strong>日本料理 津多屋</strong>
+      <p>［広告］本ページは「京都丹波・年表かるた」周遊マップの休憩処紹介です。写真提供：日本料理 津多屋（公式サイトより）。店舗情報は津多屋公式サイトをもとに構成しています。最新の営業時間・メニュー・価格は必ずお店に直接ご確認ください。</p>
+    </div>
+    <a href="../../../about/">← 京都丹波・年表かるたについて</a>
+  </div>
+</footer>
+
+<div class="mobile-bar" aria-label="予約・経路の固定メニュー">
+  <div class="mobile-inner">
+    <a class="btn btn-outline" href="https://www.google.com/maps/dir/?api=1&destination=35.111595,135.472656" target="_blank" rel="noopener">経路を見る</a>
+    <a class="btn btn-red" href="tel:0771-62-0508">電話で予約</a>
+  </div>
+</div>
+
+<script>
+const observer = new IntersectionObserver((entries)=>{
+  entries.forEach((entry)=>{
+    if(entry.isIntersecting){
+      entry.target.classList.add('is-visible');
+      observer.unobserve(entry.target);
+    }
+  });
+},{threshold:.12});
+document.querySelectorAll('.reveal').forEach((el)=>observer.observe(el));
+</script>
+</body>
+</html>
