@@ -776,6 +776,37 @@ function renderGroundLight(env){
 }
 
 /* ---- 夜のシーン ---- */
+/* ---- 実際の月齢（プレイした日の月相を描く） ---- */
+function moonPhaseNow(){
+  const ref = Date.UTC(2000, 0, 6, 18, 14);        // 既知の新月
+  const syn = 29.53058867 * 86400000;              // 朔望月
+  let p = ((Date.now() - ref) % syn) / syn;
+  if (p < 0) p += 1;
+  return p;                                         // 0=新月 0.25=上弦 0.5=満月 0.75=下弦
+}
+const MOON_P = moonPhaseNow();
+const MOON_ILLUM = (1 - Math.cos(2 * Math.PI * MOON_P)) / 2;   // 輝面比 0..1
+
+function drawMoonPhase(c, x, y, r, p){
+  c.save();
+  c.translate(x, y);
+  // 影側の地の円（月の輪郭がうっすら見える）
+  c.fillStyle = 'rgba(190,200,220,0.10)';
+  c.beginPath(); c.arc(0, 0, r, 0, 6.284); c.fill();
+  const ex = Math.cos(2 * Math.PI * p);
+  c.fillStyle = '#dfe4ee';
+  c.beginPath();
+  if (p <= 0.5) {   // 満ちていく: 右側が光る（北半球の見え方）
+    c.arc(0, 0, r, -Math.PI / 2, Math.PI / 2, false);
+    c.ellipse(0, 0, Math.abs(ex) * r, r, 0, Math.PI / 2, -Math.PI / 2, ex > 0);
+  } else {          // 欠けていく: 左側が光る
+    c.arc(0, 0, r, Math.PI / 2, -Math.PI / 2, false);
+    c.ellipse(0, 0, Math.abs(ex) * r, r, 0, -Math.PI / 2, Math.PI / 2, ex > 0);
+  }
+  c.fill();
+  c.restore();
+}
+
 let stars = [], mount1 = [], mount2 = [], trees = [], flies = [];
 function buildScenery(){
   stars = [];
@@ -851,21 +882,17 @@ function renderScene(env){
                 vx: (Math.random() < 0.5 ? -1 : 1) * (220 + Math.random() * 200), vy: 90 + Math.random() * 80, age: 0 };
     }
   }
-  // 月
+  // 月（実際の月齢に合わせた満ち欠け。光量も輝面比に連動）
   const mx = W * 0.80, my = H * 0.16, mr = 26 * S;
   ctx.save();
-  ctx.globalAlpha = 0.5;
+  ctx.globalAlpha = 0.5 * (0.2 + 0.8 * MOON_ILLUM);
   const mg = ctx.createRadialGradient(mx, my, mr * 0.4, mx, my, mr * 4);
   mg.addColorStop(0, 'rgba(210,220,240,0.5)');
   mg.addColorStop(1, 'rgba(210,220,240,0)');
   ctx.fillStyle = mg;
   ctx.fillRect(mx - mr*4, my - mr*4, mr*8, mr*8);
-  ctx.globalAlpha = 0.9;
-  ctx.fillStyle = '#dfe4ee';
-  ctx.beginPath(); ctx.arc(mx, my, mr, 0, 6.284); ctx.fill();
-  ctx.fillStyle = '#0a0c1c';
   ctx.globalAlpha = 0.92;
-  ctx.beginPath(); ctx.arc(mx - mr * 0.42, my - mr * 0.18, mr * 0.92, 0, 6.284); ctx.fill();
+  drawMoonPhase(ctx, mx, my, mr, MOON_P);
   ctx.restore();
   // 山（2層）
   drawRidge(mount1, '#0a0d18');
