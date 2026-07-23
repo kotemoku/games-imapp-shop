@@ -357,7 +357,7 @@ function resize(){
   ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
   S = Math.min(W, H) / 780;
   cx = W / 2;
-  baseY = H * 0.68;   // 下1/3はUIゾーンとして空ける
+  baseY = H * 0.74;   // 地面ライン。低めに構えて空を広く取る（UIは四隅退避済み）
   buildScenery();
 }
 window.addEventListener('resize', resize);
@@ -516,7 +516,7 @@ class IllustFire {
     const powerN = clamp(env.power / 1.15, 0, 1);
     const lit = clamp(env.heat * 2.2 + game.ember * 0.4, 0, 1);
     const iw = this.base.naturalWidth, ih = this.base.naturalHeight;
-    const dw = 280 * S * FS * (0.96 + 0.08 * powerN);
+    const dw = 320 * S * FS * (0.96 + 0.08 * powerN);
     const owB = Math.max(2, Math.ceil(dw)), ohB = owB;
     // 接地: 画像下部14%は透明マージンなので、絵の実体下端(0.859)を石組み内の地面に置く
     const CONTENT_BOTTOM = 0.859;
@@ -872,7 +872,7 @@ function renderScene(env){
   drawRidge(mount2, '#070912');
   // 針葉樹
   ctx.fillStyle = '#05070d';
-  for (const tr of trees) drawConifer(ctx, tr.x, H * 0.735, tr.h);
+  for (const tr of trees) drawConifer(ctx, tr.x, H * 0.785, tr.h);
   // 地面
   const gg = ctx.createLinearGradient(0, baseY - 40, 0, H);
   gg.addColorStop(0, '#0b0a0c');
