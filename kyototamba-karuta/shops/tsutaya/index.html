@@ -9,7 +9,7 @@
 <meta property="og:title" content="日本料理 津多屋 ｜ 京都丹波・年表かるた 休憩処" />
 <meta property="og:description" content="1956年創業・園部の日本料理店。名物笑日餅と園部城弁当。園部城跡のほど近く。" />
 <meta property="og:url" content="https://games.imapp.shop/kyototamba-karuta/shops/tsutaya/" />
-<meta property="og:image" content="https://games.imapp.shop/kyototamba-karuta/icons/icon-512.png" />
+<meta property="og:image" content="https://games.imapp.shop/kyototamba-karuta/shops/tsutaya/img/bento-shokado.jpg" />
 <link rel="icon" href="../../icons/favicon-32.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -45,6 +45,17 @@ a{color:inherit}
 .btn-gold{background:linear-gradient(135deg,#c49b52,#a87a2f);color:#fff;box-shadow:0 16px 32px rgba(0,0,0,.28)}
 .btn-ghost{color:#fff;border:1px solid rgba(255,255,255,.32);background:rgba(255,255,255,.07)}
 
+/* photo strip under hero */
+.strip{position:relative;z-index:3;margin-top:-58px;padding:0 0 8px}
+.strip-grid{display:grid;grid-template-columns:1.25fr 1fr 1fr;gap:14px;align-items:stretch}
+.strip-grid figure{position:relative;margin:0;border-radius:14px;overflow:hidden;box-shadow:0 24px 50px rgba(16,40,59,.28);border:4px solid #fffdf8;background:#111}
+.strip-grid img{width:100%;height:100%;object-fit:cover;display:block;aspect-ratio:4/3}
+.strip-grid figure:nth-child(1){transform:rotate(-1.2deg)}
+.strip-grid figure:nth-child(2){transform:rotate(.8deg) translateY(10px)}
+.strip-grid figure:nth-child(3){transform:rotate(-.6deg)}
+.strip-grid figcaption{position:absolute;left:0;right:0;bottom:0;padding:22px 14px 10px;background:linear-gradient(to top,rgba(10,20,30,.72),transparent);color:#fff;font-family:var(--mincho);font-size:12px;letter-spacing:.1em}
+.photo-credit{text-align:right;font-size:10px;color:var(--ink-soft);margin-top:14px}
+
 /* sections */
 section{padding:64px 0}
 .section-title{font-family:var(--mincho);font-weight:800;letter-spacing:.05em;font-size:clamp(24px,4.4vw,34px);line-height:1.5;text-wrap:balance}
@@ -62,6 +73,8 @@ section{padding:64px 0}
 .mei-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:34px}
 .mei{position:relative;background:rgba(244,240,231,.75);border:1px solid var(--line);border-radius:14px;padding:24px 22px;overflow:hidden}
 .mei::after{content:"";position:absolute;right:-46px;bottom:-52px;width:120px;height:120px;border:1px solid rgba(185,138,46,.25);border-radius:50%}
+.mei .m-photo{margin:-24px -22px 16px;height:190px;overflow:hidden;background:#111}
+.mei .m-photo img{width:100%;height:100%;object-fit:cover;display:block}
 .mei .m-ico{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;font-family:var(--mincho);font-size:24px;font-weight:700;color:#fff;background:var(--m,var(--navy))}
 .mei h3{font-family:var(--mincho);font-size:18px;margin-top:14px;letter-spacing:.04em}
 .mei .price{font-family:var(--mincho);font-size:12.5px;color:var(--gold);font-weight:700;margin-top:2px}
@@ -97,6 +110,10 @@ section{padding:64px 0}
 .foot .backlink{display:inline-block;margin-top:12px;font-size:12.5px;color:var(--navy);font-weight:700}
 
 @media (max-width:760px){
+  .strip{margin-top:-40px}
+  .strip-grid{grid-template-columns:1fr 1fr;gap:10px}
+  .strip-grid figure:nth-child(1){grid-column:1/-1}
+  .strip-grid figure:nth-child(2){transform:rotate(.8deg)}
   .story-grid,.karuta-grid{grid-template-columns:1fr}
   .story .vertical{writing-mode:horizontal-tb;height:auto;border-left:0;border-bottom:1px solid var(--gold-soft);padding:0 0 12px}
   .mei-grid{grid-template-columns:1fr}
@@ -122,6 +139,15 @@ section{padding:64px 0}
 </header>
 
 <main>
+  <div class="container strip">
+    <div class="strip-grid">
+      <figure><img src="img/bento-shokado.jpg" alt="松花堂弁当と土瓶蒸し" loading="eager" /><figcaption>京都丹波の野菜を織り込む会席仕立て</figcaption></figure>
+      <figure><img src="img/warabi.jpg" alt="名物・笑日餅（わらびもち）" loading="lazy" /><figcaption>名物 笑日餅</figcaption></figure>
+      <figure><img src="img/wanmono.jpg" alt="湯気の立つ椀物" loading="lazy" /><figcaption>湯気まで、ごちそう</figcaption></figure>
+    </div>
+    <div class="photo-credit">写真提供：日本料理 津多屋（公式サイトより）</div>
+  </div>
+
   <section class="story">
     <div class="container story-grid">
       <div class="vertical">祖母の名は、ツタ。</div>
@@ -140,18 +166,21 @@ section{padding:64px 0}
       <h2 class="section-title">名物と、園部らしい昼ごはん。</h2>
       <div class="mei-grid">
         <div class="mei" style="--m:var(--nantan)">
+          <div class="m-photo"><img src="img/warabi.jpg" alt="笑日餅と季節の果物" loading="lazy" /></div>
           <div class="m-ico">餅</div>
           <h3>名物 笑日餅（わらびもち）</h3>
           <div class="price">パック 390円〜／化粧箱 1,020円〜</div>
           <p>地元のお土産として愛される看板名物。抹茶笑日餅もあり。夏（6月〜9月末）は1階の「笑日餅cafe」で四角いカキ氷とともに。</p>
         </div>
         <div class="mei" style="--m:var(--navy)">
+          <div class="m-photo"><img src="img/bento-iro.jpg" alt="彩りの弁当" loading="lazy" /></div>
           <div class="m-ico">城</div>
           <h3>園部城弁当・こいでやす御膳</h3>
           <div class="price">平日限定ランチ 1,980円〜（前日要予約）</div>
           <p>園部藩・小出氏のまちならではの名を冠したお昼。園部城弁当（前菜付 2,700円）は店内のみ。</p>
         </div>
         <div class="mei" style="--m:var(--gold)">
+          <div class="m-photo"><img src="img/bento-yu.jpg" alt="会席仕立ての一箱" loading="lazy" /></div>
           <div class="m-ico">会</div>
           <h3>会席料理・鍋</h3>
           <div class="price">昼ミニ会席 3,600円〜／夜会席 6,655円〜</div>
