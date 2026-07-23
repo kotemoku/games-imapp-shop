@@ -1101,15 +1101,17 @@ const AudioSys = (() => {
       fireGain.gain.linearRampToValueAtTime(clamp(heat, 0, 1.1) * 0.11, T);
       if (loopMode === 'element' && loopEl) loopEl.volume = muted ? 0 : clamp(real, 0, 1);
     }
-    blowGain.gain.linearRampToValueAtTime(blow * 0.22, T);
+    // 団扇は「ひと扇ぎ＝ひと振りの音」だけ。連続した風ノイズは鳴らさない
+    blowGain.gain.linearRampToValueAtTime(0, T);
   }
   function strike(){
     pop(3200, 0.045, 0.5, 'highpass');
     pop(5200, 0.03, 0.3, 'highpass');
   }
   function whoosh(){
-    pop(430 + Math.random() * 180, 0.3, 0.5, 'lowpass');
-    pop(1000 + Math.random() * 300, 0.16, 0.16);
+    // 団扇のひと振り：短い「ふぁさっ」
+    pop(360 + Math.random() * 140, 0.2, 0.45, 'lowpass');
+    pop(850 + Math.random() * 250, 0.09, 0.09);
   }
   function crackle(heat){ pop(500 + Math.random() * 2800 * heat, 0.03 + Math.random() * 0.1, 0.06 + heat * 0.28 * Math.random()); }
   function flare(){ pop(900, 0.35, 0.4, 'lowpass'); pop(2400, 0.2, 0.25); }
@@ -1146,6 +1148,7 @@ const game = {
   crackleT: 0.4,
 };
 let fanPower = 0, blowStr = 0;          // 団扇: ひと扇ぎごとに fanPower が跳ね、自然減衰
+let fanCd = 0;                          // 扇ぎのクールダウン（腕より速くは振れない）
 let rubT = 9, fxAcc = 0, sndAcc = 0;    // 火おこし: こすり判定用
 let almostT = 0;                        // 「ついたか？」の疑似着火ゆらめき
 let elapsed = 0;
@@ -1251,6 +1254,8 @@ woodBtns.forEach(btn => {
 function fanSwing(){
   AudioSys.ensure();
   if (game.phase === 'dark') { say('まずは火花から。薪の上をこすろう', 3); return; }
+  if (fanCd > 0) return;   // ひと振りぶんの間隔より速くは扇げない
+  fanCd = 0.28;
   fanPower = Math.min(fanPower + 0.5, 1.4);
   AudioSys.whoosh();
   if (game.heat > 0.08) sparkBurst(cx, baseY - 22 * S, 4 + Math.round(game.heat * 8), 130 + game.heat * 130);
@@ -1374,6 +1379,7 @@ function update(dt, t){
   if (pDown) pHold += dt;
 
   // 団扇の風：ひと扇ぎごとの突風がゆっくり減衰する
+  fanCd = Math.max(0, fanCd - dt);
   fanPower = Math.max(0, fanPower - dt * 0.8);
   blowStr += (clamp(fanPower, 0, 1) * (game.heat > 0.02 ? 1 : 0) - blowStr) * 6 * dt;
 
