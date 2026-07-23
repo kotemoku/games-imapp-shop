@@ -289,9 +289,10 @@
 /* ---------------- CONFIG（調整つまみ） ---------------- */
 const CONFIG = {
   flameSource : 'illust',        // 'illust' | 'sprite' | 'particle'（未ロード時は自動でparticleへ）
-  // 焚き火イラスト連番（透過PNG・炎が小さい順）。fire01は薪ベースとしても使う
+  // 焚き火イラスト連番（透過PNG・炎が小さい順）と、薪ベース（fire01から炎を除去したもの）
   illustFrames: ['assets/fire01.png','assets/fire02.png','assets/fire03.png','assets/fire04.png','assets/fire05.png',
                  'assets/fire06.png','assets/fire07.png','assets/fire08.png','assets/fire09.png','assets/fire10.png'],
+  illustBase  : 'assets/base.png',
   fireLoopSrc : 'assets/loop1.mp3',   // 焚き火環境音ループ（Springin' Sound Stock）
   igniteWork  : 9000,            // 着火に必要なこすり量（px相当・ブレあり。体感10秒前後）
   igniteDecay : 0.045,           // 手を止めたときの着火ゲージ減衰（割合/秒）
@@ -499,33 +500,31 @@ class SpriteFlame {
  *        「加算合成のみ」で重ねる → 透けて発光する自然な炎。伸縮変形はしない
  *  - 暗い薪ピクセルは加算してもほぼ変化しないため、薪の形は安定したまま */
 class IllustFire {
-  constructor(srcs){
+  constructor(srcs, baseSrc){
     this.frames = srcs.map(src => { const im = new Image(); im.src = src; return im; });
-    this.offB = document.createElement('canvas');   // 薪ベース合成用
+    this.base = new Image();
+    this.base.src = baseSrc;
+    this.offB = document.createElement('canvas');   // 薪ベース合成用（暗色化）
     this.offF = document.createElement('canvas');   // 炎クロスフェード合成用
-    this.LOG_TOP = 0.58;    // 画像内で薪が始まる高さ（上からの比率）
     this.cur = 0; this.nxt = 0; this.mix = 1; this.rate = 2.5;
   }
   usable(){ return this.frames.filter(f => f.complete && f.naturalWidth > 0); }
   render(env){
+    if (!(this.base.complete && this.base.naturalWidth > 0)) return false;
     const fr = this.usable();
-    if (!fr.length) return false;
     const { ctx, t, dt } = env;
-    const N = fr.length;
     const powerN = clamp(env.power / 1.15, 0, 1);
     const lit = clamp(env.heat * 2.2 + game.ember * 0.4, 0, 1);
-    const base = fr[0];
-    const iw = base.naturalWidth, ih = base.naturalHeight;
+    const iw = this.base.naturalWidth, ih = this.base.naturalHeight;
     const dw = 230 * S * FS * (0.96 + 0.08 * powerN);
     const ax = env.cx, ay = env.baseY + 34 * S;   // 画像下端のアンカー
+    const owB = Math.max(2, Math.ceil(dw)), ohB = owB;
 
-    // ---- 薪ベース（不透明・安定・暗色化対応） ----
-    const syB = this.LOG_TOP * ih, shB = ih - syB;
-    const owB = Math.max(2, Math.ceil(dw)), ohB = Math.max(2, Math.ceil(dw * (shB / ih)));
+    // ---- 薪ベース（クロップなしの全身。未点火は暗色化） ----
     if (this.offB.width !== owB || this.offB.height !== ohB) { this.offB.width = owB; this.offB.height = ohB; }
     const gB = this.offB.getContext('2d');
     gB.clearRect(0, 0, owB, ohB);
-    gB.drawImage(base, 0, syB, iw, shB, 0, 0, owB, ohB);
+    gB.drawImage(this.base, 0, 0, iw, ih, 0, 0, owB, ohB);
     if (lit < 1) {
       gB.globalCompositeOperation = 'source-atop';
       gB.fillStyle = 'rgba(9,7,8,' + ((1 - lit) * 0.93).toFixed(3) + ')';
@@ -534,10 +533,11 @@ class IllustFire {
     }
     ctx.drawImage(this.offB, ax - owB / 2, ay - ohB, owB, ohB);
 
-    // ---- 踊る炎（加算のみ・透明感） ----
-    const flameA = clamp(powerN * 2.6, 0, 1);
+    // ---- 踊る炎（加算のみ・透明感。クロップも変形もしない） ----
+    const flameA = clamp((powerN - 0.02) * 2.6, 0, 1);
+    const N = fr.length;
     if (flameA > 0.01 && N > 1) {
-      // フレームのランダムウォーク：火力帯の近傍を行き来してクロスフェード
+      // 火力帯の近傍フレームをランダムウォークでクロスフェード
       this.mix += dt * this.rate;
       if (this.mix >= 1) {
         this.cur = this.nxt;
@@ -551,27 +551,15 @@ class IllustFire {
       }
       const m = this.mix * this.mix * (3 - 2 * this.mix);   // smoothstep
       const A = fr[clamp(this.cur, 0, N - 1)], B = fr[clamp(this.nxt, 0, N - 1)];
-      // 火力で見せる範囲が薪の上から育つ
-      const cut = this.LOG_TOP * (1 - Math.pow(powerN, 0.8));
-      const sy = cut * ih, sh = ih - sy;
-      const ow = Math.max(2, Math.ceil(dw)), oh = Math.max(2, Math.ceil(dw * (sh / ih)));
+      const ow = owB, oh = ohB;
       if (this.offF.width !== ow || this.offF.height !== oh) { this.offF.width = ow; this.offF.height = oh; }
       const g = this.offF.getContext('2d');
       g.clearRect(0, 0, ow, oh);
-      g.drawImage(A, 0, sy, iw, sh, 0, 0, ow, oh);
+      g.drawImage(A, 0, 0, iw, ih, 0, 0, ow, oh);
       g.globalAlpha = m;
-      g.drawImage(B, 0, sy, iw, sh, 0, 0, ow, oh);
+      g.drawImage(B, 0, 0, iw, ih, 0, 0, ow, oh);
       g.globalAlpha = 1;
-      if (cut > 0.02) {   // 見せ始めの上端をやわらかく
-        g.globalCompositeOperation = 'destination-out';
-        const fade = g.createLinearGradient(0, 0, 0, oh * 0.16);
-        fade.addColorStop(0, 'rgba(0,0,0,1)');
-        fade.addColorStop(1, 'rgba(0,0,0,0)');
-        g.fillStyle = fade;
-        g.fillRect(0, 0, ow, oh * 0.16);
-        g.globalCompositeOperation = 'source-over';
-      }
-      // 風のしなり（変形はこの軽い傾きだけ。伸縮はしない）
+      // 風のしなり（軽い傾きのみ）
       const skew = env.wind * 0.04 * CONFIG.swayAmp;
       ctx.save();
       ctx.translate(ax, ay);
@@ -589,7 +577,7 @@ class IllustFire {
       ctx.save();
       ctx.globalCompositeOperation = 'lighter';
       ctx.globalAlpha = (game.ember * 0.22 + env.heat * 0.07) * (0.6 + 0.4 * fl);
-      const eh = ohB * 0.5;
+      const eh = ohB * 0.35;
       ctx.drawImage(this.offB, 0, ohB - eh, owB, eh, ax - owB / 2, ay - eh, owB, eh);
       ctx.restore();
     }
@@ -598,7 +586,7 @@ class IllustFire {
 }
 const particleFlame = new ParticleFlame();
 const flameSprite   = new SpriteFlame();
-const illustFire    = new IllustFire(CONFIG.illustFrames);
+const illustFire    = new IllustFire(CONFIG.illustFrames, CONFIG.illustBase);
 
 /* =========================================================================
  *  LAYER 2 ── 反応レイヤー（炎本体を差し替えても残る）
