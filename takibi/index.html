@@ -517,8 +517,33 @@ class IllustFire {
     const lit = clamp(env.heat * 2.2 + game.ember * 0.4, 0, 1);
     const iw = this.base.naturalWidth, ih = this.base.naturalHeight;
     const dw = 230 * S * FS * (0.96 + 0.08 * powerN);
-    const ax = env.cx, ay = env.baseY + 34 * S;   // 画像下端のアンカー
     const owB = Math.max(2, Math.ceil(dw)), ohB = owB;
+    // 接地: 画像下部14%は透明マージンなので、絵の実体下端(0.859)を石組み内の地面に置く
+    const CONTENT_BOTTOM = 0.859;
+    const groundY = env.baseY + 24 * S;                       // 接地ライン
+    const ax = env.cx, ay = groundY + (1 - CONTENT_BOTTOM) * ohB;   // 画像下端のアンカー
+
+    // ---- 接地影と地面の照り返し（浮いて見えないように） ----
+    ctx.save();
+    ctx.translate(ax, groundY + 4 * S);
+    ctx.scale(1, 0.24);
+    const rx = owB * 0.37;
+    const shd = ctx.createRadialGradient(0, 0, 0, 0, 0, rx);
+    shd.addColorStop(0, 'rgba(0,0,0,0.5)');
+    shd.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = shd;
+    ctx.fillRect(-rx, -rx, rx * 2, rx * 2);
+    if (lit > 0.05) {
+      ctx.globalCompositeOperation = 'lighter';
+      const fl2 = 0.8 + 0.2 * Math.sin(t * 9.1) * Math.sin(t * 4.3);
+      ctx.globalAlpha = (env.heat * 0.22 + game.ember * 0.14) * fl2;
+      const ref = ctx.createRadialGradient(0, 0, 0, 0, 0, rx * 1.15);
+      ref.addColorStop(0, 'rgba(255,140,50,0.55)');
+      ref.addColorStop(1, 'rgba(255,90,20,0)');
+      ctx.fillStyle = ref;
+      ctx.fillRect(-rx * 1.15, -rx * 1.15, rx * 2.3, rx * 2.3);
+    }
+    ctx.restore();
 
     // ---- 薪ベース（クロップなしの全身。未点火は暗色化） ----
     if (this.offB.width !== owB || this.offB.height !== ohB) { this.offB.width = owB; this.offB.height = ohB; }
@@ -918,7 +943,7 @@ function renderIgnite(env){
     ctx.restore();
   }
   if (game.ignite <= 0.004) return;
-  const w = 156 * S * FS, x = cx - w / 2, y = baseY + 52 * S;
+  const w = 156 * S * FS, x = cx - w / 2, y = baseY + 66 * S;
   // 満タン近くはゲージ自体が震える（つくかな？の緊張）
   const near = game.ignite > 0.6;
   const wob = near ? Math.sin(t * 26) * 0.02 + Math.sin(t * 7.3) * 0.015 : 0;
