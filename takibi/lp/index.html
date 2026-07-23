@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>焚き火 -takibi- ｜ 火を、育てるところから。</title>
+<meta name="description" content="こすって、扇いで、くべて。手をかけた火だけが、ずっと眺めていられる。店舗の夜にちいさな焚き火を灯す imapp ミニゲーム。">
+<style>
+  :root{
+    --night:#05060d;
+    --ink:#e8dcc8;
+    --ink-dim:rgba(232,220,200,.55);
+    --ember:#ff8c2e;
+    --ember-deep:#b83c0c;
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    background:var(--night); color:var(--ink);
+    font-family:"Hiragino Mincho ProN","Yu Mincho","BIZ UDMincho",serif;
+    overflow-x:hidden;
+  }
+  #bg{ position:fixed; inset:0; width:100%; height:100%; z-index:0; }
+  main{ position:relative; z-index:1; }
+
+  section{ position:relative; padding:20vh 6vw; max-width:1080px; margin:0 auto; }
+  h2{
+    font-weight:normal; font-size:clamp(22px,3.6vw,34px);
+    letter-spacing:.42em; text-indent:.42em; text-align:center;
+    margin-bottom:1.8em; text-shadow:0 2px 20px rgba(0,0,0,.9);
+  }
+  p{ line-height:2.2; letter-spacing:.12em; }
+
+  /* ---- reveal ---- */
+  .rv{ opacity:0; transform:translateY(26px); transition:opacity 1.4s ease, transform 1.4s ease; }
+  .rv.in{ opacity:1; transform:none; }
+
+  /* ---- hero ---- */
+  .hero{
+    min-height:100dvh; max-width:none; padding:0 6vw;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center;
+  }
+  .hero h1{
+    font-weight:normal;
+    font-size:clamp(30px,6vw,58px);
+    letter-spacing:.5em; text-indent:.5em;
+    text-shadow:0 0 34px rgba(255,140,46,.3), 0 2px 24px rgba(0,0,0,.95);
+  }
+  .hero .sub{
+    margin-top:2.2em;
+    font-size:clamp(13px,1.8vw,16px); letter-spacing:.3em; text-indent:.3em;
+    color:var(--ink-dim); line-height:2.4;
+  }
+  .ctas{ margin-top:3.4em; display:flex; gap:18px; flex-wrap:wrap; justify-content:center; }
+  .btn{
+    display:inline-block; padding:1em 2.6em; border-radius:999px;
+    font-size:clamp(13px,1.7vw,15px); letter-spacing:.28em; text-indent:.28em;
+    text-decoration:none; color:var(--ink); transition:box-shadow .4s, border-color .4s, background .4s;
+  }
+  .btn-fire{
+    border:1px solid rgba(255,150,60,.75);
+    background:linear-gradient(180deg, rgba(60,22,6,.75), rgba(30,10,4,.75));
+    box-shadow:0 0 26px rgba(255,120,30,.28), inset 0 0 18px rgba(255,120,30,.12);
+  }
+  .btn-fire:hover{ box-shadow:0 0 44px rgba(255,140,40,.5), inset 0 0 24px rgba(255,120,30,.2); }
+  .btn-ghost{ border:1px solid rgba(232,220,200,.3); background:rgba(8,8,14,.4); }
+  .btn-ghost:hover{ border-color:rgba(232,220,200,.6); }
+  .cue{
+    position:absolute; bottom:4.5vh; left:50%; transform:translateX(-50%);
+    font-size:11px; letter-spacing:.5em; text-indent:.5em; color:var(--ink-dim);
+    animation:cue 2.6s ease-in-out infinite;
+  }
+  @keyframes cue{ 0%,100%{opacity:.35; transform:translate(-50%,0)} 50%{opacity:.9; transform:translate(-50%,8px)} }
+
+  /* ---- steps ---- */
+  .steps-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+  @media (max-width:720px){ .steps-grid{ grid-template-columns:1fr; } }
+  .step{
+    border:1px solid rgba(232,220,200,.16); border-radius:16px;
+    background:rgba(6,6,11,.62); backdrop-filter:blur(6px);
+    padding:2.4em 1.6em; text-align:center;
+    transition:border-color .5s, box-shadow .5s;
+  }
+  .step:hover{ border-color:rgba(255,150,60,.5); box-shadow:0 0 24px rgba(255,120,30,.15); }
+  .step .ono{
+    font-size:clamp(22px,3vw,28px); letter-spacing:.24em; text-indent:.24em;
+    color:var(--ember); text-shadow:0 0 18px rgba(255,140,40,.45);
+  }
+  .step .name{ margin-top:1.4em; font-size:14px; letter-spacing:.3em; text-indent:.3em; }
+  .step .desc{ margin-top:1.1em; font-size:12.5px; color:var(--ink-dim); line-height:2; letter-spacing:.08em; }
+  .steps-note{
+    margin-top:2.6em; text-align:center; font-size:13px; color:var(--ink-dim);
+    letter-spacing:.2em; line-height:2.2;
+  }
+
+  /* ---- quote ---- */
+  .quote{ text-align:center; }
+  .quote .q1{
+    font-size:clamp(17px,2.6vw,24px); line-height:2.6;
+    letter-spacing:.24em; text-indent:.24em;
+    text-shadow:0 2px 18px rgba(0,0,0,.9);
+  }
+  .quote .q2{
+    margin-top:2.4em; font-size:clamp(15px,2.2vw,20px);
+    letter-spacing:.24em; text-indent:.24em; color:var(--ember);
+    text-shadow:0 0 22px rgba(255,140,40,.4);
+    line-height:2.4;
+  }
+  .quote .q3{ margin-top:2.6em; font-size:13px; color:var(--ink-dim); letter-spacing:.2em; line-height:2.4; }
+
+  /* ---- moon ---- */
+  .moon-wrap{ display:flex; align-items:center; justify-content:center; gap:6vw; flex-wrap:wrap; }
+  #moon{ width:120px; height:120px; filter:drop-shadow(0 0 24px rgba(210,220,240,.35)); }
+  .moon-txt{ max-width:26em; }
+  .moon-txt p{ font-size:13.5px; color:var(--ink-dim); }
+  .moon-txt .big{ font-size:15px; color:var(--ink); margin-bottom:1.2em; }
+  .moon-txt em{ font-style:normal; color:var(--ember); }
+
+  /* ---- shop ---- */
+  .shop-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:1em; }
+  @media (max-width:860px){ .shop-grid{ grid-template-columns:repeat(2,1fr); } }
+  .feat{
+    border:1px solid rgba(232,220,200,.14); border-radius:14px;
+    background:rgba(6,6,11,.6); padding:1.8em 1em; text-align:center;
+  }
+  .feat .t{ font-size:13.5px; letter-spacing:.2em; text-indent:.2em; }
+  .feat .d{ margin-top:.9em; font-size:11.5px; color:var(--ink-dim); line-height:1.9; }
+  .scenes{
+    margin-top:2.8em; text-align:center; font-size:13px; color:var(--ink-dim);
+    letter-spacing:.22em; line-height:2.4;
+  }
+  .scenes em{ font-style:normal; color:var(--ink); }
+  .shop-cta{ margin-top:3em; text-align:center; }
+
+  /* ---- ec ---- */
+  .ec{ text-align:center; }
+  .ec .t{
+    font-size:clamp(18px,2.8vw,26px); letter-spacing:.4em; text-indent:.4em;
+    text-shadow:0 2px 18px rgba(0,0,0,.9);
+  }
+  .ec p{ margin-top:1.8em; font-size:13px; color:var(--ink-dim); letter-spacing:.2em; }
+  .ec .soon{
+    display:inline-block; margin-top:2em; padding:.5em 1.6em;
+    border:1px solid rgba(232,220,200,.2); border-radius:999px;
+    font-size:11px; letter-spacing:.4em; text-indent:.4em; color:var(--ink-dim);
+  }
+
+  footer{
+    position:relative; z-index:1;
+    padding:6vh 6vw 8vh; text-align:center;
+    font-size:11px; color:var(--ink-dim); letter-spacing:.22em; line-height:2.6;
+  }
+  footer a{ color:var(--ink-dim); }
+
+  /* ---- sound toggle ---- */
+  #sndbtn{
+    position:fixed; right:max(16px, env(safe-area-inset-right)); bottom:max(16px, env(safe-area-inset-bottom));
+    z-index:5; appearance:none; cursor:pointer;
+    border:1px solid rgba(232,220,200,.28); border-radius:999px;
+    background:rgba(8,8,14,.55); color:var(--ink-dim); backdrop-filter:blur(6px);
+    font-family:inherit; font-size:11px; letter-spacing:.26em; text-indent:.1em;
+    padding:.8em 1.5em; transition:color .4s, border-color .4s;
+  }
+  #sndbtn.on{ color:var(--ember); border-color:rgba(255,150,60,.55); }
+</style>
+</head>
+<body>
+<canvas id="bg"></canvas>
+
+<main>
+  <section class="hero">
+    <h1 class="rv">火を、育てるところから。</h1>
+    <p class="sub rv">こすって、扇いで、くべて。<br>手をかけた火だけが、ずっと眺めていられる。</p>
+    <div class="ctas rv">
+      <a class="btn btn-fire" href="../">この火を、いま体験する</a>
+      <a class="btn btn-ghost" href="#shop">店舗に導入する</a>
+    </div>
+    <div class="cue">ゆっくり下へ</div>
+  </section>
+
+  <section>
+    <h2 class="rv">体験は、三つの所作</h2>
+    <div class="steps-grid">
+      <div class="step rv">
+        <div class="ono">シュッ…</div>
+        <div class="name">火花を散らす</div>
+        <div class="desc">暗闇の薪をこすり続ける。<br>つくかな、まだかな——<br>着火の瞬間はいつも劇的。</div>
+      </div>
+      <div class="step rv">
+        <div class="ono">ふぁさっ</div>
+        <div class="name">団扇で扇ぐ</div>
+        <div class="desc">ひと振りごとに風がおきて、<br>火の粉が舞い上がる。<br>連打で火は勢いづく。</div>
+      </div>
+      <div class="step rv">
+        <div class="ono">パチ、パチ。</div>
+        <div class="name">薪をくべる</div>
+        <div class="desc">小枝から、細薪、太薪へ。<br>火力が足りない薪は沈む。<br>でも大丈夫、火は立て直せる。</div>
+      </div>
+    </div>
+    <p class="steps-note rv">音は、実際の焚き火の録音。<br>耳からも、あたたまる。</p>
+  </section>
+
+  <section class="quote">
+    <p class="q1 rv">失敗も、ゲームオーバーもありません。<br>ただ、簡単には燃え上がらない。</p>
+    <p class="q2 rv">だから熾火になったとき、<br>それは「あなたが育てた火」になる。</p>
+    <p class="q3 rv">熾火まで育てば、もう火は消えません。<br>ボタンも文字も静かに消えて、あとは、ただ眺めるだけ。</p>
+  </section>
+
+  <section>
+    <h2 class="rv">今夜の月が、ここにも出る</h2>
+    <div class="moon-wrap rv">
+      <canvas id="moon" width="240" height="240"></canvas>
+      <div class="moon-txt">
+        <p class="big">この空に浮かぶ月は、<br><em>今夜の本物の月</em>と同じ形です。</p>
+        <p>月齢から満ち欠けを計算して描いています（今夜の輝面比 <span id="illum">--</span>%）。毎晩すこしずつ形を変えるから、毎晩、火を熾しに来る理由になる。</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="shop">
+    <h2 class="rv">店舗の夜に、この火を</h2>
+    <div class="shop-grid">
+      <div class="feat rv"><div class="t">QRを置くだけ</div><div class="d">アプリ不要のWebゲーム。<br>卓上POPひとつで始まる。</div></div>
+      <div class="feat rv"><div class="t">imapp連携</div><div class="d">レシートQRで購読・<br>再来店の導線に。</div></div>
+      <div class="feat rv"><div class="t">クーポン配布</div><div class="d">育てた火のご褒美に、<br>お店のご褒美を重ねる。</div></div>
+      <div class="feat rv"><div class="t">店舗ランキング</div><div class="d">「火起こしの早さ」で<br>常連が競い合う。</div></div>
+    </div>
+    <p class="scenes rv">
+      <em>サウナ</em>の待ち時間に。<em>キャンプ場</em>の消灯前に。<br>
+      <em>薪ストーブ店</em>の店先で、火のある暮らしの入り口に。
+    </p>
+    <div class="shop-cta rv">
+      <a class="btn btn-fire" href="https://imapp.shop" target="_blank" rel="noopener">導入のご相談（imapp）</a>
+    </div>
+  </section>
+
+  <section class="ec">
+    <p class="t rv">やがて、本物の薪へ。</p>
+    <p class="rv">画面の火に飽き足らなくなったら——<br>製材所直送の薪が、あなたの焚き火を待っています。</p>
+    <span class="soon rv">薪のオンラインストア　準備中</span>
+  </section>
+</main>
+
+<footer>
+  焚き火 -takibi- ／ imapp ミニゲーム<br>
+  音源提供：Springin' Sound Stock　・　© 2026 imapp
+</footer>
+
+<button id="sndbtn">音を灯す</button>
+
+<script>
+'use strict';
+/* =====================================================
+ *  LP背景：アンビエント焚き火（ゲーム本編の描画系の縮約版）
+ *  ゲームプレイなし・熾火の完成した火をずっと眺められる
+ * ===================================================== */
+const cv = document.getElementById('bg');
+const ctx = cv.getContext('2d');
+const REDUCE = matchMedia('(prefers-reduced-motion: reduce)').matches;
+let W=0,H=0,S=1,cx=0,baseY=0;
+const clamp=(v,a,b)=>v<a?a:(v>b?b:v);
+const fract=x=>x-Math.floor(x);
+const hash=n=>fract(Math.sin(n*127.1)*43758.5453);
+
+function makeGlow(size,inner,outer){
+  const c=document.createElement('canvas'); c.width=c.height=size;
+  const g=c.getContext('2d');
+  const gr=g.createRadialGradient(size/2,size/2,0,size/2,size/2,size/2);
+  gr.addColorStop(0,inner); gr.addColorStop(0.4,outer); gr.addColorStop(1,'rgba(0,0,0,0)');
+  g.fillStyle=gr; g.fillRect(0,0,size,size); return c;
+}
+const SPR_SPARK=makeGlow(32,'rgba(255,240,200,1)','rgba(255,150,50,0.6)');
+const SPR_LIGHT=makeGlow(256,'rgba(255,160,60,0.55)','rgba(255,110,30,0.2)');
+const SPR_SMOKE=makeGlow(96,'rgba(150,150,158,0.5)','rgba(110,110,120,0.22)');
+
+/* ---- 実際の月齢 ---- */
+function moonPhaseNow(){
+  const ref=Date.UTC(2000,0,6,18,14), syn=29.53058867*86400000;
+  let p=((Date.now()-ref)%syn)/syn; if(p<0)p+=1; return p;
+}
+const MOON_P=moonPhaseNow();
+const MOON_ILLUM=(1-Math.cos(2*Math.PI*MOON_P))/2;
+function drawMoonPhase(c,x,y,r,p){
+  c.save(); c.translate(x,y);
+  c.fillStyle='rgba(190,200,220,0.10)';
+  c.beginPath(); c.arc(0,0,r,0,6.284); c.fill();
+  const ex=Math.cos(2*Math.PI*p);
+  c.fillStyle='#dfe4ee';
+  c.beginPath();
+  if(p<=0.5){ c.arc(0,0,r,-Math.PI/2,Math.PI/2,false); c.ellipse(0,0,Math.abs(ex)*r,r,0,Math.PI/2,-Math.PI/2,ex>0); }
+  else{ c.arc(0,0,r,Math.PI/2,-Math.PI/2,false); c.ellipse(0,0,Math.abs(ex)*r,r,0,-Math.PI/2,Math.PI/2,ex>0); }
+  c.fill(); c.restore();
+}
+
+/* ---- 焚き火イラスト（base＋炎フレーム加算ダンス） ---- */
+const FRAMES=[]; for(let i=1;i<=10;i++){ const im=new Image(); im.src=`../assets/fire${String(i).padStart(2,'0')}.png`; FRAMES.push(im); }
+const BASE=new Image(); BASE.src='../assets/base.png';
+const fire={ cur:7, nxt:8, mix:1, rate:2.5, offB:document.createElement('canvas'), offF:document.createElement('canvas') };
+
+let stars=[],m1=[],m2=[],trees=[];
+function build(){
+  W=innerWidth; H=innerHeight;
+  const dpr=Math.min(devicePixelRatio||1,2);
+  cv.width=W*dpr; cv.height=H*dpr;
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  S=Math.min(W,H)/780; cx=W/2; baseY=H*0.76;
+  stars=[]; const n=REDUCE?60:140;
+  for(let i=0;i<n;i++) stars.push({x:hash(i*1.7)*W,y:hash(i*3.1)*H*0.55,r:0.4+hash(i*5.3)*1.3,ph:hash(i*7.7)*6.28,sp:0.4+hash(i*9.1)*1.6});
+  m1=[];m2=[];const st=46;
+  for(let x=-st;x<=W+st;x+=st){const i=Math.round(x/st);
+    m1.push([x,H*0.62+(hash(i*2.3)+hash(i*0.7+9))*H*0.055]);
+    m2.push([x,H*0.68+(hash(i*4.1+3)+hash(i*1.3+5))*H*0.045]);}
+  trees=[]; const tn=Math.max(3,Math.floor(W/260));
+  for(let i=0;i<tn;i++){const side=i%2===0?1:-1;
+    trees.push({x:clamp(0.5+side*(0.26+hash(i*11.3)*0.24),0.04,0.96)*W,h:(90+hash(i*13.7)*90)*S});}
+}
+addEventListener('resize',build);
+function ridge(pts,col){ if(!pts.length)return; ctx.fillStyle=col; ctx.beginPath();
+  ctx.moveTo(pts[0][0],pts[0][1]); for(let i=1;i<pts.length;i++) ctx.lineTo(pts[i][0],pts[i][1]);
+  ctx.lineTo(W+50,H); ctx.lineTo(-50,H); ctx.closePath(); ctx.fill(); }
+function conifer(x,gy,h){ const w=h*0.42;
+  for(let k=0;k<3;k++){ const yy=gy-h*(0.30+k*0.26), ww=w*(1-k*0.26);
+    ctx.beginPath(); ctx.moveTo(x,yy-h*0.34); ctx.lineTo(x-ww/2,yy); ctx.lineTo(x+ww/2,yy); ctx.closePath(); ctx.fill(); }
+  ctx.fillRect(x-h*0.03,gy-h*0.3,h*0.06,h*0.3); }
+
+const sparks=[];
+function renderFire(t,dt,heat){
+  if(!(BASE.complete&&BASE.naturalWidth>0)) return;
+  const iw=BASE.naturalWidth, ih=BASE.naturalHeight;
+  const powerN=clamp(heat,0,1);
+  const dw=300*S*1.4*(0.96+0.08*powerN);
+  const owB=Math.max(2,Math.ceil(dw)), ohB=owB;
+  const CONTENT_BOTTOM=0.859;
+  const groundY=baseY+24*S;
+  const ax=cx, ay=groundY+(1-CONTENT_BOTTOM)*ohB;
+  // 接地影・照り返し
+  ctx.save(); ctx.translate(ax,groundY+4*S); ctx.scale(1,0.24);
+  const rx=owB*0.37;
+  const shd=ctx.createRadialGradient(0,0,0,0,0,rx);
+  shd.addColorStop(0,'rgba(0,0,0,0.5)'); shd.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=shd; ctx.fillRect(-rx,-rx,rx*2,rx*2);
+  ctx.globalCompositeOperation='lighter';
+  ctx.globalAlpha=(heat*0.3)*(0.8+0.2*Math.sin(t*9.1)*Math.sin(t*4.3));
+  const ref=ctx.createRadialGradient(0,0,0,0,0,rx*1.15);
+  ref.addColorStop(0,'rgba(255,140,50,0.55)'); ref.addColorStop(1,'rgba(255,90,20,0)');
+  ctx.fillStyle=ref; ctx.fillRect(-rx*1.15,-rx*1.15,rx*2.3,rx*2.3);
+  ctx.restore();
+  // 薪ベース
+  if(fire.offB.width!==owB||fire.offB.height!==ohB){fire.offB.width=owB;fire.offB.height=ohB;}
+  const gB=fire.offB.getContext('2d');
+  gB.clearRect(0,0,owB,ohB);
+  gB.drawImage(BASE,0,0,iw,ih,0,0,owB,ohB);
+  ctx.drawImage(fire.offB,ax-owB/2,ay-ohB,owB,ohB);
+  // 踊る炎（加算）
+  const fr=FRAMES.filter(f=>f.complete&&f.naturalWidth>0);
+  const N=fr.length;
+  if(N>1){
+    fire.mix+=dt*fire.rate;
+    if(fire.mix>=1){ fire.cur=fire.nxt;
+      const center=powerN*(N-1);
+      let cand=Math.round(center+(Math.random()*3-1.5));
+      cand=clamp(cand,0,N-1);
+      if(cand===fire.cur) cand=clamp(fire.cur+(Math.random()<0.5?-1:1),0,N-1);
+      fire.nxt=cand; fire.mix=0; fire.rate=1/(0.3+Math.random()*0.35); }
+    const m=fire.mix*fire.mix*(3-2*fire.mix);
+    const A=fr[clamp(fire.cur,0,N-1)],B=fr[clamp(fire.nxt,0,N-1)];
+    if(fire.offF.width!==owB||fire.offF.height!==ohB){fire.offF.width=owB;fire.offF.height=ohB;}
+    const g=fire.offF.getContext('2d');
+    g.clearRect(0,0,owB,ohB);
+    g.drawImage(A,0,0,iw,ih,0,0,owB,ohB);
+    g.globalAlpha=m; g.drawImage(B,0,0,iw,ih,0,0,owB,ohB); g.globalAlpha=1;
+    const wind=Math.sin(t*0.5)*0.3+Math.sin(t*0.13+2)*0.22;
+    ctx.save(); ctx.translate(ax,ay); ctx.transform(1,0,wind*0.04,1,0,0);
+    ctx.globalCompositeOperation='lighter';
+    ctx.globalAlpha=clamp((powerN-0.02)*2.6,0,1)*(0.78+0.1*Math.sin(t*9.3)*Math.sin(t*3.7));
+    ctx.drawImage(fire.offF,-owB/2,-ohB,owB,ohB);
+    ctx.restore();
+  }
+  // 熾火の脈動
+  const fl=0.5+0.5*Math.sin(t*5.3)*Math.sin(t*2.1);
+  ctx.save(); ctx.globalCompositeOperation='lighter';
+  ctx.globalAlpha=(0.16+heat*0.07)*(0.6+0.4*fl);
+  const eh=ohB*0.35;
+  ctx.drawImage(fire.offB,0,ohB-eh,owB,eh,ax-owB/2,ay-eh,owB,eh);
+  ctx.restore();
+  // 火の粉
+  if(!REDUCE && Math.random()<heat*0.9*dt*22) sparks.push({
+    x:ax+(Math.random()*2-1)*20*S, y:ay-ohB*0.4,
+    vx:(Math.random()*2-1)*20*S, vy:-(90+Math.random()*120)*S,
+    age:0, life:0.8+Math.random()*1.8, size:(1.6+Math.random()*2.4)*S, seed:Math.random()*100 });
+  for(let i=sparks.length-1;i>=0;i--){ const p=sparks[i]; p.age+=dt;
+    if(p.age>=p.life){ sparks[i]=sparks[sparks.length-1]; sparks.pop(); continue; }
+    p.vy-=26*S*dt; p.vx+=(Math.sin(t*6+p.seed)*30)*S*dt; p.x+=p.vx*dt; p.y+=p.vy*dt; }
+  ctx.save(); ctx.globalCompositeOperation='lighter';
+  for(const p of sparks){ const f=p.age/p.life;
+    ctx.globalAlpha=(1-f)*(0.55+0.45*Math.sin(t*22+p.seed*9));
+    const sz=p.size*(2.6-f*1.4);
+    ctx.drawImage(SPR_SPARK,p.x-sz/2,p.y-sz/2,sz,sz); }
+  ctx.restore();
+}
+
+let last=performance.now();
+function frame(now){
+  const dt=clamp((now-last)/1000,0,0.05); last=now;
+  const t=now/1000;
+  const heat=0.86+0.1*Math.sin(t*0.13)+0.04*Math.sin(t*0.47);
+  // 空
+  const sky=ctx.createLinearGradient(0,0,0,H);
+  sky.addColorStop(0,'#04050f');
+  sky.addColorStop(0.55,'rgb(16,14,28)');
+  sky.addColorStop(1,'rgb(28,17,18)');
+  ctx.fillStyle=sky; ctx.fillRect(0,0,W,H);
+  // 星・月
+  ctx.save();
+  for(const s of stars){
+    ctx.globalAlpha=(0.25+0.75*Math.pow(Math.sin(t*s.sp+s.ph)*0.5+0.5,2))*0.8;
+    ctx.fillStyle='#dfe6ff'; ctx.fillRect(s.x,s.y,s.r,s.r); }
+  ctx.restore();
+  const mx=W*0.8,my=H*0.15,mr=24*S;
+  ctx.save();
+  ctx.globalAlpha=0.5*(0.2+0.8*MOON_ILLUM);
+  const mg=ctx.createRadialGradient(mx,my,mr*0.4,mx,my,mr*4);
+  mg.addColorStop(0,'rgba(210,220,240,0.5)'); mg.addColorStop(1,'rgba(210,220,240,0)');
+  ctx.fillStyle=mg; ctx.fillRect(mx-mr*4,my-mr*4,mr*8,mr*8);
+  ctx.globalAlpha=0.92; drawMoonPhase(ctx,mx,my,mr,MOON_P);
+  ctx.restore();
+  // 山・木・地面
+  ridge(m1,'#0a0d18'); ridge(m2,'#070912');
+  ctx.fillStyle='#05070d';
+  for(const tr of trees) conifer(tr.x,H*0.80,tr.h);
+  const gg=ctx.createLinearGradient(0,baseY-40,0,H);
+  gg.addColorStop(0,'#0b0a0c'); gg.addColorStop(1,'#040305');
+  ctx.fillStyle=gg; ctx.fillRect(0,baseY-8*S,W,H-baseY+8*S);
+  // 地明かり
+  const flick=0.86+0.14*Math.sin(t*13)*Math.sin(t*5.1);
+  const r=(140+420*heat)*S*1.4*flick;
+  ctx.save(); ctx.globalCompositeOperation='lighter';
+  ctx.globalAlpha=clamp(0.10+heat*0.30,0,0.5);
+  ctx.drawImage(SPR_LIGHT,cx-r,baseY-r*0.62,r*2,r*1.3);
+  ctx.restore();
+  // 石組み
+  ctx.fillStyle='#1a1614';
+  for(let i=0;i<9;i++){ const a=(i/9)*Math.PI+Math.PI*0.02*(i%3);
+    const rx2=cx+Math.cos(a)*122*S*1.4*(1+hash(i*3.3)*0.14);
+    const ry2=baseY+18*S+Math.sin(a)*26*S*0.4+hash(i*5.9)*5*S;
+    const rr2=(10+hash(i*7.1)*8)*S*1.4;
+    ctx.beginPath(); ctx.ellipse(rx2,ry2,rr2,rr2*0.62,0,0,6.284); ctx.fill(); }
+  renderFire(t,dt,heat);
+  // ビネット
+  const vg=ctx.createRadialGradient(cx,H*0.55,Math.min(W,H)*0.32,cx,H*0.55,Math.max(W,H)*0.78);
+  vg.addColorStop(0,'rgba(0,0,0,0)'); vg.addColorStop(1,'rgba(0,0,0,0.62)');
+  ctx.fillStyle=vg; ctx.fillRect(0,0,W,H);
+  requestAnimationFrame(frame);
+}
+build();
+requestAnimationFrame(frame);
+
+/* ---- 月セクション ---- */
+const mc=document.getElementById('moon').getContext('2d');
+drawMoonPhase(mc,120,120,86,MOON_P);
+document.getElementById('illum').textContent=Math.round(MOON_ILLUM*100);
+
+/* ---- スクロール出現 ---- */
+const io=new IntersectionObserver(es=>{
+  es.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); });
+},{threshold:0.25});
+document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+
+/* ---- 音（実録ループ・任意で灯す） ---- */
+const sndBtn=document.getElementById('sndbtn');
+let audio=null,on=false;
+sndBtn.addEventListener('click',()=>{
+  if(!audio){ audio=new Audio('../assets/loop1.mp3'); audio.loop=true; audio.volume=0; }
+  on=!on;
+  sndBtn.classList.toggle('on',on);
+  sndBtn.textContent=on?'音を消す':'音を灯す';
+  if(on){ audio.play().catch(()=>{}); fade(0.55); } else fade(0);
+});
+let fadeTimer=null;
+function fade(target){
+  if(fadeTimer) clearInterval(fadeTimer);
+  fadeTimer=setInterval(()=>{
+    if(!audio) return;
+    const d=target-audio.volume;
+    if(Math.abs(d)<0.03){ audio.volume=target; if(target===0) audio.pause(); clearInterval(fadeTimer); return; }
+    audio.volume+=d*0.15;
+  },50);
+}
+</script>
+</body>
+</html>
