@@ -14,207 +14,575 @@
 <link rel="icon" href="../icons/favicon-32.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;700;900&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;600;700;900&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<script>document.documentElement.classList.add("js");</script>
 <style>
-  :root{
-    --kiri:#e7e8e3; --sumi:#232830; --sumi-soft:#5b626c; --line:rgba(35,40,48,.14);
-    --ai:#274a6d; --ai-deep:#17324c; --gold:#b98a2e; --akane:#b23f34;
-    --kameoka:#a5573a; --nantan:#5b7d4b; --kyotamba:#3a6a8c;
-    --mincho:"Zen Old Mincho","Yu Mincho","Hiragino Mincho ProN",serif;
-    --sans:"Noto Sans JP",system-ui,sans-serif;
-  }
-  *{box-sizing:border-box;margin:0;padding:0}
-  html{scroll-behavior:smooth}
-  body{font-family:var(--sans);color:var(--sumi);-webkit-font-smoothing:antialiased;line-height:1.75;
-    background:radial-gradient(1100px 560px at 50% -8%,#f2f3ef 0%,transparent 60%),linear-gradient(180deg,#eceded,var(--kiri) 42%,#e2e3dd);}
-  .wrap{max-width:940px;margin:0 auto;padding:0 20px}
-  a{color:inherit}
-  /* Hero */
-  .hero{text-align:center;padding:60px 20px 46px}
-  .crest{width:min(40vw,168px);height:auto;filter:drop-shadow(0 18px 30px rgba(23,49,76,.35))}
-  .eyebrow{font-size:12px;letter-spacing:.32em;color:var(--ai);margin:22px 0 10px}
-  h1{font-family:var(--mincho);font-weight:900;letter-spacing:.06em;font-size:clamp(30px,7vw,54px);line-height:1.12;text-wrap:balance}
-  .lead{font-family:var(--mincho);font-size:clamp(14px,2.6vw,18px);color:var(--sumi-soft);margin:16px auto 0;max-width:30em;letter-spacing:.03em}
-  .cta{display:inline-flex;align-items:center;gap:10px;font-family:var(--mincho);font-weight:700;font-size:18px;letter-spacing:.12em;
-    color:#fff;background:linear-gradient(180deg,#2c527a,var(--ai));border:0;border-radius:8px;padding:15px 40px;margin-top:26px;
-    text-decoration:none;box-shadow:0 12px 26px -12px rgba(23,49,76,.7);transition:transform .15s,box-shadow .2s}
-  .cta:hover{transform:translateY(-2px);box-shadow:0 16px 30px -12px rgba(23,49,76,.8)}
-  .cta .tri{color:#f3d68c}
-  .note{font-size:12.5px;color:var(--sumi-soft);margin-top:14px;letter-spacing:.04em}
-  /* Sections */
-  section{padding:44px 0;border-top:1px solid var(--line)}
-  .sec-eyebrow{font-size:11px;letter-spacing:.24em;color:var(--gold);text-align:center;margin-bottom:8px}
-  h2{font-family:var(--mincho);font-weight:800;font-size:clamp(21px,4.2vw,30px);letter-spacing:.05em;text-align:center;text-wrap:balance}
-  .sec-lead{text-align:center;color:var(--sumi-soft);font-size:14px;margin:12px auto 0;max-width:34em}
-  /* how to play */
-  .beats{display:grid;gap:14px;margin-top:26px}
-  .beat{display:flex;gap:16px;align-items:center;background:rgba(255,255,255,.55);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
-  .beat .n{flex:0 0 auto;font-family:var(--mincho);font-weight:900;font-size:19px;color:#fff;background:var(--ai);width:34px;height:34px;border-radius:50%;display:grid;place-items:center}
-  .beat .bt{font-family:var(--mincho);font-weight:700;font-size:16px}
-  .beat .bd{font-size:13px;color:var(--sumi-soft);margin-top:2px}
-  .mini{display:inline-flex;gap:5px;vertical-align:middle;margin-left:6px}
-  .mini i{display:block;width:15px;height:22px;border-radius:3px}
-  .mini i:nth-child(1){background:var(--nantan)} .mini i:nth-child(2){background:var(--kameoka)} .mini i:nth-child(3){background:var(--kyotamba)}
-  /* editions */
-  .eds{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:26px}
-  .ed{background:rgba(255,255,255,.55);border:1px solid var(--line);border-top:4px solid var(--c);border-radius:12px;padding:18px 16px;text-align:center}
-  .ed .en{font-family:var(--mincho);font-weight:800;font-size:19px;color:var(--c)}
-  .ed .ed-d{font-size:12.5px;color:var(--sumi-soft);margin-top:6px;line-height:1.7}
-  /* mastery ladder */
-  .ladder{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;align-items:center;margin-top:26px}
-  .yr{font-family:var(--mincho);font-weight:700;font-size:clamp(20px,5vw,30px);letter-spacing:.12em;color:var(--sumi);
-    background:linear-gradient(180deg,#fdfdf9,#f4f3ec);border:1px solid var(--line);border-left:5px solid var(--gold);border-radius:8px;padding:12px 18px;
-    font-feature-settings:"tnum";box-shadow:0 8px 18px -12px rgba(0,0,0,.4)}
-  .yr .mask{color:var(--akane)}
-  .arw{color:var(--sumi-soft);font-size:18px}
-  .ladder-cap{display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:center;margin-top:16px;font-size:12px;color:var(--sumi-soft)}
-  .ladder-cap b{color:var(--sumi);font-family:var(--mincho)}
-  /* meguri (touring) */
-  .mg-wrap{display:flex;flex-direction:column;align-items:center;margin-top:24px}
-  .mg-petals{width:min(38vw,150px);height:auto;filter:drop-shadow(0 10px 18px rgba(23,49,76,.22))}
-  .mg-ranks{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:18px}
-  .mg-rank-chip{font-family:var(--mincho);font-size:12px;font-weight:700;color:var(--sumi);border:1px solid var(--line);border-radius:99px;background:rgba(255,255,255,.6);padding:5px 13px}
-  .mg-rank-chip.last{border-color:var(--gold);color:var(--gold)}
-  .mg-arw{color:var(--sumi-soft);font-size:12px;align-self:center}
-  .routes{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:22px;width:100%}
-  .route{--c:var(--ai);background:rgba(255,255,255,.55);border:1px solid var(--line);border-left:4px solid var(--c);border-radius:10px;padding:14px 16px}
-  .route .rn{font-family:var(--mincho);font-weight:700;font-size:14.5px}
-  .route .rd{font-size:11.5px;color:var(--sumi-soft);margin-top:4px;line-height:1.6}
-  @media (max-width:640px){ .routes{grid-template-columns:1fr} }
-  /* feature rows */
-  .feat{display:grid;grid-template-columns:1fr;gap:14px;margin-top:24px}
-  .card{background:rgba(255,255,255,.55);border:1px solid var(--line);border-radius:12px;padding:20px 20px}
-  .card h3{font-family:var(--mincho);font-weight:700;font-size:17px;letter-spacing:.03em}
-  .card p{font-size:13.5px;color:var(--sumi-soft);margin-top:6px}
-  .card .tag{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#fff;background:var(--nantan);border-radius:3px;padding:2px 8px;margin-bottom:8px}
-  .card.gps .tag{background:var(--kyotamba)} .card.src .tag{background:var(--gold)}
-  /* footer */
-  .foot{text-align:center;padding:52px 20px 40px}
-  .foot .cta{margin-top:0}
-  .fine{font-size:11.5px;color:var(--sumi-soft);line-height:1.8;margin-top:22px;max-width:40em;margin-left:auto;margin-right:auto}
-  .fine b{color:var(--sumi)}
-  @media (max-width:640px){ .eds{grid-template-columns:1fr} }
-  @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto;transition:none!important;animation:none!important}}
+:root{
+  --paper:#f4f0e7;
+  --paper-deep:#e9e2d4;
+  --ink:#182632;
+  --ink-soft:#64717a;
+  --navy:#274a6d;
+  --navy-deep:#152f47;
+  --gold:#b98a2e;
+  --gold-soft:#dfc995;
+  --kameoka:#a5573a;
+  --nantan:#5b7d4b;
+  --kyotamba:#3a6a8c;
+  --akane:#b23f34;
+  --white:#fffdf8;
+  --line:rgba(24,38,50,.12);
+  --shadow:0 28px 80px rgba(16,40,59,.14);
+  --mincho:"Zen Old Mincho","Yu Mincho","Hiragino Mincho ProN",serif;
+  --sans:"Noto Sans JP",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  color:var(--ink);
+  font-family:var(--sans);
+  line-height:1.8;
+  background:
+    radial-gradient(circle at 15% 12%,rgba(185,138,46,.08),transparent 25%),
+    radial-gradient(circle at 88% 26%,rgba(58,106,140,.10),transparent 27%),
+    var(--paper);
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+a{color:inherit}
+button,a{touch-action:manipulation}
+img,svg{display:block;max-width:100%}
+.container{width:min(1160px,calc(100% - 40px));margin-inline:auto}
+.kicker{font-size:11px;font-weight:700;letter-spacing:.25em;color:var(--gold);text-transform:uppercase}
+.section-title{font-family:var(--mincho);font-weight:800;letter-spacing:.045em;line-height:1.45;font-size:clamp(29px,4vw,48px)}
+.section-lead{max-width:650px;color:var(--ink-soft);font-size:15px;margin-top:18px}
+.reveal{transition:opacity .75s ease,transform .75s ease}
+.js .reveal{opacity:0;transform:translateY(24px)}
+.js .reveal.is-visible{opacity:1;transform:none}
+
+/* header */
+.site-header{
+  position:absolute;z-index:20;top:0;left:0;right:0;
+  height:86px;display:flex;align-items:center;
+}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:28px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:#fff}
+.brand-mark{width:42px;height:42px;filter:drop-shadow(0 8px 16px rgba(0,0,0,.2))}
+.brand-text{font-family:var(--mincho);font-weight:800;letter-spacing:.08em;font-size:15px}
+.nav-links{display:flex;align-items:center;gap:26px;color:rgba(255,255,255,.78);font-size:13px}
+.nav-links a{text-decoration:none;transition:color .2s}
+.nav-links a:hover{color:#fff}
+.nav-play{display:inline-flex;align-items:center;gap:9px;padding:11px 19px;border:1px solid rgba(255,255,255,.34);border-radius:999px;color:#fff!important;background:rgba(255,255,255,.08);backdrop-filter:blur(12px)}
+.nav-play::before{content:"▶";font-size:10px;color:#f1d794}
+
+/* hero */
+.hero{
+  position:relative;min-height:790px;color:#fff;display:grid;align-items:center;
+  background:
+    linear-gradient(105deg,#10283b 0%,#1d3a54 50%,var(--navy) 100%);
+  overflow:hidden;
+}
+.hero::before{
+  content:"";position:absolute;inset:0;opacity:.32;
+  background-image:
+    linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+  background-size:56px 56px;
+  mask-image:linear-gradient(to bottom,black,transparent 88%);
+}
+.hero::after{
+  content:"";position:absolute;left:-8%;right:-8%;bottom:-2px;height:240px;
+  background:var(--paper);
+  clip-path:polygon(0 74%,8% 68%,16% 79%,26% 49%,35% 72%,44% 40%,54% 65%,63% 36%,73% 63%,83% 47%,92% 68%,100% 55%,100% 100%,0 100%);
+}
+.hero-glow{position:absolute;width:640px;height:640px;border-radius:50%;right:-180px;top:-210px;background:radial-gradient(circle,rgba(223,201,149,.25),rgba(223,201,149,0) 67%)}
+.hero-river{position:absolute;right:-60px;bottom:65px;width:57%;height:270px;opacity:.22;border:1px solid rgba(255,255,255,.3);border-radius:50%;transform:rotate(-10deg);filter:blur(.2px)}
+.hero-river::before,.hero-river::after{content:"";position:absolute;border:1px solid rgba(255,255,255,.28);border-radius:50%;inset:27px}
+.hero-river::after{inset:57px}
+.hero-inner{position:relative;z-index:3;display:grid;grid-template-columns:1.04fr .96fr;gap:72px;align-items:center;padding:155px 0 205px}
+.hero-copy{padding-top:10px}
+.hero-eyebrow{display:flex;align-items:center;gap:12px;font-size:12px;font-weight:600;letter-spacing:.3em;color:#e3cf9f}
+.hero-eyebrow::before{content:"";width:48px;height:1px;background:#d7b76f}
+.hero h1{font-family:var(--mincho);font-weight:900;line-height:1.2;letter-spacing:.04em;font-size:clamp(44px,6.1vw,78px);margin-top:26px;text-wrap:balance}
+.hero h1 .small{display:block;font-size:.43em;font-weight:600;letter-spacing:.14em;margin-bottom:8px;color:rgba(255,255,255,.78)}
+.hero-lead{font-family:var(--mincho);font-size:clamp(17px,2vw,22px);letter-spacing:.05em;line-height:2;max-width:640px;color:rgba(255,255,255,.82);margin-top:26px}
+.hero-actions{display:flex;flex-wrap:wrap;gap:13px;margin-top:38px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:11px;min-height:58px;padding:0 28px;border-radius:8px;text-decoration:none;font-weight:700;letter-spacing:.07em;transition:transform .18s,box-shadow .18s,background .18s}
+.btn:hover{transform:translateY(-2px)}
+.btn-primary{background:linear-gradient(135deg,#c49b52,#a87a2f);color:#fff;box-shadow:0 18px 36px rgba(0,0,0,.25)}
+.btn-primary::before{content:"▶";font-size:12px}
+.btn-secondary{color:#fff;border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.06);backdrop-filter:blur(10px)}
+.hero-note{display:flex;flex-wrap:wrap;gap:14px 22px;margin-top:20px;font-size:12px;color:rgba(255,255,255,.6)}
+.hero-note span::before{content:"✓";color:#dec487;margin-right:7px}
+
+.hero-art{position:relative;min-height:520px;display:grid;place-items:center}
+.crest-wrap{position:absolute;top:4px;right:28px;width:135px;z-index:5;filter:drop-shadow(0 22px 32px rgba(0,0,0,.25));animation:float 5.5s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-8px)}}
+.card-stack{position:relative;width:min(420px,92%);height:480px;perspective:1200px}
+.karuta-card{position:absolute;left:50%;top:50%;width:245px;height:365px;border-radius:14px;background:linear-gradient(160deg,#fffdf8,#eee6d8);box-shadow:0 34px 70px rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.8);padding:18px;transform-origin:center bottom;overflow:hidden}
+.karuta-card::before{content:"";position:absolute;inset:9px;border:1px solid rgba(24,38,50,.16);border-radius:9px;pointer-events:none}
+.karuta-card::after{content:"";position:absolute;left:0;right:0;bottom:0;height:38%;background:linear-gradient(to top,rgba(39,74,109,.08),transparent)}
+.card-1{transform:translate(-88%,-43%) rotate(-12deg);z-index:1}
+.card-2{transform:translate(-50%,-51%) rotate(-1deg);z-index:3}
+.card-3{transform:translate(-9%,-41%) rotate(11deg);z-index:2}
+.card-band{height:7px;border-radius:4px;background:var(--card-color);margin:1px 1px 21px}
+.card-region{font-size:10px;font-weight:700;letter-spacing:.22em;color:var(--card-color)}
+.card-mode{font-family:var(--mincho);font-size:30px;font-weight:900;line-height:1.3;margin-top:8px}
+.card-symbol{display:grid;place-items:center;width:115px;height:115px;margin:25px auto 0;border-radius:50%;border:1px solid color-mix(in srgb,var(--card-color) 36%,transparent);background:color-mix(in srgb,var(--card-color) 8%,transparent);font-family:var(--mincho);font-size:48px;font-weight:700;color:var(--card-color)}
+.card-caption{position:absolute;left:28px;right:28px;bottom:27px;font-family:var(--mincho);font-size:13px;letter-spacing:.08em;color:#52616b;z-index:1}
+.timeline-thread{position:absolute;left:-20px;right:-20px;bottom:25px;height:1px;background:linear-gradient(90deg,transparent,rgba(223,201,149,.75),transparent)}
+.timeline-thread i{position:absolute;width:8px;height:8px;border:2px solid #e2c98f;border-radius:50%;top:-4px;background:#173750}
+.timeline-thread i:nth-child(1){left:16%}.timeline-thread i:nth-child(2){left:49%}.timeline-thread i:nth-child(3){left:82%}
+
+/* intro */
+.intro{padding:80px 0 120px;position:relative}
+.intro-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:90px;align-items:start}
+.vertical-label{font-family:var(--mincho);writing-mode:vertical-rl;font-size:13px;letter-spacing:.22em;color:var(--gold);border-left:1px solid var(--gold-soft);padding-left:18px;height:190px}
+.intro-copy .section-title{font-size:clamp(30px,4.2vw,51px)}
+.intro-copy strong{color:var(--akane);font-weight:800}
+.intro-copy p{color:var(--ink-soft);margin-top:23px;max-width:700px}
+.region-line{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:36px}
+.region-pill{position:relative;padding:17px 16px 17px 22px;background:rgba(255,255,255,.58);border:1px solid var(--line);border-radius:10px;font-family:var(--mincho);font-weight:700;letter-spacing:.08em;box-shadow:0 10px 30px rgba(16,40,59,.04)}
+.region-pill::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;border-radius:10px 0 0 10px;background:var(--c)}
+.region-pill small{display:block;font-family:var(--sans);font-size:10px;color:var(--ink-soft);font-weight:600;letter-spacing:.18em;margin-top:2px}
+
+/* how */
+.how{padding:120px 0;background:#fffdf8;position:relative;border-block:1px solid var(--line)}
+.how::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(24,38,50,.055) .75px,transparent .75px);background-size:18px 18px;opacity:.45}
+.how-head{position:relative;text-align:center}
+.how-head .section-lead{margin-inline:auto}
+.steps{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:56px}
+.step{position:relative;min-height:330px;padding:30px 27px 27px;background:rgba(244,240,231,.72);border:1px solid var(--line);border-radius:16px;overflow:hidden;transition:transform .25s,box-shadow .25s}
+.step:hover{transform:translateY(-6px);box-shadow:var(--shadow)}
+.step-num{font-family:var(--mincho);font-size:70px;font-weight:900;line-height:1;color:transparent;-webkit-text-stroke:1px color-mix(in srgb,var(--step-color) 70%,transparent);opacity:.72}
+.step-icon{width:70px;height:70px;border-radius:50%;display:grid;place-items:center;background:var(--step-color);color:#fff;font-family:var(--mincho);font-size:28px;box-shadow:0 14px 26px color-mix(in srgb,var(--step-color) 28%,transparent);margin-top:-11px;margin-left:auto}
+.step h3{font-family:var(--mincho);font-size:22px;line-height:1.55;margin-top:19px;letter-spacing:.04em}
+.step p{color:var(--ink-soft);font-size:14px;margin-top:11px}
+.step-decoration{position:absolute;width:145px;height:145px;border:1px solid color-mix(in srgb,var(--step-color) 25%,transparent);border-radius:50%;right:-66px;bottom:-72px}
+.step-decoration::after{content:"";position:absolute;inset:22px;border:1px solid color-mix(in srgb,var(--step-color) 24%,transparent);border-radius:50%}
+
+/* editions */
+.editions{padding:130px 0}
+.editions-head{display:grid;grid-template-columns:.86fr 1.14fr;gap:70px;align-items:end}
+.editions-head .section-lead{margin-top:0}
+.mode-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:58px}
+.mode{position:relative;min-height:440px;border-radius:18px;padding:30px 28px;overflow:hidden;color:#fff;background:linear-gradient(160deg,var(--mode-a),var(--mode-b));box-shadow:0 28px 60px color-mix(in srgb,var(--mode-b) 22%,transparent);isolation:isolate}
+.mode::before{content:"";position:absolute;inset:-20% -50% 55% 0;background:radial-gradient(circle,rgba(255,255,255,.2),transparent 60%);z-index:-1}
+.mode::after{content:"";position:absolute;right:-70px;bottom:-70px;width:230px;height:230px;border:1px solid rgba(255,255,255,.16);border-radius:50%;box-shadow:0 0 0 26px rgba(255,255,255,.04),0 0 0 52px rgba(255,255,255,.025);z-index:-1}
+.mode-index{font-size:11px;letter-spacing:.25em;color:rgba(255,255,255,.65)}
+.mode h3{font-family:var(--mincho);font-weight:900;font-size:38px;letter-spacing:.08em;margin-top:15px}
+.mode-en{font-family:var(--mincho);font-size:12px;letter-spacing:.25em;color:rgba(255,255,255,.6)}
+.mode-icon{font-family:var(--mincho);font-size:75px;font-weight:400;line-height:1;margin:56px 0 42px;color:rgba(255,255,255,.88)}
+.mode p{font-size:14px;color:rgba(255,255,255,.75);max-width:250px}
+
+/* mastery */
+.mastery{position:relative;padding:130px 0;color:#fff;background:linear-gradient(145deg,#152f47,#274a6d 55%,#2c5570);overflow:hidden}
+.mastery::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 74% 28%,rgba(223,201,149,.14),transparent 28%)}
+.mastery::after{content:"年";position:absolute;right:4%;bottom:-120px;font-family:var(--mincho);font-size:520px;line-height:1;color:rgba(255,255,255,.025)}
+.mastery-grid{position:relative;display:grid;grid-template-columns:.82fr 1.18fr;gap:70px;align-items:center;z-index:1}
+.mastery .kicker{color:#e4c988}
+.mastery .section-lead{color:rgba(255,255,255,.65)}
+.year-stage{padding:38px;border-radius:20px;border:1px solid rgba(255,255,255,.13);background:rgba(255,255,255,.055);backdrop-filter:blur(8px)}
+.year-line{display:grid;grid-template-columns:1fr auto 1fr auto 1fr auto 1fr;align-items:center;gap:12px}
+.year-card{min-height:135px;display:grid;place-items:center;border-radius:12px;color:var(--ink);background:linear-gradient(160deg,#fffdf8,#ede5d7);box-shadow:0 18px 40px rgba(0,0,0,.2);font-family:var(--mincho);font-size:clamp(24px,3vw,35px);font-weight:800;letter-spacing:.1em;border-left:5px solid var(--gold)}
+.year-arrow{color:rgba(255,255,255,.35)}
+.mask{color:var(--akane)}
+.levels{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:16px}
+.level{font-size:11px;color:rgba(255,255,255,.58);text-align:center}
+.level b{display:block;color:#fff;font-family:var(--mincho);font-size:13px;margin-bottom:2px}
+.mastery-note{margin-top:14px;font-size:12px;color:rgba(255,255,255,.55);text-align:center}
+
+/* field */
+.field{padding:130px 0}
+.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:68px;align-items:center}
+.phone-stage{position:relative;min-height:570px;display:grid;place-items:center}
+.phone-stage::before{content:"";position:absolute;width:430px;height:430px;border-radius:50%;background:radial-gradient(circle,rgba(58,106,140,.16),rgba(58,106,140,0) 68%)}
+.phone{position:relative;width:260px;height:520px;padding:10px;border-radius:40px;background:#152f47;box-shadow:0 38px 80px rgba(16,40,59,.28);transform:rotate(-5deg)}
+.phone::before{content:"";position:absolute;top:17px;left:50%;transform:translateX(-50%);width:84px;height:20px;background:#152f47;border-radius:0 0 14px 14px;z-index:2}
+.phone-screen{height:100%;border-radius:31px;overflow:hidden;background:linear-gradient(180deg,#cdd9d6,#edf0e7 43%,#d9cbb3);position:relative}
+.phone-mountain{height:48%;background:linear-gradient(#8fa6a7,#d6ddd8 47%,#5f7c68 48%,#3f614e 70%,#284d3b);clip-path:polygon(0 0,100% 0,100% 100%,0 100%)}
+.phone-mountain::before{content:"";position:absolute;top:80px;left:-20px;width:300px;height:150px;background:#6d8a74;clip-path:polygon(0 70%,22% 35%,36% 61%,55% 20%,71% 56%,87% 31%,100% 57%,100% 100%,0 100%)}
+.photo-card{position:absolute;left:18px;right:18px;bottom:20px;background:rgba(255,253,248,.94);border-radius:15px;padding:18px;box-shadow:0 14px 34px rgba(16,40,59,.18)}
+.photo-card small{font-size:9px;letter-spacing:.16em;color:var(--kyotamba)}
+.photo-card h4{font-family:var(--mincho);font-size:18px;margin-top:3px}
+.photo-card p{font-size:10px;color:var(--ink-soft);margin-top:6px;line-height:1.6}
+.gps-badge{position:absolute;right:-20px;top:90px;padding:12px 16px;border-radius:10px;background:#fffdf8;box-shadow:0 16px 34px rgba(16,40,59,.18);font-size:12px;font-weight:700;color:var(--kyotamba);transform:rotate(5deg)}
+.gps-badge::before{content:"●";margin-right:7px;color:var(--akane)}
+.field-list{display:grid;gap:18px;margin-top:38px}
+.field-item{display:grid;grid-template-columns:48px 1fr;gap:16px;padding:18px 0;border-top:1px solid var(--line)}
+.field-item:last-child{border-bottom:1px solid var(--line)}
+.field-num{font-family:var(--mincho);font-size:25px;color:var(--gold)}
+.field-item h3{font-family:var(--mincho);font-size:18px}
+.field-item p{font-size:13px;color:var(--ink-soft);margin-top:4px}
+.field-privacy{margin-top:16px;font-size:11.5px;color:var(--ink-soft)}
+.field-privacy::before{content:"🔒";margin-right:6px}
+
+/* tour (めぐり帳) */
+.tour{padding:130px 0;background:#fffdf8;border-block:1px solid var(--line);position:relative;overflow:hidden}
+.tour::before{content:"巡";position:absolute;left:-60px;top:-90px;font-family:var(--mincho);font-size:430px;line-height:1;color:rgba(24,38,50,.025)}
+.tour-grid{position:relative;display:grid;grid-template-columns:.9fr 1.1fr;gap:70px;align-items:center}
+.tour-visual{display:flex;flex-direction:column;align-items:center;gap:24px}
+.tour-flower{width:min(52vw,230px);filter:drop-shadow(0 18px 30px rgba(16,40,59,.16))}
+.rank-ladder{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center}
+.rank-chip{font-family:var(--mincho);font-size:12px;font-weight:700;color:var(--ink);border:1px solid var(--line);border-radius:999px;background:rgba(244,240,231,.8);padding:6px 14px}
+.rank-chip.last{border-color:var(--gold);color:var(--gold)}
+.rank-arw{color:var(--ink-soft);font-size:11px}
+.routes{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:34px}
+.route{--c:var(--navy);position:relative;background:rgba(244,240,231,.72);border:1px solid var(--line);border-radius:14px;padding:18px 18px 16px;overflow:hidden;transition:transform .25s,box-shadow .25s}
+.route:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+.route::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--c)}
+.route h3{font-family:var(--mincho);font-size:16.5px;letter-spacing:.04em}
+.route p{font-size:12px;color:var(--ink-soft);margin-top:5px;line-height:1.7}
+.tour-notes{display:flex;flex-wrap:wrap;gap:12px 24px;margin-top:22px;font-size:12.5px;color:var(--ink-soft)}
+.tour-notes span::before{content:"🌸";margin-right:6px}
+
+/* trust */
+.trust{padding:110px 0;background:var(--paper-deep);border-top:1px solid var(--line)}
+.trust-box{display:grid;grid-template-columns:.75fr 1.25fr;gap:70px;align-items:center;padding:60px;border:1px solid rgba(24,38,50,.13);background:rgba(255,253,248,.55);border-radius:20px}
+.source-mark{width:155px;height:155px;border-radius:50%;display:grid;place-items:center;margin:auto;border:1px solid rgba(185,138,46,.4);box-shadow:inset 0 0 0 16px rgba(185,138,46,.07);font-family:var(--mincho);font-size:52px;color:var(--gold)}
+.trust-points{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:28px}
+.trust-point{font-size:13px;color:var(--ink-soft);padding:15px;border:1px solid var(--line);border-radius:9px;background:rgba(255,255,255,.48)}
+.trust-point b{display:block;font-family:var(--mincho);font-size:15px;color:var(--ink);margin-bottom:3px}
+
+/* final */
+.final-cta{position:relative;padding:120px 0 75px;text-align:center;background:#fffdf8;overflow:hidden}
+.final-cta::before{content:"";position:absolute;left:50%;top:54px;transform:translateX(-50%);width:520px;height:520px;border:1px solid rgba(185,138,46,.13);border-radius:50%;box-shadow:0 0 0 45px rgba(185,138,46,.045),0 0 0 90px rgba(185,138,46,.025)}
+.final-content{position:relative;z-index:1}
+.final-crest{width:105px;margin:0 auto 22px;filter:drop-shadow(0 18px 26px rgba(16,40,59,.18))}
+.final-cta .section-lead{margin-inline:auto}
+.final-cta .btn{margin-top:30px;min-width:310px}
+.footer{position:relative;padding:30px 0 45px;background:#fffdf8;border-top:1px solid var(--line)}
+.footer-inner{display:flex;justify-content:space-between;gap:24px;align-items:flex-end}
+.footer-copy{font-size:10.5px;line-height:1.9;color:var(--ink-soft);max-width:760px}
+.footer-copy b{color:var(--ink)}
+.footer-brand{font-family:var(--mincho);font-size:12px;letter-spacing:.13em;color:var(--ink-soft);white-space:nowrap}
+.mobile-cta{display:none}
+
+@media (max-width:980px){
+  .hero-inner{grid-template-columns:1fr;gap:42px;padding-top:145px;text-align:center}
+  .hero-copy{display:flex;flex-direction:column;align-items:center}
+  .hero-art{min-height:460px}
+  .hero::after{height:170px}
+  .hero-river{width:90%;right:5%;bottom:20px}
+  .intro-grid,.editions-head,.mastery-grid,.field-grid,.tour-grid,.trust-box{grid-template-columns:1fr}
+  .vertical-label{writing-mode:horizontal-tb;height:auto;border-left:0;border-bottom:1px solid var(--gold-soft);padding:0 0 14px}
+  .steps,.mode-grid{grid-template-columns:1fr}
+  .step{min-height:auto}
+  .mode{min-height:330px}
+  .mode-icon{margin:35px 0 25px}
+  .year-stage{padding:24px}
+  .phone-stage{order:2}
+  .trust-box{padding:42px}
+}
+@media (max-width:720px){
+  .container{width:min(100% - 28px,1160px)}
+  .site-header{height:72px}
+  .nav-links a:not(.nav-play){display:none}
+  .brand-text{font-size:13px}
+  .hero{min-height:auto}
+  .hero-inner{padding:120px 0 165px}
+  .hero h1{font-size:clamp(40px,12vw,58px)}
+  .hero-lead br{display:none}
+  .hero-art{min-height:390px}
+  .card-stack{transform:scale(.82);height:400px}
+  .crest-wrap{width:98px;right:8px}
+  .intro,.how,.editions,.mastery,.field,.tour,.trust{padding:90px 0}
+  .intro-grid{gap:35px}
+  .region-line{grid-template-columns:1fr}
+  .steps{margin-top:40px}
+  .mode-grid{margin-top:40px}
+  .year-line{grid-template-columns:1fr;gap:8px}
+  .year-arrow{transform:rotate(90deg);text-align:center}
+  .levels{grid-template-columns:1fr 1fr}
+  .phone-stage{min-height:535px}
+  .routes{grid-template-columns:1fr}
+  .trust-points{grid-template-columns:1fr}
+  .trust-box{padding:34px 22px;gap:34px}
+  .footer-inner{display:block}
+  .footer-brand{margin-top:18px}
+  .final-cta{padding-bottom:105px}
+  .mobile-cta{display:flex;position:fixed;left:12px;right:12px;bottom:12px;z-index:50;min-height:56px;border-radius:10px;align-items:center;justify-content:center;text-decoration:none;background:linear-gradient(135deg,#c49b52,#a87a2f);color:#fff;font-weight:700;letter-spacing:.09em;box-shadow:0 14px 34px rgba(16,40,59,.34)}
+  .mobile-cta::before{content:"▶";font-size:11px;margin-right:9px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{scroll-behavior:auto!important;animation:none!important;transition:none!important}
+  .js .reveal{opacity:1;transform:none}
+}
 </style>
 </head>
 <body>
 
-<header class="hero">
-  <svg class="crest" viewBox="0 0 1024 1024" role="img" aria-label="京都丹波・年表かるたの花の紋">
-    <defs>
-      <radialGradient id="g" cx="40%" cy="36%" r="72%"><stop offset="0%" stop-color="#f6dc8d"/><stop offset="46%" stop-color="#d7a851"/><stop offset="100%" stop-color="#9c6d1f"/></radialGradient>
-      <linearGradient id="pk" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#c67049"/><stop offset="100%" stop-color="#95492f"/></linearGradient>
-      <linearGradient id="pn" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#749a63"/><stop offset="100%" stop-color="#4d6c41"/></linearGradient>
-      <linearGradient id="py" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#4d85ac"/><stop offset="100%" stop-color="#305b7f"/></linearGradient>
-    </defs>
-    <g stroke="#173049" stroke-width="6" stroke-linejoin="round">
-      <path transform="rotate(0 512 512)"   d="M512 505 C456 476 418 396 434 316 C446 258 478 214 512 196 C546 214 578 258 590 316 C606 396 568 476 512 505 Z" fill="url(#pk)"/>
-      <path transform="rotate(60 512 512)"  d="M512 505 C456 476 418 396 434 316 C446 258 478 214 512 196 C546 214 578 258 590 316 C606 396 568 476 512 505 Z" fill="url(#pn)"/>
-      <path transform="rotate(120 512 512)" d="M512 505 C456 476 418 396 434 316 C446 258 478 214 512 196 C546 214 578 258 590 316 C606 396 568 476 512 505 Z" fill="url(#py)"/>
-      <path transform="rotate(180 512 512)" d="M512 505 C456 476 418 396 434 316 C446 258 478 214 512 196 C546 214 578 258 590 316 C606 396 568 476 512 505 Z" fill="url(#pk)"/>
-      <path transform="rotate(240 512 512)" d="M512 505 C456 476 418 396 434 316 C446 258 478 214 512 196 C546 214 578 258 590 316 C606 396 568 476 512 505 Z" fill="url(#pn)"/>
-      <path transform="rotate(300 512 512)" d="M512 505 C456 476 418 396 434 316 C446 258 478 214 512 196 C546 214 578 258 590 316 C606 396 568 476 512 505 Z" fill="url(#py)"/>
-    </g>
-    <circle cx="512" cy="512" r="120" fill="#173049"/>
-    <circle cx="512" cy="512" r="112" fill="url(#g)"/>
-  </svg>
-  <div class="eyebrow">亀岡 ・ 南丹 ・ 京丹波</div>
-  <h1>京都丹波・年表かるた</h1>
-  <p class="lead">3つのまちの出来事を、古い順にならべる。<br />ならべ終えたとき、京都丹波がひとつの花に咲く。</p>
-  <a class="cta" href="../"><span class="tri">▶</span> 遊ぶ</a>
-  <div class="note">インストール不要・すぐ遊べる ／ ja・en 切替 ／ スマホ対応</div>
+<header class="site-header">
+  <div class="container nav">
+    <a class="brand" href="#top" aria-label="京都丹波・年表かるた トップへ">
+      <svg class="brand-mark" viewBox="0 0 1024 1024" aria-hidden="true">
+        <g stroke="#fff" stroke-width="15" stroke-linejoin="round">
+          <path transform="rotate(0 512 512)" d="M512 505 C456 476 418 396 434 316 C446 258 478 214 512 196 C546 214 578 258 590 316 C606 396 568 476 512 505 Z" fill="#a5573a"/>
+          <path transform="rotate(60 512 512)" d="M512 505 C456 476 418 396 434 316 C446 258 478 214 512 196 C546 214 578 258 590 316 C606 396 568 476 512 505 Z" fill="#5b7d4b"/>
+          <path transform="rotate(120 512 512)" d="M512 505 C456 476 418 396 434 316 C446 258 478 214 512 196 C546 214 578 258 590 316 C606 396 568 476 512 505 Z" fill="#3a6a8c"/>
+          <path transform="rotate(180 512 512)" d="M512 505 C456 476 418 396 434 316 C446 258 478 214 512 196 C546 214 578 258 590 316 C606 396 568 476 512 505 Z" fill="#a5573a"/>
+          <path transform="rotate(240 512 512)" d="M512 505 C456 476 418 396 434 316 C446 258 478 214 512 196 C546 214 578 258 590 316 C606 396 568 476 512 505 Z" fill="#5b7d4b"/>
+          <path transform="rotate(300 512 512)" d="M512 505 C456 476 418 396 434 316 C446 258 478 214 512 196 C546 214 578 258 590 316 C606 396 568 476 512 505 Z" fill="#3a6a8c"/>
+        </g>
+        <circle cx="512" cy="512" r="114" fill="#d6b769"/>
+      </svg>
+      <span class="brand-text">京都丹波・年表かるた</span>
+    </a>
+    <nav class="nav-links" aria-label="ページ内ナビゲーション">
+      <a href="#how">あそびかた</a>
+      <a href="#modes">3つのモード</a>
+      <a href="#field">現地体験</a>
+      <a href="#tour">めぐり帳</a>
+      <a class="nav-play" href="../">今すぐ遊ぶ</a>
+    </nav>
+  </div>
 </header>
 
-<main class="wrap">
+<main id="top">
+  <section class="hero">
+    <div class="hero-glow"></div>
+    <div class="hero-river" aria-hidden="true"></div>
+    <div class="container hero-inner">
+      <div class="hero-copy reveal">
+        <div class="hero-eyebrow">亀岡・南丹・京丹波をつなぐ歴史ゲーム</div>
+        <h1><span class="small">京都丹波・年表かるた</span>3つのまち、<br>ひとつの時間。</h1>
+        <p class="hero-lead">札を古い順に並べるたび、<br>京都丹波の歴史が一本につながっていく。</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="../">無料ですぐ遊ぶ</a>
+          <a class="btn btn-secondary" href="#how">60秒で遊び方を見る</a>
+        </div>
+        <div class="hero-note">
+          <span>インストール不要</span><span>スマホ対応</span><span>日本語・English</span><span>個人情報なし</span>
+        </div>
+      </div>
 
-  <section id="how">
-    <div class="sec-eyebrow">あそびかた</div>
-    <h2>おぼえるのは、3つだけ</h2>
-    <div class="beats">
-      <div class="beat"><div class="n">1</div><div><div class="bt">いちばん古い札を取る</div><div class="bd">場札から、京都丹波ぜんたいで最も古い出来事を選ぶ。</div></div></div>
-      <div class="beat"><div class="n">2</div><div><div class="bt">古い順にならべていく</div><div class="bd">3つのまちの時を、まぜて一本の年表に織り込む。</div></div></div>
-      <div class="beat"><div class="n">3</div><div><div class="bt">3つそろって、ひとつに<span class="mini"><i></i><i></i><i></i></span></div><div class="bd">すべて並ぶと、にしいっちょうの花が咲く。</div></div></div>
+      <div class="hero-art reveal" aria-label="3つのまちのかるた札をイメージしたビジュアル">
+        <div class="crest-wrap">
+          <svg viewBox="0 0 1024 1024" role="img" aria-label="京都丹波・年表かるたの花の紋">
+            <defs><radialGradient id="centerGold" cx="40%" cy="36%" r="72%"><stop offset="0%" stop-color="#f6dc8d"/><stop offset="46%" stop-color="#d7a851"/><stop offset="100%" stop-color="#9c6d1f"/></radialGradient></defs>
+            <g stroke="#fff" stroke-width="9" stroke-linejoin="round">
+              <path transform="rotate(0 512 512)" d="M512 505 C456 476 418 396 434 316 C446 258 478 214 512 196 C546 214 578 258 590 316 C606 396 568 476 512 505 Z" fill="#a5573a"/>
+              <path transform="rotate(60 512 512)" d="M512 505 C456 476 418 396 434 316 C446 258 478 214 512 196 C546 214 578 258 590 316 C606 396 568 476 512 505 Z" fill="#5b7d4b"/>
+              <path transform="rotate(120 512 512)" d="M512 505 C456 476 418 396 434 316 C446 258 478 214 512 196 C546 214 578 258 590 316 C606 396 568 476 512 505 Z" fill="#3a6a8c"/>
+              <path transform="rotate(180 512 512)" d="M512 505 C456 476 418 396 434 316 C446 258 478 214 512 196 C546 214 578 258 590 316 C606 396 568 476 512 505 Z" fill="#a5573a"/>
+              <path transform="rotate(240 512 512)" d="M512 505 C456 476 418 396 434 316 C446 258 478 214 512 196 C546 214 578 258 590 316 C606 396 568 476 512 505 Z" fill="#5b7d4b"/>
+              <path transform="rotate(300 512 512)" d="M512 505 C456 476 418 396 434 316 C446 258 478 214 512 196 C546 214 578 258 590 316 C606 396 568 476 512 505 Z" fill="#3a6a8c"/>
+            </g>
+            <circle cx="512" cy="512" r="120" fill="#173049"/><circle cx="512" cy="512" r="108" fill="url(#centerGold)"/>
+          </svg>
+        </div>
+        <div class="card-stack">
+          <article class="karuta-card card-1" style="--card-color:var(--kameoka)">
+            <div class="card-band"></div><div class="card-region">KAMEOKA</div><div class="card-mode">亀岡</div><div class="card-symbol">城</div><div class="card-caption">城下町と保津川。</div>
+          </article>
+          <article class="karuta-card card-2" style="--card-color:var(--nantan)">
+            <div class="card-band"></div><div class="card-region">NANTAN</div><div class="card-mode">南丹</div><div class="card-symbol">森</div><div class="card-caption">里山とダムの湖。</div>
+          </article>
+          <article class="karuta-card card-3" style="--card-color:var(--kyotamba)">
+            <div class="card-band"></div><div class="card-region">KYOTAMBA</div><div class="card-mode">京丹波</div><div class="card-symbol">川</div><div class="card-caption">宿場と由良川。</div>
+          </article>
+          <div class="timeline-thread" aria-hidden="true"><i></i><i></i><i></i></div>
+        </div>
+      </div>
     </div>
   </section>
 
-  <section id="editions">
-    <div class="sec-eyebrow">3つのあそび</div>
-    <h2>れきし・そなえ・ぜんぶ</h2>
-    <p class="sec-lead">同じルールで、3つのデッキ。郷土史から防災まで、京都丹波をまるごと。</p>
-    <div class="eds">
-      <div class="ed" style="--c:var(--kameoka)"><div class="en">れきし</div><div class="ed-d">城下町・ダム・鉄道…<br />亀岡・南丹・京丹波の歩み。</div></div>
-      <div class="ed" style="--c:var(--akane)"><div class="en">そなえ</div><div class="ed-d">由良川・桂川の水害史と、<br />ダム・ハザード・避難の備え。</div></div>
-      <div class="ed" style="--c:var(--ai)"><div class="en">ぜんぶ</div><div class="ed-d">歴史も備えも1本に。<br />いちばん長い京都丹波。</div></div>
+  <section class="intro">
+    <div class="container intro-grid">
+      <div class="vertical-label reveal">ABOUT THE GAME — 京都丹波を、あそんで知る。</div>
+      <div class="intro-copy reveal">
+        <div class="kicker">CONCEPT</div>
+        <h2 class="section-title">歴史を暗記するのではなく、<br><strong>まちのつながり</strong>を発見する。</h2>
+        <p>亀岡・南丹・京丹波。それぞれの出来事を混ぜ、一番古い札から順に選びます。別々に見えていた3つのまちの時間が、一本の年表へとつながっていくゲームです。</p>
+        <div class="region-line">
+          <div class="region-pill" style="--c:var(--kameoka)">亀岡<small>KAMEOKA</small></div>
+          <div class="region-pill" style="--c:var(--nantan)">南丹<small>NANTAN</small></div>
+          <div class="region-pill" style="--c:var(--kyotamba)">京丹波<small>KYOTAMBA</small></div>
+        </div>
+      </div>
     </div>
   </section>
 
-  <section id="mastery">
-    <div class="sec-eyebrow">飽きない工夫</div>
-    <h2>周回するほど、年号が隠れていく</h2>
-    <p class="sec-lead">答え（並び順）は年表で決まっている。だから2周目からは記憶勝負。年号が少しずつ伏せられ、やがて出来事から順を思い出す。</p>
-    <div class="ladder">
-      <span class="yr">1868</span><span class="arw">→</span>
-      <span class="yr">1<span class="mask">◯</span>68</span><span class="arw">→</span>
-      <span class="yr">1<span class="mask">◯</span>6<span class="mask">◯</span></span><span class="arw">→</span>
-      <span class="yr"><span class="mask">？</span></span>
+  <section class="how" id="how">
+    <div class="container">
+      <div class="how-head reveal">
+        <div class="kicker">HOW TO PLAY</div>
+        <h2 class="section-title">おぼえるのは、3つだけ。</h2>
+        <p class="section-lead">操作はシンプル。札を選び、時間を並べ、3つのまちをひとつの年表へ織り込みます。</p>
+      </div>
+      <div class="steps">
+        <article class="step reveal" style="--step-color:var(--kameoka)">
+          <div class="step-num">01</div><div class="step-icon">取</div>
+          <h3>いちばん古い札を取る</h3>
+          <p>場札から、京都丹波ぜんたいで最も古い出来事を選びます。</p><div class="step-decoration"></div>
+        </article>
+        <article class="step reveal" style="--step-color:var(--nantan)">
+          <div class="step-num">02</div><div class="step-icon">並</div>
+          <h3>古い順にならべていく</h3>
+          <p>3つのまちの出来事を混ぜて、一本の年表へ並べていきます。</p><div class="step-decoration"></div>
+        </article>
+        <article class="step reveal" style="--step-color:var(--kyotamba)">
+          <div class="step-num">03</div><div class="step-icon">咲</div>
+          <h3>3つそろって、ひとつに</h3>
+          <p>すべて正しく並ぶと、にしいっちょうの花が咲きます。</p><div class="step-decoration"></div>
+        </article>
+      </div>
     </div>
-    <div class="ladder-cap">
-      <span><b>1周目</b> 年号あり</span><span><b>2周目</b> 1けた隠す</span><span><b>3周目</b> 2けた隠す</span><span><b>4周目〜</b> 全隠し＋出来事も</span>
-    </div>
-    <p class="sec-lead" style="margin-top:14px">隠れる場所は札ごとにランダム。いつも同じ所じゃないから、ちゃんと覚えていないと迷う。</p>
   </section>
 
-  <section id="meguri">
-    <div class="sec-eyebrow">めぐり帳</div>
-    <h2>花びらを集めて、京都丹波をめぐる</h2>
-    <p class="sec-lead">札の舞台は、ぜんぶ実在の場所。訪ねるたびに自分の花が色づき、3つのまちがそろうと満開に。称号も育つ。</p>
-    <div class="mg-wrap">
-      <svg class="mg-petals" viewBox="0 0 200 200" role="img" aria-label="めぐりの花（花びらが色づいていく）">
-        <ellipse cx="134" cy="100" rx="26" ry="40" transform="rotate(0 134 100)" fill="#c67049" opacity="0.95"/>
-        <ellipse cx="117" cy="129.4" rx="26" ry="40" transform="rotate(60 117 129.4)" fill="#749a63" opacity="0.95"/>
-        <ellipse cx="83" cy="129.4" rx="26" ry="40" transform="rotate(120 83 129.4)" fill="#4d85ac" opacity="0.2"/>
-        <ellipse cx="66" cy="100" rx="26" ry="40" transform="rotate(180 66 100)" fill="#95492f" opacity="0.95"/>
-        <ellipse cx="83" cy="70.6" rx="26" ry="40" transform="rotate(240 83 70.6)" fill="#4d6c41" opacity="0.95"/>
-        <ellipse cx="117" cy="70.6" rx="26" ry="40" transform="rotate(300 117 70.6)" fill="#305b7f" opacity="0.2"/>
-        <circle cx="100" cy="100" r="17" fill="#c8c9c2"/>
+  <section class="editions" id="modes">
+    <div class="container">
+      <div class="editions-head reveal">
+        <div><div class="kicker">THREE MODES</div><h2 class="section-title">れきし・そなえ・ぜんぶ。</h2></div>
+        <p class="section-lead">同じルールで、3つのデッキ。郷土史50枚から毎回10枚が選ばれ、遊ぶたびに顔ぶれが変わります。</p>
+      </div>
+      <div class="mode-grid">
+        <article class="mode reveal" style="--mode-a:#b06348;--mode-b:#7f3b2c">
+          <div class="mode-index">MODE 01</div><h3>れきし</h3><div class="mode-en">HISTORY</div><div class="mode-icon">古</div>
+          <p>古墳・城下町・ダム・鉄道など、3つのまちの歩み50枚をたどります。</p>
+        </article>
+        <article class="mode reveal" style="--mode-a:#c05244;--mode-b:#7e2b23">
+          <div class="mode-index">MODE 02</div><h3>そなえ</h3><div class="mode-en">SAFETY</div><div class="mode-icon">守</div>
+          <p>由良川・桂川の水害史と備え。各札に「学び」の解説つき。</p>
+        </article>
+        <article class="mode reveal" style="--mode-a:#3a5f83;--mode-b:#22405c">
+          <div class="mode-index">MODE 03</div><h3>ぜんぶ</h3><div class="mode-en">ALL TIMELINE</div><div class="mode-icon">結</div>
+          <p>歴史も備えも一本に。いちばん長い京都丹波の時間に挑戦します。</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="mastery" id="mastery">
+    <div class="container mastery-grid">
+      <div class="reveal">
+        <div class="kicker">KEEP LEARNING</div>
+        <h2 class="section-title">覚えたつもりが、<br>いちばん危ない。</h2>
+        <p class="section-lead">2周目からは年号が少しずつ伏せられ、やがて出来事の内容だけで並び順を思い出す記憶勝負へ変わります。</p>
+      </div>
+      <div class="year-stage reveal">
+        <div class="year-line">
+          <div class="year-card">1868</div><div class="year-arrow">→</div>
+          <div class="year-card">1<span class="mask">○</span>68</div><div class="year-arrow">→</div>
+          <div class="year-card">1<span class="mask">○</span>6<span class="mask">○</span></div><div class="year-arrow">→</div>
+          <div class="year-card"><span class="mask">？</span></div>
+        </div>
+        <div class="levels">
+          <div class="level"><b>1周目</b>年号あり</div><div class="level"><b>2周目</b>1けた隠す</div><div class="level"><b>3周目</b>2けた隠す</div><div class="level"><b>4周目〜</b>全隠し＋出来事も</div>
+        </div>
+        <div class="mastery-note">隠れる場所は札ごとにランダム。いつも同じ所ではありません。</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="field" id="field">
+    <div class="container field-grid">
+      <div class="phone-stage reveal" aria-label="現地体験のスマートフォン画面イメージ">
+        <div class="phone"><div class="phone-screen"><div class="phone-mountain"></div><div class="photo-card"><small>PAST &amp; PRESENT</small><h4>札の舞台を訪ねる</h4><p>現地で写真を撮ると、その場所の「昔と今」が開きます。</p></div></div></div>
+        <div class="gps-badge">現地で深掘り</div>
+      </div>
+      <div class="reveal">
+        <div class="kicker">BEYOND THE CARD</div>
+        <h2 class="section-title">札の向こうに、<br>本当の場所がある。</h2>
+        <p class="section-lead">ゲームで知った出来事を、現地と出典へつなげます。遊んで終わらず、地域をもっと深く知る入口になります。</p>
+        <div class="field-list">
+          <div class="field-item"><div class="field-num">01</div><div><h3>遊ぶ</h3><p>札を並べ、3つのまちの時間に触れる。</p></div></div>
+          <div class="field-item"><div class="field-num">02</div><div><h3>現地へ行く</h3><p>札の舞台に立ち、写真から「昔と今」を開く。</p></div></div>
+          <div class="field-item"><div class="field-num">03</div><div><h3>出典を読む</h3><p>振り返り年表から、公的資料や一次情報へたどる。</p></div></div>
+        </div>
+        <p class="field-privacy">位置情報は端末の中だけで判定し、どこにも送信されません。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="tour" id="tour">
+    <div class="container tour-grid">
+      <div class="tour-visual reveal">
+        <svg class="tour-flower" viewBox="0 0 200 200" role="img" aria-label="めぐりの花（訪ねるたびに花びらが色づく）">
+          <ellipse cx="134" cy="100" rx="26" ry="40" transform="rotate(0 134 100)" fill="#a5573a" opacity="0.95"/>
+          <ellipse cx="117" cy="129.4" rx="26" ry="40" transform="rotate(60 117 129.4)" fill="#5b7d4b" opacity="0.95"/>
+          <ellipse cx="83" cy="129.4" rx="26" ry="40" transform="rotate(120 83 129.4)" fill="#3a6a8c" opacity="0.2"/>
+          <ellipse cx="66" cy="100" rx="26" ry="40" transform="rotate(180 66 100)" fill="#8a4630" opacity="0.95"/>
+          <ellipse cx="83" cy="70.6" rx="26" ry="40" transform="rotate(240 83 70.6)" fill="#4d6c41" opacity="0.95"/>
+          <ellipse cx="117" cy="70.6" rx="26" ry="40" transform="rotate(300 117 70.6)" fill="#305b7f" opacity="0.2"/>
+          <circle cx="100" cy="100" r="17" fill="#c8c9c2"/>
+        </svg>
+        <div class="rank-ladder">
+          <span class="rank-chip">旅のはじまり</span><span class="rank-arw">→</span>
+          <span class="rank-chip">丹波の旅人</span><span class="rank-arw">→</span>
+          <span class="rank-chip">三まちの郷士</span><span class="rank-arw">→</span>
+          <span class="rank-chip">名主</span><span class="rank-arw">→</span>
+          <span class="rank-chip last">名誉領主</span>
+        </div>
+      </div>
+      <div class="reveal">
+        <div class="kicker">TOURING PASSPORT</div>
+        <h2 class="section-title">花びらを集めて、<br>京都丹波をめぐる。</h2>
+        <p class="section-lead">札の舞台はぜんぶ実在の場所。訪ねるたびに「めぐり帳」の花が色づき、3つのまちがそろうと満開に。称号も育ちます。</p>
+        <div class="routes">
+          <div class="route" style="--c:var(--kameoka)"><h3>戦国と城の道</h3><p>亀山城跡 → 八木城跡 → 園部城跡。丹波攻めから「日本最後の城」まで。</p></div>
+          <div class="route" style="--c:var(--gold)"><h3>古代・祈りの道</h3><p>穴太寺・国分寺跡・生身天満宮・出雲大神宮・九手神社。</p></div>
+          <div class="route" style="--c:var(--kyotamba)"><h3>水とそなえの道</h3><p>大野・和知・日吉・畑川。川を治めた4つのダムで備えを学ぶ。</p></div>
+          <div class="route" style="--c:var(--nantan)"><h3>里山と絶景の道</h3><p>かやぶきの里・鍾乳洞・るり渓・トロッコ・長老ヶ岳。</p></div>
+        </div>
+        <div class="tour-notes">
+          <span>「近くの未訪問をさがす」で次の一枚がすぐ見つかる</span>
+          <span>めぐりはシェアして自慢できる</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="trust">
+    <div class="container trust-box reveal">
+      <div class="source-mark">典</div>
+      <div>
+        <div class="kicker">TRUST &amp; SAFETY</div>
+        <h2 class="section-title">正確さも、ゲームの機能です。</h2>
+        <p class="section-lead">合併・ダム・指定年などは公的資料で確認。防災情報は安全な見学地点だけを案内し、最新の公式情報へつなぎます。</p>
+        <div class="trust-points">
+          <div class="trust-point"><b>すべての札に出典</b>振り返りの年表から一次情報へ。</div>
+          <div class="trust-point"><b>防災は安全を優先</b>危険区域の判断は最新の公式情報へ。</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="final-cta">
+    <div class="container final-content reveal">
+      <svg class="final-crest" viewBox="0 0 1024 1024" aria-hidden="true">
+        <g stroke="#173049" stroke-width="9" stroke-linejoin="round">
+          <path transform="rotate(0 512 512)" d="M512 505 C456 476 418 396 434 316 C446 258 478 214 512 196 C546 214 578 258 590 316 C606 396 568 476 512 505 Z" fill="#a5573a"/><path transform="rotate(60 512 512)" d="M512 505 C456 476 418 396 434 316 C446 258 478 214 512 196 C546 214 578 258 590 316 C606 396 568 476 512 505 Z" fill="#5b7d4b"/><path transform="rotate(120 512 512)" d="M512 505 C456 476 418 396 434 316 C446 258 478 214 512 196 C546 214 578 258 590 316 C606 396 568 476 512 505 Z" fill="#3a6a8c"/><path transform="rotate(180 512 512)" d="M512 505 C456 476 418 396 434 316 C446 258 478 214 512 196 C546 214 578 258 590 316 C606 396 568 476 512 505 Z" fill="#a5573a"/><path transform="rotate(240 512 512)" d="M512 505 C456 476 418 396 434 316 C446 258 478 214 512 196 C546 214 578 258 590 316 C606 396 568 476 512 505 Z" fill="#5b7d4b"/><path transform="rotate(300 512 512)" d="M512 505 C456 476 418 396 434 316 C446 258 478 214 512 196 C546 214 578 258 590 316 C606 396 568 476 512 505 Z" fill="#3a6a8c"/>
+        </g><circle cx="512" cy="512" r="120" fill="#173049"/><circle cx="512" cy="512" r="108" fill="#d1ad5f"/>
       </svg>
-      <div class="mg-ranks">
-        <span class="mg-rank-chip">旅のはじまり</span><span class="mg-arw">→</span>
-        <span class="mg-rank-chip">丹波の旅人</span><span class="mg-arw">→</span>
-        <span class="mg-rank-chip">三まちの郷士</span><span class="mg-arw">→</span>
-        <span class="mg-rank-chip">名主</span><span class="mg-arw">→</span>
-        <span class="mg-rank-chip last">名誉領主</span>
-      </div>
-      <div class="routes">
-        <div class="route" style="--c:var(--kameoka)"><div class="rn">戦国と城の道</div><div class="rd">亀山城跡 → 八木城跡 → 園部城跡。丹波攻めから「日本最後の城」まで。</div></div>
-        <div class="route" style="--c:var(--gold)"><div class="rn">古代・祈りの道</div><div class="rd">穴太寺・国分寺跡・生身天満宮・出雲大神宮・九手神社。</div></div>
-        <div class="route" style="--c:var(--kyotamba)"><div class="rn">水とそなえの道</div><div class="rd">大野・和知・日吉・畑川。川を治めた4つのダムで備えを学ぶ。</div></div>
-        <div class="route" style="--c:var(--nantan)"><div class="rn">里山と絶景の道</div><div class="rd">かやぶきの里・鍾乳洞・るり渓・トロッコ・長老ヶ岳。</div></div>
-      </div>
-    </div>
-    <p class="sec-lead" style="margin-top:16px">「近くの未訪問をさがす」ボタンで、いまいる場所から次の一枚がすぐ見つかる。めぐりはシェアして自慢できる。</p>
-  </section>
-
-  <section id="features">
-    <div class="sec-eyebrow">もっと深く</div>
-    <h2>現地へ、そして出典へ</h2>
-    <div class="feat">
-      <div class="card gps"><span class="tag">現地で深掘り</span><h3>行って、撮って、深く知る</h3><p>札の舞台に立つと端末が現地を判定し、写真を撮るとその場所の「昔と今」が開く。位置情報は端末の中だけで判定し、どこにも送信されない。行かなくても遊べる、ご褒美の仕組み。</p></div>
-      <div class="card src"><span class="tag">正確さは機能</span><h3>すべての札に出典</h3><p>合併・ダム・指定年などは公的資料で確認済み。振り返りの年表から一次情報へたどれる。防災の学びは各カードに、現地案内は安全な見学地点だけ。</p></div>
+      <div class="kicker">START THE TIMELINE</div>
+      <h2 class="section-title">京都丹波を、あそんで知る。</h2>
+      <p class="section-lead">インストール不要。スマートフォンですぐに始められます。</p>
+      <a class="btn btn-primary" href="../">京都丹波・年表かるたで遊ぶ</a>
     </div>
   </section>
-
 </main>
 
-<footer class="foot">
-  <a class="cta" href="../"><span class="tri">▶</span> 京都丹波を、あそんで知る</a>
-  <p class="fine">
-    <b>ホーム画面に追加</b>すれば、花の紋のアプリとして遊べます。ja／日本語・English 切替対応。<br />
-    公開情報・郷土資料・自治体の防災資料にもとづく試作。<b>須知・大福光寺の年代は概算</b>で要地元確認。
-    避難・危険区域の判断は、必ず各市町の最新の公式ハザード情報をご確認ください。<br />
-    京都丹波（亀岡市・南丹市・京丹波町）／ imapp
-  </p>
+<footer class="footer">
+  <div class="container footer-inner">
+    <p class="footer-copy"><b>ホーム画面に追加</b>すれば、花の紋のアプリとして遊べます。日本語・English 切替対応。<br>公開情報・郷土資料・自治体の防災資料にもとづく試作。合併・ダム・指定年などは確認済み、<b>社寺の創建・古墳の築造など伝承にもとづく年代は概算</b>（「と伝わる」表記）で要地元確認。避難・危険区域の判断は、必ず各市町の最新の公式ハザード情報をご確認ください。</p>
+    <div class="footer-brand">京都丹波 ／ imapp</div>
+  </div>
 </footer>
 
+<a class="mobile-cta" href="../">無料ですぐ遊ぶ</a>
+
+<script>
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('is-visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12 });
+
+document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+</script>
 </body>
 </html>
