@@ -210,6 +210,7 @@
   #help .k{ color:var(--ember); letter-spacing:.12em; min-width:9.5em; text-align:right; flex-shrink:0; }
   #help .v{ color:var(--ink); letter-spacing:.1em; }
   #help .close{ font-size:11px; letter-spacing:.4em; text-indent:.4em; color:var(--ink-dim); margin-top:1em; }
+  #help .credit{ font-size:10px; letter-spacing:.2em; color:var(--ink-dim); opacity:.65; }
 </style>
 </head>
 <body>
@@ -259,6 +260,7 @@
     <div class="row"><span class="k">熾火ゲージ</span><span class="v">火力が高いあいだだけ育つ。育ちきれば火は消えなくなり、あとは、ただ眺めるだけ</span></div>
   </div>
   <div class="close">— 画面にふれて とじる —</div>
+  <div class="credit">音源提供：Springin&#39; Sound Stock</div>
 </div>
 
 <div id="woodbar">
@@ -286,7 +288,9 @@
 
 /* ---------------- CONFIG（調整つまみ） ---------------- */
 const CONFIG = {
-  flameSource : 'particle',      // 'particle' | 'sprite'
+  flameSource : 'illust',        // 'illust' | 'sprite' | 'particle'（未ロード時は自動でparticleへ）
+  illustSrc   : 'assets/fire.png',    // 焚き火イラスト（透過PNG・薪＋炎の一枚絵）
+  fireLoopSrc : 'assets/loop1.mp3',   // 焚き火環境音ループ（Springin' Sound Stock）
   igniteWork  : 9000,            // 着火に必要なこすり量（px相当・ブレあり。体感10秒前後）
   igniteDecay : 0.045,           // 手を止めたときの着火ゲージ減衰（割合/秒）
   tinderBurnSec  : 32,           // 火口が燃え尽きるまでの秒（扇ぐと早く減る）
@@ -392,7 +396,8 @@ class ParticleFlame {
   update(env){
     const { dt, power, wind } = env;
     if (power > 0.015) {
-      this.acc += CONFIG.emitRate * (0.2 + power) * dt;
+      // イラスト表示中は動きのアクセントだけに減量
+      this.acc += CONFIG.emitRate * (0.2 + power) * dt * (env.illust ? 0.28 : 1);
       let n = Math.floor(this.acc);
       this.acc -= n;
       while (n-- > 0 && this.ps.length < CONFIG.maxParticles) {
@@ -429,7 +434,7 @@ class ParticleFlame {
     ctx.globalCompositeOperation = 'lighter';
     // ベースの光芯
     const flick = 0.85 + 0.15 * Math.sin(t * 17) * Math.sin(t * 7.3);
-    if (power > 0.02) {
+    if (power > 0.02 && !env.illust) {   // 光芯はイラスト側が持つので省略
       const cw = (70 + 190 * power) * S * FS * flick;
       ctx.globalAlpha = 0.55 * clamp(power * 1.4, 0, 1);
       ctx.drawImage(SPR_YELLOW, env.cx - cw/2, env.baseY - cw * 0.62, cw, cw * 0.75);
@@ -486,8 +491,88 @@ class SpriteFlame {
     return true;
   }
 }
+/* IllustFire ── 焚き火イラスト（薪＋炎の一枚絵・透過PNG）を火力で立ち上げるレイヤー
+ * 炎は薪の上から「育つ」：火力に応じて見せる範囲を上へ広げ、未点火時は暗色シルエット。
+ * ゆらぎ・熾火の脈動・照り返しを演出し、動きはパーティクル(減量)を上に重ねて補う */
+class IllustFire {
+  constructor(src){
+    this.ready = false;
+    this.off = document.createElement('canvas');
+    this.LOG_TOP = 0.60;   // 画像内で薪が始まる高さ（上からの比率）
+    this.img = new Image();
+    this.img.onload = () => {
+      // 未点火用の暗色シルエットを事前生成
+      const c = document.createElement('canvas');
+      c.width = this.img.width; c.height = this.img.height;
+      const g = c.getContext('2d');
+      g.drawImage(this.img, 0, 0);
+      g.globalCompositeOperation = 'source-atop';
+      g.fillStyle = 'rgba(9,7,8,0.93)';
+      g.fillRect(0, 0, c.width, c.height);
+      this.dark = c;
+      this.ready = true;
+    };
+    this.img.onerror = () => { this.ready = false; };
+    this.img.src = src;
+  }
+  render(env){
+    if (!this.ready) return false;
+    const { ctx, t } = env;
+    const iw = this.img.width, ih = this.img.height;
+    const powerN = clamp(env.power / 1.15, 0, 1);
+    const lit = clamp(env.heat * 2.2 + game.ember * 0.4, 0, 1);
+    const dw = 230 * S * FS * (0.94 + 0.12 * powerN);
+    // 火力で見せる範囲を上へ（炎が薪から育って見える）
+    const cut = this.LOG_TOP * (1 - Math.pow(powerN, 0.8));
+    const sy = cut * ih, sh = ih - sy;
+    const ow = Math.max(2, Math.ceil(dw)), oh = Math.max(2, Math.ceil(dw * (sh / ih)));
+    const o = this.off;
+    if (o.width !== ow || o.height !== oh) { o.width = ow; o.height = oh; }
+    const og = o.getContext('2d');
+    og.clearRect(0, 0, ow, oh);
+    og.drawImage(this.img, 0, sy, iw, sh, 0, 0, ow, oh);
+    if (lit < 1) {                       // 未点火〜低火力は暗色版をかぶせる
+      og.globalAlpha = 1 - lit;
+      og.drawImage(this.dark, 0, sy, iw, sh, 0, 0, ow, oh);
+      og.globalAlpha = 1;
+    }
+    if (cut > 0.02) {                    // 見せ始めの上端をやわらかく消す
+      og.globalCompositeOperation = 'destination-out';
+      const fade = og.createLinearGradient(0, 0, 0, oh * 0.16);
+      fade.addColorStop(0, 'rgba(0,0,0,1)');
+      fade.addColorStop(1, 'rgba(0,0,0,0)');
+      og.fillStyle = fade;
+      og.fillRect(0, 0, ow, oh * 0.16);
+      og.globalCompositeOperation = 'source-over';
+    }
+    // ゆらぎ（縦の伸縮）と風のしなり
+    const wob = 1 + (0.016 * Math.sin(t * 7.1) + 0.010 * Math.sin(t * 12.7)) * (0.3 + powerN);
+    const skew = env.wind * 0.05 * (0.3 + powerN) * CONFIG.swayAmp;
+    ctx.save();
+    ctx.translate(env.cx, env.baseY + 34 * S);
+    ctx.transform(1, 0, skew, 1, 0, 0);
+    ctx.scale(1, wob);
+    ctx.drawImage(o, -ow / 2, -oh, ow, oh);
+    if (game.ember > 0.03 || env.heat > 0.1) {
+      const fl = 0.5 + 0.5 * Math.sin(t * 5.3) * Math.sin(t * 2.1);
+      ctx.globalCompositeOperation = 'lighter';
+      // 熾火の脈動（下部だけ加算でひと呼吸）
+      ctx.globalAlpha = (game.ember * 0.22 + env.heat * 0.08) * (0.6 + 0.4 * fl);
+      const eh = oh * 0.34;
+      ctx.drawImage(o, 0, oh - eh, ow, eh, -ow / 2, -eh, ow, eh);
+      // 炎の照り返し（全体をうっすら加算でちらつかせる）
+      if (powerN > 0.15) {
+        ctx.globalAlpha = Math.max(0, 0.06 + 0.05 * Math.sin(t * 11) * Math.sin(t * 4.7)) * powerN;
+        ctx.drawImage(o, -ow / 2, -oh, ow, oh);
+      }
+    }
+    ctx.restore();
+    return true;
+  }
+}
 const particleFlame = new ParticleFlame();
 const flameSprite   = new SpriteFlame();
+const illustFire    = new IllustFire(CONFIG.illustSrc);
 
 /* =========================================================================
  *  LAYER 2 ── 反応レイヤー（炎本体を差し替えても残る）
@@ -887,7 +972,33 @@ function renderVignette(env){
 const AudioSys = (() => {
   let ac = null, master = null, noiseBuf = null;
   let fireGain = null, blowGain = null;
+  let loopGain = null, loopEl = null, loopMode = null;   // 実録の焚き火ループ
   let muted = localStorage.getItem('takibi-mute') === '1';
+
+  // 実録ループ: WebAudioで読み、file://等でfetch不可なら<audio>で代替
+  function initLoop(){
+    if (loopMode) return;
+    loopMode = 'pending';
+    fetch(CONFIG.fireLoopSrc)
+      .then(r => { if (!r.ok) throw 0; return r.arrayBuffer(); })
+      .then(ab => ac.decodeAudioData(ab))
+      .then(buf => {
+        const s = ac.createBufferSource();
+        s.buffer = buf; s.loop = true;
+        loopGain = ac.createGain(); loopGain.gain.value = 0;
+        s.connect(loopGain); loopGain.connect(master);
+        s.start();
+        loopMode = 'webaudio';
+      })
+      .catch(() => {
+        try {
+          loopEl = new Audio(CONFIG.fireLoopSrc);
+          loopEl.loop = true; loopEl.volume = 0;
+          loopEl.play().then(() => { loopMode = 'element'; })
+                       .catch(() => { loopMode = 'none'; });
+        } catch (e) { loopMode = 'none'; }
+      });
+  }
 
   function makeNoise(sec){
     const b = ac.createBuffer(1, Math.floor(ac.sampleRate * sec), ac.sampleRate);
@@ -921,6 +1032,7 @@ const AudioSys = (() => {
     blowGain = ac.createGain(); blowGain.gain.value = 0;
     bs.connect(bf); bf.connect(blowGain); blowGain.connect(master);
     bs.start();
+    initLoop();
     return true;
   }
   function pop(freq, dur, vol, type){
@@ -942,7 +1054,14 @@ const AudioSys = (() => {
   function update(dt, heat, blow){
     if (!ac || ac.state !== 'running') return;
     const T = ac.currentTime + 0.05;
-    fireGain.gain.linearRampToValueAtTime(clamp(heat, 0, 1.1) * 0.11, T);
+    const real = clamp(heat, 0, 1) * 0.85 + blow * 0.1;   // 実録ループの音量カーブ
+    if (loopMode === 'webaudio') {
+      loopGain.gain.linearRampToValueAtTime(real, T);
+      fireGain.gain.linearRampToValueAtTime(0, T);        // 実音源があるとき合成の胴鳴りは止める
+    } else {
+      fireGain.gain.linearRampToValueAtTime(clamp(heat, 0, 1.1) * 0.11, T);
+      if (loopMode === 'element' && loopEl) loopEl.volume = muted ? 0 : clamp(real, 0, 1);
+    }
     blowGain.gain.linearRampToValueAtTime(blow * 0.22, T);
   }
   function strike(){
@@ -960,9 +1079,12 @@ const AudioSys = (() => {
     muted = !muted;
     localStorage.setItem('takibi-mute', muted ? '1' : '0');
     if (master) master.gain.value = muted ? 0 : 1;
+    if (loopEl) loopEl.volume = 0;   // element経路は次のupdateで追従
     return !muted;
   }
-  return { ensure, update, strike, whoosh, crackle, flare, hiss, toggle, get on(){ return !muted; } };
+  return { ensure, update, strike, whoosh, crackle, flare, hiss, toggle,
+           get on(){ return !muted; },
+           get hasRealLoop(){ return loopMode === 'webaudio' || loopMode === 'element'; } };
 })();
 
 /* =========================================================================
@@ -1347,7 +1469,8 @@ function update(dt, t){
   AudioSys.update(dt, game.heat + game.flare * 0.4, blowStr);
   game.crackleT -= dt;
   if (game.crackleT <= 0 && game.heat > 0.05) {
-    AudioSys.crackle(game.heat);
+    // 実録ループが鳴っているときは合成のパチパチを重ねない（イベント音は残す）
+    if (!AudioSys.hasRealLoop) AudioSys.crackle(game.heat);
     game.crackleT = 0.05 + Math.random() * (0.55 / (0.15 + game.heat));
   }
 
@@ -1404,12 +1527,17 @@ function frame(now){
   renderScene(env);
   renderGroundLight(env);
   renderSmoke(env);
-  renderLogs(env);
 
-  // LAYER1（sprite指定でも未ロードならパーティクルへフォールバック）
+  // LAYER1: イラスト → スプライト → パーティクルの順にフォールバック
+  const illustDrawn = CONFIG.flameSource === 'illust' && illustFire.render(env);
+  env.illust = illustDrawn;
+  if (!illustDrawn) renderLogs(env);   // イラストは薪ごと描くので手続き薪は省略
+
   particleFlame.update(env);
-  if (!(CONFIG.flameSource === 'sprite' && flameSprite.render(env))) {
-    particleFlame.render(env);
+  if (!illustDrawn && CONFIG.flameSource === 'sprite' && flameSprite.render(env)) {
+    // sprite が描画した
+  } else {
+    particleFlame.render(env);         // イラスト時は動きの薄いパーティクルを上に重ねる
   }
 
   renderSparks(env);
