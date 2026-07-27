@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="kyototamba-karuta" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata>
+    <name>京都丹波・年表かるた「和知由良川周辺コース」（公式コースの主要地点）</name>
+    <desc>和知駅から由良川沿いに道の駅 和へ。寄り道でわち山野草の森。約6.3km・約1時間30分。 地点間の道順は含みません。公式マップ: https://www.town.kyotamba.kyoto.jp/material/files/group/16/yuragawa.pdf</desc>
+  </metadata>
+  <wpt lat="35.26116" lon="135.39883"><name>JR和知駅</name></wpt>
+  <wpt lat="35.27025" lon="135.39761"><name>道の駅 和（なごみ）</name></wpt>
+  <wpt lat="35.264356" lon="135.395203"><name>わち山野草の森</name></wpt>
+  <rte>
+    <name>京都丹波・年表かるた「和知由良川周辺コース」（公式コースの主要地点）</name>
+    <rtept lat="35.26116" lon="135.39883"><name>JR和知駅</name></rtept>
+    <rtept lat="35.27025" lon="135.39761"><name>道の駅 和（なごみ）</name></rtept>
+    <rtept lat="35.264356" lon="135.395203"><name>わち山野草の森</name></rtept>
+  </rte>
+</gpx>

@@ -16,8 +16,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;700;900&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet" />
-  <script type="module" crossorigin src="./assets/index-CXGk7B-N.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-BNr0eGj6.css">
+  <script type="module" crossorigin src="./assets/index-CRihbete.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-DzQEkTds.css">
 </head>
 <body>
 <div class="wrap">
@@ -62,10 +62,9 @@
   <div class="eyebrow" id="stEyebrow"></div><h2 id="stTitle"></h2>
   <div class="tenant hidden" id="tenantBadge"></div>
   <div class="ed-toggle" id="edToggle">
-    <button class="ed-btn active" data-ed="history" id="edHistBtn"></button>
+    <button class="ed-btn active" data-ed="all" id="edAllBtn"></button>
+    <button class="ed-btn" data-ed="history" id="edHistBtn"></button>
     <button class="ed-btn" data-ed="bosai" id="edBosaiBtn"></button>
-    <button class="ed-btn" data-ed="all" id="edAllBtn"></button>
-    <button class="ed-btn fair" data-ed="fair" id="edFairBtn"></button>
   </div>
   <p id="stLead"></p>
   <div class="mode-choose">
@@ -73,6 +72,11 @@
     <div class="mode-card keiko" data-mode="keiko" tabindex="0" role="button"><div class="ico">稽</div><div><div class="mt" id="mcKeikoT"></div><div class="md" id="mcKeikoD"></div></div></div>
     <div class="mode-card taikyoku" data-mode="taikyoku" tabindex="0" role="button"><div class="ico">対</div><div><div class="mt" id="mcTaiT"></div><div class="md" id="mcTaiD"></div></div></div>
   </div>
+  <button class="st-meguri" id="stMeguriBanner" type="button">
+    <span class="smg-ico" aria-hidden="true">🌸</span>
+    <span class="smg-tx"><b id="stMeguriT"></b><span class="smg-d" id="stMeguriD"></span></span>
+    <span class="smg-arr" aria-hidden="true">→</span>
+  </button>
   <span class="howlink" id="howLink"></span>
 </div></div>
 
@@ -139,6 +143,9 @@
   <h3 class="mg-courses-h" id="mgCycleH"></h3>
   <div class="mg-cycle-note" id="mgCycleNote"></div>
   <div class="mg-cycle" id="mgCycle"></div>
+  <h3 class="mg-courses-h" id="mgWalkH"></h3>
+  <div class="mg-cycle-note" id="mgWalkNote"></div>
+  <div class="mg-cycle" id="mgWalk"></div>
 </div></div>
 
 <!-- Deep-dive (native GPS / web preview) -->

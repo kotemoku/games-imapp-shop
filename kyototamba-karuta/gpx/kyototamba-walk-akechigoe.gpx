@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="kyototamba-karuta" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata>
+    <name>京都丹波・年表かるた「明智越ハイキング」（公式コースの主要地点）</name>
+    <desc>亀岡駅から保津の山道を越えて保津峡駅へ。山道のため線は表示しません。通行情報は公式で確認を。 地点間の道順は含みません。公式マップ: https://www.kameoka.info/course/standard/akechigoe.php</desc>
+  </metadata>
+  <wpt lat="35.0134" lon="135.57359"><name>JR亀岡駅</name></wpt>
+  <wpt lat="35.01819" lon="135.58838"><name>保津橋</name></wpt>
+  <wpt lat="35.02286" lon="135.64061"><name>JR保津峡駅</name></wpt>
+</gpx>

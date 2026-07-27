@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="kyototamba-karuta" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata>
+    <name>京都丹波・年表かるた 周遊コース「里山と絶景の道」</name>
+    <desc>かやぶきの里から鍾乳洞、渓谷、トロッコ、国定公園の峰へ。 地点間の道順は含みません（ナビはGoogleマップ等で）。</desc>
+  </metadata>
+  <wpt lat="35.31112" lon="135.62195"><name>美山かやぶきの里</name></wpt>
+  <wpt lat="35.23738" lon="135.32006"><name>質志鐘乳洞公園</name></wpt>
+  <wpt lat="35.0367" lon="135.40716"><name>るり渓</name></wpt>
+  <wpt lat="35.01314" lon="135.60677"><name>トロッコ亀岡駅</name></wpt>
+  <wpt lat="35.30322" lon="135.47388"><name>長老ヶ岳（京都丹波高原国定公園）</name></wpt>
+  <rte>
+    <name>京都丹波・年表かるた 周遊コース「里山と絶景の道」</name>
+    <rtept lat="35.31112" lon="135.62195"><name>美山かやぶきの里</name></rtept>
+    <rtept lat="35.23738" lon="135.32006"><name>質志鐘乳洞公園</name></rtept>
+    <rtept lat="35.0367" lon="135.40716"><name>るり渓</name></rtept>
+    <rtept lat="35.01314" lon="135.60677"><name>トロッコ亀岡駅</name></rtept>
+    <rtept lat="35.30322" lon="135.47388"><name>長老ヶ岳（京都丹波高原国定公園）</name></rtept>
+  </rte>
+</gpx>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="kyototamba-karuta" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata>
+    <name>京都丹波・年表かるた 周遊コース「戦国と城の道」</name>
+    <desc>丹波攻めから最後の城まで。三つの城跡を時代順にたどる。 地点間の道順は含みません（ナビはGoogleマップ等で）。</desc>
+  </metadata>
+  <wpt lat="35.01285" lon="135.58364"><name>丹波亀山城跡</name></wpt>
+  <wpt lat="35.06045" lon="135.52204"><name>八木城跡</name></wpt>
+  <wpt lat="35.10737" lon="135.46795"><name>園部城跡（園部高校）</name></wpt>
+  <rte>
+    <name>京都丹波・年表かるた 周遊コース「戦国と城の道」</name>
+    <rtept lat="35.01285" lon="135.58364"><name>丹波亀山城跡</name></rtept>
+    <rtept lat="35.06045" lon="135.52204"><name>八木城跡</name></rtept>
+    <rtept lat="35.10737" lon="135.46795"><name>園部城跡（園部高校）</name></rtept>
+  </rte>
+</gpx>

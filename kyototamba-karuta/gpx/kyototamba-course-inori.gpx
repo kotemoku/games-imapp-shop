@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="kyototamba-karuta" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata>
+    <name>京都丹波・年表かるた 周遊コース「古代・祈りの道」</name>
+    <desc>古刹と古社を、七世紀から室町までたどる祈りの旅。 地点間の道順は含みません（ナビはGoogleマップ等で）。</desc>
+  </metadata>
+  <wpt lat="35.00657" lon="135.54916"><name>穴太寺</name></wpt>
+  <wpt lat="35.04143" lon="135.57907"><name>史跡 丹波国分寺跡</name></wpt>
+  <wpt lat="35.10401" lon="135.47413"><name>生身天満宮</name></wpt>
+  <wpt lat="35.05951" lon="135.57869"><name>出雲大神宮</name></wpt>
+  <wpt lat="35.17776" lon="135.39561"><name>九手神社</name></wpt>
+  <rte>
+    <name>京都丹波・年表かるた 周遊コース「古代・祈りの道」</name>
+    <rtept lat="35.00657" lon="135.54916"><name>穴太寺</name></rtept>
+    <rtept lat="35.04143" lon="135.57907"><name>史跡 丹波国分寺跡</name></rtept>
+    <rtept lat="35.10401" lon="135.47413"><name>生身天満宮</name></rtept>
+    <rtept lat="35.05951" lon="135.57869"><name>出雲大神宮</name></rtept>
+    <rtept lat="35.17776" lon="135.39561"><name>九手神社</name></rtept>
+  </rte>
+</gpx>
