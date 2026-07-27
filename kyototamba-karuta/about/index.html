@@ -37,7 +37,7 @@
   --sans:"Noto Sans JP",system-ui,-apple-system,"Segoe UI",sans-serif;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;overflow-x:hidden}
 body{
   color:var(--ink);
   font-family:var(--sans);
@@ -284,7 +284,10 @@ img,svg{display:block;max-width:100%}
   .hero h1{font-size:clamp(40px,12vw,58px)}
   .hero-lead br{display:none}
   .hero-art{min-height:390px}
-  .card-stack{transform:scale(.82);height:400px}
+  .hero-art{width:100%;overflow:hidden}
+  .card-stack{transform:scale(.76);height:370px}
+  .card-1{transform:translate(-78%,-43%) rotate(-10deg)}
+  .card-3{transform:translate(-22%,-41%) rotate(10deg)}
   .crest-wrap{width:98px;right:8px}
   .intro,.how,.editions,.mastery,.field,.tour,.trust{padding:90px 0}
   .intro-grid{gap:35px}
@@ -567,7 +570,7 @@ img,svg{display:block;max-width:100%}
   <div class="container footer-inner">
     <p class="footer-copy"><b>ホーム画面に追加</b>すれば、花の紋のアプリとして遊べます。日本語・English 切替対応。<br>公開情報・郷土資料・自治体の防災資料にもとづく試作。合併・ダム・指定年などは確認済み、<b>社寺の創建・古墳の築造など伝承にもとづく年代は概算</b>（「と伝わる」表記）で要地元確認。避難・危険区域の判断は、必ず各市町の最新の公式ハザード情報をご確認ください。<br><br>
     <b>制作・運営</b>：teraia（京都府南丹市）小寺 利典　✉ <a href="mailto:kotera@teraia.net" style="color:inherit">kotera@teraia.net</a><br>
-    <a href="../legal/" style="color:inherit"><b>運営者情報・利用規約・プライバシーポリシー</b></a>　／　<a href="../ads/" style="color:inherit"><b>寄り処（広告）掲載店 募集中 →</b></a><br>
+    <a href="../legal/index.html" style="color:inherit"><b>運営者情報・利用規約・プライバシーポリシー</b></a>　／　<a href="../ads/index.html" style="color:inherit"><b>寄り処（広告）掲載店 募集中 →</b></a><br>
     <a href="https://imapp.shop" target="_blank" rel="noopener" style="color:inherit">地域プラットフォーム <b>imapp に登録</b>すると、新しい深掘りやイベントのお知らせが届きます（アプリ版・登録任意）</a></p>
     <div class="footer-brand">京都丹波 ／ imapp</div>
   </div>
