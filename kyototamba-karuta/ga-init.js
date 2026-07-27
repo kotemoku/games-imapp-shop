@@ -4,7 +4,7 @@
 // 空文字のあいだは何も読み込まない（= 解析オフ。プライバシーポリシー§3と連動）。
 // 送信するのは閲覧ページと操作イベントのみ。氏名等の個人情報・GPS位置情報は送らない。
 (function () {
-  var MEASUREMENT_ID = ""; // ← GA4 測定IDをここに（例 "G-ABC123XYZ"）
+  var MEASUREMENT_ID = "G-DHM21CES34"; // GA4 測定ID（games.imapp.shop ストリーム）
   if (!MEASUREMENT_ID) return;
   var s = document.createElement("script");
   s.async = true;
