@@ -17,8 +17,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;700;900&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet" />
-  <script type="module" crossorigin src="./assets/index-Cp0lIK02.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-B8J0K6OA.css">
+  <script type="module" crossorigin src="./assets/index-C29fXOoW.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-5Y6ylCYc.css">
 </head>
 <body>
 <div class="wrap">
@@ -82,19 +82,13 @@
   <div class="st-body">
     <button class="cta st-play" id="stPlay" type="button"></button>
     <div class="st-play-hint" id="stPlayHint"></div>
-    <button class="st-more" id="stMore" type="button"></button>
-    <div class="st-adv hidden" id="stAdv">
-      <div class="ed-toggle" id="edToggle">
-        <button class="ed-btn active" data-ed="all" id="edAllBtn"></button>
-        <button class="ed-btn" data-ed="history" id="edHistBtn"></button>
-        <button class="ed-btn" data-ed="bosai" id="edBosaiBtn"></button>
-      </div>
-      <p id="stLead"></p>
-      <div class="mode-choose">
-        <div class="mode-card quiz" data-mode="quiz" tabindex="0" role="button"><div class="ico">問</div><div><div class="mt" id="mcQuizT"></div><div class="md" id="mcQuizD"></div></div></div>
-        <div class="mode-card keiko" data-mode="keiko" tabindex="0" role="button"><div class="ico">稽</div><div><div class="mt" id="mcKeikoT"></div><div class="md" id="mcKeikoD"></div></div></div>
-        <div class="mode-card taikyoku" data-mode="taikyoku" tabindex="0" role="button"><div class="ico">対</div><div><div class="mt" id="mcTaiT"></div><div class="md" id="mcTaiD"></div></div></div>
-      </div>
+    <div class="st-decks">
+      <button class="st-deck" id="stHist" type="button"></button>
+      <button class="st-deck" id="stBosai" type="button"></button>
+    </div>
+    <div class="st-modes">
+      <button class="st-mode" id="stKeiko" type="button"></button>
+      <button class="st-mode" id="stTai" type="button"></button>
     </div>
     <button class="st-meguri" id="stMeguriBanner" type="button">
       <span class="smg-ico" aria-hidden="true">🌸</span>
