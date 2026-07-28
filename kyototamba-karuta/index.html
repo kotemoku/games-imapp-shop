@@ -17,8 +17,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;700;900&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet" />
-  <script type="module" crossorigin src="./assets/index-BPGNzfUp.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-CmjIsw8Z.css">
+  <script type="module" crossorigin src="./assets/index-YalG9QQI.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-DpIiYgpR.css">
 </head>
 <body>
 <div class="wrap">
@@ -59,32 +59,50 @@
 <div class="toasts" id="toasts"></div>
 
 <!-- Start -->
-<div class="overlay" id="startOv"><div class="panel">
-  <div class="langrow"><button class="langbtn" id="langBtn2">EN</button></div>
-  <div class="eyebrow" id="stEyebrow"></div><h2 id="stTitle"></h2>
-  <div class="tenant hidden" id="tenantBadge"></div>
-  <button class="cta st-play" id="stPlay" type="button"></button>
-  <div class="st-play-hint" id="stPlayHint"></div>
-  <button class="st-more" id="stMore" type="button"></button>
-  <div class="st-adv hidden" id="stAdv">
-    <div class="ed-toggle" id="edToggle">
-      <button class="ed-btn active" data-ed="all" id="edAllBtn"></button>
-      <button class="ed-btn" data-ed="history" id="edHistBtn"></button>
-      <button class="ed-btn" data-ed="bosai" id="edBosaiBtn"></button>
-    </div>
-    <p id="stLead"></p>
-    <div class="mode-choose">
-      <div class="mode-card quiz" data-mode="quiz" tabindex="0" role="button"><div class="ico">問</div><div><div class="mt" id="mcQuizT"></div><div class="md" id="mcQuizD"></div></div></div>
-      <div class="mode-card keiko" data-mode="keiko" tabindex="0" role="button"><div class="ico">稽</div><div><div class="mt" id="mcKeikoT"></div><div class="md" id="mcKeikoD"></div></div></div>
-      <div class="mode-card taikyoku" data-mode="taikyoku" tabindex="0" role="button"><div class="ico">対</div><div><div class="mt" id="mcTaiT"></div><div class="md" id="mcTaiD"></div></div></div>
-    </div>
+<div class="overlay start" id="startOv"><div class="st-page">
+  <div class="st-hero">
+    <div class="st-langrow"><button class="langbtn ghost" id="langBtn2">EN</button></div>
+    <svg class="st-crest" viewBox="0 0 1024 1024" role="img" aria-label="京都丹波・年表かるたの花の紋">
+      <defs><radialGradient id="stGold" cx="40%" cy="36%" r="72%"><stop offset="0%" stop-color="#f6dc8d"/><stop offset="46%" stop-color="#d7a851"/><stop offset="100%" stop-color="#9c6d1f"/></radialGradient></defs>
+      <g stroke="#fff" stroke-width="9" stroke-linejoin="round">
+        <path transform="rotate(0 512 512)" d="M512 505 C456 476 418 396 434 316 C446 258 478 214 512 196 C546 214 578 258 590 316 C606 396 568 476 512 505 Z" fill="#a5573a"/>
+        <path transform="rotate(60 512 512)" d="M512 505 C456 476 418 396 434 316 C446 258 478 214 512 196 C546 214 578 258 590 316 C606 396 568 476 512 505 Z" fill="#5b7d4b"/>
+        <path transform="rotate(120 512 512)" d="M512 505 C456 476 418 396 434 316 C446 258 478 214 512 196 C546 214 578 258 590 316 C606 396 568 476 512 505 Z" fill="#3a6a8c"/>
+        <path transform="rotate(180 512 512)" d="M512 505 C456 476 418 396 434 316 C446 258 478 214 512 196 C546 214 578 258 590 316 C606 396 568 476 512 505 Z" fill="#a5573a"/>
+        <path transform="rotate(240 512 512)" d="M512 505 C456 476 418 396 434 316 C446 258 478 214 512 196 C546 214 578 258 590 316 C606 396 568 476 512 505 Z" fill="#5b7d4b"/>
+        <path transform="rotate(300 512 512)" d="M512 505 C456 476 418 396 434 316 C446 258 478 214 512 196 C546 214 578 258 590 316 C606 396 568 476 512 505 Z" fill="#3a6a8c"/>
+      </g>
+      <circle cx="512" cy="512" r="120" fill="#173049"/><circle cx="512" cy="512" r="108" fill="url(#stGold)"/>
+    </svg>
+    <div class="eyebrow" id="stEyebrow"></div>
+    <h2 class="st-brand" id="stBrand"></h2>
+    <div class="st-catch" id="stTitle"></div>
+    <div class="tenant hidden" id="tenantBadge"></div>
   </div>
-  <button class="st-meguri" id="stMeguriBanner" type="button">
-    <span class="smg-ico" aria-hidden="true">🌸</span>
-    <span class="smg-tx"><b id="stMeguriT"></b><span class="smg-d" id="stMeguriD"></span></span>
-    <span class="smg-arr" aria-hidden="true">→</span>
-  </button>
-  <span class="howlink" id="howLink"></span>
+  <div class="st-body">
+    <button class="cta st-play" id="stPlay" type="button"></button>
+    <div class="st-play-hint" id="stPlayHint"></div>
+    <button class="st-more" id="stMore" type="button"></button>
+    <div class="st-adv hidden" id="stAdv">
+      <div class="ed-toggle" id="edToggle">
+        <button class="ed-btn active" data-ed="all" id="edAllBtn"></button>
+        <button class="ed-btn" data-ed="history" id="edHistBtn"></button>
+        <button class="ed-btn" data-ed="bosai" id="edBosaiBtn"></button>
+      </div>
+      <p id="stLead"></p>
+      <div class="mode-choose">
+        <div class="mode-card quiz" data-mode="quiz" tabindex="0" role="button"><div class="ico">問</div><div><div class="mt" id="mcQuizT"></div><div class="md" id="mcQuizD"></div></div></div>
+        <div class="mode-card keiko" data-mode="keiko" tabindex="0" role="button"><div class="ico">稽</div><div><div class="mt" id="mcKeikoT"></div><div class="md" id="mcKeikoD"></div></div></div>
+        <div class="mode-card taikyoku" data-mode="taikyoku" tabindex="0" role="button"><div class="ico">対</div><div><div class="mt" id="mcTaiT"></div><div class="md" id="mcTaiD"></div></div></div>
+      </div>
+    </div>
+    <button class="st-meguri" id="stMeguriBanner" type="button">
+      <span class="smg-ico" aria-hidden="true">🌸</span>
+      <span class="smg-tx"><b id="stMeguriT"></b><span class="smg-d" id="stMeguriD"></span></span>
+      <span class="smg-arr" aria-hidden="true">→</span>
+    </button>
+    <span class="howlink" id="howLink"></span>
+  </div>
 </div></div>
 
 <!-- Tutorial -->
