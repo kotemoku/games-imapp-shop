@@ -17,8 +17,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;700;900&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet" />
-  <script type="module" crossorigin src="./assets/index-CElqrNJX.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-BZSYywbm.css">
+  <script type="module" crossorigin src="./assets/index-zMn1Yjl4.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-BIShvQpj.css">
 </head>
 <body>
 <div class="wrap">
@@ -32,20 +32,26 @@
       <span class="mode-pill" id="modePill"></span>
     </div>
   </header>
-  <div class="scorebar">
-    <div class="score you"><span class="k" id="kYou"></span><span class="v" id="sYou">0</span></div>
-    <div class="score ai" id="scoreAiBox"><span class="k" id="kAi"></span><span class="v" id="sAi">0</span></div>
-    <div class="score miss"><span class="k" id="kMiss"></span><span class="v" id="sMiss">0</span></div>
-    <div class="progress"><i id="prog"></i></div>
-    <div class="turn-hint" id="hint"></div>
-  </div>
-  <div class="quizbar hidden" id="quizBar">
-    <span class="q-tag">Q</span>
-    <span class="q-year" id="quizYear"></span>
-    <span class="q-ask" id="quizAsk"></span>
-  </div>
-  <div class="riverwrap"><div class="rl" id="rlLabel"></div><div class="river" id="river"></div></div>
-  <div class="board" id="board"></div>
+  <main class="play-shell" id="playShell">
+    <section class="play-main" aria-label="game cards">
+      <div class="scorebar">
+        <div class="score you"><span class="k" id="kYou"></span><span class="v" id="sYou">0</span></div>
+        <div class="score ai" id="scoreAiBox"><span class="k" id="kAi"></span><span class="v" id="sAi">0</span></div>
+        <div class="score miss"><span class="k" id="kMiss"></span><span class="v" id="sMiss">0</span></div>
+        <div class="progress"><i id="prog"></i></div>
+        <div class="turn-hint" id="hint"></div>
+      </div>
+      <div class="quizbar hidden" id="quizBar">
+        <span class="q-tag">Q</span>
+        <span class="q-year" id="quizYear"></span>
+        <span class="q-ask" id="quizAsk"></span>
+      </div>
+      <div class="riverwrap"><div class="rl" id="rlLabel"></div><div class="river" id="river"></div></div>
+    </section>
+    <aside class="play-board" aria-label="timeline board">
+      <div class="board" id="board"></div>
+    </aside>
+  </main>
   <div class="controls" id="controls">
     <div class="ctl" id="diffCtl"><label for="diff" id="diffLabel"></label>
       <select id="diff"><option value="easy"></option><option value="normal"></option><option value="hard"></option></select></div>
@@ -157,6 +163,7 @@
   <div class="mg-map" id="mgMap"></div>
   <div class="mg-legend-box" id="mgLegend"></div>
   <div class="mg-map-actions"><button class="cta ghost" id="mgMapLoc"></button></div>
+  <div class="mg-route-tabs" id="mgRouteTabs"></div>
   <h3 class="mg-courses-h" id="mgEventsH"></h3>
   <div class="mg-cycle-note" id="mgEventsNote"></div>
   <div class="mg-cycle" id="mgEvents"></div>
