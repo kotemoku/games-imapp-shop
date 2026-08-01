@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="kyototamba-karuta" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata>
-    <name>京都丹波・年表かるた「日吉ダムコース」（公式コースの主要地点）</name>
+    <name>京都丹波タイムトラベル「日吉ダムコース」（公式コースの主要地点）</name>
     <desc>スプリングスひよしから日吉ダム堤頂・天若湖へ。約5km・約1時間。 地点間の道順は含みません。公式マップ: https://www.pref.kyoto.jp/nantan/ho-kikaku/documents/006.pdf</desc>
   </metadata>
   <wpt lat="35.15243" lon="135.51791"><name>スプリングスひよし</name></wpt>
   <wpt lat="35.14771" lon="135.51715"><name>日吉ダム</name></wpt>
   <rte>
-    <name>京都丹波・年表かるた「日吉ダムコース」（公式コースの主要地点）</name>
+    <name>京都丹波タイムトラベル「日吉ダムコース」（公式コースの主要地点）</name>
     <rtept lat="35.15243" lon="135.51791"><name>スプリングスひよし</name></rtept>
     <rtept lat="35.14771" lon="135.51715"><name>日吉ダム</name></rtept>
   </rte>

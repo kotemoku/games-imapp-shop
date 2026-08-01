@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<title>京都丹波・年表かるた</title>
-<meta name="description" content="京都丹波（亀岡・南丹・京丹波）の年表かるた。古い順に札を並べ、3つのまちをひとつに。" />
-<meta name="theme-color" content="#274a6d" />
+<title>京都丹波タイムトラベル</title>
+<meta name="description" content="亀岡・南丹・京丹波を、時代をこえて旅するカードゲーム。いちばん昔の札を選んで、3つのまちをつなごう。" />
+<meta name="theme-color" content="#19242d" />
 <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png" />
 <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16.png" />
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
@@ -13,12 +13,12 @@
 <script src="ga-init.js" defer></script>
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<meta name="apple-mobile-web-app-title" content="丹波かるた" />
+<meta name="apple-mobile-web-app-title" content="丹波タイムトラベル" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;700;900&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet" />
-  <script type="module" crossorigin src="./assets/index-BlLYI7VC.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-C0Tg426n.css">
+  <script type="module" crossorigin src="./assets/index-C6W7IaeH.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-DHhjxCfy.css">
 </head>
 <body>
 <div class="wrap">
@@ -42,7 +42,7 @@
         <div class="turn-hint" id="hint"></div>
       </div>
       <div class="quizbar hidden" id="quizBar">
-        <span class="q-tag">Q</span>
+        <span class="q-tag">GO</span>
         <span class="q-year" id="quizYear"></span>
         <span class="q-ask" id="quizAsk"></span>
       </div>
@@ -66,43 +66,60 @@
 
 <!-- Start -->
 <div class="overlay start" id="startOv"><div class="st-page">
-  <div class="st-hero">
-    <div class="st-langrow"><button class="langbtn ghost" id="langBtn2">EN</button></div>
-    <svg class="st-crest" viewBox="0 0 1024 1024" role="img" aria-label="京都丹波・年表かるたの花の紋">
-      <defs><radialGradient id="stGold" cx="40%" cy="36%" r="72%"><stop offset="0%" stop-color="#f6dc8d"/><stop offset="46%" stop-color="#d7a851"/><stop offset="100%" stop-color="#9c6d1f"/></radialGradient></defs>
-      <g stroke="#fff" stroke-width="9" stroke-linejoin="round">
-        <path transform="rotate(0 512 512)" d="M512 505 C456 476 418 396 434 316 C446 258 478 214 512 196 C546 214 578 258 590 316 C606 396 568 476 512 505 Z" fill="#a5573a"/>
-        <path transform="rotate(60 512 512)" d="M512 505 C456 476 418 396 434 316 C446 258 478 214 512 196 C546 214 578 258 590 316 C606 396 568 476 512 505 Z" fill="#5b7d4b"/>
-        <path transform="rotate(120 512 512)" d="M512 505 C456 476 418 396 434 316 C446 258 478 214 512 196 C546 214 578 258 590 316 C606 396 568 476 512 505 Z" fill="#3a6a8c"/>
-        <path transform="rotate(180 512 512)" d="M512 505 C456 476 418 396 434 316 C446 258 478 214 512 196 C546 214 578 258 590 316 C606 396 568 476 512 505 Z" fill="#a5573a"/>
-        <path transform="rotate(240 512 512)" d="M512 505 C456 476 418 396 434 316 C446 258 478 214 512 196 C546 214 578 258 590 316 C606 396 568 476 512 505 Z" fill="#5b7d4b"/>
-        <path transform="rotate(300 512 512)" d="M512 505 C456 476 418 396 434 316 C446 258 478 214 512 196 C546 214 578 258 590 316 C606 396 568 476 512 505 Z" fill="#3a6a8c"/>
-      </g>
-      <circle cx="512" cy="512" r="120" fill="#173049"/><circle cx="512" cy="512" r="108" fill="url(#stGold)"/>
-    </svg>
-    <div class="eyebrow" id="stEyebrow"></div>
-    <h2 class="st-brand" id="stBrand"></h2>
-    <div class="st-catch" id="stTitle"></div>
-    <div class="tenant hidden" id="tenantBadge"></div>
-  </div>
-  <div class="st-body">
-    <button class="cta st-play" id="stPlay" type="button"></button>
-    <div class="st-play-hint" id="stPlayHint"></div>
-    <div class="st-decks">
-      <button class="st-deck" id="stHist" type="button"></button>
-      <button class="st-deck" id="stBosai" type="button"></button>
+  <div class="st-langrow"><button class="langbtn ghost" id="langBtn2">EN</button></div>
+  <section class="st-hero" aria-labelledby="stBrand">
+    <div class="st-intro">
+      <svg class="st-crest" viewBox="0 0 1024 1024" role="img" aria-label="京都丹波タイムトラベルの花の紋">
+        <defs><radialGradient id="stGold" cx="40%" cy="36%" r="72%"><stop offset="0%" stop-color="#f6dc8d"/><stop offset="46%" stop-color="#d7a851"/><stop offset="100%" stop-color="#9c6d1f"/></radialGradient></defs>
+        <g stroke="#fff" stroke-width="9" stroke-linejoin="round">
+          <path transform="rotate(0 512 512)" d="M512 505 C456 476 418 396 434 316 C446 258 478 214 512 196 C546 214 578 258 590 316 C606 396 568 476 512 505 Z" fill="#a5573a"/>
+          <path transform="rotate(60 512 512)" d="M512 505 C456 476 418 396 434 316 C446 258 478 214 512 196 C546 214 578 258 590 316 C606 396 568 476 512 505 Z" fill="#5b7d4b"/>
+          <path transform="rotate(120 512 512)" d="M512 505 C456 476 418 396 434 316 C446 258 478 214 512 196 C546 214 578 258 590 316 C606 396 568 476 512 505 Z" fill="#3a6a8c"/>
+          <path transform="rotate(180 512 512)" d="M512 505 C456 476 418 396 434 316 C446 258 478 214 512 196 C546 214 578 258 590 316 C606 396 568 476 512 505 Z" fill="#a5573a"/>
+          <path transform="rotate(240 512 512)" d="M512 505 C456 476 418 396 434 316 C446 258 478 214 512 196 C546 214 578 258 590 316 C606 396 568 476 512 505 Z" fill="#5b7d4b"/>
+          <path transform="rotate(300 512 512)" d="M512 505 C456 476 418 396 434 316 C446 258 478 214 512 196 C546 214 578 258 590 316 C606 396 568 476 512 505 Z" fill="#3a6a8c"/>
+        </g>
+        <circle cx="512" cy="512" r="120" fill="#173049"/><circle cx="512" cy="512" r="108" fill="url(#stGold)"/>
+      </svg>
+      <div class="eyebrow" id="stEyebrow"></div>
+      <h2 class="st-brand" id="stBrand"></h2>
+      <div class="st-catch" id="stTitle"></div>
+      <div class="tenant hidden" id="tenantBadge"></div>
     </div>
-    <div class="st-modes">
-      <button class="st-mode" id="stKeiko" type="button"></button>
-      <button class="st-mode" id="stTai" type="button"></button>
+    <div class="st-quick" aria-label="sample quiz">
+      <div class="st-quick-head">
+        <span class="st-quick-kicker" id="stQuickKicker"></span>
+        <span class="st-quick-chip" id="stQuickChip"></span>
+      </div>
+      <div class="st-quick-q"><span class="st-q-tag">GO</span><span id="stQuickYear"></span></div>
+      <div class="st-quick-ask" id="stQuickAsk"></div>
+      <div class="st-sample-grid">
+        <button class="st-sample-card kyo" type="button">
+          <span class="sc-town" id="stSampleTownA"></span>
+          <span class="sc-title" id="stSampleTitleA"></span>
+          <span class="sc-note" id="stSampleNoteA"></span>
+        </button>
+        <button class="st-sample-card kam" type="button">
+          <span class="sc-town" id="stSampleTownB"></span>
+          <span class="sc-title" id="stSampleTitleB"></span>
+          <span class="sc-note" id="stSampleNoteB"></span>
+        </button>
+        <button class="st-sample-card nan" type="button">
+          <span class="sc-town" id="stSampleTownC"></span>
+          <span class="sc-title" id="stSampleTitleC"></span>
+          <span class="sc-note" id="stSampleNoteC"></span>
+        </button>
+      </div>
+      <button class="cta st-play" id="stPlay" type="button"></button>
+      <button class="st-meguri st-map-cta" id="stMeguriBanner" type="button">
+        <span class="smg-ico" aria-hidden="true">🌸</span>
+        <span class="smg-tx"><b id="stMeguriT"></b><span class="smg-d" id="stMeguriD"></span></span>
+        <span class="smg-arr" aria-hidden="true">→</span>
+      </button>
+      <div class="st-play-hint" id="stPlayHint"></div>
+      <span class="howlink" id="howLink"></span>
     </div>
-    <button class="st-meguri" id="stMeguriBanner" type="button">
-      <span class="smg-ico" aria-hidden="true">🌸</span>
-      <span class="smg-tx"><b id="stMeguriT"></b><span class="smg-d" id="stMeguriD"></span></span>
-      <span class="smg-arr" aria-hidden="true">→</span>
-    </button>
-    <span class="howlink" id="howLink"></span>
-  </div>
+  </section>
 </div></div>
 
 <!-- Tutorial -->
@@ -128,6 +145,14 @@
   <div class="reflect-head"><div class="eyebrow" id="rfEyebrow"></div><h2 id="rfTitle"></h2>
     <div class="badge hidden" id="reflectBadge"></div><div class="verdict" id="reflectVerdict"></div></div>
   <div class="reflect-lead" id="reflectLead"></div>
+  <div class="reflect-deep">
+    <div class="reflect-deep-copy">
+      <div class="reflect-deep-k" id="rfDeepK"></div>
+      <div class="reflect-deep-t" id="rfDeepT"></div>
+      <p id="rfDeepD"></p>
+    </div>
+    <button class="btn reflect-map" id="reflectMap" type="button"></button>
+  </div>
   <div class="timeline" id="timeline"></div>
   <div class="tl-capstone"><div class="yr" id="capYr">2026</div><div class="tx" id="capT"></div><div class="sub" id="capS"></div></div>
   <div class="push-optin hidden" id="pushOptin">
@@ -147,37 +172,41 @@
 <!-- めぐり帳 (touring passport) -->
 <div class="overlay sheet hidden" id="meguriOv"><div class="reflect meguri">
   <button class="deep-close" id="meguriClose" aria-label="close">×</button>
-  <div class="reflect-head"><div class="eyebrow" id="mgEyebrow"></div><h2 id="mgTitle"></h2></div>
-  <div class="mg-flower" id="mgFlower"></div>
-  <div class="mg-rank" id="mgRank"></div>
-  <div class="mg-stats" id="mgStats"></div>
-  <div class="mg-bloomline" id="mgBloomline"></div>
-  <div class="mg-actions">
-    <button class="cta ghost" id="mgNear"></button>
-    <button class="cta ghost" id="mgShare"></button>
-  </div>
-  <div class="mg-near hidden" id="mgNearList"></div>
   <h3 class="mg-courses-h" id="mgMapH"></h3>
-  <div class="mg-map-hint" id="mgMapHint"></div>
-  <div class="mg-map" id="mgMap"></div>
-  <div class="mg-tabs" id="mgMapTabs"></div>
-  <div class="mg-route-tabs" id="mgRouteTabs"></div>
-  <h3 class="mg-courses-h" id="mgEventsH"></h3>
-  <div class="mg-cycle-note" id="mgEventsNote"></div>
-  <div class="mg-cycle" id="mgEvents"></div>
-  <div class="mg-medal hidden" id="mgMedal"></div>
-  <h3 class="mg-courses-h" id="mgCoursesH"></h3>
-  <div class="mg-courses" id="mgCourses"></div>
-  <h3 class="mg-courses-h" id="mgCycleH"></h3>
-  <div class="mg-cycle-note" id="mgCycleNote"></div>
-  <div class="mg-cycle" id="mgCycle"></div>
-  <h3 class="mg-courses-h" id="mgWalkH"></h3>
-  <div class="mg-cycle-note" id="mgWalkNote"></div>
-  <div class="mg-cycle" id="mgWalk"></div>
-  <h3 class="mg-courses-h" id="mgShopsH"></h3>
-  <div class="mg-cycle-note" id="mgShopsNote"></div>
-  <div class="mg-genres" id="mgGenres"></div>
-  <div class="mg-cycle" id="mgShops"></div>
+  <div class="mg-map-shell">
+    <div class="mg-map-hint" id="mgMapHint"></div>
+    <div class="mg-map" id="mgMap"></div>
+    <div class="mg-tabs" id="mgMapTabs"></div>
+    <div class="mg-route-tabs" id="mgRouteTabs"></div>
+  </div>
+  <div class="mg-dock">
+    <div class="reflect-head"><div class="eyebrow" id="mgEyebrow"></div><h2 id="mgTitle"></h2></div>
+    <div class="mg-flower" id="mgFlower"></div>
+    <div class="mg-rank" id="mgRank"></div>
+    <div class="mg-stats" id="mgStats"></div>
+    <div class="mg-bloomline" id="mgBloomline"></div>
+    <div class="mg-actions">
+      <button class="cta ghost" id="mgNear"></button>
+      <button class="cta ghost" id="mgShare"></button>
+    </div>
+    <div class="mg-near hidden" id="mgNearList"></div>
+    <h3 class="mg-courses-h" id="mgEventsH"></h3>
+    <div class="mg-cycle-note" id="mgEventsNote"></div>
+    <div class="mg-cycle" id="mgEvents"></div>
+    <div class="mg-medal hidden" id="mgMedal"></div>
+    <h3 class="mg-courses-h" id="mgCoursesH"></h3>
+    <div class="mg-courses" id="mgCourses"></div>
+    <h3 class="mg-courses-h" id="mgCycleH"></h3>
+    <div class="mg-cycle-note" id="mgCycleNote"></div>
+    <div class="mg-cycle" id="mgCycle"></div>
+    <h3 class="mg-courses-h" id="mgWalkH"></h3>
+    <div class="mg-cycle-note" id="mgWalkNote"></div>
+    <div class="mg-cycle" id="mgWalk"></div>
+    <h3 class="mg-courses-h" id="mgShopsH"></h3>
+    <div class="mg-cycle-note" id="mgShopsNote"></div>
+    <div class="mg-genres" id="mgGenres"></div>
+    <div class="mg-cycle" id="mgShops"></div>
+  </div>
 </div></div>
 
 <!-- Deep-dive (native GPS / web preview) -->

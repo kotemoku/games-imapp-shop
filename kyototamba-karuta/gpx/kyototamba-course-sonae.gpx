@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="kyototamba-karuta" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata>
-    <name>京都丹波・年表かるた 周遊コース「水とそなえの道」</name>
+    <name>京都丹波タイムトラベル 周遊コース「水とそなえの道」</name>
     <desc>由良川・桂川を治めた4つのダムをめぐり、備えを学ぶ。 地点間の道順は含みません（ナビはGoogleマップ等で）。</desc>
   </metadata>
   <wpt lat="35.26242" lon="135.46035"><name>大野ダム公園（虹の湖）</name></wpt>
@@ -9,7 +9,7 @@
   <wpt lat="35.14771" lon="135.51715"><name>日吉ダム／スプリングスひよし</name></wpt>
   <wpt lat="35.20949" lon="135.4354"><name>畑川ダム</name></wpt>
   <rte>
-    <name>京都丹波・年表かるた 周遊コース「水とそなえの道」</name>
+    <name>京都丹波タイムトラベル 周遊コース「水とそなえの道」</name>
     <rtept lat="35.26242" lon="135.46035"><name>大野ダム公園（虹の湖）</name></rtept>
     <rtept lat="35.2522" lon="135.4167"><name>和知ダム</name></rtept>
     <rtept lat="35.14771" lon="135.51715"><name>日吉ダム／スプリングスひよし</name></rtept>

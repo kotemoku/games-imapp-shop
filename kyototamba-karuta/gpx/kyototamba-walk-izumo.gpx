@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="kyototamba-karuta" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata>
-    <name>京都丹波・年表かるた「出雲大神宮コース」（公式コースの主要地点）</name>
+    <name>京都丹波タイムトラベル「出雲大神宮コース」（公式コースの主要地点）</name>
     <desc>平の沢池（オニバス自生地）から丹波国一之宮・出雲大神宮へ。約5km・約1時間。 地点間の道順は含みません。公式マップ: https://www.pref.kyoto.jp/nantan/ho-kikaku/documents/003.pdf</desc>
   </metadata>
   <wpt lat="35.06445" lon="135.56666"><name>平の沢池</name></wpt>
   <wpt lat="35.05951" lon="135.57869"><name>出雲大神宮</name></wpt>
   <rte>
-    <name>京都丹波・年表かるた「出雲大神宮コース」（公式コースの主要地点）</name>
+    <name>京都丹波タイムトラベル「出雲大神宮コース」（公式コースの主要地点）</name>
     <rtept lat="35.06445" lon="135.56666"><name>平の沢池</name></rtept>
     <rtept lat="35.05951" lon="135.57869"><name>出雲大神宮</name></rtept>
   </rte>
