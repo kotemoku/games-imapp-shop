@@ -40,10 +40,55 @@
         width: 100%;
         height: 100%;
       }
+      /* 起動スプラッシュ：JS読込・Phaser起動中の無地画面を無くす（Boot開始で除去） */
+      #splash {
+        position: fixed;
+        inset: 0;
+        background: #f6efe1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 18px;
+        z-index: 10;
+      }
+      #splash .blocks {
+        display: flex;
+        gap: 10px;
+      }
+      #splash .blocks span {
+        width: 22px;
+        height: 22px;
+        border-radius: 6px;
+        animation: splash-bounce 0.9s ease-in-out infinite;
+      }
+      #splash .blocks span:nth-child(1) { background: #477bbc; }
+      #splash .blocks span:nth-child(2) { background: #598540; animation-delay: 0.15s; }
+      #splash .blocks span:nth-child(3) { background: #d42d33; animation-delay: 0.3s; }
+      #splash .blocks span:nth-child(4) { background: #e6b37d; animation-delay: 0.45s; }
+      @keyframes splash-bounce {
+        0%, 100% { transform: translateY(0); }
+        40% { transform: translateY(-14px); }
+      }
+      #splash .t {
+        color: #6b4a2a;
+        font-weight: bold;
+        font-size: 20px;
+        letter-spacing: 0.2em;
+      }
+      #splash .s {
+        color: #a2864f;
+        font-size: 12px;
+      }
     </style>
-    <script type="module" crossorigin src="./assets/index-CjTcVAhl.js"></script>
+    <script type="module" crossorigin src="./assets/index-bWLLtZ6b.js"></script>
   </head>
   <body>
+    <div id="splash">
+      <div class="blocks"><span></span><span></span><span></span><span></span></div>
+      <div class="t">モッケルン</div>
+      <div class="s">よみこみちゅう… / Loading…</div>
+    </div>
     <div id="game"></div>
   </body>
 </html>
