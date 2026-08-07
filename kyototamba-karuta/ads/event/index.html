@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>京都丹波ナビ|イベント情報掲載 記入フォーム(無料)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --sumi:#1c2b3a;
+  --kohaku:#8a5a1e;
+  --shu:#a83c2a;
+  --kinari:#f6f2e9;
+  --usuzumi:#8b8578;
+  --sen:#d8d0bf;
+  --midori:#33695c;
+  --rail:#b7ad97;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Noto Sans JP',sans-serif;
+  background:
+    radial-gradient(1200px 500px at 50% -100px, rgba(51,105,92,.10), transparent 60%),
+    var(--kinari);
+  color:var(--sumi);
+  line-height:1.8;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:760px;margin:0 auto;padding:0 20px 96px}
+
+/* ---------- ヘッダー ---------- */
+header{padding:56px 0 40px;text-align:center}
+.rosen-mark{
+  display:inline-flex;align-items:center;gap:10px;
+  font-size:12px;letter-spacing:.28em;color:var(--midori);
+  border:1px solid var(--midori);border-radius:999px;
+  padding:6px 18px 6px 20px;margin-bottom:22px;
+}
+.rosen-mark::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--midori)}
+h1{
+  font-family:'Shippori Mincho',serif;font-weight:800;
+  font-size:clamp(26px,5.4vw,40px);letter-spacing:.08em;line-height:1.4;
+}
+h1 small{
+  display:block;font-size:clamp(13px,2.6vw,15px);font-weight:600;
+  letter-spacing:.34em;color:var(--kohaku);margin-top:10px;
+}
+.muryo{
+  display:inline-block;margin-top:18px;
+  font-family:'Shippori Mincho',serif;font-weight:800;font-size:16px;letter-spacing:.2em;
+  color:#fff;background:var(--midori);border-radius:999px;padding:8px 30px;
+}
+.lead{
+  margin:24px auto 0;max-width:34em;font-size:14.5px;color:#4a5563;text-align:left;
+}
+.lead p+p{margin-top:.8em}
+
+/* ---------- 路線(フォーム全体) ---------- */
+form{position:relative;margin-top:16px}
+.line{
+  position:absolute;left:15px;top:28px;bottom:28px;width:0;
+  border-left:3px solid var(--rail);
+}
+section.eki{position:relative;padding:0 0 44px 52px}
+section.eki:last-of-type{padding-bottom:0}
+.eki-dot{
+  position:absolute;left:5px;top:6px;width:23px;height:23px;border-radius:50%;
+  background:var(--kinari);border:3px solid var(--rail);transition:border-color .3s,background .3s;
+}
+section.eki.done .eki-dot{border-color:var(--midori);background:var(--midori);box-shadow:inset 0 0 0 4px var(--kinari)}
+
+/* 駅名標風の見出し */
+.ekimei{
+  display:inline-block;background:#fff;border:2px solid var(--sumi);border-radius:6px;
+  padding:8px 20px 9px;margin-bottom:6px;position:relative;
+  box-shadow:3px 3px 0 rgba(28,43,58,.12);
+}
+.ekimei::after{
+  content:"";position:absolute;left:10px;right:10px;bottom:5px;height:3px;
+  background:linear-gradient(90deg,var(--midori),var(--kohaku));border-radius:2px;
+}
+.ekimei h2{
+  font-family:'Shippori Mincho',serif;font-weight:800;font-size:20px;letter-spacing:.14em;
+}
+.ekimei .yomi{font-size:10.5px;letter-spacing:.3em;color:var(--usuzumi)}
+.eki-note{font-size:13px;color:var(--usuzumi);margin:6px 0 18px}
+
+/* ---------- 入力部品 ---------- */
+.field{margin-bottom:20px}
+label.t,.t{
+  display:flex;align-items:baseline;gap:8px;font-size:14px;font-weight:700;margin-bottom:6px;
+}
+.req,.opt{font-size:10.5px;font-weight:700;border-radius:3px;padding:1px 7px;letter-spacing:.1em}
+.req{color:#fff;background:var(--shu)}
+.opt{color:var(--usuzumi);background:#eae4d6}
+.hint{font-size:12px;color:var(--usuzumi);font-weight:400;margin-left:auto}
+input[type=text],input[type=tel],input[type=email],input[type=url],input[type=date],select,textarea{
+  width:100%;font-family:inherit;font-size:15.5px;color:var(--sumi);
+  background:#fff;border:1.5px solid var(--sen);border-radius:8px;
+  padding:11px 14px;transition:border-color .2s,box-shadow .2s;
+}
+textarea{resize:vertical;min-height:110px}
+input:focus,select:focus,textarea:focus{
+  outline:none;border-color:var(--midori);box-shadow:0 0 0 3px rgba(51,105,92,.15);
+}
+:focus-visible{outline:2px solid var(--midori);outline-offset:2px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:560px){.grid2{grid-template-columns:1fr}}
+.count{font-size:11.5px;color:var(--usuzumi);text-align:right;margin-top:3px}
+.count.over{color:var(--shu);font-weight:700}
+
+/* 区分えらび(切符ボタン) */
+.kubun{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:6px}
+.kubun label{
+  position:relative;display:block;text-align:center;cursor:pointer;
+  background:#fff;border:2px solid var(--sen);border-radius:10px;padding:14px 6px 12px;
+  transition:border-color .2s,box-shadow .2s;
+}
+.kubun input{position:absolute;opacity:0;pointer-events:none}
+.kubun .k-name{
+  font-family:'Shippori Mincho',serif;font-weight:800;font-size:17px;letter-spacing:.2em;
+}
+.kubun .k-sub{font-size:11px;color:var(--usuzumi);letter-spacing:.06em}
+.kubun input:checked+.k-name{color:var(--midori)}
+.kubun label:has(input:checked){
+  border-color:var(--midori);box-shadow:0 0 0 3px rgba(51,105,92,.15);
+}
+.kubun input:focus-visible~.k-sub{outline:2px solid var(--midori);outline-offset:6px}
+
+/* 写真アップロード */
+.photo-box{
+  border:2px dashed var(--sen);border-radius:10px;background:#fffdf8;
+  padding:18px;text-align:center;cursor:pointer;transition:border-color .2s;
+}
+.photo-box:hover{border-color:var(--midori)}
+.photo-box input{display:none}
+.photo-box .pb-t{font-size:14px;font-weight:700}
+.photo-box .pb-s{font-size:12px;color:var(--usuzumi);margin-top:2px}
+.preview{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+.preview figure{width:110px}
+.preview img{
+  width:110px;height:82px;object-fit:cover;display:block;
+  border:5px solid #fff;box-shadow:0 2px 8px rgba(28,43,58,.25);
+}
+.preview figcaption{font-size:10.5px;color:var(--usuzumi);text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* 規約・同意・送信 */
+.kiyaku{
+  background:#fff;border:1.5px solid var(--sen);border-radius:8px;margin-bottom:14px;
+}
+.kiyaku summary{
+  cursor:pointer;list-style:none;padding:14px 16px;font-size:14px;font-weight:700;
+  display:flex;align-items:center;gap:8px;
+}
+.kiyaku summary::-webkit-details-marker{display:none}
+.kiyaku summary::after{content:"開く";margin-left:auto;font-size:11.5px;font-weight:500;color:var(--kohaku);border:1px solid var(--kohaku);border-radius:999px;padding:2px 12px}
+.kiyaku[open] summary::after{content:"閉じる"}
+.kiyaku .k-inner{
+  border-top:1px solid var(--sen);padding:16px;max-height:300px;overflow-y:auto;
+  font-size:12.5px;line-height:1.9;color:#3d4a58;
+}
+.kiyaku .k-inner h4{font-size:12.5px;margin:14px 0 2px;color:var(--sumi)}
+.kiyaku .k-inner h4:first-child{margin-top:0}
+.kiyaku .k-inner p.tail{margin-top:14px;color:var(--usuzumi)}
+.agree{
+  display:flex;gap:10px;align-items:flex-start;background:#fff;border:1.5px solid var(--sen);
+  border-radius:8px;padding:14px 16px;font-size:13.5px;
+}
+.agree input{width:18px;height:18px;margin-top:4px;accent-color:var(--midori);flex:none}
+.actions{margin-top:26px;text-align:center}
+button.go{
+  font-family:'Shippori Mincho',serif;font-weight:800;font-size:18px;letter-spacing:.24em;
+  color:#fff;background:var(--sumi);border:none;border-radius:999px;
+  padding:16px 54px 16px 60px;cursor:pointer;transition:transform .15s,background .2s;
+}
+button.go:hover{background:#2b3f55;transform:translateY(-2px)}
+button.go:active{transform:none}
+.err{display:none;margin-top:14px;font-size:13.5px;color:var(--shu);font-weight:700}
+.err.show{display:block}
+
+/* ---------- 到着(確認画面) ---------- */
+#arrival{display:none}
+#arrival.show{display:block}
+.arrive-card{
+  background:#fff;border:2px solid var(--midori);border-radius:12px;padding:26px 24px;margin-top:8px;
+}
+.arrive-card h2{
+  font-family:'Shippori Mincho',serif;font-size:22px;letter-spacing:.14em;color:var(--midori);margin-bottom:8px;
+}
+.arrive-card p{font-size:14px;margin-bottom:16px}
+#summary{
+  width:100%;font-family:inherit;font-size:13px;line-height:1.9;
+  background:var(--kinari);border:1px solid var(--sen);border-radius:8px;
+  padding:16px;min-height:260px;white-space:pre-wrap;
+}
+.arrive-btns{display:flex;gap:12px;flex-wrap:wrap;margin-top:14px}
+.arrive-btns button{
+  font-family:inherit;font-weight:700;font-size:14px;border-radius:8px;padding:11px 22px;cursor:pointer;
+  border:1.5px solid var(--sumi);background:#fff;color:var(--sumi);transition:background .2s;
+}
+.arrive-btns button.primary{background:var(--sumi);color:#fff;border-color:var(--sumi)}
+.arrive-btns button:hover{background:#eef0f3}
+.arrive-btns button.primary:hover{background:#2b3f55}
+footer{margin-top:70px;text-align:center;font-size:11.5px;color:var(--usuzumi);letter-spacing:.18em}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="rosen-mark">イベント情報掲載 記入フォーム</div>
+  <h1>京都丹波ナビ<small>イベント情報 記入のご案内</small></h1>
+  <div class="muryo">掲載無料</div>
+  <div class="lead">
+    <p>丹波エリアで開催されるイベント情報を募集しています。お祭り・マルシェ・ワークショップ・展示・体験会など、地域を楽しくする催しなら、個人・団体・企業を問わずどなたでもご応募いただけます。</p>
+    <p>掲載は無料です。ご記入いただいた内容を確認のうえ、「京都丹波ナビ」のイベント欄に掲載します。所要時間はおよそ3分です。</p>
+  </div>
+</header>
+
+<form id="evForm" novalidate>
+  <div class="line" aria-hidden="true"></div>
+
+  <!-- ① 主催者情報 -->
+  <section class="eki" data-eki>
+    <span class="eki-dot" aria-hidden="true"></span>
+    <div class="ekimei"><div class="yomi">STOP 1</div><h2>主催者について</h2></div>
+    <p class="eki-note">まず、どなたが主催されるかを教えてください。</p>
+
+    <div class="field">
+      <span class="t">主催者の区分 <span class="req">必須</span></span>
+      <div class="kubun" role="radiogroup" aria-label="主催者の区分">
+        <label><input type="radio" name="kubun" value="個人" checked><span class="k-name">個人</span><span class="k-sub">おひとりで主催</span></label>
+        <label><input type="radio" name="kubun" value="団体"><span class="k-name">団体</span><span class="k-sub">サークル・自治会など</span></label>
+        <label><input type="radio" name="kubun" value="企業"><span class="k-name">企業</span><span class="k-sub">会社・お店など</span></label>
+      </div>
+    </div>
+
+    <div class="field" id="orgField" hidden>
+      <label class="t" for="orgName"><span id="orgLabel">団体名</span> <span class="req">必須</span></label>
+      <input type="text" id="orgName" name="団体・企業名" placeholder="例)天引まちおこしの会">
+    </div>
+
+    <div class="grid2">
+      <div class="field">
+        <label class="t" for="tanto">ご担当者名 <span class="req">必須</span></label>
+        <input type="text" id="tanto" name="ご担当者名" required placeholder="例)小寺 花子">
+      </div>
+      <div class="field">
+        <label class="t" for="tel">お電話番号 <span class="req">必須</span></label>
+        <input type="tel" id="tel" name="お電話番号" required inputmode="tel" placeholder="例)090-0000-0000">
+      </div>
+    </div>
+    <div class="field">
+      <label class="t" for="mail">メールアドレス <span class="opt">任意</span></label>
+      <input type="email" id="mail" name="メールアドレス" placeholder="例)info@example.jp">
+    </div>
+    <div class="field">
+      <label class="t" for="orgUrl">ホームページ・SNS <span class="opt">任意</span></label>
+      <input type="url" id="orgUrl" name="主催者URL" placeholder="例)https://〜(InstagramやLINEでも可)">
+    </div>
+  </section>
+
+  <!-- ② イベント内容 -->
+  <section class="eki" data-eki>
+    <span class="eki-dot" aria-hidden="true"></span>
+    <div class="ekimei"><div class="yomi">STOP 2</div><h2>イベントの内容</h2></div>
+    <p class="eki-note">ページに表示される情報です。決まっているところまでで大丈夫です。</p>
+
+    <div class="field">
+      <label class="t" for="evName">イベント名 <span class="req">必須</span></label>
+      <input type="text" id="evName" name="イベント名" required placeholder="例)むくむく市 秋のマルシェ">
+    </div>
+    <div class="grid2">
+      <div class="field">
+        <label class="t" for="dateStart">開催日 <span class="req">必須</span></label>
+        <input type="date" id="dateStart" name="開催日" required>
+      </div>
+      <div class="field">
+        <label class="t" for="dateEnd">終了日 <span class="opt">任意</span><span class="hint">複数日の場合</span></label>
+        <input type="date" id="dateEnd" name="終了日">
+      </div>
+    </div>
+    <div class="field">
+      <label class="t" for="evTime">開催時間 <span class="req">必須</span></label>
+      <input type="text" id="evTime" name="開催時間" required placeholder="例)10:00〜15:00(雨天中止)">
+    </div>
+    <div class="field">
+      <label class="t" for="place">開催場所 <span class="req">必須</span></label>
+      <input type="text" id="place" name="開催場所" required placeholder="例)南丹市園部町 〇〇公園(駐車場あり)">
+    </div>
+    <div class="field">
+      <label class="t" for="naiyo">内容の紹介 <span class="req">必須</span><span class="hint">150文字まで</span></label>
+      <textarea id="naiyo" name="内容の紹介" required maxlength="200" data-count="150" placeholder="どんなイベントか、見どころ、持ち物など。"></textarea>
+      <div class="count" data-count-for="naiyo">0 / 150文字</div>
+    </div>
+    <div class="grid2">
+      <div class="field">
+        <label class="t" for="sanka">参加費 <span class="req">必須</span></label>
+        <input type="text" id="sanka" name="参加費" required placeholder="例)無料/500円(材料費込み)">
+      </div>
+      <div class="field">
+        <label class="t" for="teiin">定員 <span class="opt">任意</span></label>
+        <input type="text" id="teiin" name="定員" placeholder="例)20名(先着順)">
+      </div>
+    </div>
+    <div class="field">
+      <label class="t" for="moshikomi">申込み方法 <span class="req">必須</span></label>
+      <input type="text" id="moshikomi" name="申込み方法" required placeholder="例)申込み不要/電話にて/下記URLから">
+    </div>
+    <div class="field">
+      <label class="t" for="evUrl">イベントの詳細URL <span class="opt">任意</span></label>
+      <input type="url" id="evUrl" name="詳細URL" placeholder="例)https://〜">
+    </div>
+  </section>
+
+  <!-- ③ 写真・チラシ -->
+  <section class="eki" data-eki>
+    <span class="eki-dot" aria-hidden="true"></span>
+    <div class="ekimei"><div class="yomi">STOP 3</div><h2>写真・チラシ</h2></div>
+    <p class="eki-note">あると掲載が目立ちます。ここで選んだ画像は、お申込み後に別途お送りいただきます(方法は追ってご案内します)。</p>
+
+    <div class="field">
+      <label class="t">イベントの写真・チラシ画像 <span class="opt">任意</span><span class="hint">1〜3枚</span></label>
+      <label class="photo-box">
+        <input type="file" id="photoEv" accept="image/*" multiple>
+        <div class="pb-t">タップして画像を選ぶ</div>
+        <div class="pb-s">前回のようすの写真や、チラシ・ポスターの画像など</div>
+      </label>
+      <div class="preview" id="prevEv"></div>
+    </div>
+  </section>
+
+  <!-- ④ 確認・送信 -->
+  <section class="eki" data-eki>
+    <span class="eki-dot" aria-hidden="true"></span>
+    <div class="ekimei"><div class="yomi">STOP 4</div><h2>ご確認</h2></div>
+    <p class="eki-note">最後に、掲載にあたってのお約束をご確認ください。</p>
+
+    <details class="kiyaku">
+      <summary>イベント情報掲載規約</summary>
+      <div class="k-inner">
+        <h4>第1条(適用)</h4>
+        <p>本規約は、teraia(代表:小寺利典。以下「運営者」)が提供する「京都丹波ナビ」のイベント情報掲載(以下「本掲載」)に適用されます。</p>
+        <h4>第2条(掲載料)</h4>
+        <p>本掲載は無料です。</p>
+        <h4>第3条(掲載の流れ)</h4>
+        <p>本フォームによるお申込み内容を運営者が確認のうえ掲載します。内容の確認等のためご連絡する場合があります。掲載時期・掲載位置・掲載期間は運営者が定めます。</p>
+        <h4>第4条(内容の正確性)</h4>
+        <p>掲載内容(日時・場所・参加費等)の正確性は主催者の責任とします。開催内容に変更・中止が生じた場合は、すみやかに運営者までご連絡ください。</p>
+        <h4>第5条(素材の権利)</h4>
+        <p>ご提供いただく写真・チラシ・文章は、主催者が掲載に必要な権利を有し、第三者の権利を侵害しないものとします。これに起因する紛争は主催者の責任と費用で解決するものとします。</p>
+        <h4>第6条(掲載の拒否・削除)</h4>
+        <p>法令または公序良俗に反するもの、営利勧誘・宗教・政治活動を主目的とするもの、事実と異なるもの、その他運営者が不適切と判断したものは、掲載をお断りし、または公開後に削除することがあります。</p>
+        <h4>第7条(免責)</h4>
+        <p>サーバー障害・保守等により掲載が一時的に停止することがあります。イベントの開催・運営およびそれに伴う事故・トラブルについて、運営者は責任を負いません。また、掲載による集客等の成果を保証するものではありません。</p>
+        <h4>第8条(個人情報)</h4>
+        <p>ご記入いただいた情報は、本掲載の提供およびご連絡の目的にのみ利用し、ご本人の同意なく第三者に提供しません。</p>
+        <h4>第9条(準拠法・管轄)</h4>
+        <p>本規約は日本法に準拠し、本掲載に関する紛争は京都地方裁判所を第一審の専属的合意管轄裁判所とします。</p>
+        <p class="tail">運営者:teraia(代表 小寺利典)京都府南丹市</p>
+      </div>
+    </details>
+
+    <label class="agree">
+      <input type="checkbox" id="agree">
+      <span>イベント情報掲載規約に同意します。あわせて、掲載にあたっての編集(文章の整え・画像の調整)をお任せすることを理解しました。</span>
+    </label>
+
+    <div class="actions">
+      <button type="submit" class="go">申込内容を確認する</button>
+      <p class="err" id="errMsg">未記入の項目があります。赤い「必須」の欄をご確認ください。</p>
+    </div>
+  </section>
+</form>
+
+<!-- 到着:確認画面 -->
+<div id="arrival">
+  <div class="arrive-card">
+    <h2>ご記入ありがとうございます</h2>
+    <p>下記が申込内容の控えです。「内容をコピーする」を押して、メールやLINEに貼り付けてお送りください。写真・チラシ画像は同じメール・トークに添付していただければ大丈夫です。内容を確認のうえ、掲載いたします(掲載は無料です)。</p>
+    <textarea id="summary" readonly aria-label="申込内容の控え"></textarea>
+    <div class="arrive-btns">
+      <button type="button" class="primary" id="copyBtn">内容をコピーする</button>
+      <button type="button" id="backBtn">記入画面にもどる</button>
+    </div>
+  </div>
+</div>
+
+<footer>京都丹波ナビ 事務局(teraia)</footer>
+</div>
+
+<script>
+// 区分に応じて団体・企業名欄を切り替え
+var orgField = document.getElementById('orgField');
+var orgLabel = document.getElementById('orgLabel');
+var orgName = document.getElementById('orgName');
+function refreshKubun(){
+  var val = document.querySelector('input[name="kubun"]:checked').value;
+  if(val === '個人'){
+    orgField.hidden = true;
+    orgName.required = false;
+  }else{
+    orgField.hidden = false;
+    orgName.required = true;
+    orgLabel.textContent = (val === '団体') ? '団体名' : '企業名・店舗名';
+    orgName.placeholder = (val === '団体') ? '例)天引まちおこしの会' : '例)株式会社〇〇/丹波茶房 ことり';
+  }
+}
+document.querySelectorAll('input[name="kubun"]').forEach(function(r){
+  r.addEventListener('change', function(){ refreshKubun(); refreshDots(); });
+});
+refreshKubun();
+
+// 文字数カウンター
+document.querySelectorAll('[data-count]').forEach(function(el){
+  var limit = parseInt(el.dataset.count,10);
+  var out = document.querySelector('[data-count-for="'+el.id+'"]');
+  el.addEventListener('input', function(){
+    var n = el.value.length;
+    out.textContent = n + ' / ' + limit + '文字';
+    out.classList.toggle('over', n > limit);
+  });
+});
+
+// 写真プレビュー
+var photoEv = document.getElementById('photoEv');
+var prevEv = document.getElementById('prevEv');
+photoEv.addEventListener('change', function(){
+  prevEv.innerHTML = '';
+  Array.prototype.slice.call(photoEv.files, 0, 3).forEach(function(f){
+    if(!f.type.match(/^image\//)) return;
+    var fig = document.createElement('figure');
+    var img = document.createElement('img');
+    img.alt = f.name;
+    var cap = document.createElement('figcaption');
+    cap.textContent = f.name;
+    var r = new FileReader();
+    r.onload = function(e){ img.src = e.target.result; };
+    r.readAsDataURL(f);
+    fig.appendChild(img); fig.appendChild(cap);
+    prevEv.appendChild(fig);
+  });
+});
+
+// 区間ごとの「停車済み」表示
+var sections = document.querySelectorAll('[data-eki]');
+function refreshDots(){
+  sections.forEach(function(sec){
+    var agree = sec.querySelector('#agree');
+    if(agree){ sec.classList.toggle('done', agree.checked); return; }
+    var photo = sec.querySelector('#photoEv');
+    if(photo){ sec.classList.toggle('done', photo.files.length > 0); return; }
+    var reqs = sec.querySelectorAll('[required]');
+    var ok = reqs.length > 0 && Array.prototype.every.call(reqs, function(el){ return el.value.trim() !== ''; });
+    sec.classList.toggle('done', ok);
+  });
+}
+document.getElementById('evForm').addEventListener('input', refreshDots);
+document.getElementById('evForm').addEventListener('change', refreshDots);
+
+// 送信 → 控えテキスト生成
+var form = document.getElementById('evForm');
+form.addEventListener('submit', function(ev){
+  ev.preventDefault();
+  var err = document.getElementById('errMsg');
+  var missing = Array.prototype.filter.call(form.querySelectorAll('[required]'), function(el){
+    return el.value.trim() === '';
+  });
+  var agreeOk = document.getElementById('agree').checked;
+
+  if(missing.length > 0 || !agreeOk){
+    err.textContent = (!agreeOk && missing.length === 0)
+      ? 'イベント情報掲載規約への同意チェックをお願いします。'
+      : '未記入の項目があります。赤い「必須」の欄をご確認ください。';
+    err.classList.add('show');
+    var target = missing[0] || document.getElementById('agree');
+    target.scrollIntoView({behavior:'smooth', block:'center'});
+    if(missing[0]) missing[0].focus({preventScroll:true});
+    return;
+  }
+  err.classList.remove('show');
+
+  function v(id){ var el = document.getElementById(id); return el.value.trim() || '(未記入)'; }
+  function dateV(id){
+    var el = document.getElementById(id);
+    if(!el.value) return '(未記入)';
+    var d = new Date(el.value + 'T00:00:00');
+    return d.toLocaleDateString('ja-JP', {year:'numeric', month:'long', day:'numeric', weekday:'short'});
+  }
+  var kubun = document.querySelector('input[name="kubun"]:checked').value;
+  var files = photoEv.files.length
+    ? Array.prototype.map.call(photoEv.files, function(f){return f.name;}).join('、')
+    : '(なし)';
+  var lines = [
+    '━━━━━━━━━━━━━━━━━━━━',
+    ' 京都丹波ナビ イベント情報掲載申込',
+    '━━━━━━━━━━━━━━━━━━━━',
+    '',
+    '【主催者について】',
+    '区分:' + kubun,
+    (kubun === '個人' ? null : (kubun === '団体' ? '団体名:' : '企業名・店舗名:') + v('orgName')),
+    'ご担当者名:' + v('tanto'),
+    'お電話番号:' + v('tel'),
+    'メールアドレス:' + v('mail'),
+    'ホームページ・SNS:' + v('orgUrl'),
+    '',
+    '【イベントの内容】',
+    'イベント名:' + v('evName'),
+    '開催日:' + dateV('dateStart') + (document.getElementById('dateEnd').value ? ' 〜 ' + dateV('dateEnd') : ''),
+    '開催時間:' + v('evTime'),
+    '開催場所:' + v('place'),
+    '内容の紹介:',
+    v('naiyo'),
+    '参加費:' + v('sanka'),
+    '定員:' + v('teiin'),
+    '申込み方法:' + v('moshikomi'),
+    '詳細URL:' + v('evUrl'),
+    '',
+    '【写真・チラシ】※このあとメール・LINEに添付してお送りください',
+    files,
+    '',
+    '【掲載料】無料',
+    '【確認事項】イベント情報掲載規約に同意済み',
+    '記入日:' + new Date().toLocaleDateString('ja-JP')
+  ].filter(function(l){ return l !== null; });
+  document.getElementById('summary').value = lines.join('\n');
+  form.style.display = 'none';
+  var arrival = document.getElementById('arrival');
+  arrival.classList.add('show');
+  arrival.scrollIntoView({behavior:'smooth'});
+});
+
+// コピー
+document.getElementById('copyBtn').addEventListener('click', function(){
+  var ta = document.getElementById('summary');
+  ta.select();
+  function flash(){
+    var b = document.getElementById('copyBtn');
+    var t = b.textContent;
+    b.textContent = 'コピーしました ✓';
+    setTimeout(function(){ b.textContent = t; }, 1800);
+  }
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(ta.value).then(flash);
+  }else{
+    document.execCommand('copy'); flash();
+  }
+});
+
+// 戻る
+document.getElementById('backBtn').addEventListener('click', function(){
+  document.getElementById('arrival').classList.remove('show');
+  form.style.display = '';
+  form.scrollIntoView({behavior:'smooth'});
+});
+</script>
+</body>
+</html>

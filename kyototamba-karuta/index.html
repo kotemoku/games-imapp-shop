@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<title>京都丹波タイムトラベル</title>
-<meta name="description" content="亀岡・南丹・京丹波を、時代をこえて旅するカードゲーム。いちばん昔の札を選んで、3つのまちをつなごう。" />
+<title>京都丹波ナビ｜亀岡・南丹・京丹波のイベント・お店・歴史</title>
+<meta name="description" content="京都丹波（亀岡市・南丹市・京丹波町）のイベント情報とお店を掲載。郷土史を遊んで学べるカードゲーム「京都丹波タイムトラベル」も無料で公開しています。" />
 <meta name="theme-color" content="#19242d" />
 <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png" />
 <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16.png" />
@@ -13,12 +13,12 @@
 <script src="ga-init.js" defer></script>
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<meta name="apple-mobile-web-app-title" content="丹波タイムトラベル" />
+<meta name="apple-mobile-web-app-title" content="京都丹波ナビ" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;700;900&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet" />
-  <script type="module" crossorigin src="./assets/index-UWzzNOAy.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-Cqnf-I00.css">
+  <script type="module" crossorigin src="./assets/index-DTcucdgK.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-BInDwTZZ.css">
 </head>
 <body>
 <div class="wrap">
@@ -69,7 +69,7 @@
   <div class="st-langrow"><button class="langbtn ghost" id="langBtn2">EN</button></div>
   <section class="st-hero" aria-labelledby="stBrand">
     <div class="st-intro">
-      <svg class="st-crest" viewBox="0 0 1024 1024" role="img" aria-label="京都丹波タイムトラベルの花の紋">
+      <svg class="st-crest" viewBox="0 0 1024 1024" role="img" aria-label="京都丹波ナビの花の紋">
         <defs><radialGradient id="stGold" cx="40%" cy="36%" r="72%"><stop offset="0%" stop-color="#f6dc8d"/><stop offset="46%" stop-color="#d7a851"/><stop offset="100%" stop-color="#9c6d1f"/></radialGradient></defs>
         <g stroke="#fff" stroke-width="9" stroke-linejoin="round">
           <path transform="rotate(0 512 512)" d="M512 505 C456 476 418 396 434 316 C446 258 478 214 512 196 C546 214 578 258 590 316 C606 396 568 476 512 505 Z" fill="#a5573a"/>
@@ -86,6 +86,23 @@
       <div class="st-catch" id="stTitle"></div>
       <div class="tenant hidden" id="tenantBadge"></div>
     </div>
+      <div class="st-doors" id="stDoors">
+        <button class="st-door" id="stDoorEvents" type="button">
+          <span class="sd-ico" aria-hidden="true">🏮</span>
+          <span class="sd-n" id="stDoorEventsT"></span>
+          <span class="sd-c" id="stDoorEventsC"></span>
+        </button>
+        <button class="st-door" id="stDoorShops" type="button">
+          <span class="sd-ico" aria-hidden="true">🍵</span>
+          <span class="sd-n" id="stDoorShopsT"></span>
+          <span class="sd-c" id="stDoorShopsC"></span>
+        </button>
+        <button class="st-door" id="stMeguriBanner" type="button">
+          <span class="sd-ico" aria-hidden="true">🌸</span>
+          <span class="sd-n" id="stMeguriT"></span>
+          <span class="sd-c" id="stMeguriD"></span>
+        </button>
+      </div>
     <div class="st-quick" aria-label="sample quiz">
       <div class="st-quick-head">
         <span class="st-quick-kicker" id="stQuickKicker"></span>
@@ -111,11 +128,6 @@
         </button>
       </div>
       <button class="cta st-play" id="stPlay" type="button"></button>
-      <button class="st-meguri st-map-cta" id="stMeguriBanner" type="button">
-        <span class="smg-ico" aria-hidden="true">🌸</span>
-        <span class="smg-tx"><b id="stMeguriT"></b><span class="smg-d" id="stMeguriD"></span></span>
-        <span class="smg-arr" aria-hidden="true">→</span>
-      </button>
       <div class="st-play-hint" id="stPlayHint"></div>
       <span class="howlink" id="howLink"></span>
     </div>
