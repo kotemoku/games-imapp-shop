@@ -39,12 +39,32 @@ ul.trust li{margin:6px 0}
 .cta{display:block;text-align:center;background:var(--indigo);color:#fff;font-family:"Zen Old Mincho",serif;font-size:17px;letter-spacing:.1em;padding:16px 20px;border-radius:8px;text-decoration:none;margin:26px 0 8px}
 .cta small{display:block;font-family:"Noto Sans JP",sans-serif;font-size:11.5px;letter-spacing:.04em;margin-top:4px;color:#cfd6de}
 .note{font-size:12px;color:var(--soft);text-align:center}
+/* 掲載例：実ページのスクリーンショット。33,000円で何ができるかを文字でなく現物で見せる。 */
+.samples{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px;margin:14px 0 6px}
+.samples a{display:block;text-decoration:none;color:inherit}
+.samples img{display:block;width:100%;height:270px;object-fit:cover;object-position:top center;
+  border:1px solid var(--line);border-radius:10px;background:#fff;
+  box-shadow:0 6px 20px rgba(30,37,47,.13);transition:transform .2s,box-shadow .2s}
+.samples a:hover img,.samples a:focus-visible img{transform:translateY(-3px);box-shadow:0 12px 28px rgba(30,37,47,.2)}
+.samples b{display:block;margin-top:10px;font-size:13.5px;color:var(--indigo)}
+.samples span{display:block;font-size:12px;color:var(--soft)}
 footer{margin-top:48px;padding-top:16px;border-top:1px solid var(--line);font-size:12px;color:var(--soft)}
 footer a{color:var(--indigo);margin-right:14px}
 </style>
 <script src="../ga-init.js" defer></script>
+<link rel="stylesheet" href="../site-header.css">
 </head>
 <body>
+<header class="ktn-header"><div class="ktn-in">
+  <a class="ktn-brand" href="../index.html"><img src="../icons/icon-192.png" alt="" width="34" height="34"><b>京都丹波ナビ</b></a>
+  <nav aria-label="サイト内">
+    <a href="../events/index.html">イベント</a>
+    <a href="../shops/index.html">寄り処</a>
+    <a href="../index.html">あそぶ</a>
+    <a class="ktn-cta" href="../ads/index.html">掲載のご案内</a>
+  </nav>
+</div></header>
+
 
 <div class="hero"><div class="hero-in">
   <div class="eyebrow">亀岡 ・ 南丹 ・ 京丹波 ｜ 京都丹波ナビ</div>
@@ -74,12 +94,23 @@ footer a{color:var(--indigo);margin-right:14px}
   </div>
   <a class="cta" href="shop/index.html">お店の掲載を申し込む<small>記入フォームへ ｜ 記入は5分ほど・仕上がりを確認してから公開</small></a>
 
-  <h2>掲載例</h2>
-  <div class="ex">
-    <a href="../shops/tsutaya/index.html">日本料理 津多屋（南丹市園部）<span>「戦国と城の道」コース沿い・園部城弁当のお店</span></a>
-    <a href="../shops/smilebird/index.html">smilebird・stone（南丹市園部）<span>ハンドメイド＆天然石のアトリエ</span></a>
-    <a href="../shops/amabiki-mura/index.html">天引村倶楽部（南丹市園部町天引）<span>築100年の茅葺き古民家レンタルスペース</span></a>
+  <h2>実際に作ったページ</h2>
+  <p>いま掲載中の3軒です。画像をタップすると、そのままのページをご覧いただけます。</p>
+  <div class="samples">
+    <a href="../shops/tsutaya/index.html">
+      <img src="img/sample-tsutaya.webp" alt="日本料理 津多屋の掲載ページ" loading="lazy" width="560" height="1520">
+      <b>日本料理 津多屋</b><span>南丹市園部 ・ 園部城弁当のお店</span>
+    </a>
+    <a href="../shops/smilebird/index.html">
+      <img src="img/sample-smilebird.webp" alt="smilebird・stone の掲載ページ" loading="lazy" width="560" height="1520">
+      <b>smilebird・stone</b><span>南丹市園部 ・ ハンドメイドと天然石</span>
+    </a>
+    <a href="../shops/amabiki-mura/index.html">
+      <img src="img/sample-amabiki-mura.webp" alt="天引村倶楽部の掲載ページ" loading="lazy" width="560" height="1520">
+      <b>天引村倶楽部</b><span>南丹市園部町天引 ・ 茅葺き古民家</span>
+    </a>
   </div>
+  <p class="note">写真・文章はお店から伺った内容をもとに、当方で構成・執筆します。公開前に必ずご確認いただきます。</p>
 
   <h2>掲載までの流れ</h2>
   <ol class="flow">

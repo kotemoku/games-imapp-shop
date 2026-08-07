@@ -1,0 +1,65 @@
+/* 京都丹波ナビ サイト共通ヘッダー。
+   イベント/寄り処の静的ページ・掲載案内・申込フォームで同じものを使う。
+   （以前はページ系統ごとに別デザインで、遷移すると別サイトに見えるという
+   デザインレビューの指摘を受けて統一した。2026-08-07）
+   scripts/prerender.mjs はこのファイルを読み込んで生成ページに inline する。 */
+.ktn-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  padding: 10px 20px;
+  background: rgba(247, 246, 241, .94);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(35, 40, 48, .14);
+  font-family: "Noto Sans JP", "Hiragino Kaku Gothic ProN", sans-serif;
+}
+.ktn-header .ktn-in {
+  max-width: 1080px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.ktn-header .ktn-brand {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-right: auto;
+  text-decoration: none;
+  color: #232830;
+}
+.ktn-header .ktn-brand img { width: 34px; height: 34px; display: block; }
+.ktn-header .ktn-brand b {
+  font-family: "Zen Old Mincho", "Yu Mincho", "Hiragino Mincho ProN", serif;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  line-height: 1.2;
+}
+.ktn-header nav { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 16px; }
+.ktn-header nav a {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #232830;
+  text-decoration: none;
+  opacity: .72;
+}
+.ktn-header nav a:hover, .ktn-header nav a:focus-visible { opacity: 1; color: #274a6d; }
+.ktn-header nav a.ktn-cta {
+  opacity: 1;
+  color: #fff;
+  background: #274a6d;
+  padding: 7px 14px;
+  border-radius: 6px;
+}
+.ktn-header nav a.ktn-cta:hover, .ktn-header nav a.ktn-cta:focus-visible { background: #1d3a56; color: #fff; }
+
+@media (max-width: 560px) {
+  .ktn-header { padding: 8px 14px; }
+  .ktn-header .ktn-brand img { width: 29px; height: 29px; }
+  .ktn-header .ktn-brand b { font-size: 15px; }
+  .ktn-header nav { gap: 3px 11px; }
+  .ktn-header nav a { font-size: 11.5px; }
+  .ktn-header nav a.ktn-cta { padding: 6px 11px; }
+}
