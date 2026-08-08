@@ -17,8 +17,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;700;900&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet" />
-  <script type="module" crossorigin src="./assets/index-r93ozR75.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-Dcyv7Sto.css">
+  <script type="module" crossorigin src="./assets/index-C6nl8K6v.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-BRneoxfz.css">
 </head>
 <body>
 <div class="wrap">
@@ -66,50 +66,99 @@
 
 <!-- Start -->
 <div class="overlay start" id="startOv"><div class="st-page">
-  <div class="st-langrow"><button class="langbtn ghost" id="langBtn2">EN</button></div>
-  <section class="st-hero" aria-labelledby="stBrand">
-    <div class="st-intro">
-      <svg class="st-crest" viewBox="0 0 1024 1024" role="img" aria-label="京都丹波ナビの花の紋">
-        <defs><radialGradient id="stGold" cx="40%" cy="36%" r="72%"><stop offset="0%" stop-color="#f6dc8d"/><stop offset="46%" stop-color="#d7a851"/><stop offset="100%" stop-color="#9c6d1f"/></radialGradient></defs>
-        <g stroke="#fff" stroke-width="9" stroke-linejoin="round">
-          <path transform="rotate(0 512 512)" d="M512 505 C456 476 418 396 434 316 C446 258 478 214 512 196 C546 214 578 258 590 316 C606 396 568 476 512 505 Z" fill="#a5573a"/>
-          <path transform="rotate(60 512 512)" d="M512 505 C456 476 418 396 434 316 C446 258 478 214 512 196 C546 214 578 258 590 316 C606 396 568 476 512 505 Z" fill="#5b7d4b"/>
-          <path transform="rotate(120 512 512)" d="M512 505 C456 476 418 396 434 316 C446 258 478 214 512 196 C546 214 578 258 590 316 C606 396 568 476 512 505 Z" fill="#3a6a8c"/>
-          <path transform="rotate(180 512 512)" d="M512 505 C456 476 418 396 434 316 C446 258 478 214 512 196 C546 214 578 258 590 316 C606 396 568 476 512 505 Z" fill="#a5573a"/>
-          <path transform="rotate(240 512 512)" d="M512 505 C456 476 418 396 434 316 C446 258 478 214 512 196 C546 214 578 258 590 316 C606 396 568 476 512 505 Z" fill="#5b7d4b"/>
-          <path transform="rotate(300 512 512)" d="M512 505 C456 476 418 396 434 316 C446 258 478 214 512 196 C546 214 578 258 590 316 C606 396 568 476 512 505 Z" fill="#3a6a8c"/>
-        </g>
-        <circle cx="512" cy="512" r="120" fill="#173049"/><circle cx="512" cy="512" r="108" fill="url(#stGold)"/>
-      </svg>
-      <div class="eyebrow" id="stEyebrow"></div>
-      <h2 class="st-brand" id="stBrand"></h2>
-      <div class="st-catch" id="stTitle"></div>
-      <div class="tenant hidden" id="tenantBadge"></div>
-      <div class="st-doors" id="stDoors">
-        <button class="st-door" id="stDoorEvents" type="button">
-          <span class="sd-ico" aria-hidden="true">🏮</span>
-          <span class="sd-n" id="stDoorEventsT"></span>
-          <span class="sd-c" id="stDoorEventsC"></span>
-        </button>
-        <button class="st-door" id="stDoorShops" type="button">
-          <span class="sd-ico" aria-hidden="true">🍵</span>
-          <span class="sd-n" id="stDoorShopsT"></span>
-          <span class="sd-c" id="stDoorShopsC"></span>
-        </button>
-        <button class="st-door" id="stMeguriBanner" type="button">
-          <span class="sd-ico" aria-hidden="true">🌸</span>
-          <span class="sd-n" id="stMeguriT"></span>
-          <span class="sd-c" id="stMeguriD"></span>
-        </button>
-      </div>
-      <!-- 直近イベント。ここが「イベント情報のサイト」であることを最初の画面で示す -->
-      <div class="st-up" id="stUpcoming" hidden>
-        <div class="st-up-h" id="stUpcomingH"></div>
-        <div class="st-up-list" id="stUpcomingList"></div>
-        <a class="st-up-more" id="stUpcomingMore" href="events/index.html"></a>
-      </div>
+
+  <!-- ══ 表紙：全画面写真（P1由来） ══ -->
+  <section class="ktn-hero" aria-labelledby="stBrand">
+    <div class="ktn-hero-slides" aria-hidden="true">
+      <div class="ktn-slide is-on" style="background-image:url('img/cards/kameoka_1606_1.webp')"></div>
+      <div class="ktn-slide" style="background-image:url('img/cards/kameoka_1991_1.webp')"></div>
+      <div class="ktn-slide" style="background-image:url('img/cards/nantan_1993_1.webp')"></div>
     </div>
-    <div class="st-quick" aria-label="sample quiz">
+    <div class="ktn-hero-shade" aria-hidden="true"></div>
+
+    <div class="st-langrow"><button class="langbtn ghost" id="langBtn2">EN</button></div>
+
+    <div class="ktn-hero-body">
+      <p class="ktn-kicker" id="stEyebrow"></p>
+      <h2 class="ktn-headline" id="stBrand"></h2>
+      <p class="ktn-sub" id="stTitle"></p>
+      <div class="tenant hidden" id="tenantBadge"></div>
+    </div>
+
+    <div class="ktn-slide-n" aria-live="polite"><span id="ktnCur">1</span>&thinsp;/&thinsp;3</div>
+    <div class="ktn-dots" role="group" aria-label="スライド選択">
+      <button class="ktn-dot is-on" data-idx="0" aria-label="1枚目 保津川下り" aria-pressed="true"></button>
+      <button class="ktn-dot" data-idx="1" aria-label="2枚目 嵯峨野トロッコ列車" aria-pressed="false"></button>
+      <button class="ktn-dot" data-idx="2" aria-label="3枚目 美山かやぶきの里" aria-pressed="false"></button>
+    </div>
+    <div class="ktn-cue" aria-hidden="true"><i></i><span>scroll</span></div>
+  </section>
+
+  <!-- ══ 誌面（P5由来） ══ -->
+  <div class="ktn-paperwrap">
+
+    <div class="ktn-dateline" aria-hidden="true">
+      <span>REGIONAL GUIDE</span><span>KAMEOKA · NANTAN · KYOTAMBA</span><span>京都府 亀岡市・南丹市・京丹波町</span>
+    </div>
+
+    <!-- 01 イベント -->
+    <div class="ktn-rule"><span class="kr-lab">Events</span><span class="kr-num" id="ktnRule01"></span></div>
+    <section class="ktn-spread">
+      <div class="ktn-lead">
+        <span class="ktn-micro">NOW IN KYOTO TAMBA</span>
+        <h3 class="ktn-lead-h" id="ktnLeadH"></h3>
+        <p class="ktn-lead-b" id="ktnLeadB"></p>
+        <a class="ktn-lead-cta" id="stUpcomingMore" href="events/index.html"></a>
+      </div>
+      <div class="ktn-arts" id="stUpcoming" hidden>
+        <h4 class="ktn-arts-h" id="stUpcomingH"></h4>
+        <div id="stUpcomingList"></div>
+      </div>
+    </section>
+
+    <!-- 02 目次 -->
+    <div class="ktn-rule"><span class="kr-lab">Index</span><span class="kr-num" id="ktnRule02"></span></div>
+    <nav class="ktn-index" id="stDoors" aria-label="サイト内の行き先">
+      <a class="ktn-idx" id="stDoorEvents" href="events/index.html">
+        <span class="ki-n">01</span>
+        <span class="ki-ja" id="stDoorEventsT"></span>
+        <span class="ki-en">EVENTS</span>
+        <span class="ki-c" id="stDoorEventsC"></span>
+        <span class="ki-th" style="background-image:url('img/cards/kameoka_1991_1.webp')"></span>
+      </a>
+      <a class="ktn-idx" id="stDoorShops" href="shops/index.html">
+        <span class="ki-n">02</span>
+        <span class="ki-ja" id="stDoorShopsT"></span>
+        <span class="ki-en">SHOPS &amp; STAYS</span>
+        <span class="ki-c" id="stDoorShopsC"></span>
+        <span class="ki-th" style="background-image:url('shops/tsutaya/img/bento-shokado.jpg')"></span>
+      </a>
+      <button class="ktn-idx" id="stMeguriBanner" type="button">
+        <span class="ki-n">03</span>
+        <span class="ki-ja" id="stMeguriT"></span>
+        <span class="ki-en">TRAVEL MAP</span>
+        <span class="ki-c" id="stMeguriD"></span>
+        <span class="ki-th" style="background-image:url('img/cards/kyotamba_2016_1.webp')"></span>
+      </button>
+      <a class="ktn-idx" id="ktnCourse" href="course/index.html">
+        <span class="ki-n">04</span>
+        <span class="ki-ja" id="ktnCourseT"></span>
+        <span class="ki-en">DAY TRIPS</span>
+        <span class="ki-c" id="ktnCourseC"></span>
+        <span class="ki-th" style="background-image:url(&quot;img/cards/kameoka_1606_1.webp&quot;)"></span>
+      </a>
+      <button class="ktn-idx" id="stPlay" type="button">
+        <span class="ki-n">05</span>
+        <span class="ki-ja" id="ktnPlayJa"></span>
+        <span class="ki-en">PLAY</span>
+        <span class="ki-c" id="ktnPlayC"></span>
+        <span class="ki-th" style="background-image:url('img/cards/nantan_1993_1.webp')"></span>
+      </button>
+    </nav>
+
+    <!-- 03 ためしに1問 -->
+    <div class="ktn-rule"><span class="kr-lab">Play</span><span class="kr-num" id="ktnRule03"></span></div>
+    <section class="st-quick" aria-label="sample quiz">
       <div class="st-quick-head">
         <span class="st-quick-kicker" id="stQuickKicker"></span>
         <span class="st-quick-chip" id="stQuickChip"></span>
@@ -133,25 +182,39 @@
           <span class="sc-note" id="stSampleNoteC"></span>
         </button>
       </div>
-      <button class="cta st-play" id="stPlay" type="button"></button>
       <div class="st-play-hint" id="stPlayHint"></div>
       <span class="howlink" id="howLink"></span>
-    </div>
-  </section>
+    </section>
 
-  <!-- 開始画面のフッター。掲載案内はここが唯一の入口（本編フッターは overlay の裏） -->
-  <div class="st-foot">
-    <a class="st-foot-cta" id="stFootAds" href="ads/index.html">
-      <b id="stFootAdsT"></b><span id="stFootAdsD"></span>
-    </a>
-    <nav class="st-foot-links" aria-label="site links">
-      <a id="stFootEvents" href="events/index.html"></a>
-      <a id="stFootShops" href="shops/index.html"></a>
-      <a id="stFootAbout" href="about/index.html"></a>
-      <a id="stFootLegal" href="legal/index.html"></a>
-    </nav>
-    <div class="st-foot-credit" id="stFootCredit"></div>
+    <!-- 04 掲載案内 -->
+    <div class="ktn-rule"><span class="kr-lab">Media guide</span><span class="kr-num" id="ktnRule04"></span></div>
+    <div class="st-foot">
+      <a class="st-foot-cta" id="stFootAds" href="ads/index.html">
+        <b id="stFootAdsT"></b><span id="stFootAdsD"></span>
+      </a>
+      <nav class="st-foot-links" aria-label="site links">
+        <a id="stFootEvents" href="events/index.html"></a>
+        <a id="stFootShops" href="shops/index.html"></a>
+        <a id="stFootAbout" href="about/index.html"></a>
+        <a id="stFootLegal" href="legal/index.html"></a>
+      </nav>
+      <div class="st-foot-credit" id="stFootCredit"></div>
+    </div>
   </div>
+
+  <!-- ══ 下端固定ナビ（表紙と誌面の綴じ目）══ -->
+  <nav class="ktn-bottomnav" aria-label="サイトナビゲーション">
+    <a class="kbn-logo" href="#startOv">
+      <b>京都丹波ナビ</b><span>KYOTO TAMBA NAVI</span>
+    </a>
+    <ul role="list">
+      <li><a href="course/index.html" id="kbnCourse"></a></li>
+      <li><a href="events/index.html" id="kbnEvents"></a></li>
+      <li><a href="shops/index.html" id="kbnShops"></a></li>
+      <li><button type="button" id="kbnMap"></button></li>
+      <li><button type="button" id="kbnPlay"></button></li>
+    </ul>
+  </nav>
 </div></div>
 
 <!-- Tutorial -->

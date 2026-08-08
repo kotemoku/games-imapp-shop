@@ -7,45 +7,44 @@
 <meta name="description" content="京都丹波ナビへのイベント情報・店舗の掲載案内。亀岡市・南丹市・京丹波町のイベントは掲載無料。お店の紹介ページは1件33,000円（税込）／1年間で制作・掲載します。" />
 <link rel="icon" href="../icons/icon-192.png" />
 <style>
-:root{--kiri:#f6f5f0;--sumi:#232830;--soft:#5a6068;--indigo:#274a6d;--gold:#b98a2e;--akane:#b23f34;--kameoka:#a5573a;--nantan:#5b7d4b;--kyotamba:#3a6a8c;--line:#ddd8cc}
+:root{--kiri:#f5f5f2;--sumi:#101010;--soft:#444;--indigo:#1c3560;--gold:#b98a2e;--akane:#a5573a;--kameoka:#a5573a;--nantan:#5b7d4b;--kyotamba:#3a6a8c;--line:rgba(16,16,16,.16)}
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:"Noto Sans JP","Hiragino Kaku Gothic ProN",sans-serif;background:var(--kiri);color:var(--sumi);line-height:1.85;font-size:14.5px}
-.hero{background:linear-gradient(150deg,#1d2530,#274a6d);color:#f2efe6;padding:44px 20px 38px}
+.hero{background:var(--indigo);color:#f2efe6;padding:48px 20px 42px;border-bottom:3px solid var(--sumi)}
 .hero-in{max-width:820px;margin:0 auto}
-.eyebrow{font-size:11px;letter-spacing:.22em;color:#d1ad5f;font-weight:700}
-h1{font-family:"Zen Old Mincho",serif;font-size:clamp(22px,5.4vw,30px);letter-spacing:.06em;line-height:1.5;margin-top:10px}
+.eyebrow{font-family:var(--ktn-mon);font-size:10px;letter-spacing:.24em;color:var(--gold);font-weight:700}
+h1{font-family:var(--ktn-min);font-size:clamp(22px,5.4vw,30px);letter-spacing:.06em;line-height:1.5;margin-top:10px}
 .hero .sub{margin-top:12px;font-size:13.5px;color:#cfd6de}
 .wrap{max-width:820px;margin:0 auto;padding:30px 20px 70px}
 .lead{font-size:15px;margin:6px 0 24px}
 .lead b{color:var(--indigo)}
 .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:18px 0}
-.card{background:#fffdf6;border:1px solid var(--line);border-top:4px solid var(--c,var(--indigo));border-radius:10px;padding:16px 17px}
-.card h3{font-family:"Zen Old Mincho",serif;font-size:15.5px;margin-bottom:6px}
+.card{background:#fff;border:1px solid var(--line);border-top:3px solid var(--c,var(--indigo));padding:18px 18px}
+.card h3{font-family:var(--ktn-min);font-size:16px;font-weight:500;letter-spacing:.04em;margin-bottom:7px}
 .card p{font-size:13px;color:#3a3f47}
-h2{font-family:"Zen Old Mincho",serif;font-size:18px;letter-spacing:.06em;border-left:4px solid var(--gold);padding-left:12px;margin:34px 0 14px}
+h2{font-family:var(--ktn-min);font-size:21px;font-weight:500;letter-spacing:.06em;margin:40px 0 14px;padding-bottom:10px;border-bottom:1px solid var(--sumi)}
 .ex{display:flex;gap:12px;flex-wrap:wrap;margin:10px 0}
-.ex a{display:block;background:#fffdf6;border:1px solid var(--line);border-radius:10px;padding:13px 16px;color:var(--indigo);text-decoration:none;font-weight:700;font-size:13.5px}
+.ex a{display:block;background:#fff;border:1px solid var(--line);padding:14px 17px;color:var(--indigo);text-decoration:none;font-weight:700;font-size:13.5px}
 .ex a span{display:block;font-weight:400;font-size:12px;color:var(--soft);margin-top:3px}
 ol.flow{counter-reset:st;list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:14px 0}
-ol.flow li{background:#fffdf6;border:1px solid var(--line);border-radius:10px;padding:14px 16px;font-size:13px}
+ol.flow li{background:#fff;border:1px solid var(--line);padding:16px 17px;font-size:13px}
 ol.flow li b{display:block;font-size:14px;margin-bottom:4px}
-ol.flow li::before{counter-increment:st;content:counter(st);display:inline-block;width:22px;height:22px;border-radius:50%;background:var(--gold);color:#fff;font-weight:700;text-align:center;line-height:22px;font-size:12px;margin-bottom:8px}
+ol.flow li::before{counter-increment:st;content:"0" counter(st);display:block;font-family:var(--ktn-mon);font-size:11px;letter-spacing:.16em;color:var(--gold);margin-bottom:9px}
 ul.trust{padding-left:1.3em;margin:10px 0}
 ul.trust li{margin:6px 0}
-.price{background:#fffdf6;border:1px solid var(--line);border-radius:10px;padding:18px 20px;margin:14px 0;text-align:center}
-.price .pt{font-size:12px;letter-spacing:.18em;color:var(--soft)}
-.price .pv{font-family:"Zen Old Mincho",serif;font-size:20px;color:var(--indigo);margin:6px 0}
+.price{background:#fff;border:1px solid var(--line);padding:20px;margin:14px 0;text-align:center}
+.price .pt{font-family:var(--ktn-mon);font-size:10px;letter-spacing:.2em;color:var(--soft)}
+.price .pv{font-family:var(--ktn-min);font-size:23px;font-weight:500;color:var(--indigo);margin:7px 0}
 .price .pn{font-size:12.5px;color:var(--soft)}
-.cta{display:block;text-align:center;background:var(--indigo);color:#fff;font-family:"Zen Old Mincho",serif;font-size:17px;letter-spacing:.1em;padding:16px 20px;border-radius:8px;text-decoration:none;margin:26px 0 8px}
+.cta{display:block;text-align:center;background:var(--indigo);color:#fff;font-family:var(--ktn-min);font-weight:500;font-size:18px;letter-spacing:.1em;padding:18px 20px;text-decoration:none;margin:26px 0 8px}
 .cta small{display:block;font-family:"Noto Sans JP",sans-serif;font-size:11.5px;letter-spacing:.04em;margin-top:4px;color:#cfd6de}
 .note{font-size:12px;color:var(--soft);text-align:center}
 /* 掲載例：実ページのスクリーンショット。33,000円で何ができるかを文字でなく現物で見せる。 */
 .samples{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px;margin:14px 0 6px}
 .samples a{display:block;text-decoration:none;color:inherit}
 .samples img{display:block;width:100%;height:270px;object-fit:cover;object-position:top center;
-  border:1px solid var(--line);border-radius:10px;background:#fff;
-  box-shadow:0 6px 20px rgba(30,37,47,.13);transition:transform .2s,box-shadow .2s}
-.samples a:hover img,.samples a:focus-visible img{transform:translateY(-3px);box-shadow:0 12px 28px rgba(30,37,47,.2)}
+  border:1px solid var(--line);background:#fff;transition:transform .2s}
+.samples a:hover img,.samples a:focus-visible img{transform:translateY(-3px);border-color:var(--indigo)}
 .samples b{display:block;margin-top:10px;font-size:13.5px;color:var(--indigo)}
 .samples span{display:block;font-size:12px;color:var(--soft)}
 footer{margin-top:48px;padding-top:16px;border-top:1px solid var(--line);font-size:12px;color:var(--soft)}

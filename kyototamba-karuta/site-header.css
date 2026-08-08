@@ -1,20 +1,46 @@
-/* 京都丹波ナビ サイト共通ヘッダー。
-   イベント/寄り処の静的ページ・掲載案内・申込フォームで同じものを使う。
-   （以前はページ系統ごとに別デザインで、遷移すると別サイトに見えるという
-   デザインレビューの指摘を受けて統一した。2026-08-07）
-   scripts/prerender.mjs はこのファイルを読み込んで生成ページに inline する。 */
+/* 京都丹波ナビ 共通トークン＋サイトヘッダー。
+   2026-08-07 全面リニューアル（P6「表紙と誌面」を採用）。
+   このファイルが配色・書体の唯一の正。静的ページ・掲載案内・申込フォームが読み込み、
+   scripts/prerender.mjs は生成ページに inline する。アプリ本体は src/styles/main.css の
+   最終 :root で同じ値を持つ（Vite バンドルのため別管理・値は必ず一致させること）。 */
+
+:root {
+  /* 誌面（P5由来） */
+  --ktn-bg: #f5f5f2;
+  --ktn-paper: #fff;
+  --ktn-ink: #101010;
+  --ktn-ink-mid: #444;
+  --ktn-ink-pale: #888;
+  --ktn-navy: #1c3560;
+  --ktn-gold: #b98a2e;
+  --ktn-rule: rgba(16, 16, 16, .16);
+
+  /* 市町 */
+  --ktn-kameoka: #a5573a;
+  --ktn-nantan: #5b7d4b;
+  --ktn-kyotamba: #3a6a8c;
+
+  /* 書体（OS内蔵のみ・Webフォント読み込みなし） */
+  --ktn-min: "Hiragino Mincho ProN", "游明朝", "Yu Mincho", "HGS明朝E", Georgia, serif;
+  --ktn-san: -apple-system, "Hiragino Sans", "Yu Gothic UI", "Yu Gothic", "Noto Sans JP", sans-serif;
+  --ktn-mon: "SF Mono", Menlo, Consolas, "Courier New", monospace;
+}
+
+/* ── サイトヘッダー（誌面のヘッダ罫）──
+   トップは画面下端の固定ナビだが、下層ページは上部ヘッダー。
+   どちらも同じ書体・同じ罫線で「同じ誌面」に見せる。 */
 .ktn-header {
   position: sticky;
   top: 0;
   z-index: 50;
-  padding: 10px 20px;
-  background: rgba(247, 246, 241, .94);
+  padding: 11px 20px;
+  background: color-mix(in srgb, var(--ktn-bg) 94%, transparent);
   backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(35, 40, 48, .14);
-  font-family: "Noto Sans JP", "Hiragino Kaku Gothic ProN", sans-serif;
+  border-bottom: 1px solid var(--ktn-ink);
+  font-family: var(--ktn-san);
 }
 .ktn-header .ktn-in {
-  max-width: 1080px;
+  max-width: 1180px;
   margin: 0 auto;
   display: flex;
   align-items: center;
@@ -23,43 +49,54 @@
 }
 .ktn-header .ktn-brand {
   display: flex;
-  align-items: center;
-  gap: 9px;
+  align-items: baseline;
+  gap: 10px;
   margin-right: auto;
   text-decoration: none;
-  color: #232830;
+  color: var(--ktn-ink);
 }
-.ktn-header .ktn-brand img { width: 34px; height: 34px; display: block; }
+.ktn-header .ktn-brand img { display: none; }
 .ktn-header .ktn-brand b {
-  font-family: "Zen Old Mincho", "Yu Mincho", "Hiragino Mincho ProN", serif;
-  font-size: 17px;
-  font-weight: 700;
-  letter-spacing: .08em;
+  font-family: var(--ktn-min);
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: .1em;
   line-height: 1.2;
 }
-.ktn-header nav { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 16px; }
+.ktn-header .ktn-brand::after {
+  content: "KYOTO TAMBA NAVI";
+  font-family: var(--ktn-mon);
+  font-size: 9px;
+  letter-spacing: .2em;
+  color: var(--ktn-ink-pale);
+}
+.ktn-header nav { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 20px; }
 .ktn-header nav a {
   font-size: 12.5px;
-  font-weight: 700;
-  color: #232830;
+  font-weight: 500;
+  letter-spacing: .06em;
+  color: var(--ktn-ink);
   text-decoration: none;
-  opacity: .72;
+  padding: 4px 0;
+  border-bottom: 1px solid transparent;
 }
-.ktn-header nav a:hover, .ktn-header nav a:focus-visible { opacity: 1; color: #274a6d; }
+.ktn-header nav a:hover,
+.ktn-header nav a:focus-visible { border-bottom-color: var(--ktn-ink); outline: none; }
 .ktn-header nav a.ktn-cta {
-  opacity: 1;
   color: #fff;
-  background: #274a6d;
-  padding: 7px 14px;
-  border-radius: 6px;
+  background: var(--ktn-navy);
+  padding: 7px 15px;
+  border-bottom: 0;
+  letter-spacing: .08em;
 }
-.ktn-header nav a.ktn-cta:hover, .ktn-header nav a.ktn-cta:focus-visible { background: #1d3a56; color: #fff; }
+.ktn-header nav a.ktn-cta:hover,
+.ktn-header nav a.ktn-cta:focus-visible { background: var(--ktn-ink); color: #fff; }
 
 @media (max-width: 560px) {
-  .ktn-header { padding: 8px 14px; }
-  .ktn-header .ktn-brand img { width: 29px; height: 29px; }
-  .ktn-header .ktn-brand b { font-size: 15px; }
-  .ktn-header nav { gap: 3px 11px; }
+  .ktn-header { padding: 9px 14px; }
+  .ktn-header .ktn-brand b { font-size: 16px; }
+  .ktn-header .ktn-brand::after { display: none; }
+  .ktn-header nav { gap: 3px 13px; }
   .ktn-header nav a { font-size: 11.5px; }
   .ktn-header nav a.ktn-cta { padding: 6px 11px; }
 }
