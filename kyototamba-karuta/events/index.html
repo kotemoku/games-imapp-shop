@@ -153,6 +153,32 @@ ul.list a:hover{border-color:var(--indigo)}
 ul.list .d{font-size:11px;color:rgba(35,40,48,.6)}
 ul.list .n{font-size:14px;font-weight:700}
 .note{font-size:12px;color:rgba(35,40,48,.6);margin-top:26px}
+/* 表紙の写真募集 */
+.pshots{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:20px 0 6px}
+.pshots span{display:block;height:130px;background-size:cover;background-position:center;border:1px solid var(--line)}
+.ktnr{display:flex;align-items:baseline;gap:16px;padding:34px 0 12px;border-bottom:1px solid var(--sumi);margin-bottom:16px}
+.plist{list-style:none;margin:0;padding:0;display:grid;gap:0}
+.plist li{padding:14px 0;border-bottom:1px solid var(--line);font-size:13.5px;line-height:1.95}
+.plist li b{font-family:var(--ktn-min);font-size:15px;font-weight:500;margin-right:6px}
+.pcaution{color:var(--akane);font-weight:700;margin-top:14px}
+.pterms{background:#fff;border:1px solid var(--line);margin:18px 0 0}
+.pterms summary{cursor:pointer;padding:14px 17px;font-size:13.5px;font-weight:700}
+.pt-in{border-top:1px solid var(--line);padding:16px 17px;max-height:340px;overflow-y:auto;font-size:12.5px;line-height:1.95}
+.pt-in h4{font-size:12.5px;margin:14px 0 2px}.pt-in h4:first-child{margin-top:0}
+.pt-tail{margin-top:14px;color:rgba(16,16,16,.55)}
+.pf-row{display:grid;gap:6px;margin-bottom:16px}
+.pf-row label{font-size:12.5px;font-weight:700}
+.pf-row label b{color:#fff;background:var(--akane);font-size:10px;padding:1px 7px;margin-left:5px}
+.pf-row label span{color:rgba(16,16,16,.5);font-size:10.5px;font-weight:400;margin-left:5px}
+.pf-row input,.pf-row textarea,#pfOut{width:100%;font:inherit;font-size:15px;padding:11px 13px;
+  border:1px solid var(--line);background:#fff;color:var(--sumi);border-radius:0}
+.pf-row input:focus,.pf-row textarea:focus{outline:2px solid var(--indigo);outline-offset:-2px}
+.pf-agree{display:flex;gap:10px;align-items:flex-start;background:#fff;border:1px solid var(--line);
+  padding:14px 16px;font-size:13px;margin-bottom:6px}
+.pf-agree input{width:18px;height:18px;margin-top:3px;flex:none;accent-color:var(--indigo)}
+.perr{color:var(--akane);font-weight:700;font-size:13px}
+#pfOut{font-family:var(--ktn-mon);font-size:12.5px;line-height:1.9;white-space:pre-wrap}
+
 /* 一日のコース */
 .tsub{font-family:var(--ktn-mon);font-size:10.5px;letter-spacing:.22em;color:var(--ktn-ink-pale);margin-bottom:6px}
 p.lead{font-size:15px;line-height:2;max-width:36em}
@@ -214,6 +240,7 @@ footer.site a{color:inherit}
     <a href="../events/index.html">イベント</a>
     <a href="../shops/index.html">寄り処</a>
     <a href="../index.html">あそぶ</a>
+    <a href="../photo/index.html">写真を送る</a>
     <a class="ktn-cta" href="../ads/index.html">掲載のご案内</a>
   </nav>
 </div></header>
@@ -279,6 +306,7 @@ footer.site a{color:inherit}
   <a href="../course/index.html">一日のコース</a> ・
   <a href="../events/index.html">イベント一覧</a> ・
   <a href="../shops/index.html">寄り処一覧</a> ・
+  <a href="../photo/index.html">写真を送る</a> ・
   <a href="../ads/index.html">掲載のご案内</a>
 </footer>
 </body>
