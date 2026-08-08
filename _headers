@@ -124,3 +124,5 @@
   Cache-Control: no-cache, must-revalidate
 /kyototamba-karuta/assets/*
   Cache-Control: no-cache, must-revalidate
+/yodohonmachi/assets/*
+  Cache-Control: no-cache, must-revalidate

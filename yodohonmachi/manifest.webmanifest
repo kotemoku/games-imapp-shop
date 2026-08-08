@@ -1,0 +1,16 @@
+{
+  "name": "淀本町商店街大作戦",
+  "short_name": "淀本町商店街",
+  "description": "商店街の看板メニューが、街を守る。読み合いの完全情報タクティクス。",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#1a1613",
+  "theme_color": "#b73122",
+  "icons": [
+    { "src": "icon/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
