@@ -2,7 +2,7 @@
  * Vite ビルドはアセット名にハッシュが付くため、事前リストではなく
  * 「取得したものを都度キャッシュする」cache-first 戦略にする。
  * index.html / sw.js / manifest はネットワーク優先で更新事故を防ぐ。 */
-const CACHE = 'mocairn-v1';
+const CACHE = 'mocairn-v2';
 
 self.addEventListener('install', (e) => {
   self.skipWaiting();
@@ -41,16 +41,22 @@ self.addEventListener('fetch', (e) => {
     return;
   }
 
-  // それ以外（ハッシュ付きアセット・画像）はキャッシュ優先。
+  // それ以外：キャッシュ優先で即応しつつ、裏で常に取り直して更新する
+  //（画像はハッシュ無しファイル名のため、差し替え時に古い絵が残らないように）。
   e.respondWith(
-    caches.match(req).then(
-      (hit) =>
-        hit ||
-        fetch(req).then((res) => {
+    caches.match(req).then((hit) => {
+      const refresh = fetch(req)
+        .then((res) => {
           const copy = res.clone();
           caches.open(CACHE).then((c) => c.put(req, copy));
           return res;
-        }),
-    ),
+        })
+        .catch(() => undefined);
+      if (hit) {
+        void refresh; // 裏更新（次回表示から新しいアセット）
+        return hit;
+      }
+      return refresh.then((res) => res || Response.error());
+    }),
   );
 });
