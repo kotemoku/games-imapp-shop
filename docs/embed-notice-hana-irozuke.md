@@ -88,9 +88,18 @@ imapp 側 §4 を実施して公開してください。
 ゲーム側 §3 を満たしたビルドをデプロイ（`npm run deploy -- --run --push`）したら、imapp に
 **「hana-irozuke 連携実装デプロイ済み」**と伝える。imapp 側 §4（特に §7 予約の受け口）を実施して公開。
 
+## 6. コンテンツ運用（花屋さんスタジオ・別紙）
+
+花屋さんが「アレンジ写真アップ → 自動線画化 → メタ入力」できるフォームを **imapp 側にホスト**する
+依頼。データモデル・フォーム項目・線画化コンポーネント（ゲーム側提供の `scripts/lineart_ai.py`）・
+**店舗別配信API契約**・**画像CORS必須**を別紙にまとめた：
+
+👉 **`docs/florist-studio-hana-irozuke.md`**（要実装・§4 の予約導線と組み合わさる）
+
 ## 参考
 
 - 正式契約: `docs/EMBED-CONTRACT.md`（§1-3 標準 / §7 予約 / §8 分析・シェア）
+- コンテンツ運用: `docs/florist-studio-hana-irozuke.md`（花屋さんスタジオ）
 - §7 先行実装: `docs/embed-notice-kyou-no-bres.md`（今日のブレス）
 - imapp 側実装の地図: imapp リポジトリ `docs/game-embed.md`
-- ゲーム側設計: `hana-irozuke` リポジトリ `docs/SPEC_hana-irozuke.md` §13
+- ゲーム側設計: `hana-irozuke` リポジトリ `docs/SPEC_hana-irozuke.md` §8（imapp連携）/ §5（線画パイプライン）
