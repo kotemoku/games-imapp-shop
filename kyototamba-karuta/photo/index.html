@@ -168,7 +168,9 @@ ul.list .n{font-size:14px;font-weight:700}
 .pt-tail{margin-top:14px;color:rgba(16,16,16,.55)}
 .pf-row{display:grid;gap:6px;margin-bottom:16px}
 .pf-row label{font-size:12.5px;font-weight:700}
-.pf-row label b{color:#fff;background:var(--akane);font-size:10px;padding:1px 7px;margin-left:5px}
+.pf-row > label:not(.pf-pick) > b{color:#fff;background:var(--akane);font-size:10px;padding:1px 7px;margin-left:5px}
+.pf-pick b{background:none;color:inherit;padding:0;margin:0}
+.pf-pick > span b{display:inline;font-size:inherit;font-family:inherit;font-weight:700}
 .pf-row label span{color:rgba(16,16,16,.5);font-size:10.5px;font-weight:400;margin-left:5px}
 .pf-row input,.pf-row textarea,#pfOut{width:100%;font:inherit;font-size:15px;padding:11px 13px;
   border:1px solid var(--line);background:#fff;color:var(--sumi);border-radius:0}
@@ -177,6 +179,16 @@ ul.list .n{font-size:14px;font-weight:700}
   padding:14px 16px;font-size:13px;margin-bottom:6px}
 .pf-agree input{width:18px;height:18px;margin-top:3px;flex:none;accent-color:var(--indigo)}
 .perr{color:var(--akane);font-weight:700;font-size:13px}
+.pflow{margin:14px 0 0;padding:13px 16px;background:#fff;border-left:3px solid var(--indigo);font-size:13px;line-height:1.9}
+.pf-pick{display:block;border:1px dashed var(--line);background:#fff;padding:20px 18px;text-align:center;cursor:pointer;transition:border-color .18s}
+.pf-pick:hover{border-color:var(--indigo)}
+.pf-pick input{display:none}
+.pf-pick b{display:block;font-family:var(--ktn-min);font-size:16px;font-weight:500}
+.pf-pick span{display:block;margin-top:7px;font-size:12px;color:rgba(16,16,16,.6);line-height:1.85}
+.pf-prev{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+.pf-prev figure{margin:0;width:112px}
+.pf-prev img{display:block;width:112px;height:84px;object-fit:cover;border:1px solid var(--line)}
+.pf-prev figcaption{margin-top:4px;font-size:10px;color:rgba(16,16,16,.55);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 #pfOut{font-family:var(--ktn-mon);font-size:12.5px;line-height:1.9;white-space:pre-wrap}
 
 /* 一日のコース */
@@ -249,6 +261,7 @@ footer.site a{color:inherit}
 <p class="crumb"><a href="../index.html">京都丹波ナビ</a> ＞ 表紙の写真を送る</p>
 <h1 class="mincho">この表紙に、<br>あなたの一枚を。</h1>
 <p class="body lead">京都丹波ナビのトップは、一枚の写真で始まります。いま出ているのは保津川下り・トロッコ列車・美山かやぶきの里の三枚。ここに並べる写真を募集します。掲載は無料、お礼はお名前の表示です。</p>
+<p class="pflow"><b>送り方</b>：このページで内容をまとめ、<b>写真を添付したメール</b>でお送りいただきます。ページから直接アップロードはできません（このサイトは写真を預かるサーバーを持たないためです）。</p>
 
 <div class="pshots"><span style="background-image:url('../img/cards/kameoka_1606_1.webp')"></span><span style="background-image:url('../img/cards/kameoka_1991_1.webp')"></span><span style="background-image:url('../img/cards/nantan_1993_1.webp')"></span></div>
 <p class="note">いま表紙に出ている三枚。</p>
@@ -308,6 +321,14 @@ footer.site a{color:inherit}
     <input type="text" id="pfWhen" placeholder="例）2025年11月／去年の秋"></div>
   <div class="pf-row"><label for="pfWhat">何が写っていますか <span>任意</span></label>
     <textarea id="pfWhat" rows="3" placeholder="例）朝いちばんの舟が瀬に入るところ。船頭さんに声をかけて撮らせてもらいました。"></textarea></div>
+  <div class="pf-row"><label for="pfFiles">写真を選ぶ <span>任意・あとでメールに添付します</span></label>
+    <label class="pf-pick">
+      <input type="file" id="pfFiles" accept="image/*" multiple>
+      <b>ここをタップして写真を選ぶ</b>
+      <span>選んだ写真はこの場では送信されません。ファイル名を控えて、下でまとめた文面といっしょに<b>メールに添付</b>してください。</span>
+    </label>
+    <div class="pf-prev" id="pfPrev"></div>
+  </div>
   <label class="pf-agree"><input type="checkbox" id="pfOk">
     <span>上の「お約束」に同意します。自分で撮った写真であること、人が写っている場合は了解を得ていることを確認しました。</span></label>
   <div class="actions"><button class="btn primary" type="submit">送る内容をまとめる</button></div>
@@ -349,6 +370,7 @@ footer.site a{color:inherit}
       'メール：'+v('pfMail'),
       '撮影した場所：'+v('pfWhere'),
       '撮影した時期：'+(v('pfWhen')||'（未記入）'),
+      '写真ファイル：'+(window.__pfFiles||'（メールに添付してください）'),
       '何が写っているか：',
       (v('pfWhat')||'（未記入）'),
       '',
@@ -363,6 +385,20 @@ footer.site a{color:inherit}
       encodeURIComponent('京都丹波ナビ 表紙の写真 応募')+'&body='+encodeURIComponent(body);
     var done=document.getElementById('pfDone');
     done.hidden=false; done.scrollIntoView({behavior:'smooth'});
+  });
+  var fi=document.getElementById('pfFiles'), pv=document.getElementById('pfPrev');
+  fi.addEventListener('change',function(){
+    pv.innerHTML='';
+    var names=[];
+    Array.prototype.slice.call(fi.files,0,6).forEach(function(f){
+      names.push(f.name);
+      if(f.type.indexOf('image/')!==0)return;
+      var fig=document.createElement('figure'), img=document.createElement('img'), cap=document.createElement('figcaption');
+      cap.textContent=f.name; img.alt=f.name;
+      var r=new FileReader(); r.onload=function(e){img.src=e.target.result;}; r.readAsDataURL(f);
+      fig.appendChild(img); fig.appendChild(cap); pv.appendChild(fig);
+    });
+    window.__pfFiles = names.length ? names.join('、') : '';
   });
   document.getElementById('pfCopy').addEventListener('click',function(){
     var t=document.getElementById('pfOut'); t.select();

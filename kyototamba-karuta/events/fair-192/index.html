@@ -168,7 +168,9 @@ ul.list .n{font-size:14px;font-weight:700}
 .pt-tail{margin-top:14px;color:rgba(16,16,16,.55)}
 .pf-row{display:grid;gap:6px;margin-bottom:16px}
 .pf-row label{font-size:12.5px;font-weight:700}
-.pf-row label b{color:#fff;background:var(--akane);font-size:10px;padding:1px 7px;margin-left:5px}
+.pf-row > label:not(.pf-pick) > b{color:#fff;background:var(--akane);font-size:10px;padding:1px 7px;margin-left:5px}
+.pf-pick b{background:none;color:inherit;padding:0;margin:0}
+.pf-pick > span b{display:inline;font-size:inherit;font-family:inherit;font-weight:700}
 .pf-row label span{color:rgba(16,16,16,.5);font-size:10.5px;font-weight:400;margin-left:5px}
 .pf-row input,.pf-row textarea,#pfOut{width:100%;font:inherit;font-size:15px;padding:11px 13px;
   border:1px solid var(--line);background:#fff;color:var(--sumi);border-radius:0}
@@ -177,6 +179,16 @@ ul.list .n{font-size:14px;font-weight:700}
   padding:14px 16px;font-size:13px;margin-bottom:6px}
 .pf-agree input{width:18px;height:18px;margin-top:3px;flex:none;accent-color:var(--indigo)}
 .perr{color:var(--akane);font-weight:700;font-size:13px}
+.pflow{margin:14px 0 0;padding:13px 16px;background:#fff;border-left:3px solid var(--indigo);font-size:13px;line-height:1.9}
+.pf-pick{display:block;border:1px dashed var(--line);background:#fff;padding:20px 18px;text-align:center;cursor:pointer;transition:border-color .18s}
+.pf-pick:hover{border-color:var(--indigo)}
+.pf-pick input{display:none}
+.pf-pick b{display:block;font-family:var(--ktn-min);font-size:16px;font-weight:500}
+.pf-pick span{display:block;margin-top:7px;font-size:12px;color:rgba(16,16,16,.6);line-height:1.85}
+.pf-prev{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+.pf-prev figure{margin:0;width:112px}
+.pf-prev img{display:block;width:112px;height:84px;object-fit:cover;border:1px solid var(--line)}
+.pf-prev figcaption{margin-top:4px;font-size:10px;color:rgba(16,16,16,.55);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 #pfOut{font-family:var(--ktn-mon);font-size:12.5px;line-height:1.9;white-space:pre-wrap}
 
 /* 一日のコース */
