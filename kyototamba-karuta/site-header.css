@@ -100,3 +100,35 @@
   .ktn-header nav a { font-size: 11.5px; }
   .ktn-header nav a.ktn-cta { padding: 6px 11px; }
 }
+
+/* ── 記事エントリー（誌面の行）──
+   トップの「まもなく開催」と、/week/ の一覧で使う共通の行。
+   アプリ側は src/styles/cover-spread.css に同じ定義がある（Viteバンドルのため別管理）。
+   値を変えるときは両方直すこと。 */
+.ktn-art {
+  display: block;
+  padding: 17px 0;
+  border-bottom: 1px solid rgba(16, 16, 16, .16);
+  text-decoration: none;
+  color: var(--ktn-ink, #101010);
+}
+.ktn-art:last-child { border-bottom: 0; }
+.ktn-art:hover .ka-h,
+.ktn-art:focus-visible .ka-h { text-decoration: underline; text-underline-offset: 4px; }
+.ktn-art .ka-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.ktn-art .ka-tag {
+  font-size: 10px; font-weight: 700; letter-spacing: .08em;
+  color: #fff; padding: 2px 8px; text-decoration: none;
+}
+.ka-tag.kameoka { background: var(--ktn-kameoka, #a5573a); }
+.ka-tag.nantan { background: var(--ktn-nantan, #5b7d4b); }
+.ka-tag.kyotamba { background: var(--ktn-kyotamba, #3a6a8c); }
+.ktn-art .ka-d {
+  font-family: var(--ktn-mon, monospace); font-size: 11px; letter-spacing: .08em;
+  color: rgba(16, 16, 16, .55); font-variant-numeric: tabular-nums; text-decoration: none;
+}
+.ktn-art .ka-h {
+  margin: 7px 0 0; font-family: var(--ktn-min, serif); font-size: 16px; font-weight: 500;
+  line-height: 1.62; letter-spacing: .04em; color: var(--ktn-ink, #101010);
+}
+.ktn-art .ka-v { margin: 5px 0 0; font-size: 11.5px; color: rgba(16, 16, 16, .55); }

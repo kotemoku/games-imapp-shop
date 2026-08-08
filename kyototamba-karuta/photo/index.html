@@ -127,6 +127,38 @@ h1{font-family:var(--ktn-min);font-weight:500}
   .ktn-header nav a.ktn-cta { padding: 6px 11px; }
 }
 
+/* ── 記事エントリー（誌面の行）──
+   トップの「まもなく開催」と、/week/ の一覧で使う共通の行。
+   アプリ側は src/styles/cover-spread.css に同じ定義がある（Viteバンドルのため別管理）。
+   値を変えるときは両方直すこと。 */
+.ktn-art {
+  display: block;
+  padding: 17px 0;
+  border-bottom: 1px solid rgba(16, 16, 16, .16);
+  text-decoration: none;
+  color: var(--ktn-ink, #101010);
+}
+.ktn-art:last-child { border-bottom: 0; }
+.ktn-art:hover .ka-h,
+.ktn-art:focus-visible .ka-h { text-decoration: underline; text-underline-offset: 4px; }
+.ktn-art .ka-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.ktn-art .ka-tag {
+  font-size: 10px; font-weight: 700; letter-spacing: .08em;
+  color: #fff; padding: 2px 8px; text-decoration: none;
+}
+.ka-tag.kameoka { background: var(--ktn-kameoka, #a5573a); }
+.ka-tag.nantan { background: var(--ktn-nantan, #5b7d4b); }
+.ka-tag.kyotamba { background: var(--ktn-kyotamba, #3a6a8c); }
+.ktn-art .ka-d {
+  font-family: var(--ktn-mon, monospace); font-size: 11px; letter-spacing: .08em;
+  color: rgba(16, 16, 16, .55); font-variant-numeric: tabular-nums; text-decoration: none;
+}
+.ktn-art .ka-h {
+  margin: 7px 0 0; font-family: var(--ktn-min, serif); font-size: 16px; font-weight: 500;
+  line-height: 1.62; letter-spacing: .04em; color: var(--ktn-ink, #101010);
+}
+.ktn-art .ka-v { margin: 5px 0 0; font-size: 11.5px; color: rgba(16, 16, 16, .55); }
+
 main{max-width:760px;margin:0 auto;padding:28px 20px 64px}
 .crumb{font-family:var(--ktn-mon);font-size:10.5px;letter-spacing:.1em;color:var(--ktn-ink-pale);margin-bottom:16px}
 .crumb a{color:inherit}
@@ -153,6 +185,13 @@ ul.list a:hover{border-color:var(--indigo)}
 ul.list .d{font-size:11px;color:rgba(35,40,48,.6)}
 ul.list .n{font-size:14px;font-weight:700}
 .note{font-size:12px;color:rgba(35,40,48,.6);margin-top:26px}
+/* 今週の京都丹波 */
+.wkrow{padding:16px 0}
+.wkrow .ka-meta{gap:12px;flex-wrap:wrap}
+.wkfig{margin:16px 0 0}
+.wkfig img{display:block;width:100%;max-height:420px;object-fit:cover;border:1px solid var(--line)}
+.wkfig figcaption{margin-top:7px;font-family:var(--ktn-mon);font-size:10.5px;letter-spacing:.14em;color:rgba(16,16,16,.55)}
+
 /* 表紙の写真募集 */
 .pshots{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:20px 0 6px}
 .pshots span{display:block;height:130px;background-size:cover;background-position:center;border:1px solid var(--line)}
@@ -248,6 +287,7 @@ footer.site a{color:inherit}
 <header class="ktn-header"><div class="ktn-in">
   <a class="ktn-brand" href="../index.html"><img src="../icons/icon-192.png" alt="" width="34" height="34"><b>京都丹波ナビ</b></a>
   <nav aria-label="サイト内">
+    <a href="../week/index.html">今週</a>
     <a href="../course/index.html">一日のコース</a>
     <a href="../events/index.html">イベント</a>
     <a href="../shops/index.html">寄り処</a>
@@ -411,6 +451,7 @@ footer.site a{color:inherit}
 </main>
 <footer class="site">
   <a href="../index.html">京都丹波ナビ トップ</a> ・
+  <a href="../week/index.html">今週の京都丹波</a> ・
   <a href="../course/index.html">一日のコース</a> ・
   <a href="../events/index.html">イベント一覧</a> ・
   <a href="../shops/index.html">寄り処一覧</a> ・
