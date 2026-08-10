@@ -126,3 +126,8 @@
   Cache-Control: no-cache, must-revalidate
 /yodohonmachi/assets/*
   Cache-Control: no-cache, must-revalidate
+
+# ---------- トップ (作品一覧ポータル) ----------
+# 内容を差し替えたらすぐ反映されるよう毎回再検証する
+/
+  Cache-Control: no-cache, must-revalidate

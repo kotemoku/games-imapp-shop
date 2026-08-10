@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>製材所のおっさんが、作ってしまったもの一覧 | teraia</title>
+<meta name="description" content="京都・丹波の製材所から生まれたゲームとサービスの一覧。チラシは、１度。ゲームは、毎日。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --kinari:#F3EDE0;
+  --kinari-deep:#EAE1CF;
+  --sumi:#2E2A26;
+  --sumi-soft:#6B6258;
+  --shu:#B5301A;
+  --koban:#E8A31C;
+  --paper:#FBF8F1;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
+body{
+  font-family:'Noto Sans JP',sans-serif;
+  background:var(--kinari);
+  color:var(--sumi);
+  line-height:1.7;
+  font-size:15px;
+}
+.wrap{max-width:680px;margin:0 auto;padding:0 20px}
+
+/* ── hero ── */
+header{
+  position:relative;
+  padding:64px 0 48px;
+  overflow:hidden;
+}
+header::before{
+  content:"";
+  position:absolute;inset:0;
+  background-image:repeating-linear-gradient(
+    92deg,
+    transparent 0px, transparent 11px,
+    rgba(46,42,38,.045) 11px, rgba(46,42,38,.045) 12px,
+    transparent 12px, transparent 29px,
+    rgba(46,42,38,.03) 29px, rgba(46,42,38,.03) 31px
+  );
+  pointer-events:none;
+}
+.brand{
+  font-size:12px;
+  letter-spacing:.22em;
+  color:var(--sumi-soft);
+  font-weight:500;
+  margin-bottom:20px;
+}
+.brand strong{color:var(--shu);font-weight:700}
+h1{
+  font-family:'Shippori Mincho B1',serif;
+  font-weight:800;
+  font-size:clamp(26px,6.4vw,38px);
+  line-height:1.45;
+  letter-spacing:.02em;
+  margin-bottom:22px;
+}
+h1 .turn{color:var(--shu)}
+.tagline{
+  display:inline-block;
+  font-family:'Shippori Mincho B1',serif;
+  font-weight:700;
+  font-size:15px;
+  letter-spacing:.14em;
+  color:var(--paper);
+  background:var(--sumi);
+  padding:8px 18px;
+  margin-bottom:18px;
+}
+.lede{
+  color:var(--sumi-soft);
+  font-size:14px;
+  max-width:34em;
+}
+
+/* ── kerf line(挽き目)── */
+.kerf{
+  height:2px;
+  background:repeating-linear-gradient(90deg,
+    var(--shu) 0 14px, transparent 14px 20px);
+  margin:0 0 40px;
+  opacity:.85;
+}
+
+/* ── sections ── */
+section{padding:8px 0 40px}
+.sec-head{
+  display:flex;
+  align-items:baseline;
+  gap:14px;
+  margin-bottom:6px;
+}
+h2{
+  font-family:'Shippori Mincho B1',serif;
+  font-weight:800;
+  font-size:21px;
+  letter-spacing:.05em;
+}
+.sec-count{
+  font-size:12px;
+  color:var(--sumi-soft);
+  letter-spacing:.1em;
+}
+.sec-note{
+  font-size:13px;
+  color:var(--sumi-soft);
+  margin-bottom:20px;
+}
+
+/* ── cards ── */
+.cards{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:12px;
+}
+@media(min-width:560px){
+  .cards{grid-template-columns:1fr 1fr}
+}
+.card{
+  display:block;
+  text-decoration:none;
+  color:inherit;
+  background:var(--paper);
+  border:1px solid var(--kinari-deep);
+  border-radius:10px;
+  padding:18px 18px 16px;
+  position:relative;
+  transition:transform .15s ease, box-shadow .15s ease;
+}
+.card:hover,.card:focus-visible{
+  transform:translateY(-2px);
+  box-shadow:0 6px 18px rgba(46,42,38,.12);
+}
+.card:focus-visible{
+  outline:3px solid var(--koban);
+  outline-offset:2px;
+}
+.card::after{
+  content:"→";
+  position:absolute;
+  right:16px;bottom:12px;
+  color:var(--shu);
+  font-weight:700;
+  font-size:14px;
+}
+.chip{
+  display:inline-block;
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.08em;
+  padding:2px 10px;
+  border-radius:999px;
+  margin-bottom:8px;
+}
+.chip-collab{background:var(--koban);color:var(--sumi)}
+.chip-original{background:var(--kinari-deep);color:var(--sumi-soft)}
+.chip-service{background:var(--sumi);color:var(--paper)}
+.card h3{
+  font-size:16.5px;
+  font-weight:700;
+  letter-spacing:.02em;
+  line-height:1.4;
+  margin-bottom:4px;
+}
+.card p{
+  font-size:13px;
+  color:var(--sumi-soft);
+  padding-right:20px;
+}
+
+/* ── footer ── */
+footer{
+  border-top:1px solid var(--kinari-deep);
+  padding:32px 0 48px;
+  text-align:center;
+}
+.cta{
+  font-family:'Shippori Mincho B1',serif;
+  font-weight:700;
+  font-size:16px;
+  margin-bottom:8px;
+}
+footer p{font-size:13px;color:var(--sumi-soft)}
+footer a{color:var(--shu);font-weight:700;text-decoration:none}
+footer a:hover{text-decoration:underline}
+.foot-brand{
+  margin-top:24px;
+  font-size:11px;
+  letter-spacing:.2em;
+  color:var(--sumi-soft);
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="brand">TERAIA / <strong>imapp</strong> — 京都・丹波</div>
+    <h1>製材所のおっさんが、<br><span class="turn">作ってしまった</span>もの一覧</h1>
+    <div class="tagline">チラシは、１度。ゲームは、毎日。</div>
+    <p class="lede">京都・丹波の製材所で木を挽きながら、お店のためのゲームを作っています。ここにあるものは、ぜんぶ遊べます。</p>
+  </div>
+</header>
+
+<div class="wrap"><div class="kerf" role="presentation"></div></div>
+
+<main class="wrap">
+
+  <section id="collab">
+    <div class="sec-head">
+      <h2>お店とのコラボゲーム</h2>
+      <span class="sec-count">5作</span>
+    </div>
+    <p class="sec-note">お店ごとに、一からつくった専用ゲームです。</p>
+    <div class="cards">
+      <a class="card" href="https://games.imapp.shop/pizza-oven-rush/">
+        <span class="chip chip-collab">Switch さん</span>
+        <h3>ピザ・オーブン・ラッシュ</h3>
+        <p>窯でピザを焼いて、注文をさばく。焼けた瞬間が気持ちいい。</p>
+      </a>
+      <a class="card" href="https://games.imapp.shop/ormary-life/">
+        <span class="chip chip-collab">thisis omarystore さん</span>
+        <h3>ormary life</h3>
+        <p>お店の世界観をそのまま遊びにしたコラボゲーム。</p>
+      </a>
+      <a class="card" href="https://games.imapp.shop/creperie/">
+        <span class="chip chip-collab">フランス料理店 d'or さん</span>
+        <h3>d'or — 花街のクレープリー</h3>
+        <p>花街のクレープリーで、クレープとガレットを焼き上げる。</p>
+      </a>
+      <a class="card" href="https://games.imapp.shop/kyou-no-bres/">
+        <span class="chip chip-collab">SmileBird さん</span>
+        <h3>今日のブレス</h3>
+        <p>毎朝、今日の石を軸に自分だけのブレスレットを組む習慣。</p>
+      </a>
+      <a class="card" href="https://games.imapp.shop/packer-panic-eco/">
+        <span class="chip chip-collab">安田産業㈱ さん</span>
+        <h3>パッカーパニック</h3>
+        <p>ごみ収集×エコを遊びで体感するコラボゲーム。</p>
+      </a>
+    </div>
+  </section>
+
+  <section id="original">
+    <div class="sec-head">
+      <h2>じぶんで作ったゲーム</h2>
+      <span class="sec-count">10作</span>
+    </div>
+    <p class="sec-note">作りたくなったから作ったやつ。挑戦者求む。</p>
+    <div class="cards">
+      <a class="card" href="https://games.imapp.shop/mocairn/">
+        <span class="chip chip-original">積み木</span>
+        <h3>モッケルン</h3>
+        <p>木のブロックをひたすら積む。ランキングで挑戦者を待っています。</p>
+      </a>
+      <a class="card" href="https://games.imapp.shop/makido/">
+        <span class="chip chip-original">クリッカー</span>
+        <h3>薪道</h3>
+        <p>薪割りをし続ける。ただそれだけなのに、やめられない。</p>
+      </a>
+      <a class="card" href="https://games.imapp.shop/takibi/">
+        <span class="chip chip-original">癒やし</span>
+        <h3>焚き火</h3>
+        <p>焚き火に癒やされたい人のための、火を眺める時間。</p>
+      </a>
+      <a class="card" href="https://games.imapp.shop/yakishi/">
+        <span class="chip chip-original">自虐</span>
+        <h3>焼き師</h3>
+        <p>ただ、焼肉が食べたくなるだけのゲーム。夜中は危険。</p>
+      </a>
+      <a class="card" href="https://games.imapp.shop/konpeito/">
+        <span class="chip chip-original">ものづくり</span>
+        <h3>こんぺい堂</h3>
+        <p>金平糖の老舗を切り盛り。回して、育てて、うっとりする。</p>
+      </a>
+      <a class="card" href="https://games.imapp.shop/kemonomichi/">
+        <span class="chip chip-original">山歩き</span>
+        <h3>あしあと探索隊</h3>
+        <p>この足あと、だれのもの？山の動物を当てるスライドパズル。</p>
+      </a>
+      <a class="card" href="https://rhythfection.com">
+        <span class="chip chip-original">リズム</span>
+        <h3>Rhythfection</h3>
+        <p>曲に合わせて「ノリ」を作って遊ぶ、リズム系音楽サービス。</p>
+      </a>
+      <a class="card" href="https://imapp.shop/games/morse-spy">
+        <span class="chip chip-original">モールス信号</span>
+        <h3>MORSE SPY</h3>
+        <p>その一打が、世界を救う。遊ぶうちに本物のモールスが身につく。</p>
+      </a>
+      <a class="card" href="https://osasshi.com">
+        <span class="chip chip-original">京都</span>
+        <h3>察しの間</h3>
+        <p>京ことばの建前から本音を読む、察しの修行。野暮から女将へ。</p>
+      </a>
+      <a class="card" href="https://games.imapp.shop/tarcoon-cartoon/">
+        <span class="chip chip-original">贈りもの</span>
+        <h3>TarCoon☆CarToon</h3>
+        <p>友達の誕生日に作ったゲーム。世界にひとつの贈りもの。</p>
+      </a>
+    </div>
+  </section>
+
+  <section id="service">
+    <div class="sec-head">
+      <h2>サービス・サイト</h2>
+      <span class="sec-count">3件</span>
+    </div>
+    <p class="sec-note">ゲームの裏側と、京都・丹波のこと。</p>
+    <div class="cards">
+      <a class="card" href="https://imapp.shop">
+        <span class="chip chip-service">お店向け</span>
+        <h3>imapp</h3>
+        <p>お店専用ゲーム＋プッシュ通知。チラシは１度、ゲームは毎日。</p>
+      </a>
+      <a class="card" href="https://kyoto-tamba.com">
+        <span class="chip chip-service">地域</span>
+        <h3>京都丹波ナビ</h3>
+        <p>京都・丹波エリアのお店とイベントをめぐる地域ポータル。</p>
+      </a>
+      <a class="card" href="https://teraia.net">
+        <span class="chip chip-service">屋号</span>
+        <h3>Teraia</h3>
+        <p>社会課題に向き合うITパートナー。ぜんぶの出発点です。</p>
+      </a>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p class="cta">あなたのお店のゲームも、作れます。</p>
+    <p>お問い合わせは <a href="https://imapp.shop">imapp.shop</a> から。</p>
+    <div class="foot-brand">TERAIA — NANTAN, KYOTO</div>
+  </div>
+</footer>
+
+</body>
+</html>
