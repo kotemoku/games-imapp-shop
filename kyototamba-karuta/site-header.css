@@ -10,7 +10,7 @@
   --ktn-paper: #fff;
   --ktn-ink: #101010;
   --ktn-ink-mid: #444;
-  --ktn-ink-pale: #888;
+  --ktn-ink-pale: #5f6368;
   --ktn-navy: #1c3560;
   --ktn-gold: #b98a2e;
   --ktn-rule: rgba(16, 16, 16, .16);
@@ -66,13 +66,13 @@
 .ktn-header .ktn-brand::after {
   content: "KYOTO TAMBA NAVI";
   font-family: var(--ktn-mon);
-  font-size: 9px;
+  font-size: 13px;
   letter-spacing: .2em;
   color: var(--ktn-ink-pale);
 }
 .ktn-header nav { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 20px; }
 .ktn-header nav a {
-  font-size: 12.5px;
+  font-size: 13px;
   font-weight: 500;
   letter-spacing: .06em;
   color: var(--ktn-ink);
@@ -97,7 +97,7 @@
   .ktn-header .ktn-brand b { font-size: 16px; }
   .ktn-header .ktn-brand::after { display: none; }
   .ktn-header nav { gap: 3px 13px; }
-  .ktn-header nav a { font-size: 11.5px; }
+  .ktn-header nav a { font-size: 13px; }
   .ktn-header nav a.ktn-cta { padding: 6px 11px; }
 }
 
@@ -117,18 +117,18 @@
 .ktn-art:focus-visible .ka-h { text-decoration: underline; text-underline-offset: 4px; }
 .ktn-art .ka-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 .ktn-art .ka-tag {
-  font-size: 10px; font-weight: 700; letter-spacing: .08em;
+  font-size: 13px; font-weight: 700; letter-spacing: .08em;
   color: #fff; padding: 2px 8px; text-decoration: none;
 }
 .ka-tag.kameoka { background: var(--ktn-kameoka, #a5573a); }
 .ka-tag.nantan { background: var(--ktn-nantan, #5b7d4b); }
 .ka-tag.kyotamba { background: var(--ktn-kyotamba, #3a6a8c); }
 .ktn-art .ka-d {
-  font-family: var(--ktn-mon, monospace); font-size: 11px; letter-spacing: .08em;
-  color: rgba(16, 16, 16, .55); font-variant-numeric: tabular-nums; text-decoration: none;
+  font-family: var(--ktn-mon, monospace); font-size: 13px; letter-spacing: .08em;
+  color: rgba(16, 16, 16, .86); font-variant-numeric: tabular-nums; text-decoration: none;
 }
 .ktn-art .ka-h {
   margin: 7px 0 0; font-family: var(--ktn-min, serif); font-size: 16px; font-weight: 500;
   line-height: 1.62; letter-spacing: .04em; color: var(--ktn-ink, #101010);
 }
-.ktn-art .ka-v { margin: 5px 0 0; font-size: 11.5px; color: rgba(16, 16, 16, .55); }
+.ktn-art .ka-v { margin: 5px 0 0; font-size: 13px; color: rgba(16, 16, 16, .86); }
