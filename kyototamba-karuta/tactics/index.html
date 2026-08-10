@@ -1,0 +1,763 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>丹波タクティクス ─ 京都丹波の史実札で戦うタクティクス｜京都丹波ナビ</title>
+<meta name="description" content="亀岡・南丹・京丹波の郷土史の札を駒にした、乱数なしのタクティクス。敵は必ず予告してから撃ちます。札を裏返すと、その出来事の解説と出典、行ける場所が読めます。">
+<link rel="canonical" href="https://kyoto-tamba.com/tactics/">
+<meta property="og:title" content="丹波タクティクス ─ 京都丹波の史実札で戦うタクティクス">
+<meta property="og:description" content="亀岡・南丹・京丹波の郷土史の札を駒にした、乱数なしのタクティクス。敵は必ず予告してから撃ちます。札を裏返すと、その出来事の解説と出典、行ける場所が読めます。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kyoto-tamba.com/tactics/">
+<meta property="og:site_name" content="京都丹波ナビ">
+<meta name="theme-color" content="#274a6d">
+<link rel="icon" href="../icons/icon-192.png">
+<style>
+/* 京都丹波ナビ 共通トークン＋サイトヘッダー。
+   2026-08-07 全面リニューアル（P6「表紙と誌面」を採用）。
+   このファイルが配色・書体の唯一の正。静的ページ・掲載案内・申込フォームが読み込み、
+   scripts/prerender.mjs は生成ページに inline する。アプリ本体は src/styles/main.css の
+   最終 :root で同じ値を持つ（Vite バンドルのため別管理・値は必ず一致させること）。 */
+
+:root {
+  /* 誌面（P5由来） */
+  --ktn-bg: #f5f5f2;
+  --ktn-paper: #fff;
+  --ktn-ink: #101010;
+  --ktn-ink-mid: #444;
+  --ktn-ink-pale: #888;
+  --ktn-navy: #1c3560;
+  --ktn-gold: #b98a2e;
+  --ktn-rule: rgba(16, 16, 16, .16);
+
+  /* 市町 */
+  --ktn-kameoka: #a5573a;
+  --ktn-nantan: #5b7d4b;
+  --ktn-kyotamba: #3a6a8c;
+
+  /* 書体（OS内蔵のみ・Webフォント読み込みなし） */
+  --ktn-min: "Hiragino Mincho ProN", "游明朝", "Yu Mincho", "HGS明朝E", Georgia, serif;
+  --ktn-san: -apple-system, "Hiragino Sans", "Yu Gothic UI", "Yu Gothic", "Noto Sans JP", sans-serif;
+  --ktn-mon: "SF Mono", Menlo, Consolas, "Courier New", monospace;
+}
+
+/* ── サイトヘッダー（誌面のヘッダ罫）──
+   トップは画面下端の固定ナビだが、下層ページは上部ヘッダー。
+   どちらも同じ書体・同じ罫線で「同じ誌面」に見せる。 */
+.ktn-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  padding: 11px 20px;
+  background: color-mix(in srgb, var(--ktn-bg) 94%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--ktn-ink);
+  font-family: var(--ktn-san);
+}
+.ktn-header .ktn-in {
+  max-width: 1180px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.ktn-header .ktn-brand {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-right: auto;
+  text-decoration: none;
+  color: var(--ktn-ink);
+}
+.ktn-header .ktn-brand img { display: none; }
+.ktn-header .ktn-brand b {
+  font-family: var(--ktn-min);
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: .1em;
+  line-height: 1.2;
+}
+.ktn-header .ktn-brand::after {
+  content: "KYOTO TAMBA NAVI";
+  font-family: var(--ktn-mon);
+  font-size: 9px;
+  letter-spacing: .2em;
+  color: var(--ktn-ink-pale);
+}
+.ktn-header nav { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 20px; }
+.ktn-header nav a {
+  font-size: 12.5px;
+  font-weight: 500;
+  letter-spacing: .06em;
+  color: var(--ktn-ink);
+  text-decoration: none;
+  padding: 4px 0;
+  border-bottom: 1px solid transparent;
+}
+.ktn-header nav a:hover,
+.ktn-header nav a:focus-visible { border-bottom-color: var(--ktn-ink); outline: none; }
+.ktn-header nav a.ktn-cta {
+  color: #fff;
+  background: var(--ktn-navy);
+  padding: 7px 15px;
+  border-bottom: 0;
+  letter-spacing: .08em;
+}
+.ktn-header nav a.ktn-cta:hover,
+.ktn-header nav a.ktn-cta:focus-visible { background: var(--ktn-ink); color: #fff; }
+
+@media (max-width: 560px) {
+  .ktn-header { padding: 9px 14px; }
+  .ktn-header .ktn-brand b { font-size: 16px; }
+  .ktn-header .ktn-brand::after { display: none; }
+  .ktn-header nav { gap: 3px 13px; }
+  .ktn-header nav a { font-size: 11.5px; }
+  .ktn-header nav a.ktn-cta { padding: 6px 11px; }
+}
+
+/* ── 記事エントリー（誌面の行）──
+   トップの「まもなく開催」と、/week/ の一覧で使う共通の行。
+   アプリ側は src/styles/cover-spread.css に同じ定義がある（Viteバンドルのため別管理）。
+   値を変えるときは両方直すこと。 */
+.ktn-art {
+  display: block;
+  padding: 17px 0;
+  border-bottom: 1px solid rgba(16, 16, 16, .16);
+  text-decoration: none;
+  color: var(--ktn-ink, #101010);
+}
+.ktn-art:last-child { border-bottom: 0; }
+.ktn-art:hover .ka-h,
+.ktn-art:focus-visible .ka-h { text-decoration: underline; text-underline-offset: 4px; }
+.ktn-art .ka-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.ktn-art .ka-tag {
+  font-size: 10px; font-weight: 700; letter-spacing: .08em;
+  color: #fff; padding: 2px 8px; text-decoration: none;
+}
+.ka-tag.kameoka { background: var(--ktn-kameoka, #a5573a); }
+.ka-tag.nantan { background: var(--ktn-nantan, #5b7d4b); }
+.ka-tag.kyotamba { background: var(--ktn-kyotamba, #3a6a8c); }
+.ktn-art .ka-d {
+  font-family: var(--ktn-mon, monospace); font-size: 11px; letter-spacing: .08em;
+  color: rgba(16, 16, 16, .55); font-variant-numeric: tabular-nums; text-decoration: none;
+}
+.ktn-art .ka-h {
+  margin: 7px 0 0; font-family: var(--ktn-min, serif); font-size: 16px; font-weight: 500;
+  line-height: 1.62; letter-spacing: .04em; color: var(--ktn-ink, #101010);
+}
+.ktn-art .ka-v { margin: 5px 0 0; font-size: 11.5px; color: rgba(16, 16, 16, .55); }
+
+:root{
+  --bg:#f5f5f2; --paper:#fff; --ink:#101010; --mid:#444; --pale:#888;
+  --navy:#1c3560; --gold:#b98a2e; --akane:#a5573a;
+  --kameoka:#a5573a; --nantan:#5b7d4b; --kyotamba:#3a6a8c;
+  --min:"Hiragino Mincho ProN","游明朝","Yu Mincho",Georgia,serif;
+  --san:-apple-system,"Hiragino Sans","Yu Gothic UI","Yu Gothic","Noto Sans JP",sans-serif;
+  --mon:"SF Mono",Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--san);line-height:1.8}
+.wrap{max-width:1080px;margin:0 auto;padding:24px 18px 70px}
+header{border-bottom:3px solid var(--ink);padding-bottom:16px;margin-bottom:22px}
+.kick{font-family:var(--mon);font-size:10px;letter-spacing:.26em;color:var(--pale)}
+h1{font-family:var(--min);font-size:clamp(24px,4vw,36px);font-weight:500;letter-spacing:.06em;margin-top:8px}
+header p{margin-top:10px;font-size:13.5px;color:var(--mid);max-width:60ch}
+.rule{display:flex;align-items:baseline;gap:14px;border-bottom:1px solid var(--ink);padding:26px 0 10px;margin-bottom:14px}
+.rule b{font-family:var(--mon);font-size:10.5px;font-weight:700;letter-spacing:.24em;text-transform:uppercase}
+.rule span{font-size:11.5px;color:var(--pale)}
+/* 編成 */
+.pool{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px}
+.pc{text-align:left;background:var(--paper);border:1px solid rgba(16,16,16,.16);padding:12px 13px;cursor:pointer;font:inherit;
+  border-top:3px solid var(--c);transition:background .15s;
+  display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start} /* button 既定の縦中央寄せを止める */
+.pc:hover{background:#faf9f6}
+.pc.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.pc.on .pc-s,.pc.on .pc-y{color:rgba(255,255,255,.75)}
+.pc-y{font-family:var(--mon);font-size:10px;letter-spacing:.1em;color:var(--pale)}
+/* 札の顔。擬人化がある札は絵、無い札は名前を置いた無地の面。 */
+.pc-art{display:flex;align-items:flex-end;justify-content:center;height:132px;margin:-2px -3px 8px;
+  background:linear-gradient(to bottom,rgba(16,16,16,.045),rgba(16,16,16,.02) 55%,transparent);
+  border-bottom:1px solid rgba(16,16,16,.10)}
+.pc-art img{height:100%;width:auto;max-width:100%;object-fit:contain;
+  filter:drop-shadow(0 1px 2px rgba(16,16,16,.22))}
+ /* 擬人化しない札（社寺・出来事）。art-prompts.md §4 の紋章が入る枠なので、
+   いまは家紋の下地だけを置いておく。名前は下にあるので繰り返さない。 */
+.pc-art.none{align-items:center;
+  background:linear-gradient(to bottom,color-mix(in srgb,var(--c) 12%,transparent),transparent)}
+.pc-art.none i{display:block;width:62px;height:62px;border-radius:50%;
+  border:1.5px solid color-mix(in srgb,var(--c) 55%,transparent);position:relative}
+.pc-art.none i::after{content:"";position:absolute;inset:7px;border-radius:50%;
+  border:1px solid color-mix(in srgb,var(--c) 32%,transparent)}
+.pc.on .pc-art{border-bottom-color:rgba(255,255,255,.22)}
+.pc.on .pc-art.none i{border-color:rgba(255,255,255,.5)}
+.pc.on .pc-art.none i::after{border-color:rgba(255,255,255,.3)}
+.pc-n{display:block;font-family:var(--min);font-size:15px;font-weight:500;margin:3px 0 5px;line-height:1.5}
+.pc-s{font-family:var(--mon);font-size:11px;color:var(--mid);letter-spacing:.04em}
+.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:16px}
+.btn{font:inherit;font-size:13px;font-weight:700;letter-spacing:.06em;padding:11px 22px;cursor:pointer;
+  border:1px solid var(--ink);background:transparent;color:var(--ink)}
+.btn:hover{background:var(--ink);color:var(--bg)}
+.btn.pri{background:var(--navy);border-color:var(--navy);color:#fff;font-family:var(--min);font-size:15px}
+.btn.pri:hover{background:var(--ink);border-color:var(--ink)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.hint{font-size:12.5px;color:var(--mid)}
+/* 盤面 */
+.game{display:grid;grid-template-columns:minmax(0,1fr) 290px;gap:22px;align-items:start}
+@media(max-width:860px){.game{grid-template-columns:1fr}}
+/* 行も 1fr で切る。auto のままだと中身の多い行だけ伸びてマスが正方形にならず、
+   マス目割のテクスチャを載せたときに絵が縦横で歪む。 */
+.board{display:grid;grid-template-columns:repeat(6,1fr);grid-template-rows:repeat(6,1fr);gap:2px;
+  background:rgba(16,16,16,.16);border:1px solid rgba(16,16,16,.16);aspect-ratio:1}
+.cell{position:relative;background:var(--paper);display:flex;flex-direction:column;align-items:center;justify-content:center;
+  font-size:11px;cursor:default;padding:2px;overflow:hidden}
+/* 移動可・脅威の色は「敷いた絵の上」に半透明で重ねる。background-color のままだと
+   テクスチャに隠れて消える。読めなくなった瞬間タクティクスとして壊れるので必須。 */
+.cell.mv,.cell.tg{cursor:pointer}
+.cell.mv::before,.cell.tg::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:1}
+/* 薄い塗り＋内側の枠。塗りだけを濃くすると地形そのものの色が変わって見えるので、
+   「どこ」は枠が、「面」は淡い塗りが担う。 */
+.cell.mv::before{background:rgba(39,74,109,.13);box-shadow:inset 0 0 0 2px rgba(39,74,109,.42)}
+.cell.tg::before{background:rgba(178,63,52,.15);box-shadow:inset 0 0 0 3px rgba(178,63,52,.62)}
+.cell.tg.mv::before{background:rgba(178,63,52,.15);
+  box-shadow:inset 0 0 0 3px rgba(178,63,52,.62),inset 0 0 0 5px rgba(39,74,109,.42)} /* 両方であることが見える */
+.cell>*{position:relative;z-index:2}                   /* 駒は色被せより上 */
+/* テクスチャ本体 */
+.cell{background-size:cover;background-position:center}
+.cell.at{outline:2px solid var(--akane);outline-offset:-2px;cursor:pointer}
+.cell.sel{outline:2px solid var(--navy);outline-offset:-2px}
+.u{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;cursor:pointer}
+.u-n{font-family:var(--min);font-size:10.5px;line-height:1.25;text-align:center;max-height:2.6em;overflow:hidden}
+.u-hp{font-family:var(--mon);font-size:9.5px;letter-spacing:.04em}
+.u.p{border-left:3px solid var(--c)}
+.u.e{background:#2b2b2b;color:#f2efe6;width:100%;height:100%}
+/* 擬人化イラストを載せたマス。絵が主で、HPだけを下に小さく重ねる。 */
+.u.art{position:relative;padding:0;gap:0}
+.u-a{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center bottom;
+  pointer-events:none;filter:drop-shadow(0 1px 1px rgba(16,16,16,.30))}
+.u.art .u-hp{position:absolute;left:0;right:0;bottom:0;z-index:1;text-align:center;
+  padding:2px 0 3px;background:rgba(252,251,248,.86);color:var(--ink);letter-spacing:0}
+/* 敵は地の暗さを消さずに、下から薄く敷いて「こちらの駒ではない」ことを出す */
+.u.e.art{background:linear-gradient(to top,rgba(24,24,26,.62),rgba(24,24,26,.16) 62%,transparent)}
+.u.e.art .u-hp{background:rgba(20,20,22,.78);color:#f2efe6}
+.u.done{opacity:.45}
+ /* 砦は絵（無ければ段の色）を地に敷く。建物は地面に建っているので抜きの立ち絵にしない。
+   金のベタで塗りつぶすと段の色が見えないので、駒と同じく下の帯だけを塗る。 */
+.u.fort{background:none;color:var(--ink);position:relative;padding:0;gap:0;justify-content:flex-end}
+.u.fort .u-n{width:100%;background:rgba(252,251,248,.88);font-size:9.5px;line-height:1.3;
+  padding:2px 3px 0;max-height:2.6em;overflow:hidden;text-align:center}
+.u.fort .u-hp{width:100%;background:var(--gold);color:#fff;text-align:center;
+  padding:2px 0 3px;letter-spacing:0}
+/* 段の切替（試作用）*/
+.grade{display:flex;align-items:center;gap:8px;margin-top:10px;flex-wrap:wrap}
+.gr{display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 5px;cursor:pointer;
+  background:transparent;border:1px solid rgba(16,16,16,.16);font:inherit}
+.gr i{display:block;width:34px;height:34px;background-size:cover;border:1px solid rgba(16,16,16,.12)}
+.gr b{font-family:var(--mon);font-size:10px;font-weight:400;color:var(--mid)}
+.gr.on{border-color:var(--gold);background:rgba(185,138,46,.10)}
+.gr.on b{color:var(--gold);font-weight:700}
+.face{position:absolute;inset:auto 2px 2px auto;font-family:var(--mon);font-size:9px;opacity:.6}
+/* 地形 */
+.cell.tr{background:#6f6a5f}                 /* 山・家屋：通行不可・射線も遮る */
+.cell.tw{background:#9fb6c6}                 /* 川・湖：通行不可・射線は通る */
+.cell.ts{background:#d8cfae}                 /* 泥・茅場：通れるが移動コスト2 */
+/* 地形の文字（山・〜・泥）は置かない。絵が入ったので二重になるうえ、
+   盤の上の文字は駒のHPだけであってほしい。地形の意味は右の凡例で示す。 */
+/* 地形の凡例 */
+.leg{display:flex;gap:9px;align-items:flex-start;padding:7px 0;border-top:1px solid rgba(16,16,16,.1);font-size:12px;line-height:1.5}
+.leg:first-child{border-top:0;padding-top:0}
+.leg i{flex:0 0 auto;width:24px;height:24px;margin-top:1px;display:block;border:1px solid rgba(16,16,16,.14)}
+.leg b{display:block;font-size:12px}
+.leg span{color:var(--mid);font-size:11.5px}
+/* 編成画面のミニ盤面 */
+.mini{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;width:84px;margin:9px 0;
+  background:rgba(16,16,16,.18);border:1px solid rgba(16,16,16,.18)}
+.mini .mc{display:block;aspect-ratio:1;background:#fff}
+.mini .mc.r{background:#6f6a5f}.mini .mc.w{background:#9fb6c6}.mini .mc.s{background:#d8cfae}
+/* 右パネル */
+.side{display:grid;gap:14px}
+.panel{background:var(--paper);border:1px solid rgba(16,16,16,.16);padding:14px 15px}
+.panel h3{font-family:var(--mon);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--pale);margin-bottom:8px}
+.panel p{font-size:12.5px;color:var(--mid)}
+.st{display:flex;align-items:center;gap:8px;font-size:12.5px;padding:4px 0;border-bottom:1px solid rgba(16,16,16,.1)}
+.st span{flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.st-a{flex:0 0 auto;width:30px;height:30px;object-fit:contain;object-position:center bottom}
+.st-a.none{border-radius:50%;border:1.5px solid rgba(16,16,16,.22);width:20px;height:20px;margin:0 5px}
+/* 結果画面 ─ 連れていった三枚 */
+.ov-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:14px}
+.ov-c{width:150px;text-align:center;background:var(--paper);border:1px solid rgba(16,16,16,.16);
+  border-top:3px solid var(--c);padding:10px 10px 12px}
+.ov-c img{display:block;height:150px;width:100%;object-fit:contain;object-position:center bottom}
+.ov-c i.none{display:block;height:150px;border-radius:0}
+.ov-c b{display:block;font-family:var(--min);font-size:13.5px;font-weight:500;line-height:1.5;margin-top:6px}
+.ov-c s{display:block;text-decoration:none;font-family:var(--mon);font-size:10px;color:var(--pale);
+  letter-spacing:.08em;margin-top:3px}
+/* 札の裏 ─ 中身は年表かるたの deep-dive と同じもの */
+.back{position:fixed;inset:0;z-index:50;background:rgba(16,16,16,.42);
+  display:flex;align-items:center;justify-content:center;padding:20px}
+.back-card{background:var(--paper);border:1px solid rgba(16,16,16,.2);border-top:3px solid var(--c,var(--ink));
+  max-width:430px;width:100%;max-height:86vh;overflow:auto;padding:22px 24px 20px;
+  animation:flipin .34s cubic-bezier(.2,.7,.3,1)}
+@keyframes flipin{from{transform:perspective(900px) rotateY(-84deg);opacity:0}to{transform:none;opacity:1}}
+@media(prefers-reduced-motion:reduce){.back-card{animation:none}}
+.bk-y{font-family:var(--mon);font-size:10.5px;letter-spacing:.12em;color:var(--pale)}
+.bk-n{font-family:var(--min);font-size:21px;font-weight:500;line-height:1.5;margin:5px 0 2px}
+.bk-note{font-size:12.5px;color:var(--mid);margin-bottom:14px}
+.bk-body{font-size:14px;line-height:2;border-top:1px solid rgba(16,16,16,.14);padding-top:13px}
+.bk-go{display:block;margin-top:16px;padding:13px 15px;background:var(--navy);color:#fff;text-decoration:none}
+.bk-go b{display:block;font-family:var(--min);font-size:15px;font-weight:500}
+.bk-go span{display:block;font-size:11.5px;color:rgba(255,255,255,.78);margin-top:3px}
+.bk-meta{margin-top:14px;padding-top:12px;border-top:1px solid rgba(16,16,16,.14);
+  display:grid;gap:7px;font-size:12px}
+.bk-meta a{color:var(--navy)}
+.bk-grow{color:var(--gold);font-weight:700}
+.bk-x{margin-top:16px;width:100%}
+/* 表側の「裏」ボタン */
+.pc-flip{position:absolute;top:5px;right:5px;z-index:2;width:26px;height:26px;padding:0;
+  font:inherit;font-size:11px;font-family:var(--min);cursor:pointer;
+  background:rgba(252,251,248,.9);border:1px solid rgba(16,16,16,.22);color:var(--mid)}
+.pc-flip:hover{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.pc{position:relative}
+.ov-c{position:relative;cursor:pointer}
+.ov-c:hover{background:#faf9f6}
+.st:last-child{border-bottom:0}
+.st b{font-family:var(--mon);font-variant-numeric:tabular-nums}
+.log{max-height:190px;overflow-y:auto;font-size:12px;color:var(--mid)}
+.log div{padding:3px 0;border-bottom:1px solid rgba(16,16,16,.07)}
+.big{font-family:var(--min);font-size:20px;font-weight:500;text-align:center;padding:18px 0}
+.hidden{display:none}
+.note{font-size:12px;color:var(--pale);margin-top:16px;line-height:1.9}
+</style>
+</head>
+<body>
+<header class="ktn-header"><div class="ktn-in">
+  <a class="ktn-brand" href="../index.html"><img src="../icons/icon-192.png" alt="" width="34" height="34"><b>京都丹波ナビ</b></a>
+  <nav aria-label="サイト内">
+    <a href="../week/index.html">今週</a>
+    <a href="../course/index.html">一日のコース</a>
+    <a href="../events/index.html">イベント</a>
+    <a href="../shops/index.html">寄り処</a>
+    <a href="../index.html">あそぶ</a>
+    <a href="../tactics/index.html">丹波タクティクス</a>
+    <a href="../photo/index.html">写真を送る</a>
+    <a class="ktn-cta" href="../ads/index.html">掲載のご案内</a>
+  </nav>
+</div></header>
+<div class="wrap">
+<header>
+  <div class="kick">KYOTO TAMBA NAVI ／ TACTICS</div>
+  <h1>丹波タクティクス</h1>
+  <p>亀岡・南丹・京丹波の史実札を駒にしたタクティクスです。<b>乱数はありません。</b>敵は必ず「回転→移動→予告」してから撃つので、見てから避けられます。
+     札は<b>裏返すと</b>、その出来事の解説と出典、行ける場所が読めます。</p>
+</header>
+
+<div id="setup">
+  <div class="rule"><b>Loadout</b><span>01 ─ 三枚えらぶ</span></div>
+  <p class="hint">強さは手で決めていません。<b>年代</b>が古いほど硬く鈍く、新しいほど速い。<b>市町</b>が間合いを決めます（亀岡＝近接／南丹＝直線／京丹波＝十字）。</p>
+  <div class="pool" id="pool"></div>
+  <div class="rule"><b>Field</b><span>02 ─ 戦う場所</span></div>
+  <p class="hint">地形が間合いを変えます。<b>山と家屋</b>は通れず射線も遮る。<b>川と湖</b>は通れないが射線は通る。<b>泥と茅場</b>は通れるが足を取られます。</p>
+  <div class="pool" id="fieldPool"></div>
+  <div class="rule"><b>Fort</b><span>03 ─ 応援する寄り処</span></div>
+  <p class="hint">自陣に寄り処が砦として立ちます。砦が落ちても負けです。砦は<b>勝つと3段まで</b>、
+    <b>実際にその寄り処へ行くと5段まで</b>育ちます。育つほど固くなります。</p>
+  <div class="pool" id="fortPool"></div>
+  <div class="grade" id="gradePick"></div>
+  <div class="bar">
+    <button class="btn pri" id="start" disabled>出陣する</button>
+    <span class="hint" id="pick">駒を3枚と、砦を1つ選んでください</span>
+  </div>
+</div>
+
+<div id="play" class="hidden">
+  <div class="rule"><b id="phaseLab">Wave 1</b><span id="phaseSub"></span></div>
+  <div class="game">
+    <div>
+      <div class="board" id="board"></div>
+      <div class="bar">
+        <button class="btn" id="endTurn">この手番を終える</button>
+        <button class="btn" id="reset">最初から</button>
+        <span class="hint" id="tip"></span>
+      </div>
+    </div>
+    <div class="side">
+      <div class="panel" id="terPanel"><h3>この場所の地形</h3><div id="terLeg"></div></div>
+      <div class="panel"><h3>選んだ駒</h3><div id="party"></div></div>
+      <div class="panel"><h3>砦</h3><div id="fortSt"></div></div>
+      <div class="panel"><h3>いま何が起きたか</h3><div class="log" id="log"></div></div>
+    </div>
+  </div>
+</div>
+
+<div id="back" class="back hidden" role="dialog" aria-modal="true" aria-label="札の裏">
+  <div class="back-card" id="backCard"></div>
+</div>
+
+<div id="over" class="hidden">
+  <div class="big" id="overMsg"></div>
+  <div id="overParty"></div>
+  <div class="bar"><button class="btn pri" id="again">もう一度</button></div>
+</div>
+
+<p class="note">
+  ・駒の強さは<b>手で決めていません</b>。札の年代と市町から機械的に導いています（古いほど硬く鈍い／新しいほど速い）。<br>
+  ・災害の札（由良川水害など）は<b>駒にも敵にもしていません</b>。実際に人が亡くなった出来事を戦う相手にはしない方針です。敵は霧・鹿・猪にとどめました。<br>
+  ・神社仏閣の札も戦いません。年表かるたの側に置いています。<br>
+  ・札を裏返すと、その出来事の解説と<b>出典</b>が読めます。出典はできるかぎり各市町の公式資料にあたっています。<br>
+  ・「行くと育つ札」は現地スポットのある札です。訪問で伸びる仕組みと、砦が育つ仕組みは準備中です。
+</p>
+</div>
+
+<script id="D" type="application/json">{"pool":[{"uid":"kyotamba_520","mid":"kyotamba","y":520,"name":"塩谷の丘に古墳群","note":"円墳12基。巫女形埴輪で名高い。今は古墳公園。","pat":"area","range":2,"hp":6,"move":1,"atk":2,"grow":true,"place":"塩谷古墳公園","body":"丘の上に12基の円墳が並ぶ塩谷古墳群。出土した巫女形埴輪は京丹波を代表する古代の顔だ。整備された古墳公園で、丹波の古代に直接ふれられる。（築造年代は概算）","src":"https://www.town.kyotamba.kyoto.jp/kakukakarasagasu/kyoikuiinkai_shakaikyoikuka/gyomuannai/5/1/1/3323.html","lat":35.157584,"lng":135.414854,"photo":null,"art":"../img/tactics/gijinka/kyotamba_520.webp"},{"uid":"kameoka_530","mid":"kameoka","y":530,"name":"千歳に大王の墳墓","note":"丹波最大級の前方後円墳・車塚。6世紀前半、全長80m。","pat":"melee","range":1,"hp":6,"move":1,"atk":2,"grow":true,"place":"千歳車塚古墳","body":"亀岡盆地を見おろす台地に築かれた、丹波最大級の前方後円墳（国史跡）。6世紀前半、この地に大きな力を持つ首長がいた証。今も墳丘の形がよく残り、間近に歩ける。（築造年代は概算）","src":"https://online.bunka.go.jp/heritages/detail/138967","lat":35.05704,"lng":135.57067,"photo":null,"art":"../img/tactics/gijinka/kameoka_530.webp"},{"uid":"kameoka_1577","mid":"kameoka","y":1577,"name":"明智光秀、亀山城を築く","note":"丹波攻略の拠点。近代亀岡の礎に。","pat":"melee","range":1,"hp":5,"move":1,"atk":2,"grow":true,"place":"丹波亀山城跡","body":"明智光秀が丹波攻略の拠点として築いた城。昔は堀と天守が城下を見おろした。今は石垣と外堀の一部が残り、城跡は大本の聖地「天恩郷」として静かに手入れされている。","src":"https://www.city.kameoka.kyoto.jp/site/kirin/1244.html","lat":35.01285,"lng":135.58364,"photo":null,"art":"../img/tactics/gijinka/kameoka_1577.webp"},{"uid":"nantan_1579","mid":"nantan","y":1579,"name":"八木城、落つ","note":"内藤氏の居城、光秀の丹波攻めに落城。城跡が残る。","pat":"line","range":3,"hp":5,"move":1,"atk":2,"grow":true,"place":"八木城跡","body":"丹波三大城郭のひとつ八木城は、キリシタン武将・内藤ジョアンの居城として知られ、明智光秀の丹波攻めで落城した（1579年ごろ）。山頂の城跡からは八木の町と大堰川が一望できる。","src":"https://ja.wikipedia.org/wiki/八木城_(丹波国)","lat":35.06045,"lng":135.52204,"photo":null,"art":"../img/tactics/gijinka/nantan_1579.webp"},{"uid":"kameoka_1606","mid":"kameoka","y":1606,"name":"角倉了以、保津川を開く","note":"舟運が通り、丹波と京がつながる。","pat":"melee","range":1,"hp":4,"move":2,"atk":2,"grow":true,"place":"保津川下り乗船場","body":"角倉了以が保津川の岩を砕き、京へ通じる舟運を開いた。昔は丹波の木材や年貢が船で下った。今は同じ峡谷を保津川下りの舟がめぐり、四季の流れをたどれる。","src":"https://ja.wikipedia.org/wiki/亀岡市","lat":35.01743,"lng":135.58664,"photo":"../img/cards/kameoka_1606_1.webp","art":"../img/tactics/gijinka/kameoka_1606.webp"},{"uid":"kameoka_1610","mid":"kameoka","y":1610,"name":"近世の亀山城、完成","note":"藤堂高虎の縄張り、五層の天守。","pat":"melee","range":1,"hp":4,"move":2,"atk":2,"grow":true,"place":"丹波亀山城跡","body":"天下普請で藤堂高虎が縄張りし、五層の天守をもつ近世城郭が完成した。昔は山陰道を押さえる要の城。今は堀跡と石垣がまちなかに面影を伝える。","src":"https://www.city.kameoka.kyoto.jp/site/kirin/1244.html","lat":35.01285,"lng":135.58364,"photo":null,"art":"../img/tactics/gijinka/kameoka_1610.webp"},{"uid":"nantan_1619","mid":"nantan","y":1619,"name":"園部に小出氏、城下町に","note":"園部藩がここに始まる。","pat":"line","range":3,"hp":4,"move":2,"atk":2,"grow":true,"place":"園部城跡（園部高校）","body":"小出吉親が入り、園部藩の城下町が始まった。園部城は幕末に完成した最も新しい城の一つ。今は跡地に高校が建ち、櫓門などが残る。","src":"https://ja.wikipedia.org/wiki/園部町","lat":35.10737,"lng":135.46795,"photo":"../img/cards/nantan_1619_1.webp","art":"../img/tactics/gijinka/nantan_1619.webp"},{"uid":"kyotamba_1650","mid":"kyotamba","y":1650,"name":"須知、山陰道の宿場に","note":"丹波と京・山陰を結ぶ要衝。","pat":"area","range":2,"hp":4,"move":2,"atk":2,"grow":true,"place":"須知宿（旧山陰道）","body":"山陰道の宿場として須知がにぎわった。丹波と京・山陰を結ぶ人と荷の要衝。今も旧道沿いに宿場のたたずまいが残る（年代は概算・要地元確認）。","src":"https://kotobank.jp/word/京丹波町-177728","lat":35.15376,"lng":135.42413,"photo":null,"art":"../img/tactics/gijinka/kyotamba_1650.webp"},{"uid":"kameoka_1749","mid":"kameoka","y":1749,"name":"亀岡祭の山鉾、記録に","note":"「丹波の祇園祭」。鍬山神社の秋祭に曳山がにぎわう。","pat":"melee","range":1,"hp":4,"move":2,"atk":2,"grow":true,"place":"鍬山神社","body":"鍬山神社の秋の例祭・亀岡祭は「丹波の祇園祭」と呼ばれ、山鉾の古い記録は1749年にさかのぼる。城下町の通りを曳山が巡る風景は、今も10月に生きている。（記録年）","src":"https://www.city.kameoka.kyoto.jp/site/kankou/3544.html","lat":34.99669,"lng":135.57736,"photo":"../img/cards/kameoka_1749_1.webp","art":"../img/tactics/gijinka/kameoka_1749.webp"},{"uid":"nantan_1796","mid":"nantan","y":1796,"name":"美山・北に最古のかやぶき","note":"今も残る一軒が建つ。","pat":"line","range":3,"hp":4,"move":2,"atk":2,"grow":true,"place":"美山かやぶきの里","body":"北村に、いまも残る最古級のかやぶき民家が建った。昔ながらの茅葺きの技と暮らしが、集落ぐるみで受け継がれている。今は重要伝統的建造物群保存地区。","src":"https://kayabukinosato.jp/about/","lat":35.31112,"lng":135.62195,"photo":"../img/cards/nantan_1796_1.webp","art":"../img/tactics/gijinka/nantan_1796.webp"},{"uid":"nantan_1869","mid":"nantan","y":1869,"name":"園部城、成る","note":"明治2年完成。日本で最後に築かれた城といわれる。","pat":"line","range":3,"hp":3,"move":2,"atk":3,"grow":true,"place":"園部城跡（園部高校）","body":"幕末の動乱の中で改築を許され、明治2年（1869）に完成した園部城は「日本で最後に築かれた城」といわれる。櫓門は今、府立園部高校の校門として現役——毎朝、生徒が城門をくぐる。","src":"https://ja.wikipedia.org/wiki/園部城","lat":35.10737,"lng":135.46795,"photo":"../img/cards/nantan_1869_1.webp","art":"../img/tactics/gijinka/nantan_1869.webp"},{"uid":"kameoka_1899","mid":"kameoka","y":1899,"name":"亀岡駅、開業","note":"京都鉄道が園部まで、汽車が通う。","pat":"melee","range":1,"hp":3,"move":2,"atk":3,"grow":false,"place":null,"body":"明治32年（1899）8月15日、京都鉄道の嵯峨〜園部延伸により開業。亀岡・八木・園部の三駅が同じ日に開いた。京と丹波が汽車でつながった日である。1907年に国有化され、いまのJR嵯峨野線になる。","src":"https://ja.wikipedia.org/wiki/亀岡駅","lat":null,"lng":null,"photo":null,"art":"../img/tactics/gijinka/kameoka_1899.webp"},{"uid":"nantan_1910","mid":"nantan","y":1910,"name":"八木に電気の灯り","note":"丹波電気が生まれ、夜がともる。","pat":"line","range":3,"hp":3,"move":2,"atk":3,"grow":false,"place":null,"body":"明治43年（1910）5月に才賀藤吉が事業許可を受け、10月に丹波電気を設立。瓦斯力60kWの発電所を建てたが、実際に灯がともったのは翌1911年10月だった。1912年に宮津電燈・丹後電気と合併し、両丹電気となる。","src":"https://ja.wikipedia.org/wiki/八木町_(京都府)","lat":null,"lng":null,"photo":null,"art":"../img/tactics/gijinka/nantan_1910.webp"},{"uid":"nantan_1910_2","mid":"nantan","y":1910,"name":"胡麻に汽車がとまる","note":"園部〜綾部の延伸で胡麻駅が開業。分水嶺の高原の里に。","pat":"line","range":3,"hp":3,"move":2,"atk":3,"grow":true,"place":"胡麻駅","body":"1910年（明治43）8月25日、園部〜綾部の延伸で胡麻駅が開業。由良川と桂川の分水界にひろがる高原の里は、いまは京都丹波サイクルルート「縦断ライド」が駆け抜ける爽快区間。駅前のまちなみに、鉄道とともに育った暮らしが残る。","src":"https://ja.wikipedia.org/wiki/胡麻駅","lat":35.195392,"lng":135.468563,"photo":null,"art":"../img/tactics/gijinka/nantan_1910_2.webp"},{"uid":"kameoka_1919","mid":"kameoka","y":1919,"name":"大本、亀山城を整備","note":"出口王仁三郎が城跡を手に入れる。","pat":"melee","range":1,"hp":3,"move":2,"atk":3,"grow":true,"place":"大本 本部（亀山城跡）","body":"出口王仁三郎が荒れた城跡を得て整え、大本の本部「天恩郷」とした。昔の城地が、いまは花と樹々に包まれた祈りの庭になっている。","src":"https://ja.wikipedia.org/wiki/亀岡市","lat":35.01285,"lng":135.58364,"photo":"../img/cards/kameoka_1919_1.webp","art":"../img/tactics/gijinka/kameoka_1919.webp"},{"uid":"nantan_1921","mid":"nantan","y":1921,"name":"芦生に京大の研究林","note":"由良川源流の原生林が守られる。","pat":"line","range":3,"hp":3,"move":2,"atk":3,"grow":true,"place":"芦生研究林","body":"由良川の源流域の原生林が、京都大学の研究林として守られた。昔から人の手が入らぬ森。今も貴重な生態系が残り、ガイドとともに歩ける自然の宝庫。","src":"https://ja.wikipedia.org/wiki/南丹市","lat":35.3089,"lng":135.71653,"photo":"../img/cards/nantan_1921_1.webp","art":"../img/tactics/gijinka/nantan_1921.webp"},{"uid":"kyotamba_1927","mid":"kyotamba","y":1927,"name":"質志鐘乳洞みつかる","note":"京都府唯一の鍾乳洞。竪穴を下る地底探検。","pat":"area","range":2,"hp":3,"move":2,"atk":3,"grow":true,"place":"質志鐘乳洞公園","body":"1927年に発見された質志鐘乳洞は、京都府でただひとつの鍾乳洞。急な梯子で竪穴を降りる洞内は夏もひんやり、府の天然記念物に指定されている。地質が語るもうひとつの京丹波史。","src":"https://www.pref.kyoto.jp/kankyo/rdb/geo/db/sur0042.html","lat":35.23738,"lng":135.32006,"photo":null,"art":"../img/tactics/gijinka/kyotamba_1927.webp"},{"uid":"kameoka_1955_2","mid":"kameoka","y":1955,"name":"湯の花温泉、ひらく","note":"昭和30年代に開湯。戦国武将が刀傷を癒したと伝わる名湯。","pat":"melee","range":1,"hp":3,"move":3,"atk":3,"grow":true,"place":"湯の花温泉","body":"亀岡の奥座敷・湯の花温泉。戦国の武将が刀傷を癒したという伝承をもち、実際の開湯は昭和30年代（概算）。京都丹波サイクルルート「亀岡観光ショートコース」の立ち寄り湯としても人気で、走ったあとの一浴が最高のご褒美。","src":"https://www.city.kameoka.kyoto.jp/soshiki/29/3534.html","lat":35.021113,"lng":135.505884,"photo":null,"art":"../img/tactics/gijinka/kameoka_1955_2.webp"},{"uid":"nantan_1961","mid":"nantan","y":1961,"name":"大野ダム完成（美山）","note":"府内初の多目的ダム「虹の湖」。由良川の治水。","pat":"line","range":3,"hp":3,"move":3,"atk":3,"grow":true,"place":"大野ダム公園（虹の湖）","body":"由良川の治水と発電のため、府内初の多目的ダムが完成し「虹の湖」が生まれた。昔たびたび氾濫した流れを受け止める。今は桜と紅葉の湖畔公園として親しまれる。","src":"https://www.pref.kyoto.jp/dam/oono/index.html","lat":35.26242,"lng":135.46035,"photo":"../img/cards/nantan_1961_1.webp","art":"../img/tactics/gijinka/nantan_1961.webp"},{"uid":"kyotamba_1968","mid":"kyotamba","y":1968,"name":"和知ダム、川をせき止める","note":"発電のダムが由良川に。","pat":"area","range":2,"hp":3,"move":3,"atk":3,"grow":true,"place":"和知ダム","body":"由良川に発電用の和知ダムが築かれた。川の力を電気に変えた構造物。今も由良川の流れの中で静かに働いている。","src":"https://ja.wikipedia.org/wiki/由良川","lat":35.2522,"lng":135.4167,"photo":"../img/cards/kyotamba_1968_1.webp","art":"../img/tactics/gijinka/kyotamba_1968.webp"},{"uid":"kameoka_1991","mid":"kameoka","y":1991,"name":"トロッコ列車、走りだす","note":"旧山陰本線を、日本初の観光鉄道に。","pat":"melee","range":1,"hp":3,"move":3,"atk":3,"grow":true,"place":"トロッコ亀岡駅","body":"旧山陰本線の廃線跡を、日本初の観光鉄道トロッコ列車がよみがえらせた。昔は貨客を運んだ線路。今は保津峡の絶景を走る人気の観光列車になっている。","src":"https://ja.wikipedia.org/wiki/嵯峨野観光鉄道嵯峨野観光線","lat":35.01314,"lng":135.60677,"photo":"../img/cards/kameoka_1991_1.webp","art":"../img/tactics/gijinka/kameoka_1991.webp"},{"uid":"nantan_1998","mid":"nantan","y":1998,"name":"日吉ダム完成、天若湖","note":"桂川の治水と、憩いの湖。","pat":"line","range":3,"hp":3,"move":3,"atk":3,"grow":true,"place":"日吉ダム／スプリングスひよし","body":"桂川の治水のため日吉ダムが完成し、天若湖ができた。昔は洪水に悩んだ下流を守る。今はスプリングスひよしなど、憩いと学びの拠点になっている。","src":"https://kotobank.jp/word/南丹市-177742","lat":35.14771,"lng":135.51715,"photo":"../img/cards/nantan_1998_1.webp","art":"../img/tactics/gijinka/nantan_1998.webp"},{"uid":"nantan_2002","mid":"nantan","y":2002,"name":"るり渓温泉ひらく","note":"標高500mの高原リゾート。渓谷観光の拠点に。","pat":"line","range":3,"hp":3,"move":3,"atk":3,"grow":true,"place":"京都るり渓温泉","body":"名勝るり渓のほとり、標高500mの高原に2002年、るり渓温泉が開業。渓谷歩きと湯、星空観賞をひとつに結ぶ高原リゾートとして、京阪神から人を呼び続けている。","src":"https://www.kyoto-kankou.or.jp/info_search/7775","lat":35.033,"lng":135.39791,"photo":"../img/cards/nantan_2002_1.webp","art":"../img/tactics/gijinka/nantan_2002.webp"},{"uid":"kyotamba_2012","mid":"kyotamba","y":2012,"name":"畑川ダム完成","note":"台風23号の教訓に備えるダム。","pat":"area","range":2,"hp":3,"move":3,"atk":3,"grow":true,"place":"畑川ダム","body":"台風23号の水害の教訓に備え、畑川ダムが完成した。昔の大水を繰り返さないための治水ダム。今は流域の安全を見守る。","src":"https://www.pref.kyoto.jp/dam/oono/index.html","lat":35.20949,"lng":135.4354,"photo":null,"art":"../img/tactics/gijinka/kyotamba_2012.webp"},{"uid":"kyotamba_2015","mid":"kyotamba","y":2015,"name":"京都縦貫道、全線開通","note":"道の駅「味夢の里」も開き、人が行き交う。","pat":"area","range":2,"hp":3,"move":3,"atk":3,"grow":true,"place":"道の駅 京丹波 味夢の里","body":"京都縦貫道の全線開通で、道の駅「味夢の里」が開き人が行き交うようになった。昔は往来の難所だった丹波。今は京と山陰を結ぶ休憩と食の拠点。","src":"https://ja.wikipedia.org/wiki/京丹波町","lat":35.15587,"lng":135.41635,"photo":"../img/cards/kyotamba_2015_1.webp","art":"../img/tactics/gijinka/kyotamba_2015.webp"},{"uid":"kameoka_2020","mid":"kameoka","y":2020,"name":"サンガスタジアム開業","note":"亀岡駅前に球技専用スタジアム。京都サンガの本拠に。","pat":"melee","range":1,"hp":3,"move":3,"atk":3,"grow":true,"place":"サンガスタジアム by KYOCERA","body":"2020年、亀岡駅前にサンガスタジアム by KYOCERAが開業。京都サンガF.C.の本拠地となり、試合の日は丹波口から人の波が続く。城下町のまちなかに立つ、日本有数の駅近スタジアム。","src":"https://ja.wikipedia.org/wiki/サンガスタジアム_by_KYOCERA","lat":35.01704,"lng":135.58489,"photo":"../img/cards/kameoka_2020_1.webp","art":"../img/tactics/gijinka/kameoka_2020.webp"}],"enemies":[{"id":"kiri","name":"霧","threat":"ray","move":0,"atk":1,"hp":2,"rotate":true,"art":"../img/tactics/enemies/kiri.webp","note":"亀岡の霧。動かないが、毎ラウンド90°向きを変えて先を塞ぐ。"},{"id":"shika","name":"鹿","threat":"adj","move":1,"atk":2,"hp":3,"rotate":false,"art":"../img/tactics/enemies/shika.webp","note":"里に下りてくる鹿。まっすぐ間合いを詰めてくる。"},{"id":"inoshishi","name":"猪","threat":"burst","move":0,"atk":2,"hp":4,"rotate":false,"charge":1,"art":"../img/tactics/enemies/inoshishi.webp","artCharge":"../img/tactics/enemies/inoshishi_charge.webp","note":"一拍ためて周囲へ突進する。溜めが見えているうちに離れる。"}],"waves":[{"n":1,"spawn":[["shika",1,0],["shika",4,0]]},{"n":2,"spawn":[["shika",2,0],["kiri",0,2],["kiri",5,2]]},{"n":3,"spawn":[["shika",1,0],["shika",4,1],["kiri",0,3],["inoshishi",3,2]]}],"forts":[{"id":"tsutaya","name":"日本料理 津多屋","genre":"お食事"},{"id":"smilebird","name":"smilebird・stone","genre":"雑貨・体験"},{"id":"amabiki-mura","name":"天引村倶楽部","genre":"体験・宿泊"}],"fields":[{"id":"hozu","name":"保津峡","note":"川が盤を割る。射線は通るが渡れない。渡れる瀬は三つ。","rows":["......","......",".~~.~.","......","......","......"],"tiles":[["hozu_ground1","hozu_ground2","hozu_ground1","hozu_ground2","hozu_ground1","hozu_ground2"],["hozu_ground2","hozu_ground1","hozu_ground2","hozu_ground1","hozu_ground2","hozu_ground1"],["hozu_ford1","hozu_water2","hozu_water1","hozu_ford2","hozu_water1","hozu_ford2"],["hozu_ground2","hozu_ground1","hozu_ground2","hozu_ground1","hozu_ground2","hozu_ground1"],["hozu_ground1","hozu_ground2","hozu_ground1","hozu_ground2","hozu_ground1","hozu_ground2"],["hozu_ground2","hozu_ground1","hozu_ground2","hozu_ground1","hozu_ground2","hozu_ground1"]]},{"id":"kayabuki","name":"かやぶきの里","note":"家屋が視界を切る。近接が生き、直線が通らない。","rows":["......",".##..#","......",".#..#.","......","......"],"tiles":[["kayabuki_ground1","kayabuki_ground2","kayabuki_ground1","kayabuki_ground2","kayabuki_ground1","kayabuki_ground2"],["kayabuki_ground2","kayabuki_roof3","kayabuki_roof1","kayabuki_ground1","kayabuki_ground2","kayabuki_roof1"],["kayabuki_ground1","kayabuki_ground2","kayabuki_ground1","kayabuki_ground2","kayabuki_ground1","kayabuki_ground2"],["kayabuki_ground2","kayabuki_roof2","kayabuki_ground2","kayabuki_ground1","kayabuki_roof2","kayabuki_ground1"],["kayabuki_ground1","kayabuki_ground2","kayabuki_ground1","kayabuki_ground2","kayabuki_ground1","kayabuki_ground2"],["kayabuki_ground2","kayabuki_ground1","kayabuki_ground2","kayabuki_ground1","kayabuki_ground2","kayabuki_ground1"]]},{"id":"damko","name":"ダム湖畔","note":"開けている。直線と十字がよく通る。","rows":["......","......","......","......","~.....","~....~"],"tiles":[["damko_ground1","damko_ground2","damko_ground1","damko_ground2","damko_ground1","damko_ground2"],["damko_ground2","damko_ground1","damko_ground2","damko_ground1","damko_ground2","damko_ground1"],["damko_ground1","damko_ground2","damko_ground1","damko_ground2","damko_ground1","damko_ground2"],["damko_ground2","damko_ground1","damko_ground2","damko_ground1","damko_ground2","damko_ground1"],["damko_water1","damko_ground2","damko_ground1","damko_ground2","damko_ground1","damko_ground2"],["damko_water2","damko_ground1","damko_ground2","damko_ground1","damko_ground2","damko_water1"]]},{"id":"touge","name":"山陰道の峠","note":"両側は山。ぬかるんだ細道を進むしかない。","rows":["......","#....#",".ss...","..ss.#","#....#","#....#"],"tiles":[["touge_ground1","touge_ground2","touge_ground1","touge_ground2","touge_ground1","touge_ground2"],["touge_rock2","touge_ground1","touge_ground2","touge_ground1","touge_ground2","touge_rock1"],["touge_ground1","touge_sand2","touge_sand1","touge_ground2","touge_ground1","touge_ground2"],["touge_ground2","touge_ground1","touge_sand2","touge_sand1","touge_ground2","touge_rock3"],["touge_rock2","touge_ground2","touge_ground1","touge_ground2","touge_ground1","touge_rock1"],["touge_rock3","touge_ground1","touge_ground2","touge_ground1","touge_ground2","touge_rock2"]]},{"id":"joka","name":"城下町","note":"塀と辻。曲がり角の読み合いになる。","rows":["......",".#.#..","......","..#.#.","......","......"],"tiles":[["joka_ground1","joka_ground2","joka_ground1","joka_ground2","joka_ground1","joka_ground2"],["joka_ground2","joka_wall3","joka_ground2","joka_wall2","joka_ground2","joka_ground1"],["joka_ground1","joka_ground2","joka_ground1","joka_ground2","joka_ground1","joka_ground2"],["joka_ground2","joka_ground1","joka_wall3","joka_ground1","joka_wall2","joka_ground1"],["joka_ground1","joka_ground2","joka_ground1","joka_ground2","joka_ground1","joka_ground2"],["joka_ground2","joka_ground1","joka_ground2","joka_ground1","joka_ground2","joka_ground1"]]}],"grades":[{"lv":1,"label":"辻の幟","color":"#ded5be","art":"../img/tactics/forts/fort1.webp","hp":8},{"lv":2,"label":"葦簀の茶屋","color":"#dacfb2","art":"../img/tactics/forts/fort2.webp","hp":10},{"lv":3,"label":"板葺きの小店","color":"#d6c8a6","art":"../img/tactics/forts/fort3.webp","hp":12},{"lv":4,"label":"瓦屋根の店","color":"#d2c09b","art":"../img/tactics/forts/fort4.webp","hp":14},{"lv":5,"label":"門構えの寄り処","color":"#cdb890","art":"../img/tactics/forts/fort5.webp","hp":16}]}</script>
+<script>
+const D=JSON.parse(document.getElementById('D').textContent);
+const W=6,H=6;
+const TOWN={kameoka:'亀岡',nantan:'南丹',kyotamba:'京丹波'};
+const COL={kameoka:'var(--kameoka)',nantan:'var(--nantan)',kyotamba:'var(--kyotamba)'};
+const PATJA={melee:'近接',line:'直線',area:'十字'};
+const DIRS=[[0,-1],[0,1],[-1,0],[1,0]]; // UP DOWN LEFT RIGHT（この順で固定）
+
+let sel=[], fort=null, field=null, fortLv=1, S=null;
+
+// ---------- 編成 ----------
+function drawPool(){
+  const host=document.getElementById('pool'); host.innerHTML='';
+  D.pool.forEach(function(c){
+    const b=document.createElement('button');
+    b.className='pc'+(sel.includes(c.uid)?' on':''); b.style.setProperty('--c',COL[c.mid]);
+    // 絵のある札は絵を見せる。無い札（社寺・出来事）は紋章の下地を置く。
+    // ここに名前を書くと下の名前と二重になるので、図形だけにする。
+    const face = c.art
+      ? '<span class="pc-art"><img src="'+c.art+'" alt=""></span>'
+      : '<span class="pc-art none" aria-hidden="true"><i></i></span>';
+    b.innerHTML='<span class="pc-flip" role="button" tabindex="0" title="裏を読む">裏</span>'+face+
+      '<span class="pc-y">'+c.y+'年 ・ '+TOWN[c.mid]+'</span>'+
+      '<span class="pc-n">'+c.name+'</span>'+
+      '<span class="pc-s">'+PATJA[c.pat]+' HP'+c.hp+' 移'+c.move+' 攻'+c.atk+'</span>';
+    b.onclick=function(e){
+      // 「裏」を押したときは選ばない。カード本体を押したときだけ編成に入れる。
+      if(e.target.classList&&e.target.classList.contains('pc-flip')){ flip(c); return; }
+      if(sel.includes(c.uid)) sel=sel.filter(function(x){return x!==c.uid;});
+      else if(sel.length<3) sel.push(c.uid);
+      drawPool(); refreshStart();
+    };
+    host.appendChild(b);
+  });
+}
+// ---------- 札の裏 ----------
+// 中身は年表かるたの deep-dive と同じものを、別の入口から出しているだけ。
+// 書き起こしはしない（出典が二重管理になるので）。
+const KARUTA='https://kyoto-tamba.com/';
+function flip(c){
+  const el=document.getElementById('backCard');
+  el.style.setProperty('--c',COL[c.mid]);
+  const map=(c.lat!=null)
+    ? '<a href="https://www.google.com/maps/search/?api=1&query='+c.lat+','+c.lng+'" target="_blank" rel="noopener">'+c.place+' を地図で見る</a>'
+    : (c.place? c.place : '');
+  el.innerHTML=
+    '<div class="bk-y">'+c.y+'年 ・ '+TOWN[c.mid]+' ・ '+PATJA[c.pat]+'</div>'+
+    '<div class="bk-n">'+c.name+'</div>'+
+    '<div class="bk-note">'+c.note+'</div>'+
+    (c.body? '<div class="bk-body">'+c.body+'</div>' : '')+
+    '<a class="bk-go" href="'+KARUTA+'" target="_blank" rel="noopener">'+
+      '<b>この札の前後に、何があったか</b><span>年表かるたへ ─ 京都丹波ナビ</span></a>'+
+    '<div class="bk-meta">'+
+      (map? '<div>'+map+(c.grow? ' <span class="bk-grow">行くと育つ札</span>':'')+'</div>' : '')+
+      (c.src? '<div>出典 <a href="'+c.src+'" target="_blank" rel="noopener">'+c.src.replace(/^https?:\/\//,'').slice(0,52)+'…</a></div>' : '')+
+    '</div>'+
+    '<button class="btn bk-x" id="bkClose">表にもどす</button>';
+  document.getElementById('back').classList.remove('hidden');
+  document.getElementById('bkClose').onclick=closeBack;
+}
+function closeBack(){ document.getElementById('back').classList.add('hidden'); }
+
+function gradeOf(lv){ return D.grades[Math.max(1,Math.min(D.grades.length,lv))-1]; }
+function drawForts(){
+  const host=document.getElementById('fortPool'); host.innerHTML='';
+  const g=gradeOf(fortLv);
+  D.forts.forEach(function(f){
+    const b=document.createElement('button');
+    b.className='pc'+(fort===f.id?' on':''); b.style.setProperty('--c','var(--gold)');
+    b.innerHTML='<span class="pc-y">'+f.genre+'</span><span class="pc-n">'+f.name+'</span>'+
+      '<span class="pc-s">'+g.label+' ・ HP'+g.hp+'</span>';
+    b.onclick=function(){ fort=f.id; drawForts(); refreshStart(); };
+    host.appendChild(b);
+  });
+  // 試作では段を手で切り替えて見られるようにしておく。本番は訪問と勝利で上がる。
+  const gp=document.getElementById('gradePick');
+  gp.innerHTML='<span class="hint">砦の段（試作では手で切替）</span>'+D.grades.map(function(x){
+    const bg=x.art?'background-image:url('+x.art+');background-size:cover':'background:'+x.color;
+    return '<button class="gr'+(x.lv===fortLv?' on':'')+'" data-lv="'+x.lv+'" title="'+x.label+'">'+
+      '<i style="'+bg+'"></i><b>'+x.lv+'</b></button>';
+  }).join('');
+  [].forEach.call(gp.querySelectorAll('.gr'),function(el){
+    el.onclick=function(){ fortLv=+el.dataset.lv; drawForts(); };});
+}
+function drawFields(){
+  const host=document.getElementById('fieldPool'); host.innerHTML='';
+  D.fields.forEach(function(f){
+    const b=document.createElement('button');
+    b.className='pc'+(field===f.id?' on':''); b.style.setProperty('--c','var(--navy)');
+    var mini=f.rows.map(function(row){return row.split('').map(function(ch){
+      return '<i class="mc '+({'#':'r','~':'w','s':'s'}[ch]||'f')+'"></i>';}).join('');}).join('');
+    b.innerHTML='<span class="pc-n">'+f.name+'</span><span class="mini">'+mini+'</span>'+
+      '<span class="pc-s" style="font-family:var(--san);font-weight:400">'+f.note+'</span>';
+    b.onclick=function(){ field=f.id; drawFields(); refreshStart(); };
+    host.appendChild(b);
+  });
+}
+function refreshStart(){
+  const ok=sel.length===3&&fort&&field;
+  document.getElementById('start').disabled=!ok;
+  document.getElementById('pick').textContent= ok?'準備完了':'駒 '+sel.length+'/3 ・ 場所 '+(field?'選択済み':'未選択')+' ・ 砦 '+(fort?'選択済み':'未選択');
+}
+
+// ---------- 戦闘 ----------
+function startRun(){
+  const f=D.forts.find(function(x){return x.id===fort;});
+  const fd=D.fields.find(function(x){return x.id===field;})||D.fields[0];
+  const g=gradeOf(fortLv);
+  S={ wave:0, round:0, phase:'', units:[], enemies:[],
+      fort:{c:2,r:5,hp:g.hp,max:g.hp,name:f.name,lv:g.lv,art:g.art,color:g.color,grade:g.label},
+      log:[], over:null, rows:fd.rows, tiles:fd.tiles, fieldName:fd.name };
+  sel.forEach(function(uid,i){
+    const c=D.pool.find(function(x){return x.uid===uid;});
+    S.units.push({...c, c:[1,3,4][i], r:4, cur:c.hp, done:false, moved:false});
+  });
+  S.units0=S.units.slice();
+  document.getElementById('setup').classList.add('hidden');
+  document.getElementById('play').classList.remove('hidden');
+  drawLegend();
+  nextWave();
+}
+// 地形の効き目は隠さない。この場所に実際にある地形だけを並べる。
+const LEG={
+  '#':['#6f6a5f','山・家屋','通れない。射線もここで止まる。'],
+  '~':['#9fb6c6','川・湖',  '通れない。射線は越えていく。'],
+  's':['#d8cfae','泥・茅場','通れるが、1マスに2マス分かかる。'],
+  'ford':['#dfe3e0','瀬','浅い。ここだけ川を渡れる。']
+};
+function drawLegend(){
+  const has={}, sample={};
+  S.rows.forEach(function(row,r){row.split('').forEach(function(ch,c){
+    if(!LEG[ch])return; has[ch]=1;
+    // 見本は実際に盤に出ているタイルそのものにする。凡例と盤が別物にならないように。
+    if(!sample[ch]&&S.tiles&&S.tiles[r])sample[ch]=S.tiles[r][c];
+  });});
+  // 瀬は地形記号のうえでは平地だが、水に見えるので「渡れる」と言っておかないと誤解される。
+  S.rows.forEach(function(row,r){row.split('').forEach(function(ch,c){
+    const t=S.tiles&&S.tiles[r]&&S.tiles[r][c];
+    if(t&&t.indexOf('_ford')>0){ has.ford=1; if(!sample.ford)sample.ford=t; }
+  });});
+  const keys=Object.keys(LEG).filter(function(k){return has[k];});
+  const panel=document.getElementById('terPanel');
+  if(!keys.length){ panel.classList.add('hidden'); return; }
+  panel.classList.remove('hidden');
+  document.getElementById('terLeg').innerHTML=keys.map(function(k){const L=LEG[k];
+    const bg=sample[k]?'background-image:url(../img/tactics/field/'+sample[k]+'.webp);background-size:cover':'background:'+L[0];
+    return '<div class="leg"><i style="'+bg+'"></i><div><b>'+L[1]+'</b><span>'+L[2]+'</span></div></div>';
+  }).join('');
+}
+function nextWave(){
+  S.wave++; S.round=0;
+  const w=D.waves[S.wave-1];
+  S.enemies=w.spawn.map(function(sp,i){
+    const e=D.enemies.find(function(x){return x.id===sp[0];});
+    return {...e, key:e.id+i, c:sp[1], r:sp[2], cur:e.hp, face:1, charging:0, threat:[]};
+  });
+  S.units.forEach(function(u){u.done=false;u.moved=false;});
+  say('― Wave '+S.wave+' ―');
+  telegraph();
+}
+function say(t){ S.log.unshift(t); if(S.log.length>60)S.log.pop(); }
+const at=(c,r)=>S.units.find(u=>u.c===c&&u.r===r&&u.cur>0)||S.enemies.find(e=>e.c===c&&e.r===r&&e.cur>0)||
+  (S.fort.hp>0&&S.fort.c===c&&S.fort.r===r?S.fort:null);
+const inB=(c,r)=>c>=0&&c<W&&r>=0&&r<H;
+// 地形（本体 chuka と同じ規則）
+const ter=(c,r)=>S&&S.rows?S.rows[r][c]:'.';
+const walkable=(c,r)=>{var t=ter(c,r);return t==='.'||t==='s';};   // #~ は立てない
+const stepCost=(c,r)=>ter(c,r)==='s'?2:1;                          // 泥は2
+const blocksShot=(c,r)=>ter(c,r)==='#';                            // 山・家屋だけが射線を遮る
+
+function threatCells(e){
+  const out=[];
+  if(e.threat==='adj'||e.id==='shika'){ DIRS.forEach(function(d){const c=e.c+d[0],r=e.r+d[1]; if(inB(c,r))out.push([c,r]);}); }
+  else if(e.id==='kiri'){ const d=DIRS[e.face]; for(let i=1;i<=3;i++){const c=e.c+d[0]*i,r=e.r+d[1]*i; if(!inB(c,r)||blocksShot(c,r))break; out.push([c,r]);} }
+  else if(e.id==='inoshishi'){ if(e.charging>0){ for(let dc=-1;dc<=1;dc++)for(let dr=-1;dr<=1;dr++){const c=e.c+dc,r=e.r+dr; if(inB(c,r)&&!(dc===0&&dr===0))out.push([c,r]);} } }
+  // 立てないマスの予告は出さない。誰も居られない場所を赤くしても意味がなく、
+  // 岩や川が赤く染まって別の地形に見えるだけ。
+  return out.filter(function(t){return walkable(t[0],t[1]);});
+}
+function telegraph(){
+  S.round++; S.phase='TELEGRAPH';
+  S.enemies.filter(function(e){return e.cur>0;}).forEach(function(e){
+    if(e.charging>0){ e.threat=threatCells(e); return; }
+    if(e.rotate&&S.round>1) e.face=(e.face+1)%4;
+    // 追跡：最も近い駒（同距離なら配列順）→ 無ければ砦
+    let best=null,bd=99;
+    S.units.filter(function(u){return u.cur>0;}).forEach(function(u){
+      const d=Math.abs(u.c-e.c)+Math.abs(u.r-e.r); if(d<bd){bd=d;best=u;}
+    });
+    if(!best&&S.fort.hp>0){best=S.fort;bd=Math.abs(S.fort.c-e.c)+Math.abs(S.fort.r-e.r);}
+    for(let step=0;step<e.move&&best;step++){
+      const cur=Math.abs(best.c-e.c)+Math.abs(best.r-e.r);
+      const d=DIRS.find(function(dd){
+        const c=e.c+dd[0],r=e.r+dd[1];
+        return inB(c,r)&&walkable(c,r)&&!at(c,r)&&(Math.abs(best.c-c)+Math.abs(best.r-r))<cur;
+      });
+      if(!d)break; e.c+=d[0]; e.r+=d[1];
+    }
+    if(e.charge&&e.charging===0){ e.charging=1; e.threat=[]; say(e.name+'が身構えた（次のラウンドに周囲へ）'); }
+    else e.threat=threatCells(e);
+  });
+  S.phase='PLAYER';
+  S.units.forEach(function(u){u.done=false;u.moved=false;});
+  render();
+}
+function resolve(){
+  S.phase='RESOLVE';
+  S.enemies.filter(function(e){return e.cur>0;}).forEach(function(e){
+    if(e.charge&&e.charging===1){ e.charging=2; e.threat=threatCells(e); }
+    (e.threat||[]).forEach(function(t){
+      const tgt=at(t[0],t[1]);
+      if(!tgt)return;
+      if(tgt===S.fort){ S.fort.hp-=e.atk; say(e.name+'の攻撃 → 砦に'+e.atk); }
+      else if(S.units.includes(tgt)){ tgt.cur-=e.atk; say(e.name+'の攻撃 →「'+tgt.name+'」に'+e.atk); }
+    });
+    if(e.charge&&e.charging===2){ e.charging=0; e.threat=[]; }
+  });
+  S.units=S.units.filter(function(u){ if(u.cur<=0){say('「'+u.name+'」が退いた');return false;} return true; });
+  if(S.fort.hp<=0){ finish(false,'砦が落ちました'); return; }
+  if(!S.units.length){ finish(false,'駒がいなくなりました'); return; }
+  if(!S.enemies.some(function(e){return e.cur>0;})){
+    if(S.wave>=D.waves.length){ finish(true,'すべてのウェーブを凌ぎました'); return; }
+    nextWave(); return;
+  }
+  telegraph();
+}
+function finish(win,msg){
+  S.over=win;
+  document.getElementById('play').classList.add('hidden');
+  const o=document.getElementById('over'); o.classList.remove('hidden');
+  document.getElementById('overMsg').textContent=(win?'勝ち — ':'負け — ')+msg;
+  // 誰と戦ったのかを最後に見せる。ここが札そのものを見る画面になる。
+  document.getElementById('overParty').innerHTML=
+    '<div class="rule"><b>この三枚と</b><span>'+S.fieldName+' ・ '+S.fort.name+'（'+S.fort.lv+'段）</span></div>'
+    +'<div class="ov-row">'+S.units0.map(function(u,i){
+      return '<div class="ov-c" data-i="'+i+'" style="--c:'+COL[u.mid]+'" title="裏を読む">'
+        +(u.art?'<img src="'+u.art+'" alt="">':'<i class="none"></i>')
+        +'<b>'+u.name+'</b><s>'+u.y+'年 ・ '+TOWN[u.mid]+' ・ 裏を読む</s></div>';
+    }).join('')+'</div>';
+  [].forEach.call(document.querySelectorAll('#overParty .ov-c'),function(el){
+    el.onclick=function(){ flip(S.units0[+el.dataset.i]); };});
+}
+
+// ---------- 操作 ----------
+let active=null;
+function reach(u){
+  // 地形コスト付き（泥=2）。安い経路を先に確定させるため、コスト順に取り出す。
+  const best={}; const out=[]; const q=[[u.c,u.r,0]]; best[u.c+','+u.r]=0;
+  while(q.length){
+    q.sort(function(a,b){return a[2]-b[2];});
+    const cur=q.shift(); const c=cur[0],r=cur[1],d=cur[2];
+    if(d>best[c+','+r])continue;
+    DIRS.forEach(function(dd){ const nc=c+dd[0],nr=r+dd[1];
+      if(!inB(nc,nr)||!walkable(nc,nr)||at(nc,nr))return;
+      const nd=d+stepCost(nc,nr);
+      if(nd>u.move)return;
+      if(best[nc+','+nr]===undefined||nd<best[nc+','+nr]){ best[nc+','+nr]=nd; q.push([nc,nr,nd]); }
+    });
+  }
+  for(const k in best){ if(k===u.c+','+u.r)continue; const p=k.split(',');
+    out.push([+p[0],+p[1]]); }
+  return out;
+}
+function targets(u){
+  const out=[];
+  if(u.pat==='melee'){ DIRS.forEach(function(d){const c=u.c+d[0],r=u.r+d[1];
+    if(inB(c,r)&&S.enemies.some(function(e){return e.cur>0&&e.c===c&&e.r===r;}))out.push([c,r]);}); }
+  else if(u.pat==='line'){ DIRS.forEach(function(d){ for(let i=1;i<=u.range;i++){
+    const c=u.c+d[0]*i,r=u.r+d[1]*i; if(!inB(c,r)||blocksShot(c,r))break;
+    const o=at(c,r); if(o){ if(S.enemies.includes(o))out.push([c,r]); break; } } }); }
+  else { DIRS.forEach(function(d){ for(let i=1;i<=u.range;i++){
+    const c=u.c+d[0]*i,r=u.r+d[1]*i; if(!inB(c,r)||blocksShot(c,r))break;
+    if(S.enemies.some(function(e){return e.cur>0&&e.c===c&&e.r===r;}))out.push([c,r]); } }); }
+  return out;
+}
+function render(){
+  document.getElementById('phaseLab').textContent='Wave '+S.wave;
+  document.getElementById('phaseSub').textContent=S.fieldName+' ・ ラウンド '+S.round+' ─ 赤いマスが次に攻撃されます';
+  const b=document.getElementById('board'); b.innerHTML='';
+  const mv=active&&!active.moved?reach(active):[];
+  const tg=active?targets(active):[];
+  const threat={}; S.enemies.filter(function(e){return e.cur>0;}).forEach(function(e){(e.threat||[]).forEach(function(t){threat[t[0]+','+t[1]]=1;});});
+  for(let r=0;r<H;r++)for(let c=0;c<W;c++){
+    const cell=document.createElement('div'); cell.className='cell t'+({'#':'r','~':'w','s':'s'}[ter(c,r)]||'f');
+    const tile=S.tiles&&S.tiles[r]&&S.tiles[r][c];
+    if(tile)cell.style.backgroundImage='url(../img/tactics/field/'+tile+'.webp)';
+    if(threat[c+','+r])cell.classList.add('tg');
+    if(mv.some(function(m){return m[0]===c&&m[1]===r;}))cell.classList.add('mv');
+    if(tg.some(function(m){return m[0]===c&&m[1]===r;}))cell.classList.add('at');
+    const o=at(c,r);
+    if(o===S.fort){ const d=document.createElement('div'); d.className='u fort';
+      // 絵が未納品の段はベタ色で出す。絵が来たら差し替えるだけで見た目が繋がる。
+      // 砦のマスは地形タイルを敷かない。ここは店であって地面ではない。
+      if(S.fort.art)cell.style.backgroundImage='url('+S.fort.art+')';
+      else { cell.style.backgroundImage='none'; cell.style.backgroundColor=S.fort.color; }
+      d.innerHTML='<span class="u-n">'+S.fort.name+'</span><span class="u-hp">砦'+S.fort.lv+' '+S.fort.hp+'/'+S.fort.max+'</span>';
+      cell.appendChild(d); }
+    else if(o&&S.units.includes(o)){
+      const d=document.createElement('div'); d.className='u p'+(o.done?' done':'')+(o.art?' art':'');
+      d.style.setProperty('--c',COL[o.mid]); d.title=o.name;
+      // 絵があるときは絵が名前の代わり。無い札（神社仏閣など）は今までどおり文字で出す。
+      d.innerHTML=(o.art?'<img class="u-a" src="'+o.art+'" alt="">':'<span class="u-n">'+o.name+'</span>')
+        +'<span class="u-hp">'+o.cur+'/'+o.hp+' '+PATJA[o.pat]+'</span>';
+      d.onclick=function(){ if(o.done)return; active=o; render(); };
+      if(active===o)cell.classList.add('sel');
+      cell.appendChild(d);
+    } else if(o&&S.enemies.includes(o)){
+      const src=(o.charging&&o.artCharge)?o.artCharge:o.art;
+      const d=document.createElement('div'); d.className='u e'+(src?' art':''); d.title=o.name;
+      d.innerHTML=(src?'<img class="u-a" src="'+src+'" alt="">':'<span class="u-n">'+o.name+(o.charging?'（溜）':'')+'</span>')
+        +'<span class="u-hp">'+o.cur+'/'+o.hp+(o.charging?' 溜':'')+'</span>';
+      cell.appendChild(d);
+      if(o.id==='kiri'){const f=document.createElement('span');f.className='face';f.textContent=['↑','↓','←','→'][o.face];cell.appendChild(f);}
+    }
+    cell.onclick=function(){
+      if(!active)return;
+      if(!active.moved&&mv.some(function(m){return m[0]===c&&m[1]===r;})){ active.c=c; active.r=r; active.moved=true; render(); return; }
+      const t=tg.find(function(m){return m[0]===c&&m[1]===r;});
+      if(t){
+        const hits = active.pat==='area' ? tg : [t];
+        hits.forEach(function(h){ const e=S.enemies.find(function(x){return x.cur>0&&x.c===h[0]&&x.r===h[1];});
+          if(e){ e.cur-=active.atk; say('「'+active.name+'」→ '+e.name+'に'+active.atk); if(e.cur<=0){e.threat=[];say(e.name+'を退けた');} } });
+        active.done=true; active=null;
+        if(!S.enemies.some(function(e){return e.cur>0;})){
+          if(S.wave>=D.waves.length){finish(true,'すべてのウェーブを凌ぎました');return;}
+          nextWave(); return;
+        }
+        render();
+      }
+    };
+    b.appendChild(cell);
+  }
+  const p=document.getElementById('party'); p.innerHTML='';
+  S.units.forEach(function(u){ const d=document.createElement('div'); d.className='st';
+    d.innerHTML=(u.art?'<img class="st-a" src="'+u.art+'" alt="">':'<i class="st-a none"></i>')
+      +'<span>'+u.name.slice(0,12)+'</span><b>'+u.cur+'/'+u.hp+'</b>'; p.appendChild(d); });
+  document.getElementById('fortSt').innerHTML='<div class="st"><span>'+S.fort.name+'</span><b>'+S.fort.hp+'/'+S.fort.max+'</b></div>'
+    +'<div class="hint" style="margin-top:6px">'+S.fort.lv+'段 ・ '+S.fort.grade+'</div>';
+  document.getElementById('log').innerHTML=S.log.map(function(l){return '<div>'+l+'</div>';}).join('');
+  document.getElementById('tip').textContent=active?('「'+active.name+'」：'+(active.moved?'赤枠の敵を攻撃、または他の駒へ':'青いマスへ移動、または赤枠の敵をそのまま攻撃')):'駒をクリックして動かします';
+}
+document.getElementById('endTurn').onclick=function(){ active=null; resolve(); };
+document.getElementById('reset').onclick=function(){ location.reload(); };
+document.getElementById('back').onclick=function(e){ if(e.target.id==='back')closeBack(); };
+document.addEventListener('keydown',function(e){ if(e.key==='Escape')closeBack(); });
+document.getElementById('start').onclick=startRun;
+document.getElementById('again').onclick=function(){ location.reload(); };
+drawPool(); drawFields(); drawForts(); refreshStart();
+</script>
+</body>
+</html>
