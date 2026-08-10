@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>丹波タクティクスの遊びかた｜京都丹波ナビ</title>
+<meta name="description" content="3つの波を凌ぐだけ。乱数はなく、敵は撃つ前に必ず赤で予告します。間合い・地形・敵の3つを、実際の盤の図で説明します。">
+<link rel="canonical" href="https://kyoto-tamba.com/tactics/how/">
+<meta property="og:title" content="丹波タクティクスの遊びかた">
+<meta property="og:description" content="3つの波を凌ぐだけ。乱数はなく、敵は撃つ前に必ず赤で予告します。間合い・地形・敵の3つを、実際の盤の図で説明します。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kyoto-tamba.com/tactics/how/">
+<meta property="og:site_name" content="京都丹波ナビ">
+<meta name="theme-color" content="#274a6d">
+<link rel="icon" href="../../icons/icon-192.png">
+<style>
+/* 京都丹波ナビ 共通トークン＋サイトヘッダー。
+   2026-08-07 全面リニューアル（P6「表紙と誌面」を採用）。
+   このファイルが配色・書体の唯一の正。静的ページ・掲載案内・申込フォームが読み込み、
+   scripts/prerender.mjs は生成ページに inline する。アプリ本体は src/styles/main.css の
+   最終 :root で同じ値を持つ（Vite バンドルのため別管理・値は必ず一致させること）。 */
+
+:root {
+  /* 誌面（P5由来） */
+  --ktn-bg: #f5f5f2;
+  --ktn-paper: #fff;
+  --ktn-ink: #101010;
+  --ktn-ink-mid: #444;
+  --ktn-ink-pale: #5f6368;
+  --ktn-navy: #1c3560;
+  --ktn-gold: #b98a2e;
+  --ktn-rule: rgba(16, 16, 16, .16);
+
+  /* 市町 */
+  --ktn-kameoka: #a5573a;
+  --ktn-nantan: #5b7d4b;
+  --ktn-kyotamba: #3a6a8c;
+
+  /* 書体（OS内蔵のみ・Webフォント読み込みなし） */
+  --ktn-min: "Hiragino Mincho ProN", "游明朝", "Yu Mincho", "HGS明朝E", Georgia, serif;
+  --ktn-san: -apple-system, "Hiragino Sans", "Yu Gothic UI", "Yu Gothic", "Noto Sans JP", sans-serif;
+  --ktn-mon: "SF Mono", Menlo, Consolas, "Courier New", monospace;
+}
+
+/* ── サイトヘッダー（誌面のヘッダ罫）──
+   トップは画面下端の固定ナビだが、下層ページは上部ヘッダー。
+   どちらも同じ書体・同じ罫線で「同じ誌面」に見せる。 */
+.ktn-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  padding: 11px 20px;
+  background: color-mix(in srgb, var(--ktn-bg) 94%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--ktn-ink);
+  font-family: var(--ktn-san);
+}
+.ktn-header .ktn-in {
+  max-width: 1180px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.ktn-header .ktn-brand {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-right: auto;
+  text-decoration: none;
+  color: var(--ktn-ink);
+}
+.ktn-header .ktn-brand img { display: none; }
+.ktn-header .ktn-brand b {
+  font-family: var(--ktn-min);
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: .1em;
+  line-height: 1.2;
+}
+.ktn-header .ktn-brand::after {
+  content: "KYOTO TAMBA NAVI";
+  font-family: var(--ktn-mon);
+  font-size: 13px;
+  letter-spacing: .2em;
+  color: var(--ktn-ink-pale);
+}
+.ktn-header nav { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 20px; }
+.ktn-header nav a {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: .06em;
+  color: var(--ktn-ink);
+  text-decoration: none;
+  padding: 4px 0;
+  border-bottom: 1px solid transparent;
+}
+.ktn-header nav a:hover,
+.ktn-header nav a:focus-visible { border-bottom-color: var(--ktn-ink); outline: none; }
+.ktn-header nav a.ktn-cta {
+  color: #fff;
+  background: var(--ktn-navy);
+  padding: 7px 15px;
+  border-bottom: 0;
+  letter-spacing: .08em;
+}
+.ktn-header nav a.ktn-cta:hover,
+.ktn-header nav a.ktn-cta:focus-visible { background: var(--ktn-ink); color: #fff; }
+
+@media (max-width: 560px) {
+  .ktn-header { padding: 9px 14px; }
+  .ktn-header .ktn-brand b { font-size: 16px; }
+  .ktn-header .ktn-brand::after { display: none; }
+  .ktn-header nav { gap: 3px 13px; }
+  .ktn-header nav a { font-size: 13px; }
+  .ktn-header nav a.ktn-cta { padding: 6px 11px; }
+}
+
+/* ── 記事エントリー（誌面の行）──
+   トップの「まもなく開催」と、/week/ の一覧で使う共通の行。
+   アプリ側は src/styles/cover-spread.css に同じ定義がある（Viteバンドルのため別管理）。
+   値を変えるときは両方直すこと。 */
+.ktn-art {
+  display: block;
+  padding: 17px 0;
+  border-bottom: 1px solid rgba(16, 16, 16, .16);
+  text-decoration: none;
+  color: var(--ktn-ink, #101010);
+}
+.ktn-art:last-child { border-bottom: 0; }
+.ktn-art:hover .ka-h,
+.ktn-art:focus-visible .ka-h { text-decoration: underline; text-underline-offset: 4px; }
+.ktn-art .ka-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.ktn-art .ka-tag {
+  font-size: 13px; font-weight: 700; letter-spacing: .08em;
+  color: #fff; padding: 2px 8px; text-decoration: none;
+}
+.ka-tag.kameoka { background: var(--ktn-kameoka, #a5573a); }
+.ka-tag.nantan { background: var(--ktn-nantan, #5b7d4b); }
+.ka-tag.kyotamba { background: var(--ktn-kyotamba, #3a6a8c); }
+.ktn-art .ka-d {
+  font-family: var(--ktn-mon, monospace); font-size: 13px; letter-spacing: .08em;
+  color: rgba(16, 16, 16, .86); font-variant-numeric: tabular-nums; text-decoration: none;
+}
+.ktn-art .ka-h {
+  margin: 7px 0 0; font-family: var(--ktn-min, serif); font-size: 16px; font-weight: 500;
+  line-height: 1.62; letter-spacing: .04em; color: var(--ktn-ink, #101010);
+}
+.ktn-art .ka-v { margin: 5px 0 0; font-size: 13px; color: rgba(16, 16, 16, .86); }
+
+:root{--bg:#f5f5f2;--paper:#fff;--ink:#101010;--mid:#3f4448;--pale:#5f6368;
+ --navy:#1c3560;--gold:#b98a2e;--akane:#a5573a;
+ --min:"Hiragino Mincho ProN","游明朝","Yu Mincho",Georgia,serif;
+ --san:-apple-system,"Hiragino Sans","Yu Gothic UI","Yu Gothic","Noto Sans JP",sans-serif;
+ --mon:"SF Mono",Menlo,Consolas,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--san);line-height:1.95;font-size:16px}
+.wrap{max-width:780px;margin:0 auto;padding:26px 20px 80px}
+.crumb{font-family:var(--mon);font-size:13px;letter-spacing:.08em;color:var(--pale);margin-bottom:14px}
+.crumb a{color:inherit}
+h1{font-family:var(--min);font-size:clamp(27px,6.6vw,40px);font-weight:500;line-height:1.45;margin:0 0 12px}
+.lead{font-size:17px}
+.step{border-top:2px solid var(--ink);margin-top:34px;padding-top:16px}
+.step>b{display:block;font-family:var(--mon);font-size:13px;letter-spacing:.16em;color:var(--gold)}
+.step>h2{font-family:var(--min);font-size:clamp(21px,4.6vw,27px);font-weight:500;margin:4px 0 10px;line-height:1.5}
+.step p{font-size:16px;margin-bottom:12px}
+.cap{font-size:15px;color:var(--mid)}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin:16px 0 4px}
+.card{background:var(--paper);border:1px solid rgba(16,16,16,.16);border-top:3px solid var(--c,var(--ink));padding:15px 16px}
+.card h3{font-family:var(--min);font-size:18px;font-weight:500;margin-bottom:5px}
+.card p{font-size:15px;margin:0;color:var(--mid)}
+.mb{display:grid;grid-template-columns:repeat(6,1fr);grid-template-rows:repeat(6,1fr);gap:2px;
+ width:var(--w,168px);aspect-ratio:1;background:rgba(16,16,16,.18);border:1px solid rgba(16,16,16,.18);margin:10px 0}
+.mb i{display:block;background-size:cover;background-position:center}
+.mb i.me{box-shadow:inset 0 0 0 3px var(--navy)}
+.mb i.hit{background-color:rgba(178,63,52,.30);box-shadow:inset 0 0 0 2px rgba(178,63,52,.75)}
+.mb i.foe{background:#2b2b2b}
+.mb i.no{box-shadow:inset 0 0 0 3px rgba(16,16,16,.5)}
+.mb i.ok{box-shadow:inset 0 0 0 3px rgba(39,74,109,.6)}
+.figs{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:18px;margin:14px 0}
+.fig{background:var(--paper);border:1px solid rgba(16,16,16,.16);padding:14px 15px 16px}
+.fig b{display:block;font-family:var(--min);font-size:17px;font-weight:500}
+.fig span{display:block;font-size:14.5px;color:var(--mid);margin-top:3px}
+.fig .mb{width:100%;max-width:186px}
+.ters{display:grid;gap:12px;margin:14px 0}
+.ter{display:flex;gap:14px;align-items:flex-start;background:var(--paper);border:1px solid rgba(16,16,16,.16);padding:12px 14px}
+.ter i{flex:0 0 auto;width:58px;height:58px;background-size:cover;border:1px solid rgba(16,16,16,.14)}
+.ter b{display:block;font-family:var(--min);font-size:17px;font-weight:500}
+.ter span{display:block;font-size:15px;color:var(--mid)}
+.foes{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin:14px 0}
+.foe-c{background:#23262b;color:#f2efe6;padding:14px 15px 16px}
+.foe-c img{display:block;width:100%;max-width:126px;margin:0 auto 8px}
+.foe-c b{display:block;font-family:var(--min);font-size:18px;font-weight:500;text-align:center}
+.foe-c span{display:block;font-size:14.5px;color:rgba(255,255,255,.86);margin-top:5px}
+.go{display:block;margin:32px 0 0;padding:18px 20px;background:var(--navy);color:#fff;text-decoration:none;text-align:center}
+.go b{display:block;font-family:var(--min);font-size:20px;font-weight:500}
+.go span{display:block;font-size:14.5px;color:rgba(255,255,255,.84);margin-top:4px}
+.note{font-size:14.5px;color:var(--mid);margin-top:26px;border-top:1px solid rgba(16,16,16,.16);padding-top:16px}
+</style>
+</head>
+<body>
+<header class="ktn-header"><div class="ktn-in">
+  <a class="ktn-brand" href="../../index.html"><img src="../../icons/icon-192.png" alt="" width="34" height="34"><b>京都丹波ナビ</b></a>
+  <nav aria-label="サイト内">
+    <a href="../../week/index.html">今週</a>
+    <a href="../../course/index.html">一日のコース</a>
+    <a href="../../events/index.html">イベント</a>
+    <a href="../../shops/index.html">寄り処</a>
+    <a href="../../index.html">あそぶ</a>
+    <a href="../../tactics/index.html">丹波タクティクス</a>
+    <a href="../../photo/index.html">写真を送る</a>
+    <a class="ktn-cta" href="../../ads/index.html">掲載のご案内</a>
+  </nav>
+</div></header>
+<div class="wrap">
+<nav class="crumb"><a href="../../index.html">京都丹波ナビ</a> ／ <a href="../index.html">丹波タクティクス</a> ／ 遊びかた</nav>
+<h1>遊びかた</h1>
+<p class="lead">覚えることは3つ ── <b>間合い・地形・敵</b>。<br>
+敵は撃つ前に必ず<b>赤で知らせます</b>。乱数はないので、見てから避けられます。</p>
+
+<section class="step"><b>01</b><h2>勝ち負け</h2>
+<p>敵の波が3回きます。<b>3つとも凌げば勝ち。</b>自分の駒が全部たおれるか、自陣の<b>砦が落ちると負け</b>です。</p></section>
+
+<section class="step"><b>02</b><h2>出陣の前に、3つ選ぶ</h2>
+<div class="cards">
+<div class="card" style="--c:var(--akane)"><h3>駒を3枚</h3><p>京都丹波の史実札から。強さは年代と市町で決まります。</p></div>
+<div class="card" style="--c:#5b7d4b"><h3>戦う場所</h3><p>5面。地形がちがうので、通れる道も射線も変わります。</p></div>
+<div class="card" style="--c:var(--gold)"><h3>応援する寄り処</h3><p>自陣に砦として立ちます。落とされたら負けです。</p></div>
+</div></section>
+
+<section class="step"><b>03</b><h2>1ラウンドの流れ</h2>
+<p><b>① 敵が動いて、赤で予告する</b> → <b>② 自分の3枚を動かす</b> → <b>③ 予告した赤マスだけが攻撃される</b></p>
+<p>この順番が崩れることはありません。<b>赤いマスから出ていれば当たりません。</b>逆に、赤の上に立ったまま手番を終えると必ず当たります。</p>
+<div class="mb" style="--w:216px" aria-hidden="true"><i class="" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="hit" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="hit" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="foe" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="hit" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="hit" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="me" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i></div>
+<p class="cap">黒が敵、赤が「次に攻撃されるマス」、青枠が自分の駒。この形なら赤に入っていないので当たりません。</p></section>
+
+<section class="step"><b>04</b><h2>駒の動かしかた</h2>
+<p>駒を押すと、<b>青いマス</b>が「動ける先」、<b>赤い枠の敵</b>が「そこから攻撃できる相手」です。動いてから攻撃もできます。1ラウンドに、1駒つき1回だけ。</p>
+<p>動かす駒がなくなったら「この手番を終える」を押します。</p></section>
+
+<section class="step"><b>05</b><h2>間合いは3種。市町で決まります</h2>
+<div class="figs">
+<div class="fig"><div class="mb" style="--w:168px" aria-hidden="true"><i class="" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="hit" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="hit" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="me" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="hit" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="hit" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i></div>
+<b>近接 ─ 亀岡</b><span>となりの1マス。踏み込んで殴ります。</span></div>
+<div class="fig"><div class="mb" style="--w:168px" aria-hidden="true"><i class="" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="hit" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="hit" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="hit" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="me" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i></div>
+<b>直線 ─ 南丹</b><span>選んだ向きへ3マス。最初に当たった1体だけ。</span></div>
+<div class="fig"><div class="mb" style="--w:168px" aria-hidden="true"><i class="" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="hit" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="hit" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="hit" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="hit" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="me" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="hit" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="hit" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="hit" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="hit" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/damko_ground1.webp)"></i></div>
+<b>十字 ─ 京丹波</b><span>四方へ2マス。十字にいる敵を<b>まとめて</b>。</span></div>
+</div></section>
+
+<section class="step"><b>06</b><h2>地形が、間合いを変えます</h2>
+<div class="ters">
+<div class="ter"><i style="background-image:url(../../img/tactics/field/touge_rock1.webp)"></i><div><b>山・家屋</b><span>通れません。<b>射線もここで止まります。</b>直線も十字も越えられない。</span></div></div>
+<div class="ter"><i style="background-image:url(../../img/tactics/field/hozu_water1.webp)"></i><div><b>川・湖</b><span>通れませんが、<b>射線は越えていきます。</b>撃てるけれど、渡れない。</span></div></div>
+<div class="ter"><i style="background-image:url(../../img/tactics/field/hozu_ford1.webp)"></i><div><b>瀬</b><span>浅いところ。<b>ここだけ川を渡れます。</b></span></div></div>
+<div class="ter"><i style="background-image:url(../../img/tactics/field/touge_sand1.webp)"></i><div><b>泥・茅場</b><span>通れますが、<b>1マス進むのに2マス分</b>かかります。</span></div></div>
+</div>
+<p>たとえば保津峡は、川が盤を割ります。撃てるのに近づけない ── 渡れる瀬は三つだけ。</p>
+<div class="mb" style="--w:216px" aria-hidden="true"><i class="" style="background-image:url(../../img/tactics/field/hozu_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/hozu_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/hozu_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/hozu_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/hozu_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/hozu_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/hozu_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/hozu_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/hozu_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/hozu_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/hozu_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/hozu_ground1.webp)"></i><i class="ok" style="background-image:url(../../img/tactics/field/hozu_ford1.webp)"></i><i class="no" style="background-image:url(../../img/tactics/field/hozu_water2.webp)"></i><i class="no" style="background-image:url(../../img/tactics/field/hozu_water1.webp)"></i><i class="ok" style="background-image:url(../../img/tactics/field/hozu_ford2.webp)"></i><i class="no" style="background-image:url(../../img/tactics/field/hozu_water1.webp)"></i><i class="ok" style="background-image:url(../../img/tactics/field/hozu_ford2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/hozu_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/hozu_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/hozu_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/hozu_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/hozu_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/hozu_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/hozu_ground1.webp)"></i><i class="me" style="background-image:url(../../img/tactics/field/hozu_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/hozu_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/hozu_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/hozu_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/hozu_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/hozu_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/hozu_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/hozu_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/hozu_ground1.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/hozu_ground2.webp)"></i><i class="" style="background-image:url(../../img/tactics/field/hozu_ground1.webp)"></i></div>
+<p class="cap">黒枠の3マスが川で、渡れません。青枠の3マスが瀬 ── ここだけ向こう岸へ渡れます。</p></section>
+
+<section class="step"><b>07</b><h2>敵は3種。どれも京都丹波の自然です</h2>
+<div class="foes">
+<div class="foe-c"><img src="../../img/tactics/enemies/kiri.webp" alt=""><b>霧</b><span>動きません。向いている方向へ3マス。毎ラウンド90°ずつ回ります。山があればそこで止まります。</span></div>
+<div class="foe-c"><img src="../../img/tactics/enemies/shika.webp" alt=""><b>鹿</b><span>まっすぐ間合いを詰めてきます。となりに来られると、四方が危ない。</span></div>
+<div class="foe-c"><img src="../../img/tactics/enemies/inoshishi.webp" alt=""><b>猪</b><span>一拍ためてから周囲へ突進します。<b>溜めが見えているうちに離れれば当たりません。</b></span></div>
+</div>
+<p>実際に人が亡くなった災害の出来事は、駒にも敵にもしていません。</p></section>
+
+<section class="step"><b>08</b><h2>札は、裏返せます</h2>
+<p>編成の札の右上にある「裏」と、勝負のあとに並ぶ3枚を押すと、その出来事の<b>解説と出典</b>、<b>行ける場所</b>が読めます。そこから<b>年表のその年</b>へ跳べます。</p></section>
+
+<section class="step"><b>09</b><h2>強さは、手で決めていません</h2>
+<p>札の<b>年代</b>が古いほど硬くて鈍く、新しいほど速い。<b>市町</b>が間合いを決めます。だから「なぜこの札が強いのか」は史実で説明がつきます。勘で振った数字はひとつもありません。</p></section>
+
+<a class="go" href="../index.html"><b>丹波タクティクスをはじめる</b><span>登録もインストールも要りません</span></a>
+<p class="note">砦は、勝つと3段まで、実際にその寄り処へ行くと5段まで育ちます（訪問で育つ仕組みは準備中です）。</p>
+</div>
+</body>
+</html>

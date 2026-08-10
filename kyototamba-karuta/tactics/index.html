@@ -161,12 +161,12 @@
 body{background:var(--bg);color:var(--ink);font-family:var(--san);line-height:1.8}
 .wrap{max-width:1080px;margin:0 auto;padding:24px 18px 70px}
 header{border-bottom:3px solid var(--ink);padding-bottom:16px;margin-bottom:22px}
-.kick{font-family:var(--mon);font-size:10px;letter-spacing:.26em;color:var(--pale)}
+.kick{font-family:var(--mon);font-size:13px;letter-spacing:.26em;color:var(--pale)}
 h1{font-family:var(--min);font-size:clamp(24px,4vw,36px);font-weight:500;letter-spacing:.06em;margin-top:8px}
-header p{margin-top:10px;font-size:13.5px;color:var(--mid);max-width:60ch}
+header p{margin-top:10px;font-size:15px;color:var(--mid);max-width:60ch}
 .rule{display:flex;align-items:baseline;gap:14px;border-bottom:1px solid var(--ink);padding:26px 0 10px;margin-bottom:14px}
-.rule b{font-family:var(--mon);font-size:10.5px;font-weight:700;letter-spacing:.24em;text-transform:uppercase}
-.rule span{font-size:11.5px;color:var(--pale)}
+.rule b{font-family:var(--mon);font-size:13px;font-weight:700;letter-spacing:.24em;text-transform:uppercase}
+.rule span{font-size:13px;color:var(--pale)}
 /* 編成 */
 .pool{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px}
 .pc{text-align:left;background:var(--paper);border:1px solid rgba(16,16,16,.16);padding:12px 13px;cursor:pointer;font:inherit;
@@ -175,7 +175,7 @@ header p{margin-top:10px;font-size:13.5px;color:var(--mid);max-width:60ch}
 .pc:hover{background:#faf9f6}
 .pc.on{background:var(--navy);color:#fff;border-color:var(--navy)}
 .pc.on .pc-s,.pc.on .pc-y{color:rgba(255,255,255,.75)}
-.pc-y{font-family:var(--mon);font-size:10px;letter-spacing:.1em;color:var(--pale)}
+.pc-y{font-family:var(--mon);font-size:13px;letter-spacing:.1em;color:var(--pale)}
 /* 札の顔。擬人化がある札は絵、無い札は名前を置いた無地の面。 */
 .pc-art{display:flex;align-items:flex-end;justify-content:center;height:132px;margin:-2px -3px 8px;
   background:linear-gradient(to bottom,rgba(16,16,16,.045),rgba(16,16,16,.02) 55%,transparent);
@@ -194,15 +194,19 @@ header p{margin-top:10px;font-size:13.5px;color:var(--mid);max-width:60ch}
 .pc.on .pc-art.none i{border-color:rgba(255,255,255,.5)}
 .pc.on .pc-art.none i::after{border-color:rgba(255,255,255,.3)}
 .pc-n{display:block;font-family:var(--min);font-size:15px;font-weight:500;margin:3px 0 5px;line-height:1.5}
-.pc-s{font-family:var(--mon);font-size:11px;color:var(--mid);letter-spacing:.04em}
+.pc-s{font-family:var(--mon);font-size:13px;color:var(--mid);letter-spacing:.04em}
 .bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:16px}
-.btn{font:inherit;font-size:13px;font-weight:700;letter-spacing:.06em;padding:11px 22px;cursor:pointer;
+.btn{font:inherit;font-size:15px;font-weight:700;letter-spacing:.06em;padding:11px 22px;cursor:pointer;
   border:1px solid var(--ink);background:transparent;color:var(--ink)}
 .btn:hover{background:var(--ink);color:var(--bg)}
 .btn.pri{background:var(--navy);border-color:var(--navy);color:#fff;font-family:var(--min);font-size:15px}
 .btn.pri:hover{background:var(--ink);border-color:var(--ink)}
 .btn:disabled{opacity:.4;cursor:not-allowed}
-.hint{font-size:12.5px;color:var(--mid)}
+.hint{font-size:13px;color:var(--mid)}
+.howlead{margin-top:15px}
+.howbtn{display:inline-block;padding:13px 22px;background:var(--navy);color:#fff;text-decoration:none;
+  font-family:var(--min);font-size:16px}
+.howbtn:hover{background:var(--ink)}
 /* 盤面 */
 .game{display:grid;grid-template-columns:minmax(0,1fr) 290px;gap:22px;align-items:start}
 @media(max-width:860px){.game{grid-template-columns:1fr}}
@@ -211,7 +215,7 @@ header p{margin-top:10px;font-size:13.5px;color:var(--mid);max-width:60ch}
 .board{display:grid;grid-template-columns:repeat(6,1fr);grid-template-rows:repeat(6,1fr);gap:2px;
   background:rgba(16,16,16,.16);border:1px solid rgba(16,16,16,.16);aspect-ratio:1}
 .cell{position:relative;background:var(--paper);display:flex;flex-direction:column;align-items:center;justify-content:center;
-  font-size:11px;cursor:default;padding:2px;overflow:hidden}
+  font-size:13px;cursor:default;padding:2px;overflow:hidden}
 /* 移動可・脅威の色は「敷いた絵の上」に半透明で重ねる。background-color のままだと
    テクスチャに隠れて消える。読めなくなった瞬間タクティクスとして壊れるので必須。 */
 .cell.mv,.cell.tg{cursor:pointer}
@@ -228,8 +232,8 @@ header p{margin-top:10px;font-size:13.5px;color:var(--mid);max-width:60ch}
 .cell.at{outline:2px solid var(--akane);outline-offset:-2px;cursor:pointer}
 .cell.sel{outline:2px solid var(--navy);outline-offset:-2px}
 .u{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;cursor:pointer}
-.u-n{font-family:var(--min);font-size:10.5px;line-height:1.25;text-align:center;max-height:2.6em;overflow:hidden}
-.u-hp{font-family:var(--mon);font-size:9.5px;letter-spacing:.04em}
+.u-n{font-family:var(--min);font-size:13px;line-height:1.25;text-align:center;max-height:2.6em;overflow:hidden}
+.u-hp{font-family:var(--mon);font-size:13px;letter-spacing:.04em}
 .u.p{border-left:3px solid var(--c)}
 .u.e{background:#2b2b2b;color:#f2efe6;width:100%;height:100%}
 /* 擬人化イラストを載せたマス。絵が主で、HPだけを下に小さく重ねる。 */
@@ -245,7 +249,7 @@ header p{margin-top:10px;font-size:13.5px;color:var(--mid);max-width:60ch}
  /* 砦は絵（無ければ段の色）を地に敷く。建物は地面に建っているので抜きの立ち絵にしない。
    金のベタで塗りつぶすと段の色が見えないので、駒と同じく下の帯だけを塗る。 */
 .u.fort{background:none;color:var(--ink);position:relative;padding:0;gap:0;justify-content:flex-end}
-.u.fort .u-n{width:100%;background:rgba(252,251,248,.88);font-size:9.5px;line-height:1.3;
+.u.fort .u-n{width:100%;background:rgba(252,251,248,.88);font-size:13px;line-height:1.3;
   padding:2px 3px 0;max-height:2.6em;overflow:hidden;text-align:center}
 .u.fort .u-hp{width:100%;background:var(--gold);color:#fff;text-align:center;
   padding:2px 0 3px;letter-spacing:0}
@@ -254,10 +258,10 @@ header p{margin-top:10px;font-size:13.5px;color:var(--mid);max-width:60ch}
 .gr{display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 5px;cursor:pointer;
   background:transparent;border:1px solid rgba(16,16,16,.16);font:inherit}
 .gr i{display:block;width:34px;height:34px;background-size:cover;border:1px solid rgba(16,16,16,.12)}
-.gr b{font-family:var(--mon);font-size:10px;font-weight:400;color:var(--mid)}
+.gr b{font-family:var(--mon);font-size:13px;font-weight:400;color:var(--mid)}
 .gr.on{border-color:var(--gold);background:rgba(185,138,46,.10)}
 .gr.on b{color:var(--gold);font-weight:700}
-.face{position:absolute;inset:auto 2px 2px auto;font-family:var(--mon);font-size:9px;opacity:.6}
+.face{position:absolute;inset:auto 2px 2px auto;font-family:var(--mon);font-size:13px;opacity:.6}
 /* 地形 */
 .cell.tr{background:#6f6a5f}                 /* 山・家屋：通行不可・射線も遮る */
 .cell.tw{background:#9fb6c6}                 /* 川・湖：通行不可・射線は通る */
@@ -265,11 +269,11 @@ header p{margin-top:10px;font-size:13.5px;color:var(--mid);max-width:60ch}
 /* 地形の文字（山・〜・泥）は置かない。絵が入ったので二重になるうえ、
    盤の上の文字は駒のHPだけであってほしい。地形の意味は右の凡例で示す。 */
 /* 地形の凡例 */
-.leg{display:flex;gap:9px;align-items:flex-start;padding:7px 0;border-top:1px solid rgba(16,16,16,.1);font-size:12px;line-height:1.5}
+.leg{display:flex;gap:9px;align-items:flex-start;padding:7px 0;border-top:1px solid rgba(16,16,16,.1);font-size:13px;line-height:1.5}
 .leg:first-child{border-top:0;padding-top:0}
 .leg i{flex:0 0 auto;width:24px;height:24px;margin-top:1px;display:block;border:1px solid rgba(16,16,16,.14)}
-.leg b{display:block;font-size:12px}
-.leg span{color:var(--mid);font-size:11.5px}
+.leg b{display:block;font-size:13px}
+.leg span{color:var(--mid);font-size:13px}
 /* 編成画面のミニ盤面 */
 .mini{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;width:84px;margin:9px 0;
   background:rgba(16,16,16,.18);border:1px solid rgba(16,16,16,.18)}
@@ -278,9 +282,9 @@ header p{margin-top:10px;font-size:13.5px;color:var(--mid);max-width:60ch}
 /* 右パネル */
 .side{display:grid;gap:14px}
 .panel{background:var(--paper);border:1px solid rgba(16,16,16,.16);padding:14px 15px}
-.panel h3{font-family:var(--mon);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--pale);margin-bottom:8px}
-.panel p{font-size:12.5px;color:var(--mid)}
-.st{display:flex;align-items:center;gap:8px;font-size:12.5px;padding:4px 0;border-bottom:1px solid rgba(16,16,16,.1)}
+.panel h3{font-family:var(--mon);font-size:13px;letter-spacing:.2em;text-transform:uppercase;color:var(--pale);margin-bottom:8px}
+.panel p{font-size:13px;color:var(--mid)}
+.st{display:flex;align-items:center;gap:8px;font-size:13px;padding:4px 0;border-bottom:1px solid rgba(16,16,16,.1)}
 .st span{flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .st-a{flex:0 0 auto;width:30px;height:30px;object-fit:contain;object-position:center bottom}
 .st-a.none{border-radius:50%;border:1.5px solid rgba(16,16,16,.22);width:20px;height:20px;margin:0 5px}
@@ -290,8 +294,8 @@ header p{margin-top:10px;font-size:13.5px;color:var(--mid);max-width:60ch}
   border-top:3px solid var(--c);padding:10px 10px 12px}
 .ov-c img{display:block;height:150px;width:100%;object-fit:contain;object-position:center bottom}
 .ov-c i.none{display:block;height:150px;border-radius:0}
-.ov-c b{display:block;font-family:var(--min);font-size:13.5px;font-weight:500;line-height:1.5;margin-top:6px}
-.ov-c s{display:block;text-decoration:none;font-family:var(--mon);font-size:10px;color:var(--pale);
+.ov-c b{display:block;font-family:var(--min);font-size:15px;font-weight:500;line-height:1.5;margin-top:6px}
+.ov-c s{display:block;text-decoration:none;font-family:var(--mon);font-size:13px;color:var(--pale);
   letter-spacing:.08em;margin-top:3px}
 /* 札の裏 ─ 中身は年表かるたの deep-dive と同じもの */
 .back{position:fixed;inset:0;z-index:50;background:rgba(16,16,16,.42);
@@ -301,21 +305,21 @@ header p{margin-top:10px;font-size:13.5px;color:var(--mid);max-width:60ch}
   animation:flipin .34s cubic-bezier(.2,.7,.3,1)}
 @keyframes flipin{from{transform:perspective(900px) rotateY(-84deg);opacity:0}to{transform:none;opacity:1}}
 @media(prefers-reduced-motion:reduce){.back-card{animation:none}}
-.bk-y{font-family:var(--mon);font-size:10.5px;letter-spacing:.12em;color:var(--pale)}
+.bk-y{font-family:var(--mon);font-size:13px;letter-spacing:.12em;color:var(--pale)}
 .bk-n{font-family:var(--min);font-size:21px;font-weight:500;line-height:1.5;margin:5px 0 2px}
-.bk-note{font-size:12.5px;color:var(--mid);margin-bottom:14px}
-.bk-body{font-size:14px;line-height:2;border-top:1px solid rgba(16,16,16,.14);padding-top:13px}
+.bk-note{font-size:13px;color:var(--mid);margin-bottom:14px}
+.bk-body{font-size:15px;line-height:2;border-top:1px solid rgba(16,16,16,.14);padding-top:13px}
 .bk-go{display:block;margin-top:16px;padding:13px 15px;background:var(--navy);color:#fff;text-decoration:none}
 .bk-go b{display:block;font-family:var(--min);font-size:15px;font-weight:500}
-.bk-go span{display:block;font-size:11.5px;color:rgba(255,255,255,.78);margin-top:3px}
+.bk-go span{display:block;font-size:13px;color:rgba(255,255,255,.78);margin-top:3px}
 .bk-meta{margin-top:14px;padding-top:12px;border-top:1px solid rgba(16,16,16,.14);
-  display:grid;gap:7px;font-size:12px}
+  display:grid;gap:7px;font-size:13px}
 .bk-meta a{color:var(--navy)}
 .bk-grow{color:var(--gold);font-weight:700}
 .bk-x{margin-top:16px;width:100%}
 /* 表側の「裏」ボタン */
 .pc-flip{position:absolute;top:5px;right:5px;z-index:2;width:26px;height:26px;padding:0;
-  font:inherit;font-size:11px;font-family:var(--min);cursor:pointer;
+  font:inherit;font-size:13px;font-family:var(--min);cursor:pointer;
   background:rgba(252,251,248,.9);border:1px solid rgba(16,16,16,.22);color:var(--mid)}
 .pc-flip:hover{background:var(--ink);color:var(--bg);border-color:var(--ink)}
 .pc{position:relative}
@@ -323,11 +327,11 @@ header p{margin-top:10px;font-size:13.5px;color:var(--mid);max-width:60ch}
 .ov-c:hover{background:#faf9f6}
 .st:last-child{border-bottom:0}
 .st b{font-family:var(--mon);font-variant-numeric:tabular-nums}
-.log{max-height:190px;overflow-y:auto;font-size:12px;color:var(--mid)}
+.log{max-height:190px;overflow-y:auto;font-size:13px;color:var(--mid)}
 .log div{padding:3px 0;border-bottom:1px solid rgba(16,16,16,.07)}
 .big{font-family:var(--min);font-size:20px;font-weight:500;text-align:center;padding:18px 0}
 .hidden{display:none}
-.note{font-size:12px;color:var(--pale);margin-top:16px;line-height:1.9}
+.note{font-size:13px;color:var(--pale);margin-top:16px;line-height:1.9}
 </style>
 </head>
 <body>
@@ -350,6 +354,7 @@ header p{margin-top:10px;font-size:13.5px;color:var(--mid);max-width:60ch}
   <h1>丹波タクティクス</h1>
   <p>亀岡・南丹・京丹波の史実札を駒にしたタクティクスです。<b>乱数はありません。</b>敵は必ず「回転→移動→予告」してから撃つので、見てから避けられます。
      札は<b>裏返すと</b>、その出来事の解説と出典、行ける場所が読めます。</p>
+  <p class="howlead"><a class="howbtn" href="how/index.html">はじめての方へ ─ 遊びかたを見る</a></p>
 </header>
 
 <div id="setup">
