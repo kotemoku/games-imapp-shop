@@ -55,6 +55,11 @@
   border-bottom: 1px solid var(--ktn-ink);
   font-family: var(--ktn-san);
 }
+/* 店の紹介ページ（public/shops/*）は各店で作った固有のヘッダーを持っている。
+   そこへ sticky を重ねると二段に貼りつくので、これらのページでは流す。
+   下層ページの生成物は従来どおり sticky のまま。 */
+.ktn-header--static { position: static; }
+
 .ktn-header .ktn-in {
   max-width: 1180px;
   margin: 0 auto;
@@ -219,7 +224,7 @@ h1{font-family:var(--min);font-size:clamp(27px,6.6vw,40px);font-weight:500;line-
     <a href="../../course/index.html">一日のコース</a>
     <a href="../../events/index.html">イベント</a>
     <a href="../../shops/index.html">寄り処</a>
-    <a href="../../index.html">あそぶ</a>
+    <a href="../../index.html?play=1">あそぶ</a>
     <a href="../../tactics/index.html">丹波タクティクス</a>
     <a href="../../photo/index.html">写真を送る</a>
     <a class="ktn-cta" href="../../ads/index.html">掲載のご案内</a>

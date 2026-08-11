@@ -65,6 +65,11 @@ h1{font-family:var(--ktn-min);font-weight:500}
   border-bottom: 1px solid var(--ktn-ink);
   font-family: var(--ktn-san);
 }
+/* 店の紹介ページ（public/shops/*）は各店で作った固有のヘッダーを持っている。
+   そこへ sticky を重ねると二段に貼りつくので、これらのページでは流す。
+   下層ページの生成物は従来どおり sticky のまま。 */
+.ktn-header--static { position: static; }
+
 .ktn-header .ktn-in {
   max-width: 1180px;
   margin: 0 auto;
@@ -192,7 +197,7 @@ p.body{font-size:15px}
 section.rel{margin-top:36px;border-top:1px solid var(--sumi);padding-top:20px}
 section.rel h2{font-family:var(--ktn-mon);font-size:13px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;margin:0 0 12px}
 ul.list{list-style:none;margin:0;padding:0;display:grid;gap:8px}
-ul.list a{display:block;background:#fff;border:1px solid var(--line);padding:13px 16px;text-decoration:none;color:inherit}
+ul.list a,ul.list .norow{display:block;background:#fff;border:1px solid var(--line);padding:13px 16px;text-decoration:none;color:inherit}
 ul.list a:hover{border-color:var(--indigo)}
 ul.list .d{font-size:13px;color:rgba(35, 40, 48, .86)}
 ul.list .n{font-size:15px;font-weight:700}
@@ -311,7 +316,7 @@ footer.site .ig{display:inline-block;margin-top:12px;font-weight:700;color:var(-
     <a href="../../course/index.html">一日のコース</a>
     <a href="../../events/index.html">イベント</a>
     <a href="../../shops/index.html">寄り処</a>
-    <a href="../../index.html">あそぶ</a>
+    <a href="../../index.html?play=1">あそぶ</a>
     <a href="../../tactics/index.html">丹波タクティクス</a>
     <a href="../../photo/index.html">写真を送る</a>
     <a class="ktn-cta" href="../../ads/index.html">掲載のご案内</a>
@@ -332,6 +337,7 @@ footer.site .ig{display:inline-block;margin-top:12px;font-weight:700;color:var(-
 <dl class="facts">
   <div><dt>開催日</dt><dd>11月上旬（予定）（予定・公式で要確認）</dd></div>
   <div><dt>時刻</dt><dd>このサイトでは確認できていません。主催者の公式情報をご覧ください。</dd></div>
+  
   <div><dt>会場</dt><dd>和知ふれあいセンターほか</dd></div>
   <div><dt>市町</dt><dd>京丹波町（京都丹波）</dd></div>
   <div><dt>ジャンル</dt><dd>文化</dd></div>
@@ -342,8 +348,8 @@ footer.site .ig{display:inline-block;margin-top:12px;font-weight:700;color:var(-
   <a class="btn ghost" href="https://www.google.com/maps/search/?api=1&amp;query=35.26168,135.39805" target="_blank" rel="noopener">地図で見る</a>
 </div>
 <p class="note">掲載内容は2026-08-11時点の情報です。日程・内容は変更される場合がありますので、おでかけ前に必ず主催者の公式情報をご確認ください。</p>
-<section class="rel"><h2>京丹波町のほかのイベント</h2><ul class="list"><li><a href="../itoma-marche/"><span class="d">9/17・10/15・11/19・12/17</span><br><span class="n">いとまrché（いとまルシェ）</span></a></li><li><a href="../fair-145/"><span class="d">9/19</span><br><span class="n">里山つながるBBQデイ</span></a></li><li><a href="../fair-194/"><span class="d">9/19〜9/20</span><br><span class="n">森から視る／考える❝工芸とアート❞</span></a></li><li><a href="../green-harvest/"><span class="d">9/23</span><br><span class="n">京都丹波グリーン・ハーベスト・フェス〜森のバザール〜</span></a></li><li><a href="../fair-146/"><span class="d">9/26</span><br><span class="n">シンポジウム 花×食＝健幸～京丹波・暮らしの恵みを未来へ～</span></a></li></ul></section>
-
+<section class="rel"><h2>京丹波町のほかのイベント</h2><ul class="list"><li><a href="../itoma-marche/"><span class="d">9/17・10/15・11/19・12/17</span><br><span class="n">いとまrché（いとまルシェ）</span></a></li><li><a href="../fair-145/"><span class="d">9/19</span><br><span class="n">里山つながるBBQデイ</span></a></li><li><a href="../fair-194/"><span class="d">9/19・9/20</span><br><span class="n">森から視る／考える❝工芸とアート❞</span></a></li><li><a href="../green-harvest/"><span class="d">9/23</span><br><span class="n">京都丹波グリーン・ハーベスト・フェス〜森のバザール〜</span></a></li><li><a href="../fair-146/"><span class="d">9/26</span><br><span class="n">シンポジウム 花×食＝健幸～京丹波・暮らしの恵みを未来へ～</span></a></li></ul></section>
+<section class="rel"><h2>立ち寄れる寄り処</h2><ul class="list"><li><div class="norow"><span class="n">七福堂</span><br><span class="d">買う・おみやげ　会場から約0km</span></div></li><li><div class="norow"><span class="n">わち山野草の森</span><br><span class="d">自然・体験　会場から約0km</span></div></li><li><div class="norow"><span class="n">bio sweet's capocapo 菓歩菓歩</span><br><span class="d">カフェ・喫茶　会場から約1km</span></div></li></ul></section>
 <section class="rel">
   <h2>京都丹波を、あそんで知る</h2>
   <p class="body">亀岡・南丹・京丹波の郷土史と防災を、札を並べて学べるカードゲーム「京都丹波タイムトラベル」を無料で公開しています。</p>

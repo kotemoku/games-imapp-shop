@@ -65,6 +65,11 @@ h1{font-family:var(--ktn-min);font-weight:500}
   border-bottom: 1px solid var(--ktn-ink);
   font-family: var(--ktn-san);
 }
+/* 店の紹介ページ（public/shops/*）は各店で作った固有のヘッダーを持っている。
+   そこへ sticky を重ねると二段に貼りつくので、これらのページでは流す。
+   下層ページの生成物は従来どおり sticky のまま。 */
+.ktn-header--static { position: static; }
+
 .ktn-header .ktn-in {
   max-width: 1180px;
   margin: 0 auto;
@@ -192,7 +197,7 @@ p.body{font-size:15px}
 section.rel{margin-top:36px;border-top:1px solid var(--sumi);padding-top:20px}
 section.rel h2{font-family:var(--ktn-mon);font-size:13px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;margin:0 0 12px}
 ul.list{list-style:none;margin:0;padding:0;display:grid;gap:8px}
-ul.list a{display:block;background:#fff;border:1px solid var(--line);padding:13px 16px;text-decoration:none;color:inherit}
+ul.list a,ul.list .norow{display:block;background:#fff;border:1px solid var(--line);padding:13px 16px;text-decoration:none;color:inherit}
 ul.list a:hover{border-color:var(--indigo)}
 ul.list .d{font-size:13px;color:rgba(35, 40, 48, .86)}
 ul.list .n{font-size:15px;font-weight:700}
@@ -311,7 +316,7 @@ footer.site .ig{display:inline-block;margin-top:12px;font-weight:700;color:var(-
     <a href="../course/index.html">一日のコース</a>
     <a href="../events/index.html">イベント</a>
     <a href="../shops/index.html">寄り処</a>
-    <a href="../index.html">あそぶ</a>
+    <a href="../index.html?play=1">あそぶ</a>
     <a href="../tactics/index.html">丹波タクティクス</a>
     <a href="../photo/index.html">写真を送る</a>
     <a class="ktn-cta" href="../ads/index.html">掲載のご案内</a>
@@ -325,11 +330,11 @@ footer.site .ig{display:inline-block;margin-top:12px;font-weight:700;color:var(-
 <div class="filters" role="group" aria-label="寄り処の絞り込み">
   <div class="frow">
     <span class="flab">ジャンル</span>
-    <button class="chip on" data-g="all">すべて<i>3</i></button>
-    <button class="chip" data-g="お食事">お食事<i>1</i></button><button class="chip" data-g="雑貨・体験">雑貨・体験<i>1</i></button><button class="chip" data-g="体験・宿泊">体験・宿泊<i>1</i></button>
+    <button class="chip on" data-g="all">すべて<i>24</i></button>
+    <button class="chip" data-g="お食事">お食事<i>1</i></button><button class="chip" data-g="雑貨・体験">雑貨・体験<i>1</i></button><button class="chip" data-g="体験・宿泊">体験・宿泊<i>1</i></button><button class="chip" data-g="買う・おみやげ">買う・おみやげ<i>7</i></button><button class="chip" data-g="カフェ・喫茶">カフェ・喫茶<i>7</i></button><button class="chip" data-g="道の駅">道の駅<i>2</i></button><button class="chip" data-g="自然・体験">自然・体験<i>2</i></button><button class="chip" data-g="社寺・名所">社寺・名所<i>3</i></button>
   </div>
 </div>
-<ul class="list" id="shopList"><li data-g="お食事"><a href="tsutaya/"><span class="d">お食事</span><br><span class="n">日本料理 津多屋</span><br><span class="d">1956年創業、園部の日本料理店。名物・笑日餅（わらびもち）と園部城弁当。完全予約制（前日まで）・水曜休。</span></a></li><li data-g="雑貨・体験"><a href="smilebird/"><span class="d">雑貨・体験</span><br><span class="n">smilebird・stone</span><br><span class="d">ハンドメイド＆天然石のアトリエ。毎朝の「今日のブレス」と、本当の一石を選ぶ対面セッション（要予約・InstagramのDMへ）。</span></a></li><li data-g="体験・宿泊"><a href="amabiki-mura/"><span class="d">体験・宿泊</span><br><span class="n">天引村倶楽部</span><br><span class="d">築100年以上の茅葺き古民家を活かした交流・レンタルスペース。和室・板の間・土間・縁側と中庭を1〜30名で。ワークショップ、会議、仲間との集まりに（要相談）。</span></a></li></ul>
+<ul class="list" id="shopList"><li data-g="お食事"><a href="tsutaya/"><span class="d">お食事</span><br><span class="n">日本料理 津多屋</span><br><span class="d">1956年創業、園部の日本料理店。名物・笑日餅（わらびもち）と園部城弁当。完全予約制（前日まで）・水曜休。</span></a></li><li data-g="雑貨・体験"><a href="smilebird/"><span class="d">雑貨・体験</span><br><span class="n">smilebird・stone</span><br><span class="d">ハンドメイド＆天然石のアトリエ。毎朝の「今日のブレス」と、本当の一石を選ぶ対面セッション（要予約・InstagramのDMへ）。</span></a></li><li data-g="体験・宿泊"><a href="amabiki-mura/"><span class="d">体験・宿泊</span><br><span class="n">天引村倶楽部</span><br><span class="d">築100年以上の茅葺き古民家を活かした交流・レンタルスペース。和室・板の間・土間・縁側と中庭を1〜30名で。ワークショップ、会議、仲間との集まりに（要相談）。</span></a></li><li data-g="買う・おみやげ"><div class="norow"><span class="d">買う・おみやげ</span><br><span class="n">美山おもしろ農民倶楽部</span><br><span class="d">南丹市美山町内久保</span></div></li><li data-g="カフェ・喫茶"><div class="norow"><span class="d">カフェ・喫茶</span><br><span class="n">カフェ美卵</span><br><span class="d">南丹市美山町北（かやぶきの里ちかく）</span></div></li><li data-g="道の駅"><div class="norow"><span class="d">道の駅</span><br><span class="n">道の駅 美山ふれあい広場</span><br><span class="d">南丹市美山町安掛</span></div></li><li data-g="カフェ・喫茶"><div class="norow"><span class="d">カフェ・喫茶</span><br><span class="n">café cotton</span><br><span class="d">南丹市園部町新町</span></div></li><li data-g="カフェ・喫茶"><div class="norow"><span class="d">カフェ・喫茶</span><br><span class="n">古民家DIYカフェ eco.epoch</span><br><span class="d">南丹市日吉町殿田</span></div></li><li data-g="買う・おみやげ"><div class="norow"><span class="d">買う・おみやげ</span><br><span class="n">難波醤油醸造工場</span><br><span class="d">亀岡市突抜町（城下町）</span></div></li><li data-g="買う・おみやげ"><div class="norow"><span class="d">買う・おみやげ</span><br><span class="n">丹山酒造</span><br><span class="d">亀岡市横町（城下町）</span></div></li><li data-g="買う・おみやげ"><div class="norow"><span class="d">買う・おみやげ</span><br><span class="n">関酒造</span><br><span class="d">亀岡市紺屋町（城下町）</span></div></li><li data-g="カフェ・喫茶"><div class="norow"><span class="d">カフェ・喫茶</span><br><span class="n">カフェタイム 亀岡店</span><br><span class="d">亀岡市古世町</span></div></li><li data-g="買う・おみやげ"><div class="norow"><span class="d">買う・おみやげ</span><br><span class="n">JA京都 農畜産物直売所 たわわ朝霧</span><br><span class="d">亀岡市篠町野条</span></div></li><li data-g="カフェ・喫茶"><div class="norow"><span class="d">カフェ・喫茶</span><br><span class="n">和カフェ・毘沙門てらす</span><br><span class="d">亀岡市千歳町国分</span></div></li><li data-g="カフェ・喫茶"><div class="norow"><span class="d">カフェ・喫茶</span><br><span class="n">COMO'S KITCHEN</span><br><span class="d">京丹波町蒲生</span></div></li><li data-g="買う・おみやげ"><div class="norow"><span class="d">買う・おみやげ</span><br><span class="n">御菓子司 山下秀製菓</span><br><span class="d">京丹波町橋爪</span></div></li><li data-g="自然・体験"><div class="norow"><span class="d">自然・体験</span><br><span class="n">質美笑楽講（旧質美小学校）</span><br><span class="d">京丹波町質美</span></div></li><li data-g="買う・おみやげ"><div class="norow"><span class="d">買う・おみやげ</span><br><span class="n">七福堂</span><br><span class="d">京丹波町本庄（和知）</span></div></li><li data-g="自然・体験"><div class="norow"><span class="d">自然・体験</span><br><span class="n">わち山野草の森</span><br><span class="d">京丹波町坂原（和知）</span></div></li><li data-g="カフェ・喫茶"><div class="norow"><span class="d">カフェ・喫茶</span><br><span class="n">bio sweet's capocapo 菓歩菓歩</span><br><span class="d">京丹波町坂原（和知）</span></div></li><li data-g="道の駅"><div class="norow"><span class="d">道の駅</span><br><span class="n">道の駅 和（なごみ）</span><br><span class="d">京丹波町坂原（和知）</span></div></li><li data-g="社寺・名所"><div class="norow"><span class="d">社寺・名所</span><br><span class="n">多治神社</span><br><span class="d">南丹市日吉町田原</span></div></li><li data-g="社寺・名所"><div class="norow"><span class="d">社寺・名所</span><br><span class="n">かめおか霧のテラス</span><br><span class="d">亀岡市曽我部町南条</span></div></li><li data-g="社寺・名所"><div class="norow"><span class="d">社寺・名所</span><br><span class="n">阿上三所神社</span><br><span class="d">京丹波町坂原（和知）</span></div></li></ul>
 <p class="empty" id="shopEmpty" hidden>このジャンルの寄り処は、まだありません。</p>
 <script>
 (function(){

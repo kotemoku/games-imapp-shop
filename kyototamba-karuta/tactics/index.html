@@ -55,6 +55,11 @@
   border-bottom: 1px solid var(--ktn-ink);
   font-family: var(--ktn-san);
 }
+/* 店の紹介ページ（public/shops/*）は各店で作った固有のヘッダーを持っている。
+   そこへ sticky を重ねると二段に貼りつくので、これらのページでは流す。
+   下層ページの生成物は従来どおり sticky のまま。 */
+.ktn-header--static { position: static; }
+
 .ktn-header .ktn-in {
   max-width: 1180px;
   margin: 0 auto;
@@ -208,6 +213,18 @@ header p{margin-top:10px;font-size:15px;color:var(--mid);max-width:60ch}
 .pc-n{display:block;font-family:var(--min);font-size:15px;font-weight:500;margin:3px 0 5px;line-height:1.5}
 .pc-s{font-family:var(--mon);font-size:13px;color:var(--mid);letter-spacing:.04em}
 .bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:16px}
+/* 一番上の「すぐ出陣」。ここを最初に置かないと、遊ぶ前に26枚を読むことになる。 */
+.quick{margin:0 0 22px;padding:18px;border:1px solid var(--line);background:#fff}
+.quick .btn{width:100%;font-size:17px;padding:15px 18px}
+.quick .hint{margin:11px 0 0}
+/* 手で選ぶほうは畳んでおく。開きたい人だけ開く。 */
+#manual > summary{cursor:pointer;padding:14px 16px;border:1px solid var(--line);background:#fff;
+  font-family:var(--san);font-size:15px;font-weight:700;list-style:none}
+#manual > summary::-webkit-details-marker{display:none}
+#manual > summary::before{content:"▸ ";color:var(--gold)}
+#manual[open] > summary::before{content:"▾ "}
+#manual > summary:hover{border-color:var(--ink)}
+
 /* 編成の出陣バーは画面下に貼る。26枚のカードを抜けた先にしか出陣ボタンが無いと、
    遊び始めるまでにスマホで11画面ぶんスクロールすることになる。 */
 #setup > .bar{position:sticky;bottom:0;z-index:20;margin:18px -18px 0;padding:12px 18px;
@@ -258,6 +275,20 @@ header p{margin-top:10px;font-size:15px;color:var(--mid);max-width:60ch}
 .u.art{position:relative;padding:0;gap:0}
 .u-a{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center bottom;
   pointer-events:none;filter:drop-shadow(0 1px 1px rgba(16,16,16,.30))}
+/* 375px では1マス55px しかなく、駒の絵は48px。淡い装束の札（胡麻の女・山鉾の白袢纏）は
+   明るい地形タイルに溶けて、駒が居ることすら分からなくなる。輪郭を白で縁取って地面から離す。
+   絵は §2 で「100pxで顔が読める」を基準に描いてある。スマホの盤はその半分しかないので、
+   顔を読む場所は盤ではなく下の「選んだ駒」。ここは居場所が分かれば足りる。 */
+@media(max-width:720px){
+  .u-a{filter:drop-shadow(0 0 1.5px #fff) drop-shadow(0 0 1.5px #fff) drop-shadow(0 1px 1.5px rgba(16,16,16,.5))}
+  /* 「4/4 近接」は55pxのマスで2行に折り返し、帯がマスの3分の2を占めて絵を隠していた。
+     間合いは下の「選んだ駒」に出ているので、盤では数字だけにする。折り返しは禁止。 */
+  .u .u-hp{white-space:nowrap;font-size:12px}
+  .u .u-hp .pat{display:none}
+  /* 砦の名は55pxだと「日本…」までしか出ず、3文字では店が分からない。
+     名前は横の「砦」欄に全部出ているので、盤では段とHPだけにする。 */
+  .u.fort .u-n{display:none}
+}
 .u.art .u-hp{position:absolute;left:0;right:0;bottom:0;z-index:1;text-align:center;
   padding:2px 0 3px;background:rgba(252,251,248,.86);color:var(--ink);letter-spacing:0}
 /* 敵は地の暗さを消さずに、下から薄く敷いて「こちらの駒ではない」ことを出す */
@@ -372,7 +403,7 @@ header p{margin-top:10px;font-size:15px;color:var(--mid);max-width:60ch}
     <a href="../course/index.html">一日のコース</a>
     <a href="../events/index.html">イベント</a>
     <a href="../shops/index.html">寄り処</a>
-    <a href="../index.html">あそぶ</a>
+    <a href="../index.html?play=1">あそぶ</a>
     <a href="../tactics/index.html">丹波タクティクス</a>
     <a href="../photo/index.html">写真を送る</a>
     <a class="ktn-cta" href="../ads/index.html">掲載のご案内</a>
@@ -388,6 +419,13 @@ header p{margin-top:10px;font-size:15px;color:var(--mid);max-width:60ch}
 </header>
 
 <div id="setup">
+  <div class="quick">
+    <button class="btn pri" id="quick">おすすめの三枚で、すぐ出陣</button>
+    <p class="hint">亀岡・南丹・京丹波から1枚ずつ。<b>三つの間合いを一度に試せます。</b>場所は開けた「ダム湖畔」。</p>
+  </div>
+
+  <details id="manual">
+  <summary>自分で選ぶ（駒26枚・場所5つ・砦）</summary>
   <div class="rule"><b>Loadout</b><span>01 ─ 三枚えらぶ</span></div>
   <p class="hint">強さは手で決めていません。<b>年代</b>が古いほど硬く鈍く、新しいほど速い。<b>市町</b>が間合いを決めます（亀岡＝近接／南丹＝直線／京丹波＝十字）。</p>
   <div class="pool" id="pool"></div>
@@ -403,6 +441,7 @@ header p{margin-top:10px;font-size:15px;color:var(--mid);max-width:60ch}
     <button class="btn pri" id="start" disabled>出陣する</button>
     <span class="hint" id="pick">駒を3枚と、砦を1つ選んでください</span>
   </div>
+  </details>
 </div>
 
 <div id="play" class="hidden">
@@ -544,6 +583,28 @@ function drawFields(){
     host.appendChild(b);
   });
 }
+// 「おすすめの三枚」。26枚を読ませずに始められる道。ここが無いと、遊ぶ前に
+// 長いカード一覧を抜ける必要があり、初見はそこで離脱する（外部レビュー 2026-08-11）。
+// 選び方は固定の規則で、気分では決めない ──
+//   三市町から1枚ずつ（＝近接・直線・十字を一度に触れる）
+//   各町の中では年代の真ん中（D.pool は年代順。古すぎず新しすぎない＝極端でない強さ）
+//   場所は開けた「ダム湖畔」。地形の引っかかりが無く、どの間合いも通る。
+function recommended(){
+  const out=[];
+  ['kameoka','nantan','kyotamba'].forEach(function(m){
+    const g=D.pool.filter(function(c){return c.mid===m;});
+    if(g.length) out.push(g[Math.floor((g.length-1)/2)].uid);
+  });
+  return out;
+}
+function quickStart(){
+  sel=recommended();
+  if(sel.length<3){ document.getElementById('manual').open=true; return; } // 札が足りなければ手で選んでもらう
+  field=(D.fields.find(function(f){return f.id==='damko';})||D.fields[0]).id;
+  fort=D.forts[0].id; fortLv=1;
+  startRun();
+}
+
 function refreshStart(){
   const ok=sel.length===3&&fort&&field;
   document.getElementById('start').disabled=!ok;
@@ -754,7 +815,7 @@ function render(){
       d.style.setProperty('--c',COL[o.mid]); d.title=o.name;
       // 絵があるときは絵が名前の代わり。無い札（神社仏閣など）は今までどおり文字で出す。
       d.innerHTML=(o.art?'<img class="u-a" src="'+o.art+'" alt="">':'<span class="u-n">'+o.name+'</span>')
-        +'<span class="u-hp">'+o.cur+'/'+o.hp+' '+PATJA[o.pat]+'</span>';
+        +'<span class="u-hp">'+o.cur+'/'+o.hp+'<span class="pat"> '+PATJA[o.pat]+'</span></span>';
       d.onclick=function(){ if(o.done)return; active=o; render(); };
       if(active===o)cell.classList.add('sel');
       cell.appendChild(d);
@@ -798,6 +859,7 @@ document.getElementById('reset').onclick=function(){ location.reload(); };
 document.getElementById('back').onclick=function(e){ if(e.target.id==='back')closeBack(); };
 document.addEventListener('keydown',function(e){ if(e.key==='Escape')closeBack(); });
 document.getElementById('start').onclick=startRun;
+document.getElementById('quick').onclick=quickStart;
 document.getElementById('again').onclick=function(){ location.reload(); };
 drawPool(); drawFields(); drawForts(); refreshStart();
 </script>

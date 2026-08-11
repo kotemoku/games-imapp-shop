@@ -3,17 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>森から視る／考える❝工芸とアート❞（9/19〜9/20）｜京丹波町のイベント｜京都丹波ナビ</title>
-<meta name="description" content="森から視る／考える❝工芸とアート❞。会場はウィードの森（府立須知高校 学校林）、開催は9/19〜9/20。京丹波町のイベント情報を京都丹波ナビが掲載しています。">
+<title>森から視る／考える❝工芸とアート❞（9/19・9/20）｜京丹波町のイベント｜京都丹波ナビ</title>
+<meta name="description" content="森から視る／考える❝工芸とアート❞。会場はウィードの森（府立須知高校 学校林）、開催は9/19・9/20。京丹波町のイベント情報を京都丹波ナビが掲載しています。">
 <link rel="canonical" href="https://kyoto-tamba.com/events/fair-194/">
-<meta property="og:title" content="森から視る／考える❝工芸とアート❞（9/19〜9/20）｜京丹波町のイベント｜京都丹波ナビ">
-<meta property="og:description" content="森から視る／考える❝工芸とアート❞。会場はウィードの森（府立須知高校 学校林）、開催は9/19〜9/20。京丹波町のイベント情報を京都丹波ナビが掲載しています。">
+<meta property="og:title" content="森から視る／考える❝工芸とアート❞（9/19・9/20）｜京丹波町のイベント｜京都丹波ナビ">
+<meta property="og:description" content="森から視る／考える❝工芸とアート❞。会場はウィードの森（府立須知高校 学校林）、開催は9/19・9/20。京丹波町のイベント情報を京都丹波ナビが掲載しています。">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://kyoto-tamba.com/events/fair-194/">
 <meta property="og:site_name" content="京都丹波ナビ">
 <meta name="theme-color" content="#274a6d">
 <link rel="icon" href="../../icons/icon-192.png">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Event","name":"森から視る／考える❝工芸とアート❞","startDate":"2026-09-19","endDate":"2026-09-20","eventStatus":"https://schema.org/EventScheduled","eventAttendanceMode":"https://schema.org/OfflineEventAttendanceMode","location":{"@type":"Place","name":"ウィードの森（府立須知高校 学校林）","address":{"@type":"PostalAddress","addressRegion":"京都府","addressLocality":"京丹波町","addressCountry":"JP"},"geo":{"@type":"GeoCoordinates","latitude":35.174033,"longitude":135.418931}},"url":"https://kyoto-tamba.com/events/fair-194/","isAccessibleForFree":true}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Event","name":"森から視る／考える❝工芸とアート❞","startDate":"2026-09-19","endDate":"2026-09-19","eventStatus":"https://schema.org/EventScheduled","eventAttendanceMode":"https://schema.org/OfflineEventAttendanceMode","location":{"@type":"Place","name":"ウィードの森（府立須知高校 学校林）","address":{"@type":"PostalAddress","addressRegion":"京都府","addressLocality":"京丹波町","addressCountry":"JP"},"geo":{"@type":"GeoCoordinates","latitude":35.174033,"longitude":135.418931}},"url":"https://kyoto-tamba.com/events/fair-194/","isAccessibleForFree":true}</script>
 <style>
 :root{--kiri:#f5f5f2;--sumi:#101010;--indigo:#1c3560;--gold:#b98a2e;--akane:#a5573a;--line:rgba(16,16,16,.16)}
 *{box-sizing:border-box}
@@ -65,6 +65,11 @@ h1{font-family:var(--ktn-min);font-weight:500}
   border-bottom: 1px solid var(--ktn-ink);
   font-family: var(--ktn-san);
 }
+/* 店の紹介ページ（public/shops/*）は各店で作った固有のヘッダーを持っている。
+   そこへ sticky を重ねると二段に貼りつくので、これらのページでは流す。
+   下層ページの生成物は従来どおり sticky のまま。 */
+.ktn-header--static { position: static; }
+
 .ktn-header .ktn-in {
   max-width: 1180px;
   margin: 0 auto;
@@ -192,7 +197,7 @@ p.body{font-size:15px}
 section.rel{margin-top:36px;border-top:1px solid var(--sumi);padding-top:20px}
 section.rel h2{font-family:var(--ktn-mon);font-size:13px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;margin:0 0 12px}
 ul.list{list-style:none;margin:0;padding:0;display:grid;gap:8px}
-ul.list a{display:block;background:#fff;border:1px solid var(--line);padding:13px 16px;text-decoration:none;color:inherit}
+ul.list a,ul.list .norow{display:block;background:#fff;border:1px solid var(--line);padding:13px 16px;text-decoration:none;color:inherit}
 ul.list a:hover{border-color:var(--indigo)}
 ul.list .d{font-size:13px;color:rgba(35, 40, 48, .86)}
 ul.list .n{font-size:15px;font-weight:700}
@@ -311,7 +316,7 @@ footer.site .ig{display:inline-block;margin-top:12px;font-weight:700;color:var(-
     <a href="../../course/index.html">一日のコース</a>
     <a href="../../events/index.html">イベント</a>
     <a href="../../shops/index.html">寄り処</a>
-    <a href="../../index.html">あそぶ</a>
+    <a href="../../index.html?play=1">あそぶ</a>
     <a href="../../tactics/index.html">丹波タクティクス</a>
     <a href="../../photo/index.html">写真を送る</a>
     <a class="ktn-cta" href="../../ads/index.html">掲載のご案内</a>
@@ -330,8 +335,9 @@ footer.site .ig{display:inline-block;margin-top:12px;font-weight:700;color:var(-
 
 
 <dl class="facts">
-  <div><dt>開催日</dt><dd>9/19〜9/20</dd></div>
+  <div><dt>開催日</dt><dd>9/19・9/20</dd></div>
   <div><dt>時刻</dt><dd>このサイトでは確認できていません。主催者の公式情報をご覧ください。</dd></div>
+  <div><dt>開催日（全2回）</dt><dd>9/19／9/20</dd></div>
   <div><dt>会場</dt><dd>ウィードの森（府立須知高校 学校林）</dd></div>
   <div><dt>市町</dt><dd>京丹波町（京都丹波）</dd></div>
   <div><dt>ジャンル</dt><dd>学ぶ・体験する・参加する</dd></div>
@@ -343,7 +349,7 @@ footer.site .ig{display:inline-block;margin-top:12px;font-weight:700;color:var(-
 </div>
 <p class="note">掲載内容は2026-08-11時点の情報です。日程・内容は変更される場合がありますので、おでかけ前に必ず主催者の公式情報をご確認ください。</p>
 <section class="rel"><h2>京丹波町のほかのイベント</h2><ul class="list"><li><a href="../itoma-marche/"><span class="d">9/17・10/15・11/19・12/17</span><br><span class="n">いとまrché（いとまルシェ）</span></a></li><li><a href="../fair-145/"><span class="d">9/19</span><br><span class="n">里山つながるBBQデイ</span></a></li><li><a href="../green-harvest/"><span class="d">9/23</span><br><span class="n">京都丹波グリーン・ハーベスト・フェス〜森のバザール〜</span></a></li><li><a href="../fair-146/"><span class="d">9/26</span><br><span class="n">シンポジウム 花×食＝健幸～京丹波・暮らしの恵みを未来へ～</span></a></li><li><a href="../tanba-kikka/"><span class="d">10月下旬〜（予定）</span><br><span class="n">菊花展</span></a></li></ul></section>
-<section class="rel"><h2>立ち寄れる寄り処</h2><ul class="list"><li><a href="../../shops/smilebird/"><span class="n">smilebird・stone</span><br><span class="d">雑貨・体験　会場から約8km</span></a></li><li><a href="../../shops/tsutaya/"><span class="n">日本料理 津多屋</span><br><span class="d">お食事　会場から約8km</span></a></li><li><a href="../../shops/amabiki-mura/"><span class="n">天引村倶楽部</span><br><span class="d">体験・宿泊　会場から約12km</span></a></li></ul></section>
+<section class="rel"><h2>立ち寄れる寄り処</h2><ul class="list"><li><div class="norow"><span class="n">COMO'S KITCHEN</span><br><span class="d">カフェ・喫茶　会場から約1km</span></div></li><li><div class="norow"><span class="n">御菓子司 山下秀製菓</span><br><span class="d">買う・おみやげ　会場から約4km</span></div></li><li><div class="norow"><span class="n">質美笑楽講（旧質美小学校）</span><br><span class="d">自然・体験　会場から約5km</span></div></li></ul></section>
 <section class="rel">
   <h2>京都丹波を、あそんで知る</h2>
   <p class="body">亀岡・南丹・京丹波の郷土史と防災を、札を並べて学べるカードゲーム「京都丹波タイムトラベル」を無料で公開しています。</p>
