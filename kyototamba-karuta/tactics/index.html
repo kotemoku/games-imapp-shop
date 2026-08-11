@@ -208,6 +208,12 @@ header p{margin-top:10px;font-size:15px;color:var(--mid);max-width:60ch}
 .pc-n{display:block;font-family:var(--min);font-size:15px;font-weight:500;margin:3px 0 5px;line-height:1.5}
 .pc-s{font-family:var(--mon);font-size:13px;color:var(--mid);letter-spacing:.04em}
 .bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:16px}
+/* 編成の出陣バーは画面下に貼る。26枚のカードを抜けた先にしか出陣ボタンが無いと、
+   遊び始めるまでにスマホで11画面ぶんスクロールすることになる。 */
+#setup > .bar{position:sticky;bottom:0;z-index:20;margin:18px -18px 0;padding:12px 18px;
+  background:rgba(245,245,242,.96);border-top:1px solid rgba(16,16,16,.2);
+  backdrop-filter:saturate(140%) blur(6px)}
+@supports not (backdrop-filter: blur(1px)){#setup > .bar{background:var(--bg)}}
 .btn{font:inherit;font-size:15px;font-weight:700;letter-spacing:.06em;padding:11px 22px;cursor:pointer;
   border:1px solid var(--ink);background:transparent;color:var(--ink)}
 .btn:hover{background:var(--ink);color:var(--bg)}
@@ -344,6 +350,18 @@ header p{margin-top:10px;font-size:15px;color:var(--mid);max-width:60ch}
 .big{font-family:var(--min);font-size:20px;font-weight:500;text-align:center;padding:18px 0}
 .hidden{display:none}
 .note{font-size:13px;color:var(--pale);margin-top:16px;line-height:1.9}
+/* ── 狭い画面（ここは必ず最後に置く。前に置くと後続の指定に負ける）── */
+@media(max-width:560px){
+  /* 1列だと26枚で約6,500px。2列にして絵を詰めると3分の1以下になる。 */
+  .pool{grid-template-columns:repeat(2,1fr);gap:8px}
+  .pc{padding:9px 10px}
+  .pc-art{height:92px;margin-bottom:6px}
+  .pc-n{font-size:14px;margin:2px 0 4px;line-height:1.4}
+  .pc-y{font-size:11px;letter-spacing:.06em}
+  .pc-s{font-size:11.5px;letter-spacing:0}
+  .pc-flip{width:30px;height:30px}
+  .mini{width:100%}
+}
 </style>
 </head>
 <body>
