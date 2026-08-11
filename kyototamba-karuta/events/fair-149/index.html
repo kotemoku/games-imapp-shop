@@ -98,12 +98,17 @@ h1{font-family:var(--ktn-min);font-weight:500}
 }
 .ktn-header nav { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 20px; }
 .ktn-header nav a {
-  font-size: 13px;
+  /* ナビは本文より下限を上げる。13px・タップ34px では、老眼の人が
+     「読む前に押せない」で終わる。16px・タップ44px を確保する。 */
+  font-size: 16px;
   font-weight: 500;
-  letter-spacing: .06em;
+  letter-spacing: .04em;
   color: var(--ktn-ink);
   text-decoration: none;
-  padding: 4px 0;
+  padding: 11px 0;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
   border-bottom: 1px solid transparent;
 }
 .ktn-header nav a:hover,
@@ -122,8 +127,15 @@ h1{font-family:var(--ktn-min);font-weight:500}
   .ktn-header { padding: 9px 14px; }
   .ktn-header .ktn-brand b { font-size: 16px; }
   .ktn-header .ktn-brand::after { display: none; }
-  .ktn-header nav { gap: 3px 13px; }
-  .ktn-header nav a { font-size: 13px; }
+  /* 8項目を折り返すとヘッダーが2行=155pxになり、画面の2割を常時食う。
+     文字は大きいまま、1行に並べて横へ流す。 */
+  .ktn-header nav {
+    flex-wrap: nowrap; gap: 0 17px; width: 100%;
+    overflow-x: auto; overscroll-behavior-x: contain;
+    scrollbar-width: none; -webkit-overflow-scrolling: touch;
+  }
+  .ktn-header nav::-webkit-scrollbar { display: none; }
+  .ktn-header nav a { font-size: 15.5px; padding: 9px 0; min-height: 42px; white-space: nowrap; flex: 0 0 auto; }
   .ktn-header nav a.ktn-cta { padding: 6px 11px; }
 }
 
@@ -186,6 +198,13 @@ ul.list .d{font-size:13px;color:rgba(35, 40, 48, .86)}
 ul.list .n{font-size:15px;font-weight:700}
 .note{font-size:13px;color:rgba(35, 40, 48, .86);margin-top:26px}
 /* 今週の京都丹波 */
+.wkhead{display:flex;align-items:baseline;gap:12px;margin:26px 0 2px;padding-bottom:7px;
+  border-bottom:2px solid var(--sumi)}
+.wkhead:first-child{margin-top:6px}
+.wkhead b{font-family:var(--ktn-min);font-size:19px;font-weight:500}
+.wkhead span{font-family:var(--ktn-mon);font-size:13px;color:var(--ktn-ink-pale)}
+.ka-t{margin:3px 0 0;font-size:15px;font-weight:700;color:var(--indigo)}
+.ka-n{margin:4px 0 0;font-size:14px;color:rgba(35,40,48,.86)}
 .wkrow{padding:16px 0}
 .wkrow .ka-meta{gap:12px;flex-wrap:wrap}
 .wkfig{margin:16px 0 0}
@@ -311,16 +330,18 @@ footer.site a{color:inherit}
 
 <dl class="facts">
   <div><dt>開催日</dt><dd>8/27〜10/20</dd></div>
+  <div><dt>時刻</dt><dd>このサイトでは確認できていません。主催者の公式情報をご覧ください。</dd></div>
   <div><dt>会場</dt><dd>京都丹波各所</dd></div>
   <div><dt>市町</dt><dd>南丹市（京都丹波）</dd></div>
   <div><dt>ジャンル</dt><dd>参加する</dd></div>
+  
 </dl>
 <div class="actions">
   <a class="btn primary" href="https://kyototamba-fair.jp/event/" target="_blank" rel="noopener">主催者の公式情報を見る</a>
   <a class="btn ghost" href="https://www.google.com/maps/search/?api=1&amp;query=%E4%BA%AC%E9%83%BD%E4%B8%B9%E6%B3%A2%E5%90%84%E6%89%80" target="_blank" rel="noopener">地図で見る</a>
 </div>
-<p class="note">掲載内容は2026-08-10時点の情報です。日程・内容は変更される場合がありますので、おでかけ前に必ず主催者の公式情報をご確認ください。</p>
-<section class="rel"><h2>南丹市のほかのイベント</h2><ul class="list"><li><a href="../fair-131/"><span class="d">4/20〜10/18</span><br><span class="n">開運なんでも鑑定団～出張！なんでも鑑定団ｉｎ南丹～</span></a></li><li><a href="../fair-160/"><span class="d">9/5〜10/12</span><br><span class="n">南丹市立文化博物館秋季企画展内藤ジョアンと八木城</span></a></li><li><a href="../fair-133/"><span class="d">9/9〜3/24</span><br><span class="n">京都丹波ガーデニングセミナーin南丹市国際交流会館</span></a></li><li><a href="../miyama-ongakusai/"><span class="d">9/17〜9/22</span><br><span class="n">第4回 美山音楽祭</span></a></li><li><a href="../synesthesia/"><span class="d">会期中毎夜</span><br><span class="n">京都イルミネーション シナスタジアヒルズ</span></a></li></ul></section>
+<p class="note">掲載内容は2026-08-11時点の情報です。日程・内容は変更される場合がありますので、おでかけ前に必ず主催者の公式情報をご確認ください。</p>
+<section class="rel"><h2>南丹市のほかのイベント</h2><ul class="list"><li><a href="../fair-160/"><span class="d">9/5〜10/12</span><br><span class="n">南丹市立文化博物館秋季企画展内藤ジョアンと八木城</span></a></li><li><a href="../fair-133/"><span class="d">9/9〜3/24</span><br><span class="n">京都丹波ガーデニングセミナーin南丹市国際交流会館</span></a></li><li><a href="../miyama-ongakusai/"><span class="d">9/17〜9/22</span><br><span class="n">第4回 美山音楽祭</span></a></li><li><a href="../synesthesia/"><span class="d">会期中毎夜</span><br><span class="n">京都イルミネーション シナスタジアヒルズ</span></a></li><li><a href="../fair-161/"><span class="d">9/20</span><br><span class="n">第80回京都南丹市花火大会</span></a></li></ul></section>
 
 <section class="rel">
   <h2>京都丹波を、あそんで知る</h2>
