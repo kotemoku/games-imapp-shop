@@ -529,7 +529,7 @@ function flip(c){
   const el=document.getElementById('backCard');
   el.style.setProperty('--c',COL[c.mid]);
   const map=(c.lat!=null)
-    ? '<a href="https://www.google.com/maps/dir/?api=1&destination='+c.lat+','+c.lng+'" target="_blank" rel="noopener">'+c.place+' への経路</a>'
+    ? '<a href="https://www.google.com/maps/dir/?api=1&amp;destination='+c.lat+','+c.lng+'" target="_blank" rel="noopener">'+c.place+' への経路</a>'
     : (c.place? c.place : '');
   el.innerHTML=
     '<div class="bk-y">'+c.y+'年 ・ '+TOWN[c.mid]+' ・ '+PATJA[c.pat]+'</div>'+
