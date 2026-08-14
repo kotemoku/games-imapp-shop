@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Yori健幸☆フェスタ～Walking＆Sports～（10/12）｜南丹市のイベント｜京都丹波ナビ</title>
+<meta name="description" content="Yori健幸☆フェスタ～Walking＆Sports～。会場は園部公園、開催は10/12。南丹市のイベント情報を京都丹波ナビが掲載しています。">
+<link rel="canonical" href="https://kyoto-tamba.com/events/fair-167/">
+<meta property="og:title" content="Yori健幸☆フェスタ～Walking＆Sports～（10/12）｜南丹市のイベント｜京都丹波ナビ">
+<meta property="og:description" content="Yori健幸☆フェスタ～Walking＆Sports～。会場は園部公園、開催は10/12。南丹市のイベント情報を京都丹波ナビが掲載しています。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kyoto-tamba.com/events/fair-167/">
+<meta property="og:site_name" content="京都丹波ナビ">
+<meta property="og:image" content="https://kyoto-tamba.com/ogp/events.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#274a6d">
+<link rel="icon" href="../../icons/icon-192.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Event","name":"Yori健幸☆フェスタ～Walking＆Sports～","startDate":"2026-10-12","endDate":"2026-10-12","eventStatus":"https://schema.org/EventScheduled","eventAttendanceMode":"https://schema.org/OfflineEventAttendanceMode","location":{"@type":"Place","name":"園部公園","address":{"@type":"PostalAddress","addressRegion":"京都府","addressLocality":"南丹市","addressCountry":"JP"},"geo":{"@type":"GeoCoordinates","latitude":35.106469,"longitude":135.467758}},"url":"https://kyoto-tamba.com/events/fair-167/","isAccessibleForFree":true}</script>
+<style>
+:root{--kiri:#f5f5f2;--sumi:#101010;--indigo:#1c3560;--gold:#b98a2e;--akane:#a5573a;--line:rgba(16,16,16,.16)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--kiri);color:var(--sumi);line-height:1.9;
+  font-family:"Noto Sans JP","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;}
+a{color:var(--indigo)}
+.mincho{font-family:var(--ktn-min)}
+body{font-family:var(--ktn-san)}
+h1{font-family:var(--ktn-min);font-weight:500}
+.btn.primary{background:var(--indigo)}
+/* 京都丹波ナビ 共通トークン＋サイトヘッダー。
+   2026-08-07 全面リニューアル（P6「表紙と誌面」を採用）。
+   このファイルが配色・書体の唯一の正。静的ページ・掲載案内・申込フォームが読み込み、
+   scripts/prerender.mjs は生成ページに inline する。アプリ本体は src/styles/main.css の
+   最終 :root で同じ値を持つ（Vite バンドルのため別管理・値は必ず一致させること）。 */
+
+:root {
+  /* 誌面（P5由来） */
+  --ktn-bg: #f5f5f2;
+  --ktn-paper: #fff;
+  --ktn-ink: #101010;
+  --ktn-ink-mid: #444;
+  --ktn-ink-pale: #5f6368;
+  --ktn-navy: #1c3560;
+  --ktn-gold: #b98a2e;
+  --ktn-rule: rgba(16, 16, 16, .16);
+
+  /* 市町 */
+  --ktn-kameoka: #a5573a;
+  --ktn-nantan: #5b7d4b;
+  --ktn-kyotamba: #3a6a8c;
+
+  /* 書体（OS内蔵のみ・Webフォント読み込みなし） */
+  --ktn-min: "Hiragino Mincho ProN", "游明朝", "Yu Mincho", "HGS明朝E", Georgia, serif;
+  --ktn-san: -apple-system, "Hiragino Sans", "Yu Gothic UI", "Yu Gothic", "Noto Sans JP", sans-serif;
+  --ktn-mon: "SF Mono", Menlo, Consolas, "Courier New", monospace;
+}
+
+/* ── サイトヘッダー（誌面のヘッダ罫）──
+   トップは画面下端の固定ナビだが、下層ページは上部ヘッダー。
+   どちらも同じ書体・同じ罫線で「同じ誌面」に見せる。 */
+.ktn-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  padding: 11px 20px;
+  background: color-mix(in srgb, var(--ktn-bg) 94%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--ktn-ink);
+  font-family: var(--ktn-san);
+}
+/* 店の紹介ページ（public/shops/*）は各店で作った固有のヘッダーを持っている。
+   そこへ sticky を重ねると二段に貼りつくので、これらのページでは流す。
+   下層ページの生成物は従来どおり sticky のまま。 */
+.ktn-header--static { position: static; }
+
+.ktn-header .ktn-in {
+  max-width: 1180px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.ktn-header .ktn-brand {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-right: auto;
+  text-decoration: none;
+  color: var(--ktn-ink);
+}
+.ktn-header .ktn-brand img { display: none; }
+.ktn-header .ktn-brand b {
+  font-family: var(--ktn-min);
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: .1em;
+  line-height: 1.2;
+}
+.ktn-header .ktn-brand::after {
+  content: "KYOTO TAMBA NAVI";
+  font-family: var(--ktn-mon);
+  font-size: 13px;
+  letter-spacing: .2em;
+  color: var(--ktn-ink-pale);
+}
+.ktn-header nav { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 20px; }
+.ktn-header nav a {
+  /* ナビは本文より下限を上げる。13px・タップ34px では、老眼の人が
+     「読む前に押せない」で終わる。16px・タップ44px を確保する。 */
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: .04em;
+  color: var(--ktn-ink);
+  text-decoration: none;
+  padding: 11px 0;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  border-bottom: 1px solid transparent;
+}
+.ktn-header nav a:hover,
+.ktn-header nav a:focus-visible { border-bottom-color: var(--ktn-ink); outline: none; }
+.ktn-header nav a.ktn-cta {
+  color: #fff;
+  background: var(--ktn-navy);
+  padding: 7px 15px;
+  border-bottom: 0;
+  letter-spacing: .08em;
+}
+.ktn-header nav a.ktn-cta:hover,
+.ktn-header nav a.ktn-cta:focus-visible { background: var(--ktn-ink); color: #fff; }
+
+@media (max-width: 560px) {
+  .ktn-header { padding: 9px 14px; }
+  .ktn-header .ktn-brand b { font-size: 16px; }
+  .ktn-header .ktn-brand::after { display: none; }
+  /* 8項目を折り返すとヘッダーが2行=155pxになり、画面の2割を常時食う。
+     文字は大きいまま、1行に並べて横へ流す。 */
+  .ktn-header nav {
+    flex-wrap: nowrap; gap: 0 17px; width: 100%;
+    overflow-x: auto; overscroll-behavior-x: contain;
+    scrollbar-width: none; -webkit-overflow-scrolling: touch;
+  }
+  .ktn-header nav::-webkit-scrollbar { display: none; }
+  .ktn-header nav a { font-size: 15.5px; padding: 9px 0; min-height: 42px; white-space: nowrap; flex: 0 0 auto; }
+  .ktn-header nav a.ktn-cta { padding: 6px 11px; }
+}
+
+/* ── 記事エントリー（誌面の行）──
+   トップの「まもなく開催」と、/week/ の一覧で使う共通の行。
+   アプリ側は src/styles/cover-spread.css に同じ定義がある（Viteバンドルのため別管理）。
+   値を変えるときは両方直すこと。 */
+.ktn-art {
+  display: block;
+  padding: 17px 0;
+  border-bottom: 1px solid rgba(16, 16, 16, .16);
+  text-decoration: none;
+  color: var(--ktn-ink, #101010);
+}
+.ktn-art:last-child { border-bottom: 0; }
+.ktn-art:hover .ka-h,
+.ktn-art:focus-visible .ka-h { text-decoration: underline; text-underline-offset: 4px; }
+.ktn-art .ka-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.ktn-art .ka-tag {
+  font-size: 13px; font-weight: 700; letter-spacing: .08em;
+  color: #fff; padding: 2px 8px; text-decoration: none;
+}
+.ka-tag.kameoka { background: var(--ktn-kameoka, #a5573a); }
+.ka-tag.nantan { background: var(--ktn-nantan, #5b7d4b); }
+.ka-tag.kyotamba { background: var(--ktn-kyotamba, #3a6a8c); }
+.ktn-art .ka-d {
+  font-family: var(--ktn-mon, monospace); font-size: 13px; letter-spacing: .08em;
+  color: rgba(16, 16, 16, .86); font-variant-numeric: tabular-nums; text-decoration: none;
+}
+.ktn-art .ka-h {
+  margin: 7px 0 0; font-family: var(--ktn-min, serif); font-size: 16px; font-weight: 500;
+  line-height: 1.62; letter-spacing: .04em; color: var(--ktn-ink, #101010);
+}
+.ktn-art .ka-v { margin: 5px 0 0; font-size: 13px; color: rgba(16, 16, 16, .86); }
+
+main{max-width:760px;margin:0 auto;padding:28px 20px 64px}
+.crumb{font-family:var(--ktn-mon);font-size:13px;letter-spacing:.1em;color:var(--ktn-ink-pale);margin-bottom:16px}
+.crumb a{color:inherit}
+h1{font-size:clamp(24px,5vw,36px);line-height:1.5;letter-spacing:.04em;margin:0 0 14px}
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+.tag{font-size:13px;font-weight:700;letter-spacing:.06em;padding:4px 11px;background:#fff;border:1px solid var(--line)}
+.tag.town{color:#fff;border:0}
+.over{background:var(--akane);color:#fff;padding:11px 15px;font-size:15px;margin-bottom:18px}
+dl.facts{background:#fff;border:1px solid var(--line);padding:6px 18px;margin:0 0 22px}
+dl.facts>div{display:grid;grid-template-columns:88px 1fr;gap:14px;padding:12px 0;border-bottom:1px solid var(--line)}
+dl.facts>div:last-child{border-bottom:0}
+dt{font-size:13px;font-weight:700;color:rgba(35, 40, 48, .86)}
+dd{margin:0;font-size:15px}
+p.body{font-size:15px}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin:24px 0}
+.btn{display:inline-block;padding:13px 24px;font-size:13px;font-weight:700;letter-spacing:.06em;text-decoration:none}
+.btn.primary{background:var(--indigo);color:#fff}
+.btn.ghost{background:#fff;color:var(--sumi);border:1px solid var(--line)}
+section.rel{margin-top:36px;border-top:1px solid var(--sumi);padding-top:20px}
+section.rel h2{font-family:var(--ktn-mon);font-size:13px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;margin:0 0 12px}
+ul.list{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+ul.list a,ul.list .norow{display:block;background:#fff;border:1px solid var(--line);padding:13px 16px;text-decoration:none;color:inherit}
+ul.list a:hover{border-color:var(--indigo)}
+ul.list .d{font-size:13px;color:rgba(35, 40, 48, .86)}
+ul.list .n{font-size:15px;font-weight:700}
+.note{font-size:13px;color:rgba(35, 40, 48, .86);margin-top:26px}
+/* 今週の京都丹波 */
+.wkhead{display:flex;align-items:baseline;gap:12px;margin:26px 0 2px;padding-bottom:7px;
+  border-bottom:2px solid var(--sumi)}
+.wkhead:first-child{margin-top:6px}
+.wkhead b{font-family:var(--ktn-min);font-size:19px;font-weight:500}
+.wkhead span{font-family:var(--ktn-mon);font-size:13px;color:var(--ktn-ink-pale)}
+.ka-t{margin:3px 0 0;font-size:15px;font-weight:700;color:var(--indigo)}
+.ka-n{margin:4px 0 0;font-size:14px;color:rgba(35,40,48,.86)}
+.wkrow{padding:16px 0}
+.wkrow .ka-meta{gap:12px;flex-wrap:wrap}
+.wkfig{margin:16px 0 0}
+.wkfig img{display:block;width:100%;max-height:420px;object-fit:cover;border:1px solid var(--line)}
+.wkfig figcaption{margin-top:7px;font-family:var(--ktn-mon);font-size:13px;letter-spacing:.14em;color:rgba(16, 16, 16, .86)}
+
+/* 表紙の写真募集 */
+.pshots{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:20px 0 6px}
+.pshots span{display:block;height:130px;background-size:cover;background-position:center;border:1px solid var(--line)}
+.ktnr{display:flex;align-items:baseline;gap:16px;padding:34px 0 12px;border-bottom:1px solid var(--sumi);margin-bottom:16px}
+.plist{list-style:none;margin:0;padding:0;display:grid;gap:0}
+.plist li{padding:14px 0;border-bottom:1px solid var(--line);font-size:15px;line-height:1.95}
+.plist li b{font-family:var(--ktn-min);font-size:15px;font-weight:500;margin-right:6px}
+.pcaution{color:var(--akane);font-weight:700;margin-top:14px}
+.pterms{background:#fff;border:1px solid var(--line);margin:18px 0 0}
+.pterms summary{cursor:pointer;padding:14px 17px;font-size:15px;font-weight:700}
+.pt-in{border-top:1px solid var(--line);padding:16px 17px;max-height:340px;overflow-y:auto;font-size:13px;line-height:1.95}
+.pt-in h4{font-size:13px;margin:14px 0 2px}.pt-in h4:first-child{margin-top:0}
+.pt-tail{margin-top:14px;color:rgba(16, 16, 16, .86)}
+.pf-row{display:grid;gap:6px;margin-bottom:16px}
+.pf-row label{font-size:13px;font-weight:700}
+.pf-row > label:not(.pf-pick) > b{color:#fff;background:var(--akane);font-size:13px;padding:1px 7px;margin-left:5px}
+.pf-pick b{background:none;color:inherit;padding:0;margin:0}
+.pf-pick > span b{display:inline;font-size:inherit;font-family:inherit;font-weight:700}
+.pf-row label span{color:rgba(16, 16, 16, .86);font-size:13px;font-weight:400;margin-left:5px}
+.pf-row input,.pf-row textarea,#pfOut{width:100%;font:inherit;font-size:15px;padding:11px 13px;
+  border:1px solid var(--line);background:#fff;color:var(--sumi);border-radius:0}
+.pf-row input:focus,.pf-row textarea:focus{outline:2px solid var(--indigo);outline-offset:-2px}
+.pf-agree{display:flex;gap:10px;align-items:flex-start;background:#fff;border:1px solid var(--line);
+  padding:14px 16px;font-size:15px;margin-bottom:6px}
+.pf-agree input{width:18px;height:18px;margin-top:3px;flex:none;accent-color:var(--indigo)}
+.perr{color:var(--akane);font-weight:700;font-size:15px}
+.pflow{margin:14px 0 0;padding:13px 16px;background:#fff;border-left:3px solid var(--indigo);font-size:15px;line-height:1.9}
+.pf-pick{display:block;border:1px dashed var(--line);background:#fff;padding:20px 18px;text-align:center;cursor:pointer;transition:border-color .18s}
+.pf-pick:hover{border-color:var(--indigo)}
+.pf-pick input{display:none}
+.pf-pick b{display:block;font-family:var(--ktn-min);font-size:16px;font-weight:500}
+.pf-pick span{display:block;margin-top:7px;font-size:13px;color:rgba(16, 16, 16, .86);line-height:1.85}
+.pf-prev{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+.pf-prev figure{margin:0;width:112px}
+.pf-prev img{display:block;width:112px;height:84px;object-fit:cover;border:1px solid var(--line)}
+.pf-prev figcaption{margin-top:4px;font-size:13px;color:rgba(16, 16, 16, .86);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#pfOut{font-family:var(--ktn-mon);font-size:13px;line-height:1.9;white-space:pre-wrap}
+
+/* 一日のコース */
+.tsub{font-family:var(--ktn-mon);font-size:13px;letter-spacing:.22em;color:var(--ktn-ink-pale);margin-bottom:6px}
+p.lead{font-size:15px;line-height:2;max-width:36em}
+.routenote{margin-top:10px}
+.stops{list-style:none;margin:34px 0 0;padding:0;counter-reset:st}
+.stop{display:grid;grid-template-columns:64px 1fr;gap:0 18px;padding:0 0 30px;position:relative}
+.stop::before{content:"";position:absolute;left:31px;top:34px;bottom:0;width:1px;background:var(--line)}
+.stop:last-child::before{display:none}
+.stop-n{font-family:var(--ktn-mon);font-size:15px;font-weight:700;letter-spacing:.1em;
+  color:#fff;background:var(--sumi);width:34px;height:34px;display:grid;place-items:center;position:relative;z-index:1}
+.stop-b h3{font-family:var(--ktn-min);font-size:21px;font-weight:500;letter-spacing:.05em;margin:4px 0 0}
+.stop-lb{margin:6px 0 0;font-size:15px;color:var(--sumi)}
+.stop-note{margin:5px 0 0;font-size:15px;color:rgba(16, 16, 16, .86);line-height:1.9}
+.stop-img{height:190px;background-size:cover;background-position:center;border:1px solid var(--line);margin-bottom:12px}
+.stop-links{display:flex;gap:16px;margin-top:11px}
+.stop-links a{font-size:13px;font-weight:700;border-bottom:1px solid currentColor;text-decoration:none}
+.closing{margin-top:6px;padding:16px 18px;background:#fff;border:1px solid var(--line);font-size:15px}
+.tcards{display:grid;gap:18px;margin:24px 0 8px}
+.tcard{display:block;background:#fff;border:1px solid var(--line);padding:0 0 18px;text-decoration:none;color:inherit;
+  transition:border-color .18s}
+.tcard:hover{border-color:var(--indigo)}
+.tcard-img{display:block;height:200px;background-size:cover;background-position:center;margin-bottom:16px}
+.tcard-sub{display:block;padding:0 18px;font-family:var(--ktn-mon);font-size:13px;letter-spacing:.2em;color:rgba(16, 16, 16, .86)}
+.tcard-h{display:block;padding:0 18px;margin-top:6px;font-family:var(--ktn-min);font-size:23px;font-weight:500;letter-spacing:.05em}
+.tcard-l{display:block;padding:0 18px;margin-top:9px;font-size:15px;line-height:1.9;color:rgba(16, 16, 16, .86)}
+.tcard-s{display:block;padding:0 18px;margin-top:10px;font-size:13px;color:rgba(16, 16, 16, .86)}
+@media(min-width:720px){.tcards{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:560px){.stop{grid-template-columns:44px 1fr;gap:0 12px}.stop::before{left:21px}
+  .stop-n{width:26px;height:26px;font-size:13px}.stop-b h3{font-size:18px}.stop-img{height:160px}}
+
+/* 一覧の絞り込み（時期・市町）。57件を縦スクロールするしかない状態への対処。 */
+.filters{margin:18px 0 20px;display:grid;gap:9px}
+.frow{display:flex;flex-wrap:wrap;align-items:center;gap:7px}
+.flab{font-family:var(--ktn-mon);font-size:13px;font-weight:700;letter-spacing:.16em;color:var(--ktn-ink-pale);width:34px;flex:none}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;cursor:pointer;
+  border:1px solid var(--line);background:#fff;color:var(--sumi);font:inherit;font-size:13px;font-weight:700;
+  transition:background .15s,border-color .15s,color .15s}
+.chip:hover{border-color:var(--indigo)}
+.chip.on{background:var(--indigo);border-color:var(--indigo);color:#fff}
+.chip i{font-style:normal;font-size:13px;opacity:.62;font-weight:400}
+.chip.on i{opacity:.8}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;flex:none;opacity:1}
+.dot.kameoka{background:#a5573a}.dot.nantan{background:#5b7d4b}.dot.kyotamba{background:#3a6a8c}
+.chip .dot{margin-right:1px}
+ul.list .d .dot{margin-right:6px;vertical-align:middle}
+.empty{padding:26px 16px;text-align:center;font-size:15px;color:var(--ktn-ink-pale);
+  background:#fff;border:1px dashed var(--line)}
+@media(max-width:480px){.flab{width:100%}}
+footer.site{border-top:1px solid var(--line);padding:22px 20px 40px;text-align:center;font-size:13px;color:rgba(35, 40, 48, .86)}
+footer.site a{color:inherit}
+footer.site .ig{display:inline-block;margin-top:12px;font-weight:700;color:var(--indigo)}
+@media(max-width:560px){dl.facts>div{grid-template-columns:74px 1fr;gap:10px}}
+</style>
+</head>
+<body>
+<header class="ktn-header"><div class="ktn-in">
+  <a class="ktn-brand" href="../../index.html"><img src="../../icons/icon-192.png" alt="" width="34" height="34"><b>京都丹波ナビ</b></a>
+  <nav aria-label="サイト内">
+    <a href="../../week/index.html">今週</a>
+    <a href="../../course/index.html">一日のコース</a>
+    <a href="../../events/index.html">イベント</a>
+    <a href="../../shops/index.html">寄り処</a>
+    <a href="../../index.html?play=1">あそぶ</a>
+    <a href="../../tactics/index.html">丹波タクティクス</a>
+    <a href="../../photo/index.html">写真を送る</a>
+    <a class="ktn-cta" href="../../ads/index.html">掲載のご案内</a>
+  </nav>
+</div></header>
+<main>
+
+<p class="crumb"><a href="../../index.html">京都丹波ナビ</a> ＞ <a href="../index.html">イベント</a> ＞ 南丹市</p>
+<h1 class="mincho">Yori健幸☆フェスタ～Walking＆Sports～</h1>
+<div class="tags">
+  <span class="tag town" style="background:#5b7d4b">南丹市</span>
+  <span class="tag">食べる・体験する</span>
+  <span class="tag">緑化フェア公式</span>
+  
+</div>
+
+
+<dl class="facts">
+  <div><dt>開催日</dt><dd>10/12</dd></div>
+  <div><dt>時刻</dt><dd>09:30〜16:00</dd></div>
+  
+  <div><dt>会場</dt><dd>園部公園</dd></div>
+  <div><dt>市町</dt><dd>南丹市（京都丹波）</dd></div>
+  <div><dt>ジャンル</dt><dd>食べる・体験する</dd></div>
+  
+</dl>
+<div class="actions">
+  <a class="btn primary" href="https://kyototamba-fair.jp/event/" target="_blank" rel="noopener">主催者の公式情報を見る</a>
+  <a class="btn ghost" href="https://www.google.com/maps/dir/?api=1&amp;destination=35.106469,135.467758" target="_blank" rel="noopener">経路をしらべる</a>
+</div>
+<p class="note">掲載内容は2026-08-14時点の情報です。日程・内容は変更される場合がありますので、おでかけ前に必ず主催者の公式情報をご確認ください。</p>
+<section class="rel"><h2>南丹市のほかのイベント</h2><ul class="list"><li><a href="../fair-147/"><span class="d">7/14・7/28・8/4・8/18</span><br><span class="n">学びの南丹楽しい音楽教室♪</span></a></li><li><a href="../fair-149/"><span class="d">8/27・9/29・10/20</span><br><span class="n">オレンジガーデニングプロジェクト</span></a></li><li><a href="../fair-160/"><span class="d">9/5〜10/12</span><br><span class="n">南丹市立文化博物館秋季企画展内藤ジョアンと八木城</span></a></li><li><a href="../fair-133/"><span class="d">9/9ほか全17回（〜3/24）</span><br><span class="n">京都丹波ガーデニングセミナーin南丹市国際交流会館</span></a></li><li><a href="../miyama-ongakusai/"><span class="d">9/17〜9/22</span><br><span class="n">第4回 美山音楽祭</span></a></li></ul></section>
+<section class="rel"><h2>立ち寄れる寄り処</h2><ul class="list"><li><a href="../../shops/smilebird/"><span class="n">smilebird・stone</span><br><span class="d">雑貨・体験　会場から約1km</span></a></li><li><a href="../../shops/tsutaya/"><span class="n">日本料理 津多屋</span><br><span class="d">お食事　会場から約1km</span></a></li><li><div class="norow"><span class="n">café cotton</span><br><span class="d">カフェ・喫茶　会場から約1km</span></div></li></ul></section>
+<section class="rel">
+  <h2>京都丹波を、あそんで知る</h2>
+  <p class="body">亀岡・南丹・京丹波の郷土史と防災を、札を並べて学べるカードゲーム「京都丹波タイムトラベル」を無料で公開しています。</p>
+  <a class="btn primary" href="../../index.html">あそんでみる</a>
+</section>
+</main>
+<footer class="site">
+  <a href="../../index.html">京都丹波ナビ トップ</a> ・
+  <a href="../../week/index.html">今週の京都丹波</a> ・
+  <a href="../../course/index.html">一日のコース</a> ・
+  <a href="../../events/index.html">イベント一覧</a> ・
+  <a href="../../shops/index.html">寄り処一覧</a> ・
+  <a href="../../photo/index.html">写真を送る</a> ・
+  <a href="../../ads/index.html">掲載のご案内</a>
+  <br><a class="ig" href="https://www.instagram.com/kyototambanavi/" target="_blank" rel="noopener">Instagram @kyototambanavi</a>
+</footer>
+</body>
+</html>

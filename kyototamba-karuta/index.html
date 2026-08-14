@@ -5,11 +5,38 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>京都丹波ナビ｜亀岡・南丹・京丹波のイベント・お店・歴史</title>
 <meta name="description" content="京都丹波（亀岡市・南丹市・京丹波町）のイベント情報とお店を掲載。郷土史を遊んで学べるカードゲーム「京都丹波タイムトラベル」も無料で公開しています。" />
+<link rel="canonical" href="https://kyoto-tamba.com/" />
+<!-- 共有カード。ここが無いと LINE や X に貼ったとき画像の出ない灰色の行になる。
+     素材は scripts/build-ogp.mjs、下層ページは site-shell.mjs の ogImageFor が自動で割り当てる。 -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://kyoto-tamba.com/" />
+<meta property="og:site_name" content="京都丹波ナビ" />
+<meta property="og:title" content="京都丹波ナビ｜亀岡・南丹・京丹波のイベント・お店・歴史" />
+<meta property="og:description" content="京都丹波（亀岡市・南丹市・京丹波町）のイベント情報とお店を掲載。郷土史を遊んで学べるカードゲーム「京都丹波タイムトラベル」も無料で公開しています。" />
+<meta property="og:image" content="https://kyoto-tamba.com/ogp/site.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
 <meta name="theme-color" content="#19242d" />
 <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png" />
 <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16.png" />
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
 <link rel="manifest" href="manifest.webmanifest" />
+<!-- 下層ページは JSON-LD を出しているのに、トップだけ無かった（2026-08-14 監査）。
+     書くのは /about/ に既に書いてある事実だけ。連絡先も屋号もそこと同じ。 -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+ {"@type":"WebSite","@id":"https://kyoto-tamba.com/#site","url":"https://kyoto-tamba.com/",
+  "name":"京都丹波ナビ","inLanguage":"ja",
+  "description":"京都丹波（亀岡市・南丹市・京丹波町）のイベント情報とお店の案内。",
+  "publisher":{"@id":"https://kyoto-tamba.com/#pub"}},
+ {"@type":"Organization","@id":"https://kyoto-tamba.com/#pub","name":"teraia",
+  "url":"https://kyoto-tamba.com/about/","email":"kotera@teraia.net",
+  "logo":"https://kyoto-tamba.com/icons/icon-512.png",
+  "areaServed":["亀岡市","南丹市","京丹波町"],
+  "sameAs":["https://www.instagram.com/kyototambanavi/"]}
+]}
+</script>
 <script src="ga-init.js" defer></script>
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -17,13 +44,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;700;900&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet" />
-  <script type="module" crossorigin src="./assets/index-NWBesEK8.js"></script>
+  <script type="module" crossorigin src="./assets/index-Gv8zpxQw.js"></script>
   <link rel="stylesheet" crossorigin href="./assets/index-DFOnv2I2.css">
 </head>
 <body>
 <div class="wrap">
   <header class="top">
-    <div class="title-block"><h1 id="hTitle"></h1><div class="sub" id="hSub"></div></div>
+    <div class="title-block"><h1 id="hTitle">京都丹波タイムトラベル</h1><div class="sub" id="hSub"></div></div>
     <div class="top-right">
       <button class="megbtn" id="meguriBtn" aria-label="touring passport">🌸 <span id="meguriBtnLabel"></span></button>
       <button class="fontbtn" id="fontBtn" aria-label="text size"></button>
@@ -79,9 +106,9 @@
     <div class="st-langrow"><button class="langbtn ghost" id="langBtn2">EN</button></div>
 
     <div class="ktn-hero-body">
-      <p class="ktn-kicker" id="stEyebrow"></p>
-      <h2 class="ktn-headline" id="stBrand"></h2>
-      <p class="ktn-sub" id="stTitle"></p>
+      <p class="ktn-kicker" id="stEyebrow">亀岡・南丹・京丹波</p>
+      <h2 class="ktn-headline" id="stBrand">京都丹波ナビ</h2>
+      <p class="ktn-sub" id="stTitle">亀岡・南丹・京丹波の、イベントとお店と歴史。</p>
       <div class="tenant hidden" id="tenantBadge"></div>
     </div>
 
@@ -333,6 +360,6 @@
   </div>
   <div class="deep-actions" id="deepActions"></div>
 </div></div>
-
+
 </body>
 </html>
