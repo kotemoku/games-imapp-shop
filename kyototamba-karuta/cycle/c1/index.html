@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>亀岡観光ショートコース（30km）｜サイクルコースと道すがらの寄り処｜京都丹波ナビ</title>
+<meta name="description" content="亀岡観光ショートコース（30km・初級）のルートと、道すがらに寄れる寄り処・名所を走る順にまとめました。">
+<link rel="canonical" href="https://kyoto-tamba.com/cycle/c1/">
+<meta property="og:title" content="亀岡観光ショートコース（30km）｜サイクルコースと道すがらの寄り処｜京都丹波ナビ">
+<meta property="og:description" content="亀岡観光ショートコース（30km・初級）のルートと、道すがらに寄れる寄り処・名所を走る順にまとめました。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kyoto-tamba.com/cycle/c1/">
+<meta property="og:site_name" content="京都丹波ナビ">
+<meta name="theme-color" content="#2E4B3C">
+<link rel="icon" href="../../icons/favicon-32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap">
+<style>/* 京都丹波ナビ 共通トークン＋サイトヘッダー。
+   2026-08-07 全面リニューアル（P6「表紙と誌面」を採用）。
+   このファイルが配色・書体の唯一の正。静的ページ・掲載案内・申込フォームが読み込み、
+   scripts/prerender.mjs は生成ページに inline する。アプリ本体は src/styles/main.css の
+   最終 :root で同じ値を持つ（Vite バンドルのため別管理・値は必ず一致させること）。 */
+
+:root {
+  /* 誌面（P5由来） */
+  --ktn-bg: #f5f5f2;
+  --ktn-paper: #fff;
+  --ktn-ink: #101010;
+  --ktn-ink-mid: #444;
+  --ktn-ink-pale: #5f6368;
+  --ktn-navy: #1c3560;
+  --ktn-gold: #b98a2e;
+  --ktn-rule: rgba(16, 16, 16, .16);
+
+  /* 市町 */
+  --ktn-kameoka: #a5573a;
+  --ktn-nantan: #5b7d4b;
+  --ktn-kyotamba: #3a6a8c;
+
+  /* 書体（OS内蔵のみ・Webフォント読み込みなし） */
+  --ktn-min: "Hiragino Mincho ProN", "游明朝", "Yu Mincho", "HGS明朝E", Georgia, serif;
+  --ktn-san: -apple-system, "Hiragino Sans", "Yu Gothic UI", "Yu Gothic", "Noto Sans JP", sans-serif;
+  --ktn-mon: "SF Mono", Menlo, Consolas, "Courier New", monospace;
+}
+
+/* ── サイトヘッダー（誌面のヘッダ罫）──
+   トップは画面下端の固定ナビだが、下層ページは上部ヘッダー。
+   どちらも同じ書体・同じ罫線で「同じ誌面」に見せる。 */
+.ktn-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  padding: 11px 20px;
+  background: color-mix(in srgb, var(--ktn-bg) 94%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--ktn-ink);
+  font-family: var(--ktn-san);
+}
+/* 店の紹介ページ（public/shops/*）は各店で作った固有のヘッダーを持っている。
+   そこへ sticky を重ねると二段に貼りつくので、これらのページでは流す。
+   下層ページの生成物は従来どおり sticky のまま。 */
+.ktn-header--static { position: static; }
+
+.ktn-header .ktn-in {
+  max-width: 1180px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.ktn-header .ktn-brand {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-right: auto;
+  text-decoration: none;
+  color: var(--ktn-ink);
+}
+.ktn-header .ktn-brand img { display: none; }
+.ktn-header .ktn-brand b {
+  font-family: var(--ktn-min);
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: .1em;
+  line-height: 1.2;
+}
+.ktn-header .ktn-brand::after {
+  content: "KYOTO TAMBA NAVI";
+  font-family: var(--ktn-mon);
+  font-size: 13px;
+  letter-spacing: .2em;
+  color: var(--ktn-ink-pale);
+}
+.ktn-header nav { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 20px; }
+.ktn-header nav a {
+  /* ナビは本文より下限を上げる。13px・タップ34px では、老眼の人が
+     「読む前に押せない」で終わる。16px・タップ44px を確保する。 */
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: .04em;
+  color: var(--ktn-ink);
+  text-decoration: none;
+  padding: 11px 0;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  border-bottom: 1px solid transparent;
+}
+.ktn-header nav a:hover,
+.ktn-header nav a:focus-visible { border-bottom-color: var(--ktn-ink); outline: none; }
+.ktn-header nav a.ktn-cta {
+  color: #fff;
+  background: var(--ktn-navy);
+  padding: 7px 15px;
+  border-bottom: 0;
+  letter-spacing: .08em;
+}
+.ktn-header nav a.ktn-cta:hover,
+.ktn-header nav a.ktn-cta:focus-visible { background: var(--ktn-ink); color: #fff; }
+
+@media (max-width: 560px) {
+  .ktn-header { padding: 9px 14px; }
+  .ktn-header .ktn-brand b { font-size: 16px; }
+  .ktn-header .ktn-brand::after { display: none; }
+  /* 8項目を折り返すとヘッダーが2行=155pxになり、画面の2割を常時食う。
+     文字は大きいまま、1行に並べて横へ流す。 */
+  .ktn-header nav {
+    flex-wrap: nowrap; gap: 0 17px; width: 100%;
+    overflow-x: auto; overscroll-behavior-x: contain;
+    scrollbar-width: none; -webkit-overflow-scrolling: touch;
+  }
+  .ktn-header nav::-webkit-scrollbar { display: none; }
+  .ktn-header nav a { font-size: 15.5px; padding: 9px 0; min-height: 42px; white-space: nowrap; flex: 0 0 auto; }
+  .ktn-header nav a.ktn-cta { padding: 6px 11px; }
+}
+
+/* ── 記事エントリー（誌面の行）──
+   トップの「まもなく開催」と、/week/ の一覧で使う共通の行。
+   アプリ側は src/styles/cover-spread.css に同じ定義がある（Viteバンドルのため別管理）。
+   値を変えるときは両方直すこと。 */
+.ktn-art {
+  display: block;
+  padding: 17px 0;
+  border-bottom: 1px solid rgba(16, 16, 16, .16);
+  text-decoration: none;
+  color: var(--ktn-ink, #101010);
+}
+.ktn-art:last-child { border-bottom: 0; }
+.ktn-art:hover .ka-h,
+.ktn-art:focus-visible .ka-h { text-decoration: underline; text-underline-offset: 4px; }
+.ktn-art .ka-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.ktn-art .ka-tag {
+  font-size: 13px; font-weight: 700; letter-spacing: .08em;
+  color: #fff; padding: 2px 8px; text-decoration: none;
+}
+.ka-tag.kameoka { background: var(--ktn-kameoka, #a5573a); }
+.ka-tag.nantan { background: var(--ktn-nantan, #5b7d4b); }
+.ka-tag.kyotamba { background: var(--ktn-kyotamba, #3a6a8c); }
+.ktn-art .ka-d {
+  font-family: var(--ktn-mon, monospace); font-size: 13px; letter-spacing: .08em;
+  color: rgba(16, 16, 16, .86); font-variant-numeric: tabular-nums; text-decoration: none;
+}
+.ktn-art .ka-h {
+  margin: 7px 0 0; font-family: var(--ktn-min, serif); font-size: 16px; font-weight: 500;
+  line-height: 1.62; letter-spacing: .04em; color: var(--ktn-ink, #101010);
+}
+.ktn-art .ka-v { margin: 5px 0 0; font-size: 13px; color: rgba(16, 16, 16, .86); }
+
+:root{
+  --fukamidori:#2E4B3C;
+  --kinari:#F7F4EC;
+  --sumi:#26241F;
+  --usunezu:#8A867B;
+  --kiji:#EAE4D5;
+  --mincho:'Zen Old Mincho',"Hiragino Mincho ProN","游明朝","Yu Mincho",serif;
+  --gothic:'Noto Sans JP',-apple-system,"Hiragino Sans","Yu Gothic UI",sans-serif;
+  --accent:var(--fukamidori);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--gothic);background:var(--kinari);color:var(--sumi);
+  line-height:1.9;letter-spacing:.03em;padding-bottom:0}
+img{max-width:100%;height:auto;display:block}
+a{color:inherit}
+
+/* 写真の枠。画像が無い店・イベントでも骨格が崩れないよう、地色で埋める。 */
+.ph{display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.85);
+  font-family:var(--mincho);font-size:.85rem;letter-spacing:.25em;
+  background:linear-gradient(135deg,#3d5c4a 0%,#2E4B3C 45%,#22382d 100%);
+  position:relative;overflow:hidden}
+.ph::after{content:"";position:absolute;inset:0;
+  background:repeating-linear-gradient(100deg,transparent 0 22px,rgba(255,255,255,.035) 22px 24px)}
+.ph.warm{background:linear-gradient(135deg,#8a5a3c 0%,#6e452c 50%,#553521 100%)}
+.ph.night{background:linear-gradient(160deg,#2b3550 0%,#1e2740 55%,#141b30 100%)}
+.ph img{position:relative;z-index:1;width:100%;height:100%;object-fit:cover}
+.ph.has-img::after{display:none}
+
+.section{max-width:720px;margin:0 auto;padding:0 24px}
+.eyebrow{font-size:.72rem;font-weight:500;letter-spacing:.35em;
+  color:var(--accent);display:block;margin-bottom:.6rem}
+h1,h2,h3{font-family:var(--mincho);font-weight:600;letter-spacing:.08em;line-height:1.5}
+h2{font-size:1.12rem;color:var(--fukamidori);margin:48px 0 18px}
+p{font-size:.95rem}
+
+.info-table{width:100%;border-collapse:collapse;font-size:.92rem}
+.info-table th{font-family:var(--mincho);font-weight:600;text-align:left;color:var(--fukamidori);
+  padding:14px 16px 14px 0;width:7em;border-bottom:1px solid var(--kiji);vertical-align:top;
+  letter-spacing:.15em;white-space:nowrap}
+.info-table td{padding:14px 0;border-bottom:1px solid var(--kiji)}
+
+.sns-row{display:flex;flex-wrap:wrap;gap:10px;margin:26px 0 0}
+.sns-btn{display:inline-flex;align-items:center;gap:7px;min-height:44px;padding:10px 18px;
+  border:1px solid var(--kiji);background:#fff;text-decoration:none;font-size:.88rem;
+  letter-spacing:.08em;color:var(--sumi)}
+.sns-btn:hover{border-color:var(--accent);color:var(--accent)}
+.sns-btn.solid{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+/* 下帯。全ページ固定。ここが「京都丹波ナビの頁だ」と分かる唯一の印。 */
+.ktn-band{background:var(--fukamidori);color:var(--kinari);margin-top:64px;
+  padding:30px 24px 34px;text-align:center;font-size:.78rem;letter-spacing:.18em}
+.ktn-band a{color:var(--kinari)}
+.ktn-band .bn{font-family:var(--mincho);font-size:1rem;letter-spacing:.3em;display:block;margin-bottom:8px}
+.footer-note{text-align:center;font-size:.72rem;color:var(--usunezu);
+  padding:44px 24px 10px;letter-spacing:.12em;line-height:1.9}
+
+@media(max-width:560px){
+  .section{padding:0 18px}
+  h2{font-size:1.05rem;margin:38px 0 14px}
+  .info-table th{width:5.5em;padding-right:10px;font-size:.86rem}
+  .info-table td{font-size:.9rem}
+}
+@media (prefers-reduced-motion: reduce){*{animation:none !important;transition:none !important}}
+:root{--accent:#5E8C4A}
+.chead{padding:34px 24px 6px}
+.chead h1{font-size:1.5rem;line-height:1.5}
+.cmeta{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;font-size:.9rem;color:var(--usunezu)}
+.cmeta b{font-family:var(--mincho);font-size:1.2rem;color:var(--accent);font-weight:600}
+.cs{display:flex;gap:14px;align-items:flex-start;padding:16px 0;border-bottom:1px solid var(--kiji);list-style:none}
+.csk{flex:0 0 4.4em;font-family:var(--mincho);color:var(--accent);font-size:1rem;letter-spacing:.04em;padding-top:2px}
+.csb{flex:1 1 auto;min-width:0}
+.csn{display:block;font-family:var(--mincho);font-size:1.02rem;line-height:1.5}
+.csm{display:block;font-size:.84rem;color:var(--usunezu);margin-top:4px}
+.csd{display:block;font-size:.78rem;color:var(--usunezu);margin-top:2px}
+.csr{flex:0 0 auto;min-height:44px;display:inline-flex;align-items:center;padding:0 14px;
+  border:1px solid var(--kiji);background:#fff;text-decoration:none;font-size:.84rem}
+.csr:hover{border-color:var(--accent);color:var(--accent)}
+ul.stops{margin:0;padding:0}
+.none{color:var(--usunezu);font-size:.9rem}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Route","name":"亀岡観光ショートコース","url":"https://kyoto-tamba.com/cycle/c1/","distance":"30 km"}</script>
+</head>
+<body>
+<header class="ktn-header"><div class="ktn-in">
+  <a class="ktn-brand" href="../../index.html"><img src="../../icons/icon-192.png" alt="" width="34" height="34"><b>京都丹波ナビ</b></a>
+  <nav aria-label="サイト内">
+    <a href="../../week/index.html">今週</a>
+    <a href="../../course/index.html">一日のコース</a>
+    <a href="../../events/index.html">イベント</a>
+    <a href="../../shops/index.html">寄り処</a>
+    <a href="../../index.html?play=1">あそぶ</a>
+    <a href="../../tactics/index.html">丹波タクティクス</a>
+    <a href="../../photo/index.html">写真を送る</a>
+    <a class="ktn-cta" href="../../ads/index.html">掲載のご案内</a>
+  </nav>
+</div></header>
+
+<section class="section chead">
+  <span class="eyebrow">サイクルコース</span>
+  <h1>亀岡観光ショートコース</h1>
+  <div class="cmeta"><span><b>30</b> km</span>
+    <span>初級</span>
+    <span>計測 約27km</span></div>
+  <div class="sns-row">
+    <a class="sns-btn solid" href="https://ridewithgps.com/routes/37332747" target="_blank" rel="noopener">ルートを見る（Ride with GPS）</a>
+    <a class="sns-btn" href="../../gpx/kyototamba-cycle-c1.gpx" download>GPXをダウンロード</a>
+    <a class="sns-btn" href="https://www.pref.kyoto.jp/doroke/news/bic-kyototamba.html" target="_blank" rel="noopener">京都府の公式案内</a>
+  </div>
+</section>
+
+<section class="section">
+  <h2>道すがら（走る順）</h2>
+  <ul class="stops">
+<li class="cs">
+  <span class="csk">スタート</span>
+  <span class="csb">
+    <span class="csn">保津川下り乗船場</span>
+    <span class="csm">札の場所・角倉了以、保津川を開く</span>
+    <span class="csd">ルートから31m</span>
+  </span>
+  <a class="csr" href="https://www.google.com/maps/dir/?api=1&amp;destination=35.01743,135.58664" target="_blank" rel="noopener">経路</a>
+</li>
+<li class="cs">
+  <span class="csk">スタート</span>
+  <span class="csb">
+    <span class="csn">丹波亀山城跡</span>
+    <span class="csm">札の場所・明智光秀、亀山城を築く ／ 近世の亀山城、完成</span>
+    <span class="csd">ルートから542m　（大本 本部（亀山城跡））</span>
+  </span>
+  <a class="csr" href="https://www.google.com/maps/dir/?api=1&amp;destination=35.01285,135.58364" target="_blank" rel="noopener">経路</a>
+</li>
+<li class="cs">
+  <span class="csk">2.6km</span>
+  <span class="csb">
+    <span class="csn">和カフェ・毘沙門てらす</span>
+    <span class="csm">寄り処・カフェ・喫茶</span>
+    <span class="csd">ルートから44m</span>
+  </span>
+  <a class="csr" href="https://www.google.com/maps/dir/?api=1&amp;destination=35.03631280054539,135.58335272327383" target="_blank" rel="noopener">経路</a>
+</li>
+<li class="cs">
+  <span class="csk">3.1km</span>
+  <span class="csb">
+    <span class="csn">史跡 丹波国分寺跡</span>
+    <span class="csm">札の場所・丹波国分寺、建立の詔</span>
+    <span class="csd">ルートから379m</span>
+  </span>
+  <a class="csr" href="https://www.google.com/maps/dir/?api=1&amp;destination=35.04143,135.57907" target="_blank" rel="noopener">経路</a>
+</li>
+<li class="cs">
+  <span class="csk">5.2km</span>
+  <span class="csb">
+    <span class="csn">出雲大神宮</span>
+    <span class="csm">札の場所・出雲大神宮の本殿成る</span>
+    <span class="csd">ルートから150m</span>
+  </span>
+  <a class="csr" href="https://www.google.com/maps/dir/?api=1&amp;destination=35.05951,135.57869" target="_blank" rel="noopener">経路</a>
+</li>
+<li class="cs">
+  <span class="csk">5.9km</span>
+  <span class="csb">
+    <span class="csn">千歳車塚古墳</span>
+    <span class="csm">札の場所・千歳に大王の墳墓</span>
+    <span class="csd">ルートから23m</span>
+  </span>
+  <a class="csr" href="https://www.google.com/maps/dir/?api=1&amp;destination=35.05704,135.57067" target="_blank" rel="noopener">経路</a>
+</li>
+<li class="cs">
+  <span class="csk">18.4km</span>
+  <span class="csb">
+    <span class="csn">湯の花温泉</span>
+    <span class="csm">札の場所・湯の花温泉、ひらく</span>
+    <span class="csd">ルートから24m</span>
+  </span>
+  <a class="csr" href="https://www.google.com/maps/dir/?api=1&amp;destination=35.021113,135.505884" target="_blank" rel="noopener">経路</a>
+</li>
+<li class="cs">
+  <span class="csk">22.6km</span>
+  <span class="csb">
+    <span class="csn">穴太寺</span>
+    <span class="csm">札の場所・穴太寺ひらかると伝う</span>
+    <span class="csd">ルートから726m</span>
+  </span>
+  <a class="csr" href="https://www.google.com/maps/dir/?api=1&amp;destination=35.00657,135.54916" target="_blank" rel="noopener">経路</a>
+</li>
+<li class="cs">
+  <span class="csk">25.3km</span>
+  <span class="csb">
+    <span class="csn">関酒造</span>
+    <span class="csm">寄り処・買う・おみやげ</span>
+    <span class="csd">ルートから517m</span>
+  </span>
+  <a class="csr" href="https://www.google.com/maps/dir/?api=1&amp;destination=35.011383,135.577744" target="_blank" rel="noopener">経路</a>
+</li>
+<li class="cs">
+  <span class="csk">26.6km</span>
+  <span class="csb">
+    <span class="csn">サンガスタジアム by KYOCERA</span>
+    <span class="csm">札の場所・サンガスタジアム開業</span>
+    <span class="csd">ルートから66m</span>
+  </span>
+  <a class="csr" href="https://www.google.com/maps/dir/?api=1&amp;destination=35.01704,135.58489" target="_blank" rel="noopener">経路</a>
+</li></ul>
+</section>
+
+<section class="section"><h2>ほかのコース</h2><ul class="list"><li><a href="../c2/"><span class="n">八木日吉周遊サイクリング</span><br><span class="d">50km ・ 中級</span></a></li><li><a href="../c3/"><span class="n">京都丹波周遊ライド</span><br><span class="d">85km ・ 中級</span></a></li><li><a href="../c4/"><span class="n">京都丹波縦断ライド</span><br><span class="d">110km ・ 上級</span></a></li><li><a href="../c5/"><span class="n">京都丹波一周ロングライド</span><br><span class="d">140km ・ 上級</span></a></li></ul></section>
+
+<p class="footer-note">距離はルートからの直線距離です。実際の道のりや高低差は含みません。営業時間・定休日はお店の情報をご確認のうえ、無理のない計画でお出かけください。</p>
+<footer class="ktn-band">
+  <a class="bn" href="../../index.html">京都丹波ナビ</a>
+  <a href="https://kyoto-tamba.com/">kyoto-tamba.com</a> ・
+  <a href="https://www.instagram.com/kyototambanavi/" target="_blank" rel="noopener">@kyototambanavi</a>
+</footer>
+</body>
+</html>
