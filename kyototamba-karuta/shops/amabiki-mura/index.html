@@ -13,6 +13,73 @@
   <meta property="og:site_name" content="京都丹波ナビ">
   <meta property="og:image" content="https://kyoto-tamba.com/shops/amabiki-mura/img/hero-01.webp">
   <meta name="twitter:card" content="summary_large_image">
+<!-- 構造化データ。形は scripts/build-shop-pages.mjs が生成するものに合わせている。
+     中身は下の店舗情報の表が正本 ── 表を直したらここも直すこと。 -->
+<script type="application/ld+json">
+[
+ {
+  "@context": "https://schema.org",
+  "@type": [
+   "EventVenue",
+   "LocalBusiness"
+  ],
+  "@id": "https://kyoto-tamba.com/shops/amabiki-mura/#shop",
+  "name": "天引村倶楽部",
+  "url": "https://kyoto-tamba.com/shops/amabiki-mura/",
+  "description": "京都府南丹市園部町天引の、築100年以上の茅葺き古民家を活かした交流・レンタルスペース。ワークショップ、会議、集まり、コワーキングに。",
+  "telephone": "080-2416-7295",
+  "email": "amabikimuraclub@gmail.com",
+  "address": {
+   "@type": "PostalAddress",
+   "postalCode": "622-0063",
+   "addressRegion": "京都府",
+   "addressLocality": "南丹市",
+   "streetAddress": "園部町天引下北3-1",
+   "addressCountry": "JP"
+  },
+  "geo": {
+   "@type": "GeoCoordinates",
+   "latitude": 35.067797,
+   "longitude": 135.402416
+  },
+  "priceRange": "¥8,000〜¥18,000",
+  "maximumAttendeeCapacity": 30,
+  "image": [
+   "https://kyoto-tamba.com/shops/amabiki-mura/img/hero-01.webp",
+   "https://kyoto-tamba.com/shops/amabiki-mura/img/washitsu-01.webp",
+   "https://kyoto-tamba.com/shops/amabiki-mura/img/doma-wall.webp"
+  ],
+  "sameAs": [
+   "https://amabikimura.com/",
+   "https://www.instagram.com/amabikimuraclub/",
+   "https://www.facebook.com/amabikimuraclub/"
+  ]
+ },
+ {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+   {
+    "@type": "ListItem",
+    "position": 1,
+    "name": "京都丹波ナビ",
+    "item": "https://kyoto-tamba.com/"
+   },
+   {
+    "@type": "ListItem",
+    "position": 2,
+    "name": "寄り処",
+    "item": "https://kyoto-tamba.com/shops/"
+   },
+   {
+    "@type": "ListItem",
+    "position": 3,
+    "name": "天引村倶楽部"
+   }
+  ]
+ }
+]
+</script>
   
   <title>天引村倶楽部｜次の楽しいことを、ここから。</title>
   <link rel="icon" href="img/favicon.svg" type="image/svg+xml">

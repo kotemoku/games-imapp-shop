@@ -13,6 +13,96 @@
 <meta property="og:site_name" content="京都丹波ナビ" />
 <meta property="og:image" content="https://kyoto-tamba.com/shops/tsutaya/img/bento-shokado.jpg" />
 <meta name="twitter:card" content="summary_large_image" />
+<!-- 構造化データ。形は scripts/build-shop-pages.mjs が生成するものに合わせている。
+     中身は下の店舗情報の表が正本 ── 表を直したらここも直すこと。 -->
+<script type="application/ld+json">
+[
+ {
+  "@context": "https://schema.org",
+  "@type": "Restaurant",
+  "@id": "https://kyoto-tamba.com/shops/tsutaya/#shop",
+  "name": "日本料理 津多屋",
+  "url": "https://kyoto-tamba.com/shops/tsutaya/",
+  "description": "1956年創業、南丹市園部の日本料理店。京都丹波の野菜を織り込んだ会席料理と、名物の笑日餅。",
+  "telephone": "0771-62-0508",
+  "foundingDate": "1956",
+  "servesCuisine": "日本料理",
+  "acceptsReservations": "True",
+  "address": {
+   "@type": "PostalAddress",
+   "addressRegion": "京都府",
+   "addressLocality": "南丹市",
+   "streetAddress": "園部町若松町62-7",
+   "addressCountry": "JP"
+  },
+  "geo": {
+   "@type": "GeoCoordinates",
+   "latitude": 35.111595,
+   "longitude": 135.472656
+  },
+  "openingHoursSpecification": [
+   {
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": [
+     "Sunday",
+     "Monday",
+     "Tuesday",
+     "Thursday",
+     "Friday",
+     "Saturday"
+    ],
+    "opens": "11:30",
+    "closes": "14:30"
+   },
+   {
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": [
+     "Sunday",
+     "Monday",
+     "Tuesday",
+     "Thursday",
+     "Friday",
+     "Saturday"
+    ],
+    "opens": "17:00",
+    "closes": "22:00"
+   }
+  ],
+  "image": [
+   "https://kyoto-tamba.com/shops/tsutaya/img/bento-shokado.jpg",
+   "https://kyoto-tamba.com/shops/tsutaya/img/wanmono.jpg",
+   "https://kyoto-tamba.com/shops/tsutaya/img/warabi.jpg"
+  ],
+  "sameAs": [
+   "https://r.goope.jp/sr-26-262131s320/",
+   "https://instagram.com/tsutayanantan508"
+  ]
+ },
+ {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+   {
+    "@type": "ListItem",
+    "position": 1,
+    "name": "京都丹波ナビ",
+    "item": "https://kyoto-tamba.com/"
+   },
+   {
+    "@type": "ListItem",
+    "position": 2,
+    "name": "寄り処",
+    "item": "https://kyoto-tamba.com/shops/"
+   },
+   {
+    "@type": "ListItem",
+    "position": 3,
+    "name": "日本料理 津多屋"
+   }
+  ]
+ }
+]
+</script>
 <link rel="icon" href="../../icons/favicon-32.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

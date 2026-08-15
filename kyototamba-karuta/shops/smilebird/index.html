@@ -14,6 +14,62 @@
 <meta property="og:site_name" content="京都丹波ナビ" />
 <meta property="og:image" content="https://kyoto-tamba.com/shops/smilebird/img/avatar-guide.webp" />
 <meta name="twitter:card" content="summary_large_image" />
+<!-- 構造化データ。形は scripts/build-shop-pages.mjs が生成するものに合わせている。
+     中身は下の店舗情報の表が正本 ── 表を直したらここも直すこと。 -->
+<script type="application/ld+json">
+[
+ {
+  "@context": "https://schema.org",
+  "@type": "Store",
+  "@id": "https://kyoto-tamba.com/shops/smilebird/#shop",
+  "name": "smilebird・stone",
+  "url": "https://kyoto-tamba.com/shops/smilebird/",
+  "description": "南丹市園部のハンドメイド雑貨と天然石のアトリエ。対面セッションで石を選び、手首のサイズに合わせてその場でブレスレットを仕立てます。園部城跡から約550m。",
+  "address": {
+   "@type": "PostalAddress",
+   "postalCode": "622-0011",
+   "addressRegion": "京都府",
+   "addressLocality": "南丹市",
+   "streetAddress": "園部町上木崎町四辻12-2",
+   "addressCountry": "JP"
+  },
+  "geo": {
+   "@type": "GeoCoordinates",
+   "latitude": 35.112331,
+   "longitude": 135.467422
+  },
+  "image": [
+   "https://kyoto-tamba.com/shops/smilebird/img/avatar-guide.webp"
+  ],
+  "sameAs": [
+   "https://www.instagram.com/smilebird_handmade/"
+  ]
+ },
+ {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+   {
+    "@type": "ListItem",
+    "position": 1,
+    "name": "京都丹波ナビ",
+    "item": "https://kyoto-tamba.com/"
+   },
+   {
+    "@type": "ListItem",
+    "position": 2,
+    "name": "寄り処",
+    "item": "https://kyoto-tamba.com/shops/"
+   },
+   {
+    "@type": "ListItem",
+    "position": 3,
+    "name": "smilebird・stone"
+   }
+  ]
+ }
+]
+</script>
 <link rel="icon" href="../../icons/favicon-32.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
