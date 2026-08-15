@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>MOKU COFFEE｜南丹市・日吉町胡麻の自家焙煎コーヒー｜京都丹波ナビ</title>
+<meta name="description" content="由良川と桂川の分水嶺にあたる、胡麻の高原にある喫茶店です。自家焙煎のコーヒーと手作りのスイーツ、ホットサンドなどの軽食があります。テイクアウトもでき、店舗の裏手に駐車場があります。">
+<link rel="canonical" href="https://kyoto-tamba.com/shops/moku-coffee/">
+<meta property="og:title" content="MOKU COFFEE｜南丹市・日吉町胡麻の自家焙煎コーヒー｜京都丹波ナビ">
+<meta property="og:description" content="由良川と桂川の分水嶺にあたる、胡麻の高原にある喫茶店です。自家焙煎のコーヒーと手作りのスイーツ、ホットサンドなどの軽食があります。テイクアウトもでき、店舗の裏手に駐車場があります。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kyoto-tamba.com/shops/moku-coffee/">
+<meta property="og:site_name" content="京都丹波ナビ">
+<meta property="og:image" content="https://kyoto-tamba.com/ogp/shops.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#2E4B3C">
+<link rel="icon" href="../../icons/favicon-32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap">
+<style>/* 京都丹波ナビ 共通トークン＋サイトヘッダー。
+   2026-08-07 全面リニューアル（P6「表紙と誌面」を採用）。
+   このファイルが配色・書体の唯一の正。静的ページ・掲載案内・申込フォームが読み込み、
+   scripts/prerender.mjs は生成ページに inline する。アプリ本体は src/styles/main.css の
+   最終 :root で同じ値を持つ（Vite バンドルのため別管理・値は必ず一致させること）。 */
+
+:root {
+  /* 誌面（P5由来） */
+  --ktn-bg: #f5f5f2;
+  --ktn-paper: #fff;
+  --ktn-ink: #101010;
+  --ktn-ink-mid: #444;
+  --ktn-ink-pale: #5f6368;
+  --ktn-navy: #1c3560;
+  --ktn-gold: #b98a2e;
+  --ktn-rule: rgba(16, 16, 16, .16);
+
+  /* 市町 */
+  --ktn-kameoka: #a5573a;
+  --ktn-nantan: #5b7d4b;
+  --ktn-kyotamba: #3a6a8c;
+
+  /* 書体（OS内蔵のみ・Webフォント読み込みなし） */
+  --ktn-min: "Hiragino Mincho ProN", "游明朝", "Yu Mincho", "HGS明朝E", Georgia, serif;
+  --ktn-san: -apple-system, "Hiragino Sans", "Yu Gothic UI", "Yu Gothic", "Noto Sans JP", sans-serif;
+  --ktn-mon: "SF Mono", Menlo, Consolas, "Courier New", monospace;
+}
+
+/* ── サイトヘッダー（誌面のヘッダ罫）──
+   トップは画面下端の固定ナビだが、下層ページは上部ヘッダー。
+   どちらも同じ書体・同じ罫線で「同じ誌面」に見せる。 */
+.ktn-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  padding: 11px 20px;
+  background: color-mix(in srgb, var(--ktn-bg) 94%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--ktn-ink);
+  font-family: var(--ktn-san);
+}
+/* 店の紹介ページ（public/shops/*）は各店で作った固有のヘッダーを持っている。
+   そこへ sticky を重ねると二段に貼りつくので、これらのページでは流す。
+   下層ページの生成物は従来どおり sticky のまま。 */
+.ktn-header--static { position: static; }
+
+.ktn-header .ktn-in {
+  max-width: 1180px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.ktn-header .ktn-brand {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-right: auto;
+  text-decoration: none;
+  color: var(--ktn-ink);
+}
+.ktn-header .ktn-brand img { display: none; }
+.ktn-header .ktn-brand b {
+  font-family: var(--ktn-min);
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: .1em;
+  line-height: 1.2;
+}
+.ktn-header .ktn-brand::after {
+  content: "KYOTO TAMBA NAVI";
+  font-family: var(--ktn-mon);
+  font-size: 13px;
+  letter-spacing: .2em;
+  color: var(--ktn-ink-pale);
+}
+.ktn-header nav { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 20px; }
+.ktn-header nav a {
+  /* ナビは本文より下限を上げる。13px・タップ34px では、老眼の人が
+     「読む前に押せない」で終わる。16px・タップ44px を確保する。 */
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: .04em;
+  color: var(--ktn-ink);
+  text-decoration: none;
+  padding: 11px 0;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  border-bottom: 1px solid transparent;
+}
+.ktn-header nav a:hover,
+.ktn-header nav a:focus-visible { border-bottom-color: var(--ktn-ink); outline: none; }
+.ktn-header nav a.ktn-cta {
+  color: #fff;
+  background: var(--ktn-navy);
+  padding: 7px 15px;
+  border-bottom: 0;
+  letter-spacing: .08em;
+}
+.ktn-header nav a.ktn-cta:hover,
+.ktn-header nav a.ktn-cta:focus-visible { background: var(--ktn-ink); color: #fff; }
+
+@media (max-width: 560px) {
+  .ktn-header { padding: 9px 14px; }
+  .ktn-header .ktn-brand b { font-size: 16px; }
+  .ktn-header .ktn-brand::after { display: none; }
+  /* 8項目を折り返すとヘッダーが2行=155pxになり、画面の2割を常時食う。
+     文字は大きいまま、1行に並べて横へ流す。 */
+  .ktn-header nav {
+    flex-wrap: nowrap; gap: 0 17px; width: 100%;
+    overflow-x: auto; overscroll-behavior-x: contain;
+    scrollbar-width: none; -webkit-overflow-scrolling: touch;
+  }
+  .ktn-header nav::-webkit-scrollbar { display: none; }
+  .ktn-header nav a { font-size: 15.5px; padding: 9px 0; min-height: 42px; white-space: nowrap; flex: 0 0 auto; }
+  .ktn-header nav a.ktn-cta { padding: 6px 11px; }
+}
+
+/* ── 記事エントリー（誌面の行）──
+   トップの「まもなく開催」と、/week/ の一覧で使う共通の行。
+   アプリ側は src/styles/cover-spread.css に同じ定義がある（Viteバンドルのため別管理）。
+   値を変えるときは両方直すこと。 */
+.ktn-art {
+  display: block;
+  padding: 17px 0;
+  border-bottom: 1px solid rgba(16, 16, 16, .16);
+  text-decoration: none;
+  color: var(--ktn-ink, #101010);
+}
+.ktn-art:last-child { border-bottom: 0; }
+.ktn-art:hover .ka-h,
+.ktn-art:focus-visible .ka-h { text-decoration: underline; text-underline-offset: 4px; }
+.ktn-art .ka-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.ktn-art .ka-tag {
+  font-size: 13px; font-weight: 700; letter-spacing: .08em;
+  color: #fff; padding: 2px 8px; text-decoration: none;
+}
+.ka-tag.kameoka { background: var(--ktn-kameoka, #a5573a); }
+.ka-tag.nantan { background: var(--ktn-nantan, #5b7d4b); }
+.ka-tag.kyotamba { background: var(--ktn-kyotamba, #3a6a8c); }
+.ktn-art .ka-d {
+  font-family: var(--ktn-mon, monospace); font-size: 13px; letter-spacing: .08em;
+  color: rgba(16, 16, 16, .86); font-variant-numeric: tabular-nums; text-decoration: none;
+}
+.ktn-art .ka-h {
+  margin: 7px 0 0; font-family: var(--ktn-min, serif); font-size: 16px; font-weight: 500;
+  line-height: 1.62; letter-spacing: .04em; color: var(--ktn-ink, #101010);
+}
+.ktn-art .ka-v { margin: 5px 0 0; font-size: 13px; color: rgba(16, 16, 16, .86); }
+
+:root{
+  --fukamidori:#2E4B3C;
+  --kinari:#F7F4EC;
+  --sumi:#26241F;
+  --usunezu:#8A867B;
+  --kiji:#EAE4D5;
+  --mincho:'Zen Old Mincho',"Hiragino Mincho ProN","游明朝","Yu Mincho",serif;
+  --gothic:'Noto Sans JP',-apple-system,"Hiragino Sans","Yu Gothic UI",sans-serif;
+  --accent:var(--fukamidori);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--gothic);background:var(--kinari);color:var(--sumi);
+  line-height:1.9;letter-spacing:.03em;padding-bottom:0}
+img{max-width:100%;height:auto;display:block}
+a{color:inherit}
+
+/* 写真の枠。画像が無い店・イベントでも骨格が崩れないよう、地色で埋める。 */
+.ph{display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.85);
+  font-family:var(--mincho);font-size:.85rem;letter-spacing:.25em;
+  background:linear-gradient(135deg,#3d5c4a 0%,#2E4B3C 45%,#22382d 100%);
+  position:relative;overflow:hidden}
+.ph::after{content:"";position:absolute;inset:0;
+  background:repeating-linear-gradient(100deg,transparent 0 22px,rgba(255,255,255,.035) 22px 24px)}
+.ph.warm{background:linear-gradient(135deg,#8a5a3c 0%,#6e452c 50%,#553521 100%)}
+.ph.night{background:linear-gradient(160deg,#2b3550 0%,#1e2740 55%,#141b30 100%)}
+.ph img{position:relative;z-index:1;width:100%;height:100%;object-fit:cover}
+.ph.has-img::after{display:none}
+
+.section{max-width:720px;margin:0 auto;padding:0 24px}
+.eyebrow{font-size:.72rem;font-weight:500;letter-spacing:.35em;
+  color:var(--accent);display:block;margin-bottom:.6rem}
+h1,h2,h3{font-family:var(--mincho);font-weight:600;letter-spacing:.08em;line-height:1.5}
+h2{font-size:1.12rem;color:var(--fukamidori);margin:48px 0 18px}
+p{font-size:.95rem}
+
+.info-table{width:100%;border-collapse:collapse;font-size:.92rem}
+.info-table th{font-family:var(--mincho);font-weight:600;text-align:left;color:var(--fukamidori);
+  padding:14px 16px 14px 0;width:7em;border-bottom:1px solid var(--kiji);vertical-align:top;
+  letter-spacing:.15em;white-space:nowrap}
+.info-table td{padding:14px 0;border-bottom:1px solid var(--kiji)}
+
+.sns-row{display:flex;flex-wrap:wrap;gap:10px;margin:26px 0 0}
+.sns-btn{display:inline-flex;align-items:center;gap:7px;min-height:44px;padding:10px 18px;
+  border:1px solid var(--kiji);background:#fff;text-decoration:none;font-size:.88rem;
+  letter-spacing:.08em;color:var(--sumi)}
+.sns-btn:hover{border-color:var(--accent);color:var(--accent)}
+.sns-btn.solid{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+/* 下帯。全ページ固定。ここが「京都丹波ナビの頁だ」と分かる唯一の印。 */
+.ktn-band{background:var(--fukamidori);color:var(--kinari);margin-top:64px;
+  padding:30px 24px 34px;text-align:center;font-size:.78rem;letter-spacing:.18em}
+.ktn-band a{color:var(--kinari)}
+.ktn-band .bn{font-family:var(--mincho);font-size:1rem;letter-spacing:.3em;display:block;margin-bottom:8px}
+.footer-note{text-align:center;font-size:.72rem;color:var(--usunezu);
+  padding:44px 24px 10px;letter-spacing:.12em;line-height:1.9}
+
+@media(max-width:560px){
+  .section{padding:0 18px}
+  h2{font-size:1.05rem;margin:38px 0 14px}
+  .info-table th{width:5.5em;padding-right:10px;font-size:.86rem}
+  .info-table td{font-size:.9rem}
+}
+@media (prefers-reduced-motion: reduce){*{animation:none !important;transition:none !important}}
+
+.karuta{margin-top:10px}
+.karuta h2{margin-top:6px}
+.dist-note{font-size:.76rem;color:var(--usunezu);margin-top:10px}
+.en h2{font-size:.95rem;letter-spacing:.1em}
+.en p{font-size:.88rem;line-height:1.85}
+.other-list{list-style:none}
+.other-list li{display:flex;justify-content:space-between;align-items:baseline;gap:14px;
+  padding:11px 0;border-bottom:1px solid var(--kiji);font-size:.92rem}
+.other-list .price{color:var(--usunezu);white-space:nowrap}.hero{height:min(52vw,320px)}.head{padding-top:30px}.lead{margin-top:6px}
+    .sub-photos{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:26px}
+    .sub-photos .ph{height:150px}.area{color:var(--usunezu);font-size:.86rem;margin-top:6px}</style>
+<script type="application/ld+json">[{"@context":"https://schema.org","@type":"CafeOrCoffeeShop","@id":"https://kyoto-tamba.com/shops/moku-coffee/#shop","name":"MOKU COFFEE","url":"https://kyoto-tamba.com/shops/moku-coffee/","description":"由良川と桂川の分水嶺にあたる、胡麻の高原にある喫茶店です。自家焙煎のコーヒーと手作りのスイーツ、ホットサンドなどの軽食があります。テイクアウトもでき、店舗の裏手に駐車場があります。","address":{"@type":"PostalAddress","postalCode":"629-0311","addressRegion":"京都府","addressLocality":"南丹市","streetAddress":"日吉町胡麻大戸2-1","addressCountry":"JP"},"geo":{"@type":"GeoCoordinates","latitude":35.19083314359855,"longitude":135.481744632273},"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Sunday","Monday","Tuesday","Wednesday","Friday","Saturday"],"opens":"09:00","closes":"18:00"}],"image":["https://kyoto-tamba.com/shops/moku-coffee/img/exterior.webp","https://kyoto-tamba.com/shops/moku-coffee/img/interior.webp","https://kyoto-tamba.com/shops/moku-coffee/img/hot-sandwich.webp"],"sameAs":["https://sites.google.com/view/mokucoffee","https://www.instagram.com/mokucoffee_hiyoshi/"]},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"京都丹波ナビ","item":"https://kyoto-tamba.com/"},{"@type":"ListItem","position":2,"name":"寄り処","item":"https://kyoto-tamba.com/shops/"},{"@type":"ListItem","position":3,"name":"MOKU COFFEE"}]}]</script>
+</head>
+<body>
+<header class="ktn-header"><div class="ktn-in">
+  <a class="ktn-brand" href="../../index.html"><img src="../../icons/icon-192.png" alt="" width="34" height="34"><b>京都丹波ナビ</b></a>
+  <nav aria-label="サイト内">
+    <a href="../../week/index.html">今週</a>
+    <a href="../../course/index.html">一日のコース</a>
+    <a href="../../events/index.html">イベント</a>
+    <a href="../../shops/index.html">寄り処</a>
+    <a href="../../index.html?play=1">あそぶ</a>
+    <a href="../../tactics/index.html">丹波タクティクス</a>
+    <a href="../../photo/index.html">写真を送る</a>
+    <a class="ktn-cta" href="../../ads/index.html">掲載のご案内</a>
+  </nav>
+</div></header>
+
+<div class="ph hero has-img"><img src="img/exterior.webp" alt="道路沿いに立つMOKU COFFEEの外観。黒い板張りの建物と、駐車場を示す「P→ COFFEE」の看板。" loading="lazy" decoding="async"></div>
+<section class="section head"><span class="eyebrow">南丹市・日吉町胡麻 ／ 自家焙煎コーヒー</span>
+   <h1>MOKU COFFEE</h1>
+   </section>
+<section class="section"><p class="lead">由良川と桂川の分水嶺にあたる、胡麻の高原にある喫茶店です。自家焙煎のコーヒーと手作りのスイーツ、ホットサンドなどの軽食があります。テイクアウトもでき、店舗の裏手に駐車場があります。</p></section>
+<section class="section sub-photos"><div class="ph warm has-img"><img src="img/interior.webp" alt="木の壁に囲まれた店内。薪ストーブと、カップや珈琲豆の袋がならぶ棚、窓辺の鉢植え。" loading="lazy" decoding="async"></div><div class="ph item has-img"><img src="img/hot-sandwich.webp" alt="窓辺の席に置かれた、卵入りのホットサンドとアイスコーヒー。" loading="lazy" decoding="async"></div></section>
+<section class="section">
+  <h2>店舗情報</h2><table class="info-table"><tbody><tr><th>住所</th><td>〒629-0311 京都府南丹市日吉町胡麻大戸2-1</td></tr><tr><th>営業時間</th><td>9:00〜18:00（ラストオーダー 17:30）</td></tr><tr><th>定休日</th><td>木曜（祝日は臨時営業）</td></tr><tr><th>アクセス</th><td>園部ICから車で約15分／道の駅 スプリングスひよしから車で約10分</td></tr><tr><th>駐車場</th><td>店舗の裏手に約5台</td></tr><tr><th>そのほか</th><td>テイクアウトあり</td></tr></tbody></table><div class="sns-row"><a class="sns-btn" href="https://www.google.com/maps/dir/?api=1&destination=35.19083314359855,135.481744632273" target="_blank" rel="noopener">地図・経路</a><a class="sns-btn" href="https://www.instagram.com/mokucoffee_hiyoshi/" target="_blank" rel="noopener">Instagram</a><a class="sns-btn" href="https://sites.google.com/view/mokucoffee" target="_blank" rel="noopener">公式サイト</a></div></section>
+<section class="section karuta">
+    <span class="eyebrow">近くの札</span>
+    <h2>「胡麻に汽車がとまる」から、歩いて1.3km</h2>
+    <p>MOKU COFFEEから歩ける距離に<b>胡麻駅</b>があります。1910年の出来事として、
+      京都丹波タイムトラベルの札になっています。</p>
+    <a class="sns-btn" href="https://kyoto-tamba.com/?timeline=nantan_1910" target="_blank" rel="noopener">この札を年表で見る</a>
+    <p class="dist-note">距離は地図上の直線距離です。</p>
+  </section>
+<section class="section en" lang="en"><h2>For English speakers</h2><p>A coffee shop on the Goma plateau, on the watershed between the Yura and Katsura rivers. House-roasted coffee, homemade sweets and light meals such as hot sandwiches. Takeaway available, with parking behind the shop. Open 9:00-18:00, closed Thursdays.</p></section>
+<p class="footer-note">［広告］本ページは京都丹波ナビの寄り処紹介です。掲載内容は2026年8月時点の情報にもとづきます。最新の営業時間・メニュー・価格は必ずお店にご確認ください。<br>営業時間・定休日・駐車場は店舗公式サイトおよび公式Instagramの記載によります。写真は店舗提供（掲載許諾済み）。</p>
+<footer class="ktn-band">
+  <a class="bn" href="../../index.html">京都丹波ナビ</a>
+  <a href="https://kyoto-tamba.com/">kyoto-tamba.com</a> ・
+  <a href="https://www.instagram.com/kyototambanavi/" target="_blank" rel="noopener">@kyototambanavi</a>
+</footer>
+</body>
+</html>
