@@ -4,6 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <title>焚き火 — takibi</title>
+<meta name="theme-color" content="#05060d">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png">
+<link rel="apple-touch-icon" href="assets/icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="焚き火">
 <style>
   :root{
     --ink:#e8dcc8;
@@ -1626,6 +1633,13 @@ initLogPile();
 setGuideStep('strike');
 requestAnimationFrame(frame);
 IMAPP.send('ready', { version: '1.0.0' });
+
+/* ---- PWA: Service Worker登録（https配信時のみ。file://やiframe埋め込みでも害なし） ---- */
+if ('serviceWorker' in navigator && location.protocol === 'https:') {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(() => { /* 失敗しても通常動作 */ });
+  });
+}
 </script>
 </body>
 </html>
