@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>京都丹波 防災マップ｜避難所・警察・医療｜京都丹波ナビ</title>
+<meta name="description" content="亀岡市・南丹市・京丹波町の指定緊急避難場所・避難所、警察、医療機関、消防の地図。平常時に備えるための地図です。開設状況は各市町の公式情報をご確認ください。" />
+<!-- **まだ公開していない**（docs/bousai-plan.md §5 の条件が未達）。
+     サイトのナビにも sitemap にも出していない。検索にも出さない。 -->
+<meta name="robots" content="noindex,nofollow" />
+<meta name="theme-color" content="#2E4B3C" />
+<link rel="icon" type="image/png" sizes="32x32" href="../icons/favicon-32.png" />
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png" />
+<link rel="manifest" href="../manifest.webmanifest" />
+<link rel="stylesheet" href="../site-header.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet" />
+  <script type="module" crossorigin src="../assets/bousai-D5BNtaOe.js"></script>
+  <link rel="modulepreload" crossorigin href="../assets/dom-DPUY6f-f.js">
+  <link rel="modulepreload" crossorigin href="../assets/pin-CQKjK9Y0.js">
+  <link rel="stylesheet" crossorigin href="../assets/dom-CkXMikQa.css">
+</head>
+<body class="kmap-page">
+<div id="ktnHeader"></div>
+<!-- 開設状況の但し書き。**閉じられない形で常時出す**（bousai-plan.md §0）。 -->
+<p class="bousai-standing" role="note">
+  平常時に備えるための地図です。<b>指定は「開設」ではありません。</b>
+  災害時に開いているかは、各市町の最新の公式情報をご確認ください。
+</p>
+<main id="mapHost" aria-label="京都丹波 防災マップ"></main>
+<noscript>
+  <p style="padding:24px;font-family:sans-serif;line-height:1.9">
+    この地図は JavaScript で動きます。避難所の一覧は各市町の公式ページをご確認ください。
+  </p>
+</noscript>
+</body>
+</html>
