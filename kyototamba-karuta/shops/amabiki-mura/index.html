@@ -292,15 +292,28 @@ button { font: inherit; }
   .price-grid { gap: 6vw; }
 }
 
+/* 画面の外に置いた引き出しのぶん、320px 幅で35px 横に動いていた。
+   hidden は巻き取りの入れ物を作って sticky を壊すので clip を使う。 */
+body { overflow-x: clip; }
+
 @media (max-width: 860px) {
+  /* 縦書きの一文と丸印は right:-46px / -34px と枠の外に置いている。その打ち消しが
+     560px 以下にしか書かれておらず、**561〜860px で画面から17〜22pxはみ出していた**
+     （768px で実測・2026-08-27）。 */
+  .vertical-note { right: -6px; bottom: 0; }
+  .access-stamp { right: -5px; width: 94px; height: 94px; }
   :root { --container: min(100% - 34px, 720px); }
   .site-header { height: 72px; padding-inline: 18px; }
   .menu-button { display: block; position: relative; z-index: 102; }
   .menu-button.is-open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
   .menu-button.is-open span:nth-child(2) { opacity: 0; }
   .menu-button.is-open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-  .global-nav { position: fixed; inset: 0; z-index: 101; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 8px; padding: 90px 12vw; color: #fff; background: rgba(22,29,22,.98); transform: translateX(100%); transition: transform .35s ease; }
-  .global-nav.is-open { transform: translateX(0); }
+  /* 閉じた引き出しは画面の外に置くだけだった。そのため
+     (1) 320px 幅で本当に35px 横スクロールし、(2) 閉じているのに中のリンクに
+     焦点が入った。visibility で畳む ── ただし **visibility だけでは
+     巻き取り範囲は縮まない**ので、横方向の切り落としも併せて要る（2026-08-27）。 */
+  .global-nav { position: fixed; inset: 0; z-index: 101; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 8px; padding: 90px 12vw; color: #fff; background: rgba(22,29,22,.98); transform: translateX(100%); visibility: hidden; transition: transform .35s ease, visibility 0s linear .35s; }
+  .global-nav.is-open { transform: translateX(0); visibility: visible; transition: transform .35s ease, visibility 0s; }
   .global-nav a { width: 100%; padding: 13px 0; border-bottom: 1px solid rgba(255,255,255,.13); font-family: var(--serif); font-size: 19px; }
   .nav-cta { margin-top: 20px; border: 1px solid #fff !important; text-align: center; }
   .hero { min-height: 720px; max-height: none; }
@@ -1000,6 +1013,7 @@ html[lang="ja"] .events-header h2 .title-line {
     letter-spacing: .03em;
   }
 }
+
 body.is-en .intro-copy h2 .title-line {
   display: inline;
 }
@@ -1037,6 +1051,38 @@ html[lang="ja"] .spaces-section h2 {
     letter-spacing: .025em;
   }
 }
+
+/* 320px 幅の直し（2026-08-27）。
+   大見出しには white-space:nowrap が掛かっている ── 書き手が決めた意味の切れ目を
+   守るための指定で、これは残したい。だが 30px では
+   「使いやすく整えた空間。」が338px、枠は286pxしかなく、**ページ全体が35px横に動いていた**。
+   折り返しを許すと切れ目が壊れるので、**字を詰めるほうを選ぶ。** */
+@media (max-width: 380px) {
+  /* html[lang="ja"] を付けているのは飾りではない。各節の指定が
+     html[lang="ja"] .spaces-section h2 の形で書かれていて、.section h2 では
+     特異度で負けて効かなかった。同じ強さにして、後に置くことで勝たせる。 */
+  html[lang="ja"] .section h2,
+  html[lang="ja"] .events-header h2,
+  html[lang="ja"] .spaces-section h2,
+  html[lang="ja"] .price-section h2,
+  html[lang="ja"] .access-section h2 { font-size: 24px; line-height: 1.62; }
+}
+
+/* 指で押せる大きさ（2026-08-27）。
+   電話番号 080-2416-7295 と「利用内容を相談する」が高さ32px、
+   フッターのリンクが20pxだった。**このページで一番押される導線が一番小さい。**
+   見た目の行間は変えず、押せる範囲だけ 44px に広げる（下線の位置は保つため
+   text-link は上に余白を足して、下線は今までどおり文字のすぐ下に置く）。 */
+@media (max-width: 860px) {
+  .text-link { min-height: 44px; padding-top: 12px; }
+  .footer-links a,
+  .footer-social a { display: inline-flex; align-items: center; min-height: 44px; }
+  .footer-links, .footer-social { gap: 0; }
+}
+
+/* スクロール前は共通ヘッダーの下へ逃がす（重なり防止・2026-08-27）。
+   --ktn-h はページ末尾のスクリプトが実測して入れる。 */
+.site-header:not(.is-scrolled) { transform: translateY(var(--ktn-h, 0px)); }
 </style>
 <link rel="stylesheet" href="../../site-header.css">
 </head>
@@ -1363,6 +1409,16 @@ html[lang="ja"] .spaces-section h2 {
   const header = document.querySelector('[data-header]');
   const menuButton = document.querySelector('[data-menu-button]');
   const nav = document.querySelector('[data-nav]');
+
+  // 画面上端にいる間、このページの固定ヘッダーが京都丹波ナビの共通ヘッダーに
+  // 重なって二重に見えていた（2026-08-27）。共通ヘッダーは静止して流れるので、
+  // **スクロール前だけその高さぶん下げる。** 高さは折り返しで変わるので実測する。
+  const siteNav = document.querySelector('.ktn-header');
+  const measureNav = () => document.documentElement.style.setProperty(
+    '--ktn-h', (siteNav ? siteNav.offsetHeight : 0) + 'px');
+  measureNav();
+  window.addEventListener('resize', measureNav, { passive: true });
+  if (siteNav && 'ResizeObserver' in window) new ResizeObserver(measureNav).observe(siteNav);
 
   const updateHeader = () => header?.classList.toggle('is-scrolled', window.scrollY > 40);
   updateHeader();

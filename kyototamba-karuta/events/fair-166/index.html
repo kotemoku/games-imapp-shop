@@ -84,6 +84,8 @@ h1{font-family:var(--ktn-min);font-weight:500}
 }
 .ktn-header .ktn-brand {
   display: flex;
+  /* 文字の高さは19px。押せる範囲だけ広げる（見た目の並びは baseline のまま）。 */
+  padding-block: 10px;
   align-items: baseline;
   gap: 10px;
   margin-right: auto;
@@ -144,8 +146,11 @@ h1{font-family:var(--ktn-min);font-weight:500}
   .ktn-header nav {
     flex-wrap: wrap; gap: 2px 15px; width: 100%;
   }
-  .ktn-header nav a { font-size: 15px; padding: 7px 0; min-height: 38px; white-space: nowrap; }
-  .ktn-header nav a.ktn-cta { padding: 6px 11px; min-height: 34px; margin-left: auto; }
+  /* タップ域は 44px を割らない。上の但し書きに書いたとおりの理由で、
+     折り返しの高さを節約するために 38px まで下げたのは筋が違った（2026-08-27）。 */
+  .ktn-header nav a { font-size: 15px; padding: 7px 0; min-height: 44px; white-space: nowrap; }
+  .ktn-header nav a.ktn-cta { padding: 8px 11px; min-height: 40px; margin-left: auto; }
+  .ktn-header .ktn-brand { min-height: 44px; align-items: center; }
 }
 
 /* 360px 級（iPhone SE / Android の小型）では2行に収まらず3行=184pxになり、
