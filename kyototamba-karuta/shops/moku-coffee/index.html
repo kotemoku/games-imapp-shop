@@ -128,16 +128,33 @@
   .ktn-header { padding: 9px 14px; }
   .ktn-header .ktn-brand b { font-size: 16px; }
   .ktn-header .ktn-brand::after { display: none; }
-  /* 8項目を折り返すとヘッダーが2行=155pxになり、画面の2割を常時食う。
-     文字は大きいまま、1行に並べて横へ流す。 */
+  /* もとは1行に並べて横へ流していた（2行=155pxを避けるため）。だが
+     **横に流れることが誰にも分からず、ただ見切れて見える。** 実測 390px で
+     10本中3本が画面外、しかも常に隠れるのが「掲載のご案内」＝申込の入口だった。
+     隠れる導線は無いのと同じなので、折り返して全部見せる方を採る。
+     そのぶん字と余白を詰めて、2行でも 130px 前後に収める（2026-08-27）。 */
   .ktn-header nav {
-    flex-wrap: nowrap; gap: 0 17px; width: 100%;
-    overflow-x: auto; overscroll-behavior-x: contain;
-    scrollbar-width: none; -webkit-overflow-scrolling: touch;
+    flex-wrap: wrap; gap: 2px 15px; width: 100%;
   }
-  .ktn-header nav::-webkit-scrollbar { display: none; }
-  .ktn-header nav a { font-size: 15.5px; padding: 9px 0; min-height: 42px; white-space: nowrap; flex: 0 0 auto; }
-  .ktn-header nav a.ktn-cta { padding: 6px 11px; }
+  .ktn-header nav a { font-size: 15px; padding: 7px 0; min-height: 38px; white-space: nowrap; }
+  .ktn-header nav a.ktn-cta { padding: 6px 11px; min-height: 34px; margin-left: auto; }
+}
+
+/* 360px 級（iPhone SE / Android の小型）では2行に収まらず3行=184pxになり、
+   表紙の文字の上が21pxしか残らなかった。字と間隔だけ詰めて2行に戻す。
+   14px はナビの下限（16px を基本、老眼でも押せる44pxのタップ域は維持）。 */
+@media (max-width: 400px) {
+  .ktn-header { padding: 8px 12px; }
+  .ktn-header nav { gap: 2px 12px; }
+  .ktn-header nav a { font-size: 14px; }
+  .ktn-header nav a.ktn-cta { padding: 6px 9px; }
+}
+
+/* 320px 級（iPhone SE 第1世代）。**字は14pxのまま**（13pxはナビの下限を割る）、
+   間隔だけ詰めて2段に収める。3段=176px だと表紙のボタンが折り目の下に出る。 */
+@media (max-width: 340px) {
+  .ktn-header { padding: 7px 10px; }
+  .ktn-header nav { gap: 1px 8px; }
 }
 
 /* ── 記事エントリー（誌面の行）──
@@ -244,10 +261,140 @@ p{font-size:.95rem}
 .other-list{list-style:none}
 .other-list li{display:flex;justify-content:space-between;align-items:baseline;gap:14px;
   padding:11px 0;border-bottom:1px solid var(--kiji);font-size:.92rem}
-.other-list .price{color:var(--usunezu);white-space:nowrap}.hero{height:min(52vw,320px)}.head{padding-top:30px}.lead{margin-top:6px}
+.other-list .price{color:var(--usunezu);white-space:nowrap}
+.sig{background:#fff}
+.sig h2{margin-top:6px}
+.sig-price{font-family:var(--mincho);font-size:1.15rem;color:var(--accent);margin:6px 0 0}
+.sig-note{font-size:.82rem;letter-spacing:.14em;color:var(--usunezu);margin:4px 0 12px}
+.sig-photo{height:min(56vw,300px);margin-top:16px}
+.story .qa{padding:14px 0;border-bottom:1px solid var(--kiji)}
+.story .qa:last-child{border-bottom:0}
+.story .q{font-family:var(--mincho);font-size:1.02rem;color:var(--accent);margin:0 0 6px}
+.story .a{margin:0;font-size:.92rem;line-height:1.95}
+.story p{line-height:1.95}
+.more-photos{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.more-photos .ph{height:150px}
+.perk{background:#fff;border-top:3px solid var(--accent)}
+.perk-main{font-family:var(--mincho);font-size:1.12rem;line-height:1.6;margin:6px 0 0}
+.perk-terms{font-size:.8rem;color:var(--usunezu);margin:8px 0 0;line-height:1.7}
+@media(min-width:720px){.more-photos{grid-template-columns:repeat(3,1fr)}}
+
+/* 節の掴み。**大きな明朝の見出し**が、案内板と読み物を分ける。 */
+.sec-h{font-family:var(--mincho);font-weight:600;font-size:1.3rem;line-height:1.55;
+  letter-spacing:.04em;margin:8px 0 0;white-space:pre-line}
+.sec-note{font-size:.9rem;line-height:1.9;color:var(--sumi);margin:10px 0 0}
+
+/* こんなときに ── 番号つきカード */
+.use-list{list-style:none;margin:18px 0 0;padding:0;display:grid;gap:2px}
+.use-list li{display:flex;gap:14px;align-items:flex-start;padding:15px 0;border-bottom:1px solid var(--kiji)}
+.use-list li:last-child{border-bottom:0}
+.use-list .n{flex:0 0 auto;font-family:var(--mincho);font-size:1.05rem;color:var(--accent);letter-spacing:.06em;padding-top:1px}
+.use-list .ub{flex:1 1 auto;min-width:0}
+.use-list .ub b{display:block;font-family:var(--mincho);font-weight:600;font-size:1.02rem;line-height:1.5}
+.use-list .ub span{display:block;font-size:.86rem;line-height:1.85;color:var(--usunezu);margin-top:5px}
+
+/* 設備・できること ── 短い語を並べる */
+.feat-list{list-style:none;margin:16px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.feat-list li{padding:6px 13px;border:1px solid var(--kiji);border-radius:999px;
+  background:#fff;font-size:.84rem;letter-spacing:.04em}
+
+/* 料金 */
+.prices .info-table{margin-top:16px}
+.prices td small{display:block;font-size:.76rem;color:var(--usunezu);margin-top:3px}
+
+/* ご利用の流れ */
+.flow-list{list-style:none;margin:18px 0 0;padding:0;counter-reset:none}
+.flow-list li{display:flex;gap:14px;align-items:flex-start;padding:0 0 20px;position:relative}
+.flow-list li:not(:last-child)::before{content:"";position:absolute;left:13px;top:30px;bottom:2px;
+  width:1px;background:var(--kiji)}
+.flow-list .n{flex:0 0 27px;height:27px;border-radius:50%;background:var(--accent);color:#fff;
+  display:inline-flex;align-items:center;justify-content:center;font-size:.84rem;position:relative;z-index:1}
+.flow-list .fb b{display:block;font-family:var(--mincho);font-weight:600;font-size:1rem;line-height:1.5;padding-top:3px}
+.flow-list .fb span{display:block;font-size:.86rem;line-height:1.85;color:var(--usunezu);margin-top:5px}
+
+/* 締め */
+.closing{background:#fff;border-top:3px solid var(--accent)}
+.closing .sec-h{font-size:1.22rem}
+
+/* スマホは 78svh。100svh にすると**表紙の下端がヘッダーのぶんだけ折り目の外**へ出て、
+   ヘッダーが3行(184px)になる360px幅ではボタンが画面の下に落ちた。
+   表紙の高さをヘッダーの高さに依存させない（2026-08-27）。広い幅は手本どおり全画面。 */
+.cover{position:relative;height:78svh;min-height:480px;max-height:940px;
+  display:flex;align-items:flex-end;overflow:hidden;background:#2E4B3C}
+/* z-index:0 は飾りではない。共有CSSの .ph img が position:relative;z-index:1 を持ち、
+   影(.cover-shade)を追い越して上に描かれて **影が丸ごと効いていなかった**（2026-08-27）。
+   ここで重ね順の入れ物を作り、img の z-index をこの中に閉じ込める。 */
+.cover .cover-img{position:absolute;inset:0;height:100%;z-index:0}
+.cover .cover-img img{width:100%;height:100%;object-fit:cover}
+/* 影は**写真まかせにしない**。明るい店内写真だと文字の裏が輝度138まで上がって
+   白文字が沈む（看板写真は63）。手本と同じ二枚重ね ── 文字が寄る側（左）を横方向に
+   落とし、下からも落とす。写真の右上は残るので、明るい写真でも絵が死なない。 */
+.cover-shade{position:absolute;inset:0;
+  background:linear-gradient(90deg,rgba(16,22,18,.76) 0%,rgba(16,22,18,.64) 44%,
+               rgba(16,22,18,.38) 74%,rgba(16,22,18,.10) 100%),
+             linear-gradient(0deg,rgba(16,22,18,.72) 0%,rgba(16,22,18,.30) 34%,transparent 62%)}
+/* 下の余白が大きいのは、表紙が画面の高さいっぱいで**下端が画面の外**にあるため。
+   40px にしていたら、スマホでキャッチとボタンが折り目の下に隠れた。
+   手本も同じ理由で padding-bottom:210px を入れている。写真だけが折り目を越える。 */
+/* 下の余白は 150px だった ── 表紙が画面の高さいっぱいで下端が折り目の外にあり、
+   詰めると文字が画面の下に隠れたため。表紙を 78svh にして折り目に収めた今は、
+   ただの空き帯になる。上下の帯が釣り合う値まで戻す（2026-08-27）。 */
+.cover-body{position:relative;z-index:1;width:100%;padding:34px 22px 86px;color:#fff}
+.cover-eyebrow{display:block;font-size:.74rem;letter-spacing:.22em;opacity:.92}
+/* 店名は h1（見出しの筋を通すため）だが、大きく出るのはキャッチのほう。
+   手本も大きいのは一文で、屋号は上に小さく置いている。 */
+.cover-body h1{font-family:var(--mincho);font-weight:500;
+  font-size:clamp(19px,4.4vw,26px);line-height:1.5;letter-spacing:.1em;margin:10px 0 0}
+.cover-catch{font-family:var(--mincho);font-weight:500;
+  font-size:min(clamp(38px,10.4vw,76px),calc((100vw - 48px) / var(--catch-ch,12)));line-height:1.28;letter-spacing:.05em;
+  margin:16px 0 0;white-space:pre-line;width:max-content;max-width:100%;text-shadow:0 5px 34px rgba(0,0,0,.3)}
+.cover-sub{font-size:.86rem;opacity:.86;margin:14px 0 0;letter-spacing:.06em}
+.cover-facts{display:grid;grid-template-columns:1fr 1fr;margin:26px 0 0;
+  border-top:1px solid rgba(255,255,255,.34);border-bottom:1px solid rgba(255,255,255,.34)}
+.cover-facts>div{padding:11px 12px;border-right:1px solid rgba(255,255,255,.22)}
+.cover-facts>div:nth-child(2n){border-right:0}
+.cover-facts>div:nth-child(-n+2){border-bottom:1px solid rgba(255,255,255,.22)}
+.cover-facts dt{font-size:.62rem;letter-spacing:.14em;opacity:.66;margin:0}
+.cover-facts dd{font-family:var(--mincho);font-size:.92rem;margin:4px 0 0;line-height:1.5}
+.cover-acts{margin-top:22px;gap:12px}
+.cover-acts .sns-btn{min-height:54px;padding-inline:26px;
+  border-color:rgba(255,255,255,.6);color:#fff;background:rgba(255,255,255,.08)}
+.cover-acts .sns-btn.solid{background:#F7F4EC;color:#26241F;border-color:#F7F4EC}
+@media(max-width:560px){
+  .cover-acts{display:flex;flex-direction:column}
+  .cover-acts .sns-btn{width:100%}
+}
+/* 小さい画面（320〜400px級）は、画面の高さも足りない。
+   320x568 では表紙の中身がヘッダーぶん押し出され、ボタンが折り目の下に落ちた。
+   減らすのではなく詰める ── 要点も残す。 */
+@media(max-width:400px){
+  /* min-height:480px が 320x568 で効いてしまい、表紙が画面より高くなって
+     ボタンが折り目の下に出ていた。小さい画面では下限を外す。 */
+  .cover{min-height:340px}
+  .cover-body{padding:22px 16px 46px}
+  .cover-facts{margin-top:18px}
+  .cover-facts>div{padding:7px 9px}
+  .cover-facts dt{font-size:.58rem}
+  .cover-facts dd{font-size:.84rem}
+  .cover-acts{margin-top:16px}
+  .cover-acts .sns-btn{min-height:46px}
+  .cover-body h1{font-size:17px;margin-top:7px}
+  .cover-catch{margin-top:11px}
+}
+@media(min-width:860px){
+  /* 広い幅では手本と同じく縦中央・左寄せ。下に貼りつけると横帯に見える。 */
+  .cover{align-items:center;height:100svh;min-height:600px}
+  .cover-body{width:min(1200px,92vw);margin:0 auto;padding:80px 0 0}
+  .cover-sub{max-width:34em}
+  .cover-facts{grid-template-columns:repeat(4,minmax(120px,1fr));width:min(620px,54vw)}
+  .cover-facts>div:nth-child(2n){border-right:1px solid rgba(255,255,255,.22)}
+  .cover-facts>div:last-child{border-right:0}
+  .cover-facts>div:nth-child(-n+2){border-bottom:0}
+}
+.hero{height:min(52vw,320px)}.head{padding-top:30px}.lead{margin-top:6px}
     .sub-photos{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:26px}
     .sub-photos .ph{height:150px}.area{color:var(--usunezu);font-size:.86rem;margin-top:6px}</style>
-<script type="application/ld+json">[{"@context":"https://schema.org","@type":"CafeOrCoffeeShop","@id":"https://kyoto-tamba.com/shops/moku-coffee/#shop","name":"MOKU COFFEE","url":"https://kyoto-tamba.com/shops/moku-coffee/","description":"由良川と桂川の分水嶺にあたる、胡麻の高原にある喫茶店です。自家焙煎のコーヒーと手作りのスイーツ、ホットサンドなどの軽食があります。テイクアウトもでき、店舗の裏手に駐車場があります。","address":{"@type":"PostalAddress","postalCode":"629-0311","addressRegion":"京都府","addressLocality":"南丹市","streetAddress":"日吉町胡麻大戸2-1","addressCountry":"JP"},"geo":{"@type":"GeoCoordinates","latitude":35.19083314359855,"longitude":135.481744632273},"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Sunday","Monday","Tuesday","Wednesday","Friday","Saturday"],"opens":"09:00","closes":"18:00"}],"image":["https://kyoto-tamba.com/shops/moku-coffee/img/exterior.webp","https://kyoto-tamba.com/shops/moku-coffee/img/interior.webp","https://kyoto-tamba.com/shops/moku-coffee/img/hot-sandwich.webp"],"sameAs":["https://sites.google.com/view/mokucoffee","https://www.instagram.com/mokucoffee_hiyoshi/"]},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"京都丹波ナビ","item":"https://kyoto-tamba.com/"},{"@type":"ListItem","position":2,"name":"寄り処","item":"https://kyoto-tamba.com/shops/"},{"@type":"ListItem","position":3,"name":"MOKU COFFEE"}]}]</script>
+<script type="application/ld+json">[{"@context":"https://schema.org","@type":"CafeOrCoffeeShop","@id":"https://kyoto-tamba.com/shops/moku-coffee/#shop","name":"MOKU COFFEE","url":"https://kyoto-tamba.com/shops/moku-coffee/","description":"由良川と桂川の分水嶺にあたる、胡麻の高原にある喫茶店です。自家焙煎のコーヒーと手作りのスイーツ、ホットサンドなどの軽食があります。テイクアウトもでき、店舗の裏手に駐車場があります。","address":{"@type":"PostalAddress","postalCode":"629-0311","addressRegion":"京都府","addressLocality":"南丹市","streetAddress":"日吉町胡麻大戸2-1","addressCountry":"JP"},"geo":{"@type":"GeoCoordinates","latitude":35.19083314359855,"longitude":135.481744632273},"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Sunday","Monday","Tuesday","Wednesday","Friday","Saturday"],"opens":"09:00","closes":"18:00"}],"image":["https://kyoto-tamba.com/shops/moku-coffee/img/exterior.webp","https://kyoto-tamba.com/shops/moku-coffee/img/interior.webp","https://kyoto-tamba.com/shops/moku-coffee/img/hot-sandwich.webp","https://kyoto-tamba.com/shops/moku-coffee/img/counter.webp","https://kyoto-tamba.com/shops/moku-coffee/img/beans.webp","https://kyoto-tamba.com/shops/moku-coffee/img/drip.webp","https://kyoto-tamba.com/shops/moku-coffee/img/interior2.webp","https://kyoto-tamba.com/shops/moku-coffee/img/sign.webp"],"sameAs":["https://sites.google.com/view/mokucoffee","https://www.instagram.com/mokucoffee_hiyoshi/"]},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"京都丹波ナビ","item":"https://kyoto-tamba.com/"},{"@type":"ListItem","position":2,"name":"寄り処","item":"https://kyoto-tamba.com/shops/"},{"@type":"ListItem","position":3,"name":"MOKU COFFEE"}]}]</script>
 </head>
 <body>
 <header class="ktn-header"><div class="ktn-in">
@@ -257,6 +404,7 @@ p{font-size:.95rem}
     <a href="../../course/index.html">一日のコース</a>
     <a href="../../events/index.html">イベント</a>
     <a href="../../shops/index.html">寄り処</a>
+    <a href="../../map/index.html">地図</a>
     <a href="../../index.html?play=1">あそぶ</a>
     <a href="../../tactics/index.html">丹波タクティクス</a>
     <a href="../../photo/index.html">写真を送る</a>
@@ -264,14 +412,45 @@ p{font-size:.95rem}
   </nav>
 </div></header>
 
-<div class="ph hero has-img"><img src="img/exterior.webp" alt="道路沿いに立つMOKU COFFEEの外観。黒い板張りの建物と、駐車場を示す「P→ COFFEE」の看板。" loading="lazy" decoding="async"></div>
-<section class="section head"><span class="eyebrow">南丹市・日吉町胡麻 ／ 自家焙煎コーヒー</span>
-   <h1>MOKU COFFEE</h1>
-   </section>
+<section class="cover">
+  <div class="ph cover-img has-img"><img src="img/interior2.webp" alt="切妻の梁があらわしになった店内。吊り下げの照明と木のテーブル。" loading="eager" fetchpriority="high" decoding="async"></div>
+  <div class="cover-shade" aria-hidden="true"></div>
+  <div class="cover-body">
+    <span class="cover-eyebrow">南丹市・日吉町胡麻　／　自家焙煎コーヒー</span>
+    <h1>MOKU COFFEE</h1>
+    <p class="cover-catch" style="--catch-ch:10.50">分水嶺の高原に、
+焙煎したての一杯を。</p>
+    
+    <dl class="cover-facts"><div><dt>営業時間</dt><dd>9:00〜18:00</dd></div><div><dt>定休日</dt><dd>木曜</dd></div><div><dt>駐車場</dt><dd>店舗の裏手に約5台</dd></div><div><dt>支払い</dt><dd>現金のみ</dd></div></dl>
+    <div class="sns-row cover-acts"><a class="sns-btn solid" href="https://www.google.com/maps/dir/?api=1&destination=35.19083314359855,135.481744632273" target="_blank" rel="noopener">経路をしらべる</a></div>
+  </div>
+</section>
 <section class="section"><p class="lead">由良川と桂川の分水嶺にあたる、胡麻の高原にある喫茶店です。自家焙煎のコーヒーと手作りのスイーツ、ホットサンドなどの軽食があります。テイクアウトもでき、店舗の裏手に駐車場があります。</p></section>
-<section class="section sub-photos"><div class="ph warm has-img"><img src="img/interior.webp" alt="木の壁に囲まれた店内。薪ストーブと、カップや珈琲豆の袋がならぶ棚、窓辺の鉢植え。" loading="lazy" decoding="async"></div><div class="ph item has-img"><img src="img/hot-sandwich.webp" alt="窓辺の席に置かれた、卵入りのホットサンドとアイスコーヒー。" loading="lazy" decoding="async"></div></section>
-<section class="section">
-  <h2>店舗情報</h2><table class="info-table"><tbody><tr><th>住所</th><td>〒629-0311 京都府南丹市日吉町胡麻大戸2-1</td></tr><tr><th>営業時間</th><td>9:00〜18:00（ラストオーダー 17:30）</td></tr><tr><th>定休日</th><td>木曜（祝日は臨時営業）</td></tr><tr><th>アクセス</th><td>園部ICから車で約15分／道の駅 スプリングスひよしから車で約10分</td></tr><tr><th>駐車場</th><td>店舗の裏手に約5台</td></tr><tr><th>そのほか</th><td>テイクアウトあり</td></tr></tbody></table><div class="sns-row"><a class="sns-btn" href="https://www.google.com/maps/dir/?api=1&destination=35.19083314359855,135.481744632273" target="_blank" rel="noopener">地図・経路</a><a class="sns-btn" href="https://www.instagram.com/mokucoffee_hiyoshi/" target="_blank" rel="noopener">Instagram</a><a class="sns-btn" href="https://sites.google.com/view/mokucoffee" target="_blank" rel="noopener">公式サイト</a></div></section>
+<section class="section sub-photos"><div class="ph warm has-img"><img src="img/exterior.webp" alt="道路沿いに立つMOKU COFFEEの外観。黒い板張りの建物と、駐車場を示す「P→」の看板。" loading="lazy" decoding="async"></div><div class="ph item has-img"><img src="img/interior.webp" alt="木の壁と大きな窓に囲まれた店内。一枚板のテーブルと、器や珈琲豆の袋がならぶ棚。" loading="lazy" decoding="async"></div></section>
+<section class="section sig">
+    <span class="eyebrow">おすすめ</span>
+    <h2>自家焙煎コーヒー</h2>
+    <p class="sig-price">ホットドリップ 500円 ／ アイスドリップ 550円</p>
+    <p class="sig-note">エチオピア（浅煎）・ブラジル（中煎）・コロンビア（深煎）の3種から選べます</p>
+    <p>焙煎した豆は持ち帰れます。100g 800円・200g 1,500円で、銘柄も豆・粉も同じ値段です。店頭のほか、InstagramやLINEでも受け付けています。</p>
+    <div class="ph item sig-photo has-img"><img src="img/counter.webp" alt="自家焙煎コーヒー" loading="lazy" decoding="async"></div>
+  </section>
+
+
+<section class="section more-photos"><div class="ph  has-img"><img src="img/hot-sandwich.webp" alt="窓辺の席に置かれた、卵入りのホットサンドとアイスコーヒー。" loading="lazy" decoding="async"></div><div class="ph warm has-img"><img src="img/beans.webp" alt="焙煎したてのコーヒー豆。" loading="lazy" decoding="async"></div><div class="ph  has-img"><img src="img/drip.webp" alt="ドリッパーからカップへ湯を注ぐ手元。" loading="lazy" decoding="async"></div><div class="ph warm has-img"><img src="img/sign.webp" alt="通りに面した「MOKU COFFEE」の看板。" loading="lazy" decoding="async"></div></section>
+<section class="section feats">
+    
+    <ul class="feat-list"><li>テイクアウト</li><li>駐車場 約5台</li><li>現金のみ</li><li>焙煎豆の販売</li><li>コーヒー焼酎</li><li>ドリンク2杯目 50円引き</li></ul>
+  </section>
+
+<section class="section"><h2>品書き</h2><ul class="other-list"><li><span class="name">ホットドリップ</span><span class="price">500円</span></li><li><span class="name">ホットカフェオレ</span><span class="price">550円</span></li><li><span class="name">アイスドリップ</span><span class="price">550円</span></li><li><span class="name">アイスカフェオレ</span><span class="price">600円</span></li><li><span class="name">オレンジジュース／アップルジュース</span><span class="price">各450円</span></li><li><span class="name">さくふわ食感のスコーン</span><span class="price">300円</span></li><li><span class="name">黒豆きなこのパウンドケーキ</span><span class="price">400円</span></li><li><span class="name">ほろ苦カラメルの固めプリン</span><span class="price">400円</span></li><li><span class="name">キャラメルソースのガトーショコラ</span><span class="price">500円</span></li><li><span class="name">ホットサンド（目玉焼き）</span><span class="price">600円</span></li><li><span class="name">ホットサンド（ポテサラ）</span><span class="price">650円</span></li><li><span class="name">ホットサンド（ハンバーグ）</span><span class="price">700円</span></li><li><span class="name">コーヒー焼酎（シングル／ダブル）</span><span class="price">600円／1,000円</span></li><li><span class="name">菓子類・フード＋ドリンクのセット</span><span class="price">50円引き</span></li></ul>
+  <h2>店舗情報</h2><table class="info-table"><tbody><tr><th>住所</th><td>〒629-0311 京都府南丹市日吉町胡麻大戸2-1</td></tr><tr><th>営業時間</th><td>9:00〜18:00（ラストオーダー 17:30）</td></tr><tr><th>定休日</th><td>木曜（祝日は臨時営業）</td></tr><tr><th>アクセス</th><td>園部ICから車で約15分／道の駅 スプリングスひよしから車で約10分</td></tr><tr><th>駐車場</th><td>店舗の裏手に約5台</td></tr><tr><th>お支払い</th><td>現金のみ（価格は税込）</td></tr><tr><th>そのほか</th><td>テイクアウトあり。アルコールは20歳未満の方、お車を運転される方へは提供できません。</td></tr></tbody></table><div class="sns-row"><a class="sns-btn" href="https://www.google.com/maps/dir/?api=1&destination=35.19083314359855,135.481744632273" target="_blank" rel="noopener">地図・経路</a><a class="sns-btn" href="https://www.instagram.com/mokucoffee_hiyoshi/" target="_blank" rel="noopener">Instagram</a><a class="sns-btn" href="https://sites.google.com/view/mokucoffee" target="_blank" rel="noopener">公式サイト</a></div></section>
+
+
+<section class="section closing">
+    <h2 class="sec-h">一杯ずつ、淹れています。</h2><p class="sec-note">そのため、混み合うときは少しお時間をいただくことがあります。</p>
+    
+  </section>
 <section class="section karuta">
     <span class="eyebrow">近くの札</span>
     <h2>「胡麻に汽車がとまる」から、歩いて1.3km</h2>
@@ -281,7 +460,7 @@ p{font-size:.95rem}
     <p class="dist-note">距離は地図上の直線距離です。</p>
   </section>
 <section class="section en" lang="en"><h2>For English speakers</h2><p>A coffee shop on the Goma plateau, on the watershed between the Yura and Katsura rivers. House-roasted coffee, homemade sweets and light meals such as hot sandwiches. Takeaway available, with parking behind the shop. Open 9:00-18:00, closed Thursdays.</p></section>
-<p class="footer-note">［広告］本ページは京都丹波ナビの寄り処紹介です。掲載内容は2026年8月時点の情報にもとづきます。最新の営業時間・メニュー・価格は必ずお店にご確認ください。<br>営業時間・定休日・駐車場は店舗公式サイトおよび公式Instagramの記載によります。写真は店舗提供（掲載許諾済み）。</p>
+<p class="footer-note">［広告］本ページは京都丹波ナビの寄り処紹介です。掲載内容は2026年8月時点の情報にもとづきます。最新の営業時間・メニュー・価格は必ずお店にご確認ください。<br>営業時間・定休日・駐車場は店舗公式サイトおよび公式Instagramの記載によります。品書きと価格は店舗メニュー表（2026年7月10日版）によります。写真は店舗提供（掲載許諾済み）。</p>
 <footer class="ktn-band">
   <a class="bn" href="../../index.html">京都丹波ナビ</a>
   <a href="https://kyoto-tamba.com/">kyoto-tamba.com</a> ・

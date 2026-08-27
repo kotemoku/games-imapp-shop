@@ -206,6 +206,11 @@ button.go:active{transform:none}
 .arrive-btns button.primary:hover{background:#2b3f55}
 footer{margin-top:70px;text-align:center;font-size:11.5px;color:var(--usuzumi);letter-spacing:.18em}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}html{scroll-behavior:auto}}
+.send-to{margin-top:18px;padding:14px 16px;background:#fff;border:1px solid rgba(28,43,58,.16);border-radius:8px;font-size:15px;line-height:1.8}
+.send-to a{font-weight:700;word-break:break-all}
+.send-to small{display:block;margin-top:6px;color:#6b6257;font-size:13px;line-height:1.7}
+.preview figure.file{display:inline-flex;align-items:center;padding:10px 14px;border:1px dashed rgba(28,43,58,.3);border-radius:8px;background:#fff}
+.preview figure.file figcaption{font-size:13px;color:#3c4a58;word-break:break-all}
 </style>
 <link rel="stylesheet" href="../../site-header.css">
 </head>
@@ -312,8 +317,30 @@ footer{margin-top:70px;text-align:center;font-size:11.5px;color:var(--usuzumi);l
       <div class="count" data-count-for="mukashiBanashi">0 / 100文字</div>
     </div>
     <div class="field">
-      <label class="t" for="menu">おすすめの品・メニュー <span class="opt">任意</span><span class="hint">3つまで、1行にひとつ</span></label>
+      <label class="t" for="menu">おすすめの品・メニュー <span class="opt">任意</span><span class="hint">とくに推したいものを3つまで。全品はメニュー表の写真で大丈夫です</span></label>
       <textarea id="menu" name="おすすめの品" placeholder="例)&#10;丹波栗のモンブラン 480円&#10;朝挽きコーヒー 400円"></textarea>
+    </div>
+    <!-- ここから下は任意。**あれば載る、無ければ節ごと出ない**（正統派テンプレートと同じ扱い）。
+         天引村倶楽部の手書きページに並ぶ厚みは、ここが埋まるかどうかで決まる。 -->
+    <div class="field">
+      <label class="t" for="konnatoki">こんなときに <span class="opt">任意</span><span class="hint">3つまで、1行にひとつ。「見出し：ひとこと」の形で</span></label>
+      <textarea id="konnatoki" name="こんなときに" placeholder="例)&#10;手みやげに：箱でお包みします&#10;法事・お祝いに：前日までにご用意します&#10;ふだんのおやつに：ばら売りもしています"></textarea>
+    </div>
+    <div class="field">
+      <label class="t" for="sonae">できること <span class="opt">任意</span><span class="hint">短い語を読点で区切って</span></label>
+      <input type="text" id="sonae" name="できること" placeholder="例)ばら売り、のし対応、店内でお茶、駐車場3台、QR決済、Wi-Fi">
+    </div>
+    <div class="field">
+      <label class="t" for="ryokin">料金 <span class="opt">任意</span><span class="hint">体験・貸し場所などの方だけ。1行にひとつ「名前：金額」</span></label>
+      <textarea id="ryokin" name="料金" placeholder="例)&#10;半日(9:00〜19:00)：10,000円&#10;全日(24時間)：18,000円"></textarea>
+    </div>
+    <div class="field">
+      <label class="t" for="nagare">ご利用の流れ <span class="opt">任意</span><span class="hint">ご予約が要る方だけ。3ステップくらいで</span></label>
+      <textarea id="nagare" name="ご利用の流れ" placeholder="例)&#10;お電話でご相談：品と数、お渡し日をお知らせください&#10;ご用意：前日までのご注文をお願いしています&#10;店頭でお受け取り"></textarea>
+    </div>
+    <div class="field">
+      <label class="t" for="shimekukuri">最後にひとこと <span class="opt">任意</span><span class="hint">ページの締めに置きます</span></label>
+      <input type="text" id="shimekukuri" name="最後にひとこと" placeholder="例)まずは、ひとつ。その年の栗で味が変わります">
     </div>
     <div class="grid2">
       <div class="field">
@@ -358,6 +385,17 @@ footer{margin-top:70px;text-align:center;font-size:11.5px;color:var(--usuzumi);l
         <div class="pb-s">看板・包装紙・名刺の写真でも大丈夫です。あるとページの仕上がりがぐっと良くなります</div>
       </label>
       <div class="preview logo" id="prevLogo"></div>
+    </div>
+    <div class="field">
+      <!-- メニュー表。**紙を1枚撮ってもらうほうが、書き写してもらうより早くて正確。**
+           こちらで品書きに起こす。価格は変わるので、ページには「最新はお店にご確認ください」を添える。 -->
+      <label class="t">メニュー表・品書き <span class="opt">任意</span><span class="hint">紙・黒板・POPの写真で大丈夫です</span></label>
+      <label class="photo-box">
+        <input type="file" id="photoMenu" accept="image/*,application/pdf" multiple>
+        <div class="pb-t">タップしてメニュー表を選ぶ</div>
+        <div class="pb-s">こちらで品書きに起こします。手書きの黒板やPDFでも構いません。数ページあるときは全部どうぞ</div>
+      </label>
+      <div class="preview" id="prevMenu"></div>
     </div>
   </section>
 
@@ -428,12 +466,18 @@ footer{margin-top:70px;text-align:center;font-size:11.5px;color:var(--usuzumi);l
 <div id="arrival">
   <div class="arrive-card">
     <h2>ご記入ありがとうございます</h2>
-    <p>下記が申込内容の控えです。「内容をコピーする」を押して、メールやLINEに貼り付けてお送りください。写真は同じメール・トークに添付していただければ大丈夫です。</p>
+    <p>下記が申込内容の控えです。「内容をコピーする」を押して、下の宛先へメールで（またはLINEで）お送りください。写真は同じメール・トークに添付していただければ大丈夫です。</p>
     <textarea id="summary" readonly aria-label="申込内容の控え"></textarea>
     <div class="arrive-btns">
       <button type="button" class="primary" id="copyBtn">内容をコピーする</button>
       <button type="button" id="backBtn">記入画面にもどる</button>
     </div>
+    <!-- 送り先。**この画面に無いと、書き終えた人が宛先を探して戻ることになる。**
+         フォームはサーバに送らずコピーさせる作りなので、ここが唯一の導線。 -->
+    <p class="send-to">
+      送り先： <a href="mailto:kotera@teraia.net?subject=%E5%AF%84%E3%82%8A%E5%87%A6%E6%8E%B2%E8%BC%89%E3%81%AE%E7%94%B3%E8%BE%BC">kotera@teraia.net</a><br>
+      <small>コピーした内容を貼り付けて、写真・チラシを添付してお送りください。</small>
+    </p>
     <div class="bank">
       <h3>掲載料のお振込み先</h3>
       <table>
@@ -469,7 +513,17 @@ function bindPreview(inputId, prevId){
   input.addEventListener('change', function(){
     prev.innerHTML = '';
     Array.prototype.slice.call(input.files, 0, 3).forEach(function(f){
-      if(!f.type.match(/^image\//)) return;
+      // 画像でないもの(PDF等)は、**黙って消さずに名前だけ出す**。
+      // 選んだのに何も出ないと「送れていない」と思われる。
+      if(!f.type.match(/^image\//)){
+        var nf = document.createElement('figure');
+        nf.className = 'file';
+        var nc = document.createElement('figcaption');
+        nc.textContent = f.name;
+        nf.appendChild(nc);
+        prev.appendChild(nf);
+        return;
+      }
       var fig = document.createElement('figure');
       var img = document.createElement('img');
       img.alt = f.name;
@@ -485,6 +539,7 @@ function bindPreview(inputId, prevId){
 }
 bindPreview('photoNow','prevNow');
 bindPreview('photoLogo','prevLogo');
+bindPreview('photoMenu','prevMenu');
 
 // 区間ごとの「停車済み」表示(必須が埋まったらドットが緑に)
 var sections = document.querySelectorAll('[data-eki]');
@@ -559,14 +614,23 @@ form.addEventListener('submit', function(ev){
     v('mukashiBanashi'),
     'おすすめの品・メニュー:',
     v('menu'),
+    'こんなときに:',
+    v('konnatoki'),
+    'できること:' + v('sonae'),
+    '料金:',
+    v('ryokin'),
+    'ご利用の流れ:',
+    v('nagare'),
+    '最後にひとこと:' + v('shimekukuri'),
     '営業時間:' + v('eigyo'),
     '定休日:' + v('teikyu'),
     '駐車場・アクセス:' + v('parking'),
     'ホームページ・SNS:' + v('url'),
     '',
-    '【お写真】※このあとメール・LINEに添付してお送りください',
+    '【お写真】※このあとメール・LINEに添付してお送りください（多いほど良いページになります。8枚以上あると写真中心の型も選べます）',
     'お店の写真:' + files('photoNow'),
     'ロゴマーク:' + files('photoLogo'),
+    'メニュー表:' + files('photoMenu'),
     '',
     '【ご来店特典】',
     '特典の内容:' + v('tokuten'),

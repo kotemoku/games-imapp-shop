@@ -216,6 +216,9 @@ button.go:active{transform:none}
 .arrive-btns button.primary:hover{background:#2b3f55}
 footer{margin-top:70px;text-align:center;font-size:11.5px;color:var(--usuzumi);letter-spacing:.18em}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}html{scroll-behavior:auto}}
+.send-to{margin-top:18px;padding:14px 16px;background:#fff;border:1px solid rgba(28,43,58,.16);border-radius:8px;font-size:15px;line-height:1.8}
+.send-to a{font-weight:700;word-break:break-all}
+.send-to small{display:block;margin-top:6px;color:#6b6257;font-size:13px;line-height:1.7}
 </style>
 <link rel="stylesheet" href="../../site-header.css">
 </head>
@@ -402,12 +405,18 @@ footer{margin-top:70px;text-align:center;font-size:11.5px;color:var(--usuzumi);l
 <div id="arrival">
   <div class="arrive-card">
     <h2>ご記入ありがとうございます</h2>
-    <p>下記が申込内容の控えです。「内容をコピーする」を押して、メールやLINEに貼り付けてお送りください。写真・チラシ画像は同じメール・トークに添付していただければ大丈夫です。内容を確認のうえ、掲載いたします(掲載は無料です)。</p>
+    <p>下記が申込内容の控えです。「内容をコピーする」を押して、下の宛先へメールで（またはLINEで）お送りください。写真・チラシ画像は同じメール・トークに添付していただければ大丈夫です。内容を確認のうえ、掲載いたします(掲載は無料です)。</p>
     <textarea id="summary" readonly aria-label="申込内容の控え"></textarea>
     <div class="arrive-btns">
       <button type="button" class="primary" id="copyBtn">内容をコピーする</button>
       <button type="button" id="backBtn">記入画面にもどる</button>
     </div>
+    <!-- 送り先。**この画面に無いと、書き終えた人が宛先を探して戻ることになる。**
+         フォームはサーバに送らずコピーさせる作りなので、ここが唯一の導線。 -->
+    <p class="send-to">
+      送り先： <a href="mailto:kotera@teraia.net?subject=%E3%82%A4%E3%83%99%E3%83%B3%E3%83%88%E6%8E%B2%E8%BC%89%E3%81%AE%E7%94%B3%E8%BE%BC">kotera@teraia.net</a><br>
+      <small>コピーした内容を貼り付けて、写真・チラシを添付してお送りください。</small>
+    </p>
   </div>
 </div>
 

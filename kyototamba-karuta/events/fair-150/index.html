@@ -136,16 +136,33 @@ h1{font-family:var(--ktn-min);font-weight:500}
   .ktn-header { padding: 9px 14px; }
   .ktn-header .ktn-brand b { font-size: 16px; }
   .ktn-header .ktn-brand::after { display: none; }
-  /* 8項目を折り返すとヘッダーが2行=155pxになり、画面の2割を常時食う。
-     文字は大きいまま、1行に並べて横へ流す。 */
+  /* もとは1行に並べて横へ流していた（2行=155pxを避けるため）。だが
+     **横に流れることが誰にも分からず、ただ見切れて見える。** 実測 390px で
+     10本中3本が画面外、しかも常に隠れるのが「掲載のご案内」＝申込の入口だった。
+     隠れる導線は無いのと同じなので、折り返して全部見せる方を採る。
+     そのぶん字と余白を詰めて、2行でも 130px 前後に収める（2026-08-27）。 */
   .ktn-header nav {
-    flex-wrap: nowrap; gap: 0 17px; width: 100%;
-    overflow-x: auto; overscroll-behavior-x: contain;
-    scrollbar-width: none; -webkit-overflow-scrolling: touch;
+    flex-wrap: wrap; gap: 2px 15px; width: 100%;
   }
-  .ktn-header nav::-webkit-scrollbar { display: none; }
-  .ktn-header nav a { font-size: 15.5px; padding: 9px 0; min-height: 42px; white-space: nowrap; flex: 0 0 auto; }
-  .ktn-header nav a.ktn-cta { padding: 6px 11px; }
+  .ktn-header nav a { font-size: 15px; padding: 7px 0; min-height: 38px; white-space: nowrap; }
+  .ktn-header nav a.ktn-cta { padding: 6px 11px; min-height: 34px; margin-left: auto; }
+}
+
+/* 360px 級（iPhone SE / Android の小型）では2行に収まらず3行=184pxになり、
+   表紙の文字の上が21pxしか残らなかった。字と間隔だけ詰めて2行に戻す。
+   14px はナビの下限（16px を基本、老眼でも押せる44pxのタップ域は維持）。 */
+@media (max-width: 400px) {
+  .ktn-header { padding: 8px 12px; }
+  .ktn-header nav { gap: 2px 12px; }
+  .ktn-header nav a { font-size: 14px; }
+  .ktn-header nav a.ktn-cta { padding: 6px 9px; }
+}
+
+/* 320px 級（iPhone SE 第1世代）。**字は14pxのまま**（13pxはナビの下限を割る）、
+   間隔だけ詰めて2段に収める。3段=176px だと表紙のボタンが折り目の下に出る。 */
+@media (max-width: 340px) {
+  .ktn-header { padding: 7px 10px; }
+  .ktn-header nav { gap: 1px 8px; }
 }
 
 /* ── 記事エントリー（誌面の行）──
@@ -352,8 +369,8 @@ footer.site .ig{display:inline-block;margin-top:12px;font-weight:700;color:var(-
   <a class="btn primary" href="https://kyototamba-fair.jp/event/" target="_blank" rel="noopener">主催者の公式情報を見る</a>
   <a class="btn ghost" href="https://www.google.com/maps/dir/?api=1&amp;destination=35.264356,135.395203" target="_blank" rel="noopener">経路をしらべる</a>
 </div>
-<p class="note">掲載内容は2026-08-22時点の情報です。日程・内容は変更される場合がありますので、おでかけ前に必ず主催者の公式情報をご確認ください。</p>
-<section class="rel"><h2>京丹波町のほかのイベント</h2><ul class="list"><li><a href="../itoma-marche/"><span class="d">9/17・10/15・11/19・12/17</span><br><span class="n">いとまrché（いとまルシェ）</span></a></li><li><a href="../fair-202/"><span class="d">9/18〜9/27</span><br><span class="n">秋の山野草展</span></a></li><li><a href="../fair-145/"><span class="d">9/19</span><br><span class="n">里山つながるBBQデイ</span></a></li><li><a href="../fair-194/"><span class="d">9/19・9/20</span><br><span class="n">森から視る／考える❝工芸とアート❞</span></a></li><li><a href="../green-harvest/"><span class="d">9/23</span><br><span class="n">京都丹波グリーン・ハーベスト・フェス〜森のバザール〜</span></a></li></ul></section>
+<p class="note">掲載内容は2026-08-27時点の情報です。日程・内容は変更される場合がありますので、おでかけ前に必ず主催者の公式情報をご確認ください。</p>
+<section class="rel"><h2>京丹波町のほかのイベント</h2><ul class="list"><li><a href="../fair-220/"><span class="d">8/18〜11/8</span><br><span class="n">由良川 いのちの環 水槽展示</span></a></li><li><a href="../itoma-marche/"><span class="d">9/17・10/15・11/19・12/17</span><br><span class="n">いとまrché（いとまルシェ）</span></a></li><li><a href="../fair-202/"><span class="d">9/18〜9/27</span><br><span class="n">秋の山野草展</span></a></li><li><a href="../fair-145/"><span class="d">9/19</span><br><span class="n">里山つながるBBQデイ</span></a></li><li><a href="../fair-194/"><span class="d">9/19・9/20</span><br><span class="n">森から視る／考える❝工芸とアート❞</span></a></li></ul></section>
 <section class="rel"><h2>立ち寄れる寄り処</h2><ul class="list"><li><div class="norow"><span class="n">わち山野草の森</span><br><span class="d">自然・体験　会場から約0km</span></div></li><li><div class="norow"><span class="n">bio sweet's capocapo 菓歩菓歩</span><br><span class="d">カフェ・喫茶　会場から約0km</span></div></li><li><div class="norow"><span class="n">七福堂</span><br><span class="d">買う・おみやげ　会場から約0km</span></div></li></ul></section>
 <section class="rel">
   <h2>京都丹波を、あそんで知る</h2>
