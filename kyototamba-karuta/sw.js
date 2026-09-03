@@ -12,7 +12,7 @@
  * イベントや店舗のページは今までどおりネットワークから最新が出る。
  * ここを広げると、配信し直しても古いページが出続ける事故になる。
  */
-const VERSION = "235ccd338d0b";
+const VERSION = "2f75a83457a5";
 const SHELL = "ktn-bousai-shell-" + VERSION;
 const TILES = "ktn-tiles-v1"; // タイルは版をまたいで持ち越す（描き直す理由が無い）
 const META_URL = "./__sw-meta";
@@ -27,7 +27,7 @@ const PRECACHE = [
   "./icons/icon-192.png",
   "./icons/icon-512.png",
   "./icons/icon-maskable-512.png",
-  "./assets/bousai-DAFAAczR.js",
+  "./assets/bousai-B7Rux-40.js",
   "./assets/maplibre-gl-9UNWPgFo.css",
   "./assets/maplibre-gl-aIYBzkuZ.js",
   "./assets/maplibre-gl-shared.mjs",
@@ -67,11 +67,18 @@ self.addEventListener("activate", (event) => {
     }
     await self.clients.claim();
     // 地図本体を裏で入れる。待たない（失敗しても殻は生きている）。
-    event.waitUntil(precacheArchive().catch(() => {}));
+    event.waitUntil(precacheOnce().catch(() => {}));
   })());
 });
 
 const archiveUrl = () => new URL(ARCHIVE, self.location.href).href;
+
+/** 走っている取り込み。**同時に2本走らせない**（19MB を二重に落とすことになる）。 */
+let precaching = null;
+function precacheOnce() {
+  if (!precaching) precaching = precacheArchive().finally(() => { precaching = null; });
+  return precaching;
+}
 
 /** 地図本体を丸ごと端末に置く。既にあれば何もしない。進み具合はページへ知らせる。 */
 async function precacheArchive() {
@@ -162,10 +169,16 @@ self.addEventListener("fetch", (event) => {
   // （配信先は両方とも 206 を返す。裏の取り込みが終わるまでの間だけ）。
   if (url.origin === self.location.origin && url.href.split("?")[0] === archiveUrl()) {
     event.respondWith((async () => {
-      const buf = await archiveBytes();
+      let buf = await archiveBytes();
+      // まだ無ければ、取り込みを**待ってから**切る。配信先へ Range を通しても
+      // 本番（Cloudflare Pages）は 200 で 19MB 全体を返すので、通す意味が無い
+      // （2026-09-03 実測）。待つあいだページは白いが、二重に落とすよりよい。
+      if (!buf) {
+        try { await precacheOnce(); } catch { /* 下で 504 */ }
+        buf = await archiveBytes();
+      }
       if (buf) return sliceResponse(buf, req.headers.get("range"));
-      try { return await fetch(req); }
-      catch { return new Response("", { status: 504, statusText: "offline: archive not cached" }); }
+      return new Response("", { status: 504, statusText: "offline: archive not cached" });
     })());
     return;
   }
@@ -224,7 +237,7 @@ self.addEventListener("message", (event) => {
       const archiveBytesN = arc ? Number(arc.headers.get("content-length") || 0) : 0;
       event.source?.postMessage({ type: "ktn:meta", meta, tiles: n, archive: archiveBytesN });
       // 無ければ改めて取りに行く（activate 時に失敗していた・途中で落とされた、など）
-      if (!arc) precacheArchive().catch(() => {});
+      if (!arc) precacheOnce().catch(() => {});
     })());
   }
 });
