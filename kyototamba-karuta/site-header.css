@@ -29,6 +29,12 @@
 /* ── サイトヘッダー（誌面のヘッダ罫）──
    トップは画面下端の固定ナビだが、下層ページは上部ヘッダー。
    どちらも同じ書体・同じ罫線で「同じ誌面」に見せる。 */
+/* **自分の箱の数え方は自分で持つ。** ページ側の reset に頼っていたため、
+   box-sizing の無い入口（/bousai/ など Vite の HTML）だけ padding が外へ出て、
+   同じ CSS で高さが 165px と 215px に割れていた（2026-08-27 実測）。 */
+.ktn-header, .ktn-header * { box-sizing: border-box; }
+footer.site, footer.site * { box-sizing: border-box; }
+
 .ktn-header {
   position: sticky;
   top: 0;
@@ -88,6 +94,10 @@
   text-decoration: none;
   padding: 11px 0;
   min-height: 44px;
+  /* **行間も自分で持つ。** ページ側の body{line-height} を継承していたため、
+     生成ページ 53px / Vite 入口 44px と、同じ CSS でリンクの高さが割れていた
+     （2026-08-27 実測。box-sizing と同じ種類の取りこぼし）。 */
+  line-height: 1.2;
   display: inline-flex;
   align-items: center;
   border-bottom: 1px solid transparent;

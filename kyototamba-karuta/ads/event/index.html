@@ -221,15 +221,24 @@ footer{margin-top:70px;text-align:center;font-size:11.5px;color:var(--usuzumi);l
 .send-to small{display:block;margin-top:6px;color:#6b6257;font-size:13px;line-height:1.7}
 </style>
 <link rel="stylesheet" href="../../site-header.css">
+<style>
+footer.site{border-top:1px solid var(--line,#d8d5cc);padding:22px 20px 40px;text-align:center;font-size:13px;line-height:2;color:rgba(35,40,48,.86);background:#fbfaf6}
+footer.site a{color:inherit}
+footer.site .ig{display:inline-block;margin-top:12px;font-weight:700;color:var(--indigo,#274a6d)}
+footer.site .site-copy{margin-top:10px;font-size:12px;color:rgba(35,40,48,.6)}
+</style>
 </head>
 <body>
 <header class="ktn-header"><div class="ktn-in">
   <a class="ktn-brand" href="../../index.html"><img src="../../icons/icon-192.png" alt="" width="34" height="34"><b>京都丹波ナビ</b></a>
   <nav aria-label="サイト内">
+    <a href="../../index.html">地図</a>
     <a href="../../events/index.html">イベント</a>
     <a href="../../shops/index.html">寄り処</a>
-    <a href="../../index.html">あそぶ</a>
-    <a class="ktn-cta" href="../../ads/index.html">掲載のご案内</a>
+    <a href="../../index.html?play=1">タイムトラベル</a>
+    <a href="../../tactics/index.html">丹波タクティクス</a>
+    <a href="../../bousai/index.html">防災マップ</a>
+    <a class="is-here" aria-current="page" href="../../ads/index.html">掲載のご案内</a>
   </nav>
 </div></header>
 
@@ -588,5 +597,20 @@ document.getElementById('backBtn').addEventListener('click', function(){
   form.scrollIntoView({behavior:'smooth'});
 });
 </script>
+<footer class="site">
+  <a href="../../index.html">京都丹波ナビ トップ</a> ・
+  <a href="../../week/index.html">今週の京都丹波</a> ・
+  <a href="../../course/index.html">一日のコース</a> ・
+  <a href="../../events/index.html">イベント一覧</a> ・
+  <a href="../../shops/index.html">寄り処一覧</a> ・
+  <a href="../../tactics/index.html">丹波タクティクス</a> ・
+  <a href="../../bousai/index.html">防災マップ</a> ・
+  <a href="../../photo/index.html">写真を送る</a> ・
+  <a href="../../about/index.html">このサイトについて</a> ・
+  <a href="../../legal/index.html">利用規約・プライバシー</a> ・
+  <a href="../../ads/index.html">掲載のご案内</a>
+  <br><a class="ig" href="https://www.instagram.com/kyototambanavi/" target="_blank" rel="noopener">Instagram @kyototambanavi</a>
+  <div class="site-copy">© 2026 teraia（京都府南丹市）・地域プラットフォーム imapp</div>
+</footer>
 </body>
 </html>

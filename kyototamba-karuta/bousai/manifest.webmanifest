@@ -1,0 +1,17 @@
+{
+  "name": "京都丹波 防災マップ",
+  "short_name": "丹波防災",
+  "description": "亀岡市・南丹市・京丹波町の避難所・警察・医療機関・消防の地図。平常時に備えるための地図です。開設状況は各市町の公式情報をご確認ください。",
+  "lang": "ja",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f7f4ec",
+  "theme_color": "#2E4B3C",
+  "icons": [
+    { "src": "../icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "../icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "../icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

@@ -326,8 +326,202 @@ img,svg{display:block;max-width:100%}
 }
 </style>
 <script src="../ga-init.js" defer></script>
+<style>
+/* 京都丹波ナビ 共通トークン＋サイトヘッダー。
+   2026-08-07 全面リニューアル（P6「表紙と誌面」を採用）。
+   このファイルが配色・書体の唯一の正。静的ページ・掲載案内・申込フォームが読み込み、
+   scripts/prerender.mjs は生成ページに inline する。アプリ本体は src/styles/main.css の
+   最終 :root で同じ値を持つ（Vite バンドルのため別管理・値は必ず一致させること）。 */
+
+:root {
+  /* 誌面（P5由来） */
+  --ktn-bg: #f5f5f2;
+  --ktn-paper: #fff;
+  --ktn-ink: #101010;
+  --ktn-ink-mid: #444;
+  --ktn-ink-pale: #5f6368;
+  --ktn-navy: #1c3560;
+  --ktn-gold: #b98a2e;
+  --ktn-rule: rgba(16, 16, 16, .16);
+
+  /* 市町 */
+  --ktn-kameoka: #a5573a;
+  --ktn-nantan: #5b7d4b;
+  --ktn-kyotamba: #3a6a8c;
+
+  /* 書体（OS内蔵のみ・Webフォント読み込みなし） */
+  --ktn-min: "Hiragino Mincho ProN", "游明朝", "Yu Mincho", "HGS明朝E", Georgia, serif;
+  --ktn-san: -apple-system, "Hiragino Sans", "Yu Gothic UI", "Yu Gothic", "Noto Sans JP", sans-serif;
+  --ktn-mon: "SF Mono", Menlo, Consolas, "Courier New", monospace;
+}
+
+/* ── サイトヘッダー（誌面のヘッダ罫）──
+   トップは画面下端の固定ナビだが、下層ページは上部ヘッダー。
+   どちらも同じ書体・同じ罫線で「同じ誌面」に見せる。 */
+.ktn-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  padding: 11px 20px;
+  background: color-mix(in srgb, var(--ktn-bg) 94%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--ktn-ink);
+  font-family: var(--ktn-san);
+}
+/* 店の紹介ページ（public/shops/*）は各店で作った固有のヘッダーを持っている。
+   そこへ sticky を重ねると二段に貼りつくので、これらのページでは流す。
+   下層ページの生成物は従来どおり sticky のまま。 */
+.ktn-header--static { position: static; }
+
+.ktn-header .ktn-in {
+  max-width: 1180px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.ktn-header .ktn-brand {
+  display: flex;
+  /* 文字の高さは19px。押せる範囲だけ広げる（見た目の並びは baseline のまま）。 */
+  padding-block: 10px;
+  align-items: baseline;
+  gap: 10px;
+  margin-right: auto;
+  text-decoration: none;
+  color: var(--ktn-ink);
+}
+.ktn-header .ktn-brand img { display: none; }
+.ktn-header .ktn-brand b {
+  font-family: var(--ktn-min);
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: .1em;
+  line-height: 1.2;
+}
+.ktn-header .ktn-brand::after {
+  content: "KYOTO TAMBA NAVI";
+  font-family: var(--ktn-mon);
+  font-size: 13px;
+  letter-spacing: .2em;
+  color: var(--ktn-ink-pale);
+}
+.ktn-header nav { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 20px; }
+.ktn-header nav a {
+  /* ナビは本文より下限を上げる。13px・タップ34px では、老眼の人が
+     「読む前に押せない」で終わる。16px・タップ44px を確保する。 */
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: .04em;
+  color: var(--ktn-ink);
+  text-decoration: none;
+  padding: 11px 0;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  border-bottom: 1px solid transparent;
+}
+.ktn-header nav a:hover,
+.ktn-header nav a:focus-visible { border-bottom-color: var(--ktn-ink); outline: none; }
+.ktn-header nav a.ktn-cta {
+  color: #fff;
+  background: var(--ktn-navy);
+  padding: 7px 15px;
+  border-bottom: 0;
+  letter-spacing: .08em;
+}
+.ktn-header nav a.ktn-cta:hover,
+.ktn-header nav a.ktn-cta:focus-visible { background: var(--ktn-ink); color: #fff; }
+
+@media (max-width: 560px) {
+  .ktn-header { padding: 9px 14px; }
+  .ktn-header .ktn-brand b { font-size: 16px; }
+  .ktn-header .ktn-brand::after { display: none; }
+  /* もとは1行に並べて横へ流していた（2行=155pxを避けるため）。だが
+     **横に流れることが誰にも分からず、ただ見切れて見える。** 実測 390px で
+     10本中3本が画面外、しかも常に隠れるのが「掲載のご案内」＝申込の入口だった。
+     隠れる導線は無いのと同じなので、折り返して全部見せる方を採る。
+     そのぶん字と余白を詰めて、2行でも 130px 前後に収める（2026-08-27）。 */
+  .ktn-header nav {
+    flex-wrap: wrap; gap: 2px 15px; width: 100%;
+  }
+  /* タップ域は 44px を割らない。上の但し書きに書いたとおりの理由で、
+     折り返しの高さを節約するために 38px まで下げたのは筋が違った（2026-08-27）。 */
+  .ktn-header nav a { font-size: 15px; padding: 7px 0; min-height: 44px; white-space: nowrap; }
+  .ktn-header nav a.ktn-cta { padding: 8px 11px; min-height: 40px; margin-left: auto; }
+  .ktn-header .ktn-brand { min-height: 44px; align-items: center; }
+}
+
+/* 360px 級（iPhone SE / Android の小型）では2行に収まらず3行=184pxになり、
+   表紙の文字の上が21pxしか残らなかった。字と間隔だけ詰めて2行に戻す。
+   14px はナビの下限（16px を基本、老眼でも押せる44pxのタップ域は維持）。 */
+@media (max-width: 400px) {
+  .ktn-header { padding: 8px 12px; }
+  .ktn-header nav { gap: 2px 12px; }
+  .ktn-header nav a { font-size: 14px; }
+  .ktn-header nav a.ktn-cta { padding: 6px 9px; }
+}
+
+/* 320px 級（iPhone SE 第1世代）。**字は14pxのまま**（13pxはナビの下限を割る）、
+   間隔だけ詰めて2段に収める。3段=176px だと表紙のボタンが折り目の下に出る。 */
+@media (max-width: 340px) {
+  .ktn-header { padding: 7px 10px; }
+  .ktn-header nav { gap: 1px 8px; }
+}
+
+/* ── 記事エントリー（誌面の行）──
+   トップの「まもなく開催」と、/week/ の一覧で使う共通の行。
+   アプリ側は src/styles/cover-spread.css に同じ定義がある（Viteバンドルのため別管理）。
+   値を変えるときは両方直すこと。 */
+.ktn-art {
+  display: block;
+  padding: 17px 0;
+  border-bottom: 1px solid rgba(16, 16, 16, .16);
+  text-decoration: none;
+  color: var(--ktn-ink, #101010);
+}
+.ktn-art:last-child { border-bottom: 0; }
+.ktn-art:hover .ka-h,
+.ktn-art:focus-visible .ka-h { text-decoration: underline; text-underline-offset: 4px; }
+.ktn-art .ka-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.ktn-art .ka-tag {
+  font-size: 13px; font-weight: 700; letter-spacing: .08em;
+  color: #fff; padding: 2px 8px; text-decoration: none;
+}
+.ka-tag.kameoka { background: var(--ktn-kameoka, #a5573a); }
+.ka-tag.nantan { background: var(--ktn-nantan, #5b7d4b); }
+.ka-tag.kyotamba { background: var(--ktn-kyotamba, #3a6a8c); }
+.ktn-art .ka-d {
+  font-family: var(--ktn-mon, monospace); font-size: 13px; letter-spacing: .08em;
+  color: rgba(16, 16, 16, .86); font-variant-numeric: tabular-nums; text-decoration: none;
+}
+.ktn-art .ka-h {
+  margin: 7px 0 0; font-family: var(--ktn-min, serif); font-size: 16px; font-weight: 500;
+  line-height: 1.62; letter-spacing: .04em; color: var(--ktn-ink, #101010);
+}
+.ktn-art .ka-v { margin: 5px 0 0; font-size: 13px; color: rgba(16, 16, 16, .86); }
+
+</style>
+<style>
+footer.site{border-top:1px solid var(--line,#d8d5cc);padding:22px 20px 40px;text-align:center;font-size:13px;line-height:2;color:rgba(35,40,48,.86);background:#fbfaf6}
+footer.site a{color:inherit}
+footer.site .ig{display:inline-block;margin-top:12px;font-weight:700;color:var(--indigo,#274a6d)}
+footer.site .site-copy{margin-top:10px;font-size:12px;color:rgba(35,40,48,.6)}
+</style>
 </head>
 <body>
+<header class="ktn-header"><div class="ktn-in">
+  <a class="ktn-brand" href="../index.html"><img src="../icons/icon-192.png" alt="" width="34" height="34"><b>京都丹波ナビ</b></a>
+  <nav aria-label="サイト内">
+    <a href="../index.html">地図</a>
+    <a href="../events/index.html">イベント</a>
+    <a href="../shops/index.html">寄り処</a>
+    <a href="../index.html?play=1">タイムトラベル</a>
+    <a href="../tactics/index.html">丹波タクティクス</a>
+    <a href="../bousai/index.html">防災マップ</a>
+    <a class="ktn-cta" href="../ads/index.html">掲載のご案内</a>
+  </nav>
+</div></header>
 
 <header class="site-header">
   <div class="container nav">
@@ -639,5 +833,20 @@ const observer = new IntersectionObserver((entries) => {
 
 document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
 </script>
+<footer class="site">
+  <a href="../index.html">京都丹波ナビ トップ</a> ・
+  <a href="../week/index.html">今週の京都丹波</a> ・
+  <a href="../course/index.html">一日のコース</a> ・
+  <a href="../events/index.html">イベント一覧</a> ・
+  <a href="../shops/index.html">寄り処一覧</a> ・
+  <a href="../tactics/index.html">丹波タクティクス</a> ・
+  <a href="../bousai/index.html">防災マップ</a> ・
+  <a href="../photo/index.html">写真を送る</a> ・
+  <a href="../about/index.html">このサイトについて</a> ・
+  <a href="../legal/index.html">利用規約・プライバシー</a> ・
+  <a href="../ads/index.html">掲載のご案内</a>
+  <br><a class="ig" href="https://www.instagram.com/kyototambanavi/" target="_blank" rel="noopener">Instagram @kyototambanavi</a>
+  <div class="site-copy">© 2026 teraia（京都府南丹市）・地域プラットフォーム imapp</div>
+</footer>
 </body>
 </html>

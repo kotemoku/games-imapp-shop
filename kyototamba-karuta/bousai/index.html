@@ -5,34 +5,81 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>京都丹波 防災マップ｜避難所・警察・医療｜京都丹波ナビ</title>
 <meta name="description" content="亀岡市・南丹市・京丹波町の指定緊急避難場所・避難所、警察、医療機関、消防の地図。平常時に備えるための地図です。開設状況は各市町の公式情報をご確認ください。" />
-<!-- **まだ公開していない**（docs/bousai-plan.md §5 の条件が未達）。
-     サイトのナビにも sitemap にも出していない。検索にも出さない。 -->
-<meta name="robots" content="noindex,nofollow" />
+<!-- 2026-08-27 公開（ナビ・フッター・sitemap）。それまで noindex が残っていて
+     sitemap と矛盾していた（2026-09-03 に発見・削除）。 -->
+<!-- 共有用のメタ。無いと scripts/share-report.mjs が deploy を止める（2026-09-03 に実際に止まった。
+     昨日 noindex を外したときに、これを足し忘れていた）。他のページと同じ組（canonical / og / twitter）。 -->
+<link rel="canonical" href="https://kyoto-tamba.com/bousai/" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://kyoto-tamba.com/bousai/" />
+<meta property="og:site_name" content="京都丹波ナビ" />
+<meta property="og:title" content="京都丹波 防災マップ｜避難所・警察・医療｜京都丹波ナビ" />
+<meta property="og:description" content="亀岡市・南丹市・京丹波町の指定緊急避難場所・避難所、警察、医療機関、消防の地図。平常時に備えるための地図で、一度開けば圏外でも使えます。開設状況は各市町の公式情報をご確認ください。" />
+<meta property="og:image" content="https://kyoto-tamba.com/ogp/site.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
 <meta name="theme-color" content="#2E4B3C" />
 <link rel="icon" type="image/png" sizes="32x32" href="../icons/favicon-32.png" />
 <link rel="apple-touch-icon" href="../icons/apple-touch-icon.png" />
-<link rel="manifest" href="../manifest.webmanifest" />
+<!-- 防災マップは自分の manifest を持つ。ゲーム用（短名「丹波タイム」・start_url がトップ）を
+     流用すると、ホーム画面から開いた先が地図ではなくゲームになる。 -->
+<link rel="manifest" href="manifest.webmanifest" />
 <link rel="stylesheet" href="../site-header.css" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet" />
-  <script type="module" crossorigin src="../assets/bousai-D5BNtaOe.js"></script>
-  <link rel="modulepreload" crossorigin href="../assets/dom-DPUY6f-f.js">
-  <link rel="modulepreload" crossorigin href="../assets/pin-CQKjK9Y0.js">
-  <link rel="stylesheet" crossorigin href="../assets/dom-CkXMikQa.css">
+<style>
+footer.site{border-top:1px solid var(--line,#d8d5cc);padding:22px 20px 40px;text-align:center;font-size:13px;line-height:2;color:rgba(35,40,48,.86);background:#fbfaf6}
+footer.site a{color:inherit}
+footer.site .ig{display:inline-block;margin-top:12px;font-weight:700;color:var(--indigo,#274a6d)}
+footer.site .site-copy{margin-top:10px;font-size:12px;color:rgba(35,40,48,.6)}
+</style>
+  <script type="module" crossorigin src="../assets/bousai-DAFAAczR.js"></script>
+  <link rel="modulepreload" crossorigin href="../assets/pin-D2I_0pBk.js">
+  <link rel="stylesheet" crossorigin href="../assets/pin-2Kg8Ak_q.css">
 </head>
 <body class="kmap-page">
-<div id="ktnHeader"></div>
+<header class="ktn-header"><div class="ktn-in">
+  <a class="ktn-brand" href="../index.html"><img src="../icons/icon-192.png" alt="" width="34" height="34"><b>京都丹波ナビ</b></a>
+  <nav aria-label="サイト内">
+    <a href="../index.html">地図</a>
+    <a href="../events/index.html">イベント</a>
+    <a href="../shops/index.html">寄り処</a>
+    <a href="../index.html?play=1">タイムトラベル</a>
+    <a href="../tactics/index.html">丹波タクティクス</a>
+    <a class="is-here" aria-current="page" href="../bousai/index.html">防災マップ</a>
+    <a class="ktn-cta" href="../ads/index.html">掲載のご案内</a>
+  </nav>
+</div></header>
 <!-- 開設状況の但し書き。**閉じられない形で常時出す**（bousai-plan.md §0）。 -->
 <p class="bousai-standing" role="note">
   平常時に備えるための地図です。<b>指定は「開設」ではありません。</b>
   災害時に開いているかは、各市町の最新の公式情報をご確認ください。
 </p>
 <main id="mapHost" aria-label="京都丹波 防災マップ"></main>
+<!-- 端末に保存できているか。**「一度開いておけば大丈夫」とは書かない**（§2 iOS の7日問題）。
+     主に言うのは「ホーム画面に追加」。最終保存日を出し、古ければ更新を促す。 -->
+<p class="bousai-offline" id="bousaiOffline" role="status" aria-live="polite"></p>
 <noscript>
   <p style="padding:24px;font-family:sans-serif;line-height:1.9">
     この地図は JavaScript で動きます。避難所の一覧は各市町の公式ページをご確認ください。
   </p>
 </noscript>
+<footer class="site">
+  <a href="../index.html">京都丹波ナビ トップ</a> ・
+  <a href="../week/index.html">今週の京都丹波</a> ・
+  <a href="../course/index.html">一日のコース</a> ・
+  <a href="../events/index.html">イベント一覧</a> ・
+  <a href="../shops/index.html">寄り処一覧</a> ・
+  <a href="../tactics/index.html">丹波タクティクス</a> ・
+  <a href="../bousai/index.html">防災マップ</a> ・
+  <a href="../photo/index.html">写真を送る</a> ・
+  <a href="../about/index.html">このサイトについて</a> ・
+  <a href="../legal/index.html">利用規約・プライバシー</a> ・
+  <a href="../ads/index.html">掲載のご案内</a>
+  <br><a class="ig" href="https://www.instagram.com/kyototambanavi/" target="_blank" rel="noopener">Instagram @kyototambanavi</a>
+  <div class="site-copy">© 2026 teraia（京都府南丹市）・地域プラットフォーム imapp</div>
+</footer>
 </body>
 </html>

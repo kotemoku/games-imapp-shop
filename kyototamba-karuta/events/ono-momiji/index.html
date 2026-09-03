@@ -59,6 +59,12 @@ h1{font-family:var(--ktn-min);font-weight:500}
 /* ── サイトヘッダー（誌面のヘッダ罫）──
    トップは画面下端の固定ナビだが、下層ページは上部ヘッダー。
    どちらも同じ書体・同じ罫線で「同じ誌面」に見せる。 */
+/* **自分の箱の数え方は自分で持つ。** ページ側の reset に頼っていたため、
+   box-sizing の無い入口（/bousai/ など Vite の HTML）だけ padding が外へ出て、
+   同じ CSS で高さが 165px と 215px に割れていた（2026-08-27 実測）。 */
+.ktn-header, .ktn-header * { box-sizing: border-box; }
+footer.site, footer.site * { box-sizing: border-box; }
+
 .ktn-header {
   position: sticky;
   top: 0;
@@ -118,6 +124,10 @@ h1{font-family:var(--ktn-min);font-weight:500}
   text-decoration: none;
   padding: 11px 0;
   min-height: 44px;
+  /* **行間も自分で持つ。** ページ側の body{line-height} を継承していたため、
+     生成ページ 53px / Vite 入口 44px と、同じ CSS でリンクの高さが割れていた
+     （2026-08-27 実測。box-sizing と同じ種類の取りこぼし）。 */
+  line-height: 1.2;
   display: inline-flex;
   align-items: center;
   border-bottom: 1px solid transparent;
@@ -202,6 +212,11 @@ h1{font-family:var(--ktn-min);font-weight:500}
 }
 .ktn-art .ka-v { margin: 5px 0 0; font-size: 13px; color: rgba(16, 16, 16, .86); }
 
+footer.site,footer.site *{box-sizing:border-box}
+footer.site{border-top:1px solid var(--line,#d8d5cc);padding:22px 20px 40px;text-align:center;font-size:13px;line-height:2;color:rgba(35,40,48,.86);background:#fbfaf6}
+footer.site a{color:inherit}
+footer.site .ig{display:inline-block;margin-top:12px;font-weight:700;color:var(--indigo,#274a6d)}
+footer.site .site-copy{margin-top:10px;font-size:12px;color:rgba(35,40,48,.6)}
 main{max-width:760px;margin:0 auto;padding:28px 20px 64px}
 .crumb{font-family:var(--ktn-mon);font-size:13px;letter-spacing:.1em;color:var(--ktn-ink-pale);margin-bottom:16px}
 .crumb a{color:inherit}
@@ -328,9 +343,6 @@ ul.list .d .dot{margin-right:6px;vertical-align:middle}
 .empty{padding:26px 16px;text-align:center;font-size:15px;color:var(--ktn-ink-pale);
   background:#fff;border:1px dashed var(--line)}
 @media(max-width:480px){.flab{width:100%}}
-footer.site{border-top:1px solid var(--line);padding:22px 20px 40px;text-align:center;font-size:13px;color:rgba(35, 40, 48, .86)}
-footer.site a{color:inherit}
-footer.site .ig{display:inline-block;margin-top:12px;font-weight:700;color:var(--indigo)}
 @media(max-width:560px){dl.facts>div{grid-template-columns:74px 1fr;gap:10px}}
 </style>
 </head>
@@ -338,14 +350,12 @@ footer.site .ig{display:inline-block;margin-top:12px;font-weight:700;color:var(-
 <header class="ktn-header"><div class="ktn-in">
   <a class="ktn-brand" href="../../index.html"><img src="../../icons/icon-192.png" alt="" width="34" height="34"><b>京都丹波ナビ</b></a>
   <nav aria-label="サイト内">
-    <a href="../../week/index.html">今週</a>
-    <a href="../../course/index.html">一日のコース</a>
+    <a href="../../index.html">地図</a>
     <a href="../../events/index.html">イベント</a>
     <a href="../../shops/index.html">寄り処</a>
-    <a href="../../map/index.html">地図</a>
-    <a href="../../index.html?play=1">あそぶ</a>
+    <a href="../../index.html?play=1">タイムトラベル</a>
     <a href="../../tactics/index.html">丹波タクティクス</a>
-    <a href="../../photo/index.html">写真を送る</a>
+    <a href="../../bousai/index.html">防災マップ</a>
     <a class="ktn-cta" href="../../ads/index.html">掲載のご案内</a>
   </nav>
 </div></header>
@@ -374,7 +384,7 @@ footer.site .ig{display:inline-block;margin-top:12px;font-weight:700;color:var(-
   <a class="btn primary" href="https://miyamanavi.com/event/momiji-matsuri" target="_blank" rel="noopener">主催者の公式情報を見る</a>
   <a class="btn ghost" href="https://www.google.com/maps/dir/?api=1&amp;destination=35.26242,135.46035" target="_blank" rel="noopener">経路をしらべる</a>
 </div>
-<p class="note">掲載内容は2026-08-27時点の情報です。日程・内容は変更される場合がありますので、おでかけ前に必ず主催者の公式情報をご確認ください。</p>
+<p class="note">掲載内容は2026-09-03時点の情報です。日程・内容は変更される場合がありますので、おでかけ前に必ず主催者の公式情報をご確認ください。</p>
 <section class="rel"><h2>南丹市のほかのイベント</h2><ul class="list"><li><a href="../fair-149/"><span class="d">8/27・9/29・10/20</span><br><span class="n">オレンジガーデニングプロジェクト</span></a></li><li><a href="../fair-160/"><span class="d">9/5〜10/12</span><br><span class="n">南丹市立文化博物館秋季企画展内藤ジョアンと八木城</span></a></li><li><a href="../fair-133/"><span class="d">9/9ほか全17回（〜3/24）</span><br><span class="n">京都丹波ガーデニングセミナーin南丹市国際交流会館</span></a></li><li><a href="../miyama-ongakusai/"><span class="d">9/17〜9/22</span><br><span class="n">第4回 美山音楽祭</span></a></li><li><a href="../synesthesia/"><span class="d">会期中毎夜</span><br><span class="n">京都イルミネーション シナスタジアヒルズ</span></a></li></ul></section>
 <section class="rel"><h2>立ち寄れる寄り処</h2><ul class="list"><li><div class="norow"><span class="n">bio sweet's capocapo 菓歩菓歩</span><br><span class="d">カフェ・喫茶　会場から約6km</span></div></li><li><div class="norow"><span class="n">七福堂</span><br><span class="d">買う・おみやげ　会場から約6km</span></div></li><li><div class="norow"><span class="n">道の駅 和（なごみ）</span><br><span class="d">道の駅　会場から約6km</span></div></li></ul></section>
 <section class="rel">
@@ -389,9 +399,14 @@ footer.site .ig{display:inline-block;margin-top:12px;font-weight:700;color:var(-
   <a href="../../course/index.html">一日のコース</a> ・
   <a href="../../events/index.html">イベント一覧</a> ・
   <a href="../../shops/index.html">寄り処一覧</a> ・
+  <a href="../../tactics/index.html">丹波タクティクス</a> ・
+  <a href="../../bousai/index.html">防災マップ</a> ・
   <a href="../../photo/index.html">写真を送る</a> ・
+  <a href="../../about/index.html">このサイトについて</a> ・
+  <a href="../../legal/index.html">利用規約・プライバシー</a> ・
   <a href="../../ads/index.html">掲載のご案内</a>
   <br><a class="ig" href="https://www.instagram.com/kyototambanavi/" target="_blank" rel="noopener">Instagram @kyototambanavi</a>
+  <div class="site-copy">© 2026 teraia（京都府南丹市）・地域プラットフォーム imapp</div>
 </footer>
 </body>
 </html>

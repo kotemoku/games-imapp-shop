@@ -51,6 +51,12 @@
 /* ── サイトヘッダー（誌面のヘッダ罫）──
    トップは画面下端の固定ナビだが、下層ページは上部ヘッダー。
    どちらも同じ書体・同じ罫線で「同じ誌面」に見せる。 */
+/* **自分の箱の数え方は自分で持つ。** ページ側の reset に頼っていたため、
+   box-sizing の無い入口（/bousai/ など Vite の HTML）だけ padding が外へ出て、
+   同じ CSS で高さが 165px と 215px に割れていた（2026-08-27 実測）。 */
+.ktn-header, .ktn-header * { box-sizing: border-box; }
+footer.site, footer.site * { box-sizing: border-box; }
+
 .ktn-header {
   position: sticky;
   top: 0;
@@ -110,6 +116,10 @@
   text-decoration: none;
   padding: 11px 0;
   min-height: 44px;
+  /* **行間も自分で持つ。** ページ側の body{line-height} を継承していたため、
+     生成ページ 53px / Vite 入口 44px と、同じ CSS でリンクの高さが割れていた
+     （2026-08-27 実測。box-sizing と同じ種類の取りこぼし）。 */
+  line-height: 1.2;
   display: inline-flex;
   align-items: center;
   border-bottom: 1px solid transparent;
@@ -194,6 +204,11 @@
 }
 .ktn-art .ka-v { margin: 5px 0 0; font-size: 13px; color: rgba(16, 16, 16, .86); }
 
+footer.site,footer.site *{box-sizing:border-box}
+footer.site{border-top:1px solid var(--line,#d8d5cc);padding:22px 20px 40px;text-align:center;font-size:13px;line-height:2;color:rgba(35,40,48,.86);background:#fbfaf6}
+footer.site a{color:inherit}
+footer.site .ig{display:inline-block;margin-top:12px;font-weight:700;color:var(--indigo,#274a6d)}
+footer.site .site-copy{margin-top:10px;font-size:12px;color:rgba(35,40,48,.6)}
 :root{
   --fukamidori:#2E4B3C;
   --kinari:#F7F4EC;
@@ -280,14 +295,12 @@ ul.stops{margin:0;padding:0}
 <header class="ktn-header"><div class="ktn-in">
   <a class="ktn-brand" href="../../index.html"><img src="../../icons/icon-192.png" alt="" width="34" height="34"><b>京都丹波ナビ</b></a>
   <nav aria-label="サイト内">
-    <a href="../../week/index.html">今週</a>
-    <a href="../../course/index.html">一日のコース</a>
+    <a href="../../index.html">地図</a>
     <a href="../../events/index.html">イベント</a>
     <a href="../../shops/index.html">寄り処</a>
-    <a href="../../map/index.html">地図</a>
-    <a href="../../index.html?play=1">あそぶ</a>
+    <a href="../../index.html?play=1">タイムトラベル</a>
     <a href="../../tactics/index.html">丹波タクティクス</a>
-    <a href="../../photo/index.html">写真を送る</a>
+    <a href="../../bousai/index.html">防災マップ</a>
     <a class="ktn-cta" href="../../ads/index.html">掲載のご案内</a>
   </nav>
 </div></header>
@@ -520,10 +533,20 @@ ul.stops{margin:0;padding:0}
 <section class="section"><h2>ほかのコース</h2><ul class="list"><li><a href="../c1/"><span class="n">亀岡観光ショートコース</span><br><span class="d">30km ・ 初級</span></a></li><li><a href="../c2/"><span class="n">八木日吉周遊サイクリング</span><br><span class="d">50km ・ 中級</span></a></li><li><a href="../c3/"><span class="n">京都丹波周遊ライド</span><br><span class="d">85km ・ 中級</span></a></li><li><a href="../c5/"><span class="n">京都丹波一周ロングライド</span><br><span class="d">140km ・ 上級</span></a></li></ul></section>
 
 <p class="footer-note">距離はルートからの直線距離です。実際の道のりや高低差は含みません。営業時間・定休日はお店の情報をご確認のうえ、無理のない計画でお出かけください。</p>
-<footer class="ktn-band">
-  <a class="bn" href="../../index.html">京都丹波ナビ</a>
-  <a href="https://kyoto-tamba.com/">kyoto-tamba.com</a> ・
-  <a href="https://www.instagram.com/kyototambanavi/" target="_blank" rel="noopener">@kyototambanavi</a>
+<footer class="site">
+  <a href="../../index.html">京都丹波ナビ トップ</a> ・
+  <a href="../../week/index.html">今週の京都丹波</a> ・
+  <a href="../../course/index.html">一日のコース</a> ・
+  <a href="../../events/index.html">イベント一覧</a> ・
+  <a href="../../shops/index.html">寄り処一覧</a> ・
+  <a href="../../tactics/index.html">丹波タクティクス</a> ・
+  <a href="../../bousai/index.html">防災マップ</a> ・
+  <a href="../../photo/index.html">写真を送る</a> ・
+  <a href="../../about/index.html">このサイトについて</a> ・
+  <a href="../../legal/index.html">利用規約・プライバシー</a> ・
+  <a href="../../ads/index.html">掲載のご案内</a>
+  <br><a class="ig" href="https://www.instagram.com/kyototambanavi/" target="_blank" rel="noopener">Instagram @kyototambanavi</a>
+  <div class="site-copy">© 2026 teraia（京都府南丹市）・地域プラットフォーム imapp</div>
 </footer>
 </body>
 </html>
