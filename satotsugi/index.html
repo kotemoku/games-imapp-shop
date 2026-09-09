@@ -13,8 +13,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="里継" />
 
-  <script type="module" crossorigin src="./assets/index-CcZYZ3yg.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-BHYiqrUQ.css">
+  <script type="module" crossorigin src="./assets/index-Gd-O5_tq.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-CVdRFMgj.css">
 </head>
 <body>
   <div id="game" aria-label="里山フィールド"></div>
@@ -38,13 +38,13 @@
 
   <!-- 下部：操作 -->
   <div id="bottombar">
-    <div class="dpad" role="group" aria-label="移動">
+    <div class="dpad" id="movement-pad" hidden role="group" aria-label="移動">
       <button id="pad-up" aria-label="上（北）へ">▲</button>
       <button id="pad-left" aria-label="左（西）へ">◀</button>
       <button id="pad-right" aria-label="右（東）へ">▶</button>
       <button id="pad-down" aria-label="下（南）へ">▼</button>
     </div>
-    <div class="iconcol" id="commands" role="group" aria-labelledby="command-title">
+    <div class="iconcol" id="commands" hidden role="group" aria-labelledby="command-title">
       <h2 class="command-title" id="command-title">コマンド</h2>
       <button id="btn-act">しらべる・はなす</button>
       <button class="ibtn" id="btn-plans">里づくり計画</button>
@@ -54,13 +54,17 @@
       <button class="ibtn" id="btn-legend">地図の見かた</button>
       <button class="ibtn" id="btn-hazard" aria-pressed="false">災害のそなえ</button>
       <button class="ibtn" id="btn-reset">最初から</button>
+      <button id="btn-status" aria-pressed="true">里の情報：表示</button>
+      <button id="btn-pad" aria-pressed="false">十字キー：非表示</button>
+      <button id="btn-bgm" aria-label="おとの切り替え"></button>
       <button id="btn-next">一日を終える</button>
-      <p class="command-hint">C：コマンド　↑↓：えらぶ<br>Enter：決定　Esc：もどる</p>
+      <p class="command-hint">C：開閉　↑↓：えらぶ<br>Enter：決定　Esc：もどる</p>
     </div>
   </div>
 
   <!-- おと（BGM・効果音）トグル：右上のベル -->
-  <button id="btn-bgm" aria-label="おとの切り替え">🔔</button>
+  <button id="btn-menu" aria-controls="commands" aria-expanded="false">メニュー</button>
+  <button id="btn-quick-act">しらべる・はなす</button>
 
   <div id="toast"></div>
 
