@@ -12,7 +12,7 @@
  * イベントや店舗のページは今までどおりネットワークから最新が出る。
  * ここを広げると、配信し直しても古いページが出続ける事故になる。
  */
-const VERSION = "2f75a83457a5";
+const VERSION = "fdbfbe00147a";
 const SHELL = "ktn-bousai-shell-" + VERSION;
 const TILES = "ktn-tiles-v1"; // タイルは版をまたいで持ち越す（描き直す理由が無い）
 const META_URL = "./__sw-meta";
@@ -27,13 +27,13 @@ const PRECACHE = [
   "./icons/icon-192.png",
   "./icons/icon-512.png",
   "./icons/icon-maskable-512.png",
-  "./assets/bousai-B7Rux-40.js",
+  "./assets/bousai-DGHmgiIg.js",
   "./assets/maplibre-gl-9UNWPgFo.css",
   "./assets/maplibre-gl-aIYBzkuZ.js",
   "./assets/maplibre-gl-shared.mjs",
   "./assets/maplibre-gl-worker.mjs",
-  "./assets/pin-2Kg8Ak_q.css",
-  "./assets/pin-D2I_0pBk.js"
+  "./assets/pin-BA2ccSJA.js",
+  "./assets/pin-Cmz58_rk.css"
 ];
 
 /** 地図タイルの出所（航空写真など、まだ地理院に頼るもの）。見た範囲だけ端末に置く。 */
